@@ -1,7 +1,7 @@
-﻿#pragma    once//☀Unicode
-#include    "Scene.h"
+﻿#pragma once//☀Unicode
+#include "Scene.h"
 
-namespace    SDX
+namespace SDX
 {
-                Scene*    Scene::now;
+    Scene* Scene::now;
 }

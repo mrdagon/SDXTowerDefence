@@ -6,8 +6,6 @@ using namespace SDX;
 #include "Shot.h"
 #include "Unit.h"
 
-#include "Sample/Sample.h"
-
 int main(int argc, char* argv[])
 {
     System::Initialise("sample", 640, 480);//ライブラリの初期化
