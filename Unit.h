@@ -2,6 +2,7 @@
 #include "Object.h"
 #include "Shot.h"
 #include "Scene.h"
+#include "UnitData.h"
 
 namespace SDX
 {
@@ -10,19 +11,19 @@ namespace SDX
     protected:
         virtual void Dead(){}
     public:
+        UnitData& 性能;
         int    レベル = 0;
-        int    攻撃力 = 100;
-        double 攻撃補正 = 1;
-        int    攻撃間隔 = 60;
-        int    待機時間;
+        double 攻撃力補正 = 1;
+        double 速度補正 = 1;
+
+        int    待機時間 = -1;
         int    送還時間 = -1;
         int    強化時間 = -1;
-        int    大きさ;
+        int    大きさ = 2;//2x2
         Elements 魔法属性 = Elements::無;
 
         Unit(int X座標, int Y座標, int 大きさ, Sprite *sprite) :
             Object(new Rect(X座標 * 20 + 大きさ * 10, Y座標 * 20 + 大きさ * 10, 大きさ * 20, 大きさ * 20), sprite, Belong::Unit),
-            大きさ(大きさ)
         {
             待機時間 = 攻撃間隔;
         }

@@ -8,6 +8,10 @@ namespace SDX
     public:
         bool is貫通 = false;
         bool isSmall = true;//分割木用
+
+        int 属性効果;
+        int 発動率;
+
         Elements  魔法属性;
         std::unique_ptr<ISpeed> 速度;
 

@@ -7,8 +7,10 @@ namespace SDX
     {
     public:
         Enemy* next;//当たり判定チェイン用
-        int    方向 = 5;
-        double 体力 = 1000;
+        int     方向   = 5;
+        double  体力   = 1000;
+        int     防御力 = 0;
+        bool    isBoss;
 
         Enemy(double x, double y, Image *image, Belong 所属 = Belong::Ground) :
             Object(new Rect(x, y, 14, 14), nullptr, 所属)

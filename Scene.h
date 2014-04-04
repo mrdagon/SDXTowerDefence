@@ -320,21 +320,21 @@ namespace SDX
         }
 
         /**.*/
-        static void AddFront(Object *object, int suspendTime = 0)
+        static void AddFront(Object *追加するオブジェクト, int 待機時間 = 0)
         {
-            Now()->frontEffectS.Add(object, suspendTime);
+            Now()->frontEffectS.Add(追加するオブジェクト, 待機時間);
         }
 
         /**.*/
-        static void AddBack(Object *object, int suspendTime = 0)
+        static void AddBack(Object *追加するオブジェクト, int 待機時間 = 0)
         {
-            Now()->backEffectS.Add(object, suspendTime);
+            Now()->backEffectS.Add(追加するオブジェクト, 待機時間);
         }
 
         /**.*/
-        static void AddEvent(IModule *module)
+        static void AddEvent(IModule *追加する関数オブジェクト)
         {
-            Now()->eventS.emplace_back(module);
+            Now()->eventS.emplace_back(追加する関数オブジェクト);
         }
 
         /**.*/

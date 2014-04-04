@@ -2,31 +2,10 @@
 #include <SDXFrameWork.h>
 #include <Framework/ModelMove.h>
 #include "RouteMap.h"
+#include "EnumType.h"
 
 namespace SDX
 {
-/**所属するレイヤーの識別子.*/
-enum class Belong
-{
-    Sky,
-    Ground,
-    Sea,
-    Marin,
-    Shot,
-    Unit,
-    Etc
-};
-
-/**UnitとShotの魔法属性.*/
-enum class Elements
-{
-    炎,
-    氷,
-    樹,
-    空,
-    無
-};
-
 /**.*/
 template <class T> class Layer;
 class Object : public Model , public ModelMove

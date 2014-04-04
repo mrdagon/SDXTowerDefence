@@ -102,14 +102,14 @@ namespace SDX
         }
 
         /**.*/
-        TObject* GetNearest(Object* object)
+        TObject* GetNearest(Object* 比較対象)
         {
             double   nearest = -1;
             TObject* nearObject = nullptr;
 
             for (auto it : objectS)
             {
-                double dist = object->GetDistance(it.get());
+                double dist = 比較対象->GetDistance(it.get());
                 if (dist < nearest || nearest == -1)
                 {
                     nearest    = dist;
