@@ -16,7 +16,7 @@ namespace SDX
         std::unique_ptr<ISpeed> 速度;
 
         Shot(int X座標, int Y座標, double 角度, double 攻撃力):
-            Object(new Rect(X座標, Y座標, 10, 10), nullptr, Belong::Shot, 攻撃力),
+            Object(new Rect(X座標, Y座標, 10, 10), nullptr, Belong::弾, 攻撃力),
             速度(new Speed::Liner(2))
         {
             SetAngle(角度);
@@ -40,7 +40,7 @@ namespace SDX
         }
 
         /**ダメージを受けた時の処理.*/
-        virtual void Damaged(double 被ダメージ)
+        virtual void Damaged(Object* 衝突相手)
         {
             if (!is貫通)
             {

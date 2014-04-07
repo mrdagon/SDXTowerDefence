@@ -17,10 +17,10 @@ namespace SDX
             int  距離[横幅][縦幅];
             int  経路[横幅][縦幅];
             bool is通行[横幅][縦幅];
-            MoveType 種類;
+            Belong 種類;
 
             /**.*/
-            void SetState(MoveType 陸空水, bool 使用フラグ)
+            void SetState(Belong 陸空水, bool 使用フラグ)
             {
                 種類 = 陸空水;
                 isUse = 使用フラグ;
@@ -35,7 +35,7 @@ namespace SDX
                 {
                     for (int j = 0; j < 縦幅; ++j)
                     {
-                        if (種類 != MoveType::空 && 配置リスト[i][j] == true)
+                        if (種類 != Belong::空 && 配置リスト[i][j] == true)
                         {
                             is通行[i][j] = false;
                             continue;
@@ -52,10 +52,10 @@ namespace SDX
                                 break;
                             case ChipType::山://空以外障害物扱い
                             case ChipType::森:
-                                is通行[i][j] = (種類 == MoveType::空);
+                                is通行[i][j] = (種類 == Belong::空);
                                 break;
                             case ChipType::水://陸のみ障害物扱い
-                                is通行[i][j] = (種類 != MoveType::陸);
+                                is通行[i][j] = (種類 != Belong::陸);
                                 break;
                             case ChipType::高山://常に通行不可
                                 is通行[i][j] = false;
@@ -187,10 +187,10 @@ namespace SDX
                 地形[1][1] = ChipType::井戸;
                 地形[22][22] = ChipType::塔;
 
-                陸路.SetState(MoveType::陸, true);
-                空路.SetState(MoveType::空, true);
-                水路.SetState(MoveType::水陸, true);
-                海路.SetState(MoveType::水中, true);
+                陸路.SetState( Belong::陸, true);
+                空路.SetState( Belong::空, true);
+                水路.SetState( Belong::水陸, true);
+                海路.SetState( Belong::水中, true);
 
                 陸路.Init(地形, 砲台配置);
                 空路.Init(地形, 砲台配置);

@@ -119,8 +119,8 @@ namespace SDX
                         {
                             if (shot->Hit(it))
                             {
-                                shot->Damaged(it->power);
-                                it->Damaged(shot->power);
+                                shot->Damaged(it);
+                                it->Damaged(shot.get());
                             }
                             it = it->next;
                         }
@@ -132,8 +132,8 @@ namespace SDX
                         {
                             if (shot->Hit(it))
                             {
-                                shot->Damaged(it->power);
-                                it->Damaged(shot->power);
+                                shot->Damaged(it);
+                                it->Damaged(shot.get());
                             }
                             it = it->next;
                         }
@@ -148,8 +148,8 @@ namespace SDX
                         {
                             if (shot->Hit(it))
                             {
-                                shot->Damaged(it->power);
-                                it->Damaged(shot->power);
+                                shot->Damaged(it);
+                                it->Damaged(shot.get());
                             }
                             it = it->next;
                         }
@@ -162,8 +162,8 @@ namespace SDX
                         {
                             if (shot->Hit(it))
                             {
-                                shot->Damaged(it->power);
-                                it->Damaged(shot->power);
+                                shot->Damaged(it);
+                                it->Damaged(shot.get());
                             }
                             it = it->next;
                         }
@@ -308,12 +308,14 @@ namespace SDX
         {
             switch (追加するオブジェクト->GetBelong())
             {
-            case Belong::Ground: Now()->groundEnemyS.Add(追加するオブジェクト, 待機時間); break;
-            case Belong::Sea:    Now()->seaEnemyS.Add(追加するオブジェクト, 待機時間); break;
-            case Belong::Sky:    Now()->skyEnemyS.Add(追加するオブジェクト, 待機時間); break;
-            case Belong::Shot:   Now()->shotS.Add(追加するオブジェクト, 待機時間); break;
-            case Belong::Unit:   Now()->unitS.Add(追加するオブジェクト, 待機時間); break;
-            case Belong::Etc:    Now()->midEffectS.Add(追加するオブジェクト, 待機時間); break;
+            case Belong::陸: Now()->groundEnemyS.Add(追加するオブジェクト, 待機時間); break;
+            case Belong::水中:
+            case Belong::水陸:
+                Now()->seaEnemyS.Add(追加するオブジェクト, 待機時間); break;
+            case Belong::空:    Now()->skyEnemyS.Add(追加するオブジェクト, 待機時間); break;
+            case Belong::弾:   Now()->shotS.Add(追加するオブジェクト, 待機時間); break;
+            case Belong::砲台:   Now()->unitS.Add(追加するオブジェクト, 待機時間); break;
+            case Belong::その他:    Now()->midEffectS.Add(追加するオブジェクト, 待機時間); break;
             default:
                 break;
             }

@@ -43,7 +43,7 @@ public:
     Object* next;
 
     /**.*/
-    Object(Shape *当たり判定 , Sprite *デフォルトスプライト , Belong 所属 = Belong::Etc , double 攻撃力 = 0):
+    Object(Shape *当たり判定 , Sprite *デフォルトスプライト , Belong 所属 = Belong::その他 , double 攻撃力 = 0):
         Model(当たり判定 , デフォルトスプライト),
         ModelMove(this),
         belong(所属),
@@ -80,6 +80,6 @@ public:
     virtual void Remove(){}
 
     /**ダメージ処理.*/
-    virtual void Damaged(double 被ダメージ){}
+    virtual void Damaged(Object* 衝突相手){}
 };
 }

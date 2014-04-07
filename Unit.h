@@ -11,7 +11,7 @@ namespace SDX
     protected:
         virtual void Dead(){}
     public:
-        UnitData& 性能;
+        UnitData 性能;
         int    レベル = 0;
         double 攻撃力補正 = 1;
         double 速度補正 = 1;
@@ -23,9 +23,15 @@ namespace SDX
         Elements 魔法属性 = Elements::無;
 
         Unit(int X座標, int Y座標, int 大きさ, Sprite *sprite) :
-            Object(new Rect(X座標 * 20 + 大きさ * 10, Y座標 * 20 + 大きさ * 10, 大きさ * 20, 大きさ * 20), sprite, Belong::Unit),
+            Object(new Rect(X座標 * 20 + 大きさ * 10, Y座標 * 20 + 大きさ * 10, 大きさ * 20, 大きさ * 20), sprite, Belong::砲台)
         {
-            待機時間 = 攻撃間隔;
+            SetWait();
+        }
+
+        /**.*/
+        void SetWait()
+        {
+            待機時間 =  int(性能.攻撃間隔[レベル] * 速度補正);
         }
 
         /**.*/
@@ -36,7 +42,7 @@ namespace SDX
         }
 
         /**.*/
-        virtual bool RemoveCheck()
+        bool RemoveCheck() override
         {
             //送還
             if (送還時間 == 0) isRemove = true;
@@ -62,15 +68,14 @@ namespace SDX
             {
                 レベル++;
                 強化時間 = -1;
-                攻撃間隔 -= レベル;
-                待機時間 = 攻撃間隔;
+                SetWait();
             }
 
             if (待機時間 <= 0 && 送還時間 < 0 && 強化時間 < 0)
             {
                 Scene::Add(new    Shot((int)GetX(), (int)GetY(), Scene::GetNearDirect(this), (1 + レベル) * 100));
-                待機時間 = 攻撃間隔;
-                if (Rand::Get(9) == 0 && 攻撃間隔 > 0) 強化時間 = 120;
+                SetWait();
+                if (Rand::Get(9)) 強化時間 = 120;
             }
         }
     };

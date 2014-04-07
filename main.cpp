@@ -34,8 +34,8 @@ int main(int argc, char* argv[])
 
         if (time % 30 == 0)
         {
-            Scene::Add(new Enemy(30, 30, nullptr));
-            Scene::Add(new Enemy(30, 30, nullptr, Belong::Sea));
+            Scene::Add(new Enemy(30, 30, nullptr, Belong::陸));
+            Scene::Add(new Enemy(30, 30, nullptr, Belong::水陸));
         }
     }
 

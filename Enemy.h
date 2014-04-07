@@ -10,9 +10,14 @@ namespace SDX
         int     方向   = 5;
         double  体力   = 1000;
         int     防御力 = 0;
+        int     麻痺時間 = 0;
+        int     凍結時間 = 0;
+        int     火傷時間 = 0;
+        double  吹飛距離 = 0;
         bool    isBoss;
+        bool    is逆走 = false;
 
-        Enemy(double x, double y, Image *image, Belong 所属 = Belong::Ground) :
+        Enemy(double x, double y, Image *image, Belong 所属) :
             Object(new Rect(x, y, 14, 14), nullptr, 所属)
         {}
 
@@ -28,14 +33,17 @@ namespace SDX
         {
             switch (belong)
             {
-            case Belong::Sky:
+            case Belong::空:
                 方向 = Land::now->空路.CulculateDistance(方向, (int)GetX(), (int)GetY());
                 break;
-            case Belong::Sea:
+            case Belong::陸:
+                方向 = Land::now->陸路.CulculateDistance(方向, (int)GetX(), (int)GetY());
+                break;
+            case Belong::水陸:
                 方向 = Land::now->水路.CulculateDistance(方向, (int)GetX(), (int)GetY());
                 break;
-            case Belong::Ground:
-                方向 = Land::now->陸路.CulculateDistance(方向, (int)GetX(), (int)GetY());
+            case Belong::水中:
+                方向 = Land::now->海路.CulculateDistance(方向, (int)GetX(), (int)GetY());
                 break;
             }
 
@@ -68,9 +76,9 @@ namespace SDX
         }
 
         /**攻撃された時の処理.*/
-        void Damaged(double damage)
+        void Damaged(Object* 衝突相手) override
         {
-            体力 -= damage;
+            体力 -= 衝突相手->power;
             React();
         }
 
@@ -78,6 +86,6 @@ namespace SDX
         virtual void React(){}
 
         /**死亡時の特殊処理.*/
-        virtual void DeadSp(){};
+        virtual void DeadSp(){}
     };
 }

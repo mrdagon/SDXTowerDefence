@@ -4,13 +4,13 @@ namespace SDX
     /**所属するレイヤーの識別子.*/
     enum class Belong
     {
-        Sky,
-        Ground,
-        Sea,
-        Marin,
-        Shot,
-        Unit,
-        Etc
+        空,
+        陸,
+        水陸,
+        水中,
+        弾,
+        砲台,
+        その他
     };
 
     /**UnitとShotの魔法属性.*/
@@ -36,15 +36,6 @@ namespace SDX
         水,//一部敵のみ通行可
         井戸,//敵が湧く
         塔//防衛拠点
-    };
-
-    /**.*/
-    enum class MoveType
-    {
-        陸,
-        空,
-        水陸,
-        水中
     };
 
 }
