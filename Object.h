@@ -40,7 +40,6 @@ protected:
 public:
     bool    isSelect = false;
     double  power;
-    Object* next;
 
     /**.*/
     Object(Shape *当たり判定 , Sprite *デフォルトスプライト , Belong 所属 = Belong::その他 , double 攻撃力 = 0):

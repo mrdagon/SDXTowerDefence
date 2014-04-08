@@ -4,28 +4,34 @@
 #include <Utility/Module.h>
 #include "RouteMap.h"
 #include "Layer.h"
+#include "IStage.h"
+
+#include "Enemy.h"
+#include "Unit.h"
+#include "Shot.h"
+#include "Wave.h"
 
 namespace SDX
 {
     /**.*/
-    class Scene : public IScene
+    class Stage : public IStage
     {
     private:
         Layer<Object> backEffectS;
         Layer<Object> midEffectS;
         Layer<Object> frontEffectS;
 
-        Layer<Object> skyEnemyS;
-        Layer<Object> seaEnemyS;
-        Layer<Object> groundEnemyS;
+        Layer<Enemy> skyEnemyS;
+        Layer<Enemy> seaEnemyS;
+        Layer<Enemy> groundEnemyS;
 
-        Layer<Object> shotS;
+        Layer<Shot> shotS;
 
-        Layer<Object> unitS;
+        Layer<Unit> unitS;
 
         std::vector<std::shared_ptr<IModule>> eventS;
 
-        static Scene* now;
+        Wave wave;
 
         /**レイヤー等を初期化.*/
         void Clear()
@@ -48,8 +54,8 @@ namespace SDX
         void Hit()
         {
             //分割木を作成
-            Object* chainFirst[24][24] = {};
-            Object* chainEnd[24][24] = {};
+            Enemy* chainFirst[Land::MapSize][Land::MapSize] = {};
+            Enemy* chainEnd[Land::MapSize][Land::MapSize] = {};
 
             for (auto &&it : groundEnemyS.objectS)
             {
@@ -67,7 +73,6 @@ namespace SDX
                 }
                 it->next = nullptr;
             }
-
             for (auto &&it : skyEnemyS.objectS)
             {
                 const int x = (int)it->GetX() / 20;
@@ -108,7 +113,7 @@ namespace SDX
                 const int ya = (int)(shot->GetY() - 10) / 20;
                 const int xb = (int)(shot->GetX() + 10) / 20;
                 const int yb = (int)(shot->GetY() + 10) / 20;
-                Object* it;
+                Enemy* it;
 
                 if (xa >= 0 && xa < 24)
                 {
@@ -172,60 +177,49 @@ namespace SDX
             }
         }
 
-    public:
-        int timer = 0;
-
-        std::unique_ptr<Camera> camera;
-        Object *selected;//選択中のオブジェクト
-
-        Scene() :
-            camera(new Camera(400, 300, 1))
-        {
-            SetNow();
-        }
-
-        virtual ~Scene(){}
-
-        /**.*/
-        void Init()
-        {
-            if( !Land::now )Land::now = new Land::Land<24, 24>();
-            Land::now->Init();
-        }
-
-        /**.*/
-        void SetNow()
-        {
-            now = this;
-            camera->SetActive();
-        }
-
-        /**.*/
-        static Scene* Now()
-        {
-            return now;
-        }
-
         /**地形の敵配置状態を更新.*/
-        static void LandUpdate()
+        void LandUpdate()
         {
             Land::now->InitEnemyPost();
 
-            for (auto &&it : now->groundEnemyS.objectS)
+            for (auto &&it : groundEnemyS.objectS)
             {
                 Land::now->SetGroungPost((int)it->GetX(), (int)it->GetY());
             }
 
-            for (auto &&it : now->seaEnemyS.objectS)
+            for (auto &&it : seaEnemyS.objectS)
             {
                 Land::now->SetSeaPost((int)it->GetX(), (int)it->GetY());
             }
         }
 
-        /**.*/
-        virtual void Update()
+    public:
+        int timer = 0;
+
+        std::unique_ptr<Camera> camera;
+        Object *selected;//選択中のオブジェクト
+        Object *popUp;//マウスカーソルが乗っているオブジェクト
+
+        Stage() :
+            camera(new Camera(400, 300, 1))
         {
-            SetNow();
+            Init();
+        }
+
+        virtual ~Stage(){}
+
+        /**.*/
+        void Init()
+        {
+            IStage::now = this;
+            if( !Land::now )Land::now = new Land::Land();
+            Land::now->Init();
+        }
+
+        /**.*/
+        void Update() override
+        {
+            IStage::now = this;
             ++timer;
 
             //イベント処理
@@ -233,6 +227,9 @@ namespace SDX
             {
                 it->Update();
             }
+
+            //Wave処理
+            WaveCheck();
 
             //レイヤー処理
             backEffectS.Update();
@@ -261,41 +258,76 @@ namespace SDX
 
             shotS.ExeRemove();
             unitS.ExeRemove();
+
+            //地形の更新
+            LandUpdate();
+
+            SelectCheck();
+
+            SetCheck();
+        }
+
+        void WaveCheck()
+        {
+            if (!wave.Check()) return;
+            
+            //発生処理
+            for (int i = 0; i < 16; ++i)
+            {
+                int x = Land::now->塔の位置[0] % Land::MapSize;
+                int y = Land::now->塔の位置[0] % Land::MapSize;
+
+                Add(new Enemy(x, y, nullptr, Belong::水陸), i * 16);
+            }
+        }
+
+        /**クリックの選択処理.*/
+        void SelectCheck()
+        {
+            
+        }
+
+        /**配置と強化処理.*/
+        void SetCheck()
+        {
+            if (Input::mouse.Left.on)
+            {
+                if (Land::now->SetCheck(Input::mouse.x / Land::ChipSize, Input::mouse.y / Land::ChipSize, 2))
+                {
+                    Add(new Unit(Input::mouse.x / Land::ChipSize, Input::mouse.y / Land::ChipSize, 2, nullptr));
+                }
+            }
         }
 
         /**.*/
-        virtual void Draw()
+        void Draw() override
         {
-            SetNow();
+            IStage::now = this;
 
-            for (int i = 0; i < 481; i += 20)
-            {
-                Drawing::Line(i, 0, i, 480, Color::White, 1);
-                Drawing::Line(0, i, 480, i, Color::White, 1);
-            }
+            Land::now->Draw();
 
-            for (int i = 0; i < 24; ++i)
-            {
-                for (int j = 0; j < 24; ++j)
-                {
-                    if (Land::now->地形[i][j] != ChipType::草)  Drawing::Rect( i * 20 , j * 20 , 20 , 20 , Color::Blue   , true);
-                    if (Land::now->地形[i][j] == ChipType::塔)  Drawing::Rect( i * 20 , j * 20 , 20 , 20 , Color::Red    , true);
-                    if (Land::now->砲台配置[i][j])              Drawing::Rect( i * 20 , j * 20 , 20 , 20 , Color::Yellow , true);
-                    if (Land::now->地上配置[i][j])              Drawing::Rect( i * 20 , j * 20 , 20 , 20 , Color::Gray   , true);
-                    if (Land::now->水上配置[i][j])              Drawing::Rect( i * 20 , j * 20 , 20 , 20 , Color::Purple , true);
-                }
-            }
+            //Wave一覧の表示
+            int x = wave.GetPosition();
+            Drawing::Rect( x , 440, 60, 40, Color::Red, false);
+
+            //スコアの表示
+
+            //ゲーム速度の表示
+
+            //ウィッチの表示
+
+            //砲台一覧の表示
+
+            //MP,HP,SPの表示
+
+            //枠の表示
+
+            //選択中、砲台や敵能力の表示
 
             backEffectS.Draw();
             unitS.Draw();
             seaEnemyS.Draw();
             groundEnemyS.Draw();
-
-            Screen::SetBright({ 0, 0, 0 });
-            Screen::SetBlendMode(BlendMode::Alpha, 128);
-            skyEnemyS.DrawShadow(12, 12);
-            Screen::SetBlendMode(BlendMode::NoBlend, 0);
-            Screen::SetBright({ 255, 255, 255 });
 
             midEffectS.Draw();
             shotS.Draw();
@@ -304,49 +336,58 @@ namespace SDX
         }
 
         /**.*/
-        static void Add( Object *追加するオブジェクト , int 待機時間 = 0)
+        void Add(Object *追加するオブジェクト, int 待機時間 = 0) override
+        {
+            midEffectS.Add(追加するオブジェクト, 待機時間);
+        }
+        void Add(Enemy *追加するオブジェクト, int 待機時間 = 0) override
         {
             switch (追加するオブジェクト->GetBelong())
             {
-            case Belong::陸: Now()->groundEnemyS.Add(追加するオブジェクト, 待機時間); break;
-            case Belong::水中:
-            case Belong::水陸:
-                Now()->seaEnemyS.Add(追加するオブジェクト, 待機時間); break;
-            case Belong::空:    Now()->skyEnemyS.Add(追加するオブジェクト, 待機時間); break;
-            case Belong::弾:   Now()->shotS.Add(追加するオブジェクト, 待機時間); break;
-            case Belong::砲台:   Now()->unitS.Add(追加するオブジェクト, 待機時間); break;
-            case Belong::その他:    Now()->midEffectS.Add(追加するオブジェクト, 待機時間); break;
-            default:
-                break;
+                case Belong::陸: groundEnemyS.Add(追加するオブジェクト, 待機時間); break;
+                case Belong::空: skyEnemyS.Add(追加するオブジェクト, 待機時間); break;
+                case Belong::水中:
+                case Belong::水陸:
+                                 seaEnemyS.Add(追加するオブジェクト, 待機時間); break;
+                default:
+                    break;
             }
         }
-
-        /**.*/
-        static void AddFront(Object *追加するオブジェクト, int 待機時間 = 0)
+        void Add(Unit *追加するオブジェクト, int 待機時間 = 0) override
         {
-            Now()->frontEffectS.Add(追加するオブジェクト, 待機時間);
+            unitS.Add(追加するオブジェクト, 待機時間);
+        }
+        void Add(Shot *追加するオブジェクト, int 待機時間 = 0) override
+        {
+            shotS.Add(追加するオブジェクト, 待機時間);
         }
 
         /**.*/
-        static void AddBack(Object *追加するオブジェクト, int 待機時間 = 0)
+        void AddFront(Object *追加するオブジェクト, int 待機時間 = 0) override
         {
-            Now()->backEffectS.Add(追加するオブジェクト, 待機時間);
+            frontEffectS.Add(追加するオブジェクト, 待機時間);
         }
 
         /**.*/
-        static void AddEvent(IModule *追加する関数オブジェクト)
+        void AddBack(Object *追加するオブジェクト, int 待機時間 = 0) override
         {
-            Now()->eventS.emplace_back(追加する関数オブジェクト);
+            backEffectS.Add(追加するオブジェクト, 待機時間);
         }
 
         /**.*/
-        static Object* GetNearEnemy(Object* 比較対象)
+        void AddEvent(IModule *追加する関数オブジェクト) override
+        {
+            eventS.emplace_back(追加する関数オブジェクト);
+        }
+
+        /**.*/
+        Object* GetNearEnemy(Object* 比較対象) override
         {
             Object* 一番近いObject = nullptr;
             double  最短距離 = 9999999999;
             double  距離;
 
-            for (auto && it : now->groundEnemyS.objectS)
+            for (auto && it : groundEnemyS.objectS)
             {
                 const double xd = it.get()->GetX() - 比較対象->GetX();
                 const double yd = it.get()->GetY() - 比較対象->GetY();
@@ -358,7 +399,7 @@ namespace SDX
                     最短距離 = 距離;
                 }
             }
-            for (auto && it : now->skyEnemyS.objectS)
+            for (auto && it : skyEnemyS.objectS)
             {
                 const double xd = it.get()->GetX() - 比較対象->GetX();
                 const double yd = it.get()->GetY() - 比較対象->GetY();
@@ -370,7 +411,7 @@ namespace SDX
                     最短距離 = 距離;
                 }
             }
-            for (auto && it : now->seaEnemyS.objectS)
+            for (auto && it : seaEnemyS.objectS)
             {
                 const double xd = it.get()->GetX() - 比較対象->GetX();
                 const double yd = it.get()->GetY() - 比較対象->GetY();
@@ -387,7 +428,7 @@ namespace SDX
         }
 
         /**.*/
-        static double GetNearDirect(Object* 比較対象)
+        double GetNearDirect(Object* 比較対象) override
         {
             Object* 一番近いObject = GetNearEnemy( 比較対象 );
 

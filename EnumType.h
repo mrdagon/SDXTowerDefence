@@ -34,8 +34,28 @@ namespace SDX
         山,//配置＆通行不可
         高山,//空中も通行不可
         水,//一部敵のみ通行可
-        井戸,//敵が湧く
-        塔//防衛拠点
+        穴,//敵が湧く
+        畑//防衛拠点
+    };
+
+    /**.*/
+    enum class EnemyType
+    {
+        スライム,
+        None,
+    };
+
+    /**.*/
+    enum class UnitType
+    {
+        火炎,
+    };
+
+    /**.*/
+    enum class WitchType
+    {
+        スライム,
+        None,
     };
 
 }

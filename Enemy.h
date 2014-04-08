@@ -1,12 +1,13 @@
 ﻿#pragma  once//☀Unicode
 #include "Object.h"
+#include "Shot.h"
 
 namespace SDX
 {
     class Enemy :public Object
     {
     public:
-        Enemy* next;//当たり判定チェイン用
+        Enemy*  next;//当たり判定チェイン用
         int     方向   = 5;
         double  体力   = 1000;
         int     防御力 = 0;
@@ -14,11 +15,11 @@ namespace SDX
         int     凍結時間 = 0;
         int     火傷時間 = 0;
         double  吹飛距離 = 0;
-        bool    isBoss;
+        bool    isBoss = false;
         bool    is逆走 = false;
 
         Enemy(double x, double y, Image *image, Belong 所属) :
-            Object(new Rect(x, y, 14, 14), nullptr, 所属)
+            Object(new Rect(x*Land::ChipSize, y*Land::ChipSize, 12, 12), nullptr, 所属)
         {}
 
         /**デフォルト死亡.*/
@@ -63,12 +64,16 @@ namespace SDX
         }
 
         /**消滅判定.*/
-        virtual bool RemoveCheck()
+        bool RemoveCheck() override
         {
-            int x = (int)GetX() / 20;
-            int y = (int)GetY() / 20;
+            int x = (int)GetX() / Land::ChipSize;
+            int y = (int)GetY() / Land::ChipSize;
 
-            if (Land::now->地形[x][y] == ChipType::塔) isRemove = true;
+            if (Land::now->地形[x][y] == ChipType::畑)
+            {
+                isRemove = true;
+            }
+
             if (体力 <= 0) Dead();
             if (isRemove)  Remove();
 
@@ -77,6 +82,13 @@ namespace SDX
 
         /**攻撃された時の処理.*/
         void Damaged(Object* 衝突相手) override
+        {
+            体力 -= 衝突相手->power;
+            React();
+        }
+
+        /**攻撃された時の処理.*/
+        void Damaged(Shot* 衝突相手)
         {
             体力 -= 衝突相手->power;
             React();

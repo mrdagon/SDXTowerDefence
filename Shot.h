@@ -28,7 +28,7 @@ namespace SDX
             const double x = GetX();
             const double y = GetY();
 
-            if (x < -10 || x > 490 || y < -10 || y > 490) isRemove = true;
+            if (x < -10 || x > Land::MapSize * Land::ChipSize + 10 || y < -10 || y > Land::MapSize * Land::ChipSize + 10) isRemove = true;
 
             return isRemove;
         }

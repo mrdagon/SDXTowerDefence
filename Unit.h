@@ -1,7 +1,7 @@
 ﻿#pragma once//☀Unicode
 #include "Object.h"
 #include "Shot.h"
-#include "Scene.h"
+#include "IStage.h"
 #include "UnitData.h"
 
 namespace SDX
@@ -23,7 +23,7 @@ namespace SDX
         Elements 魔法属性 = Elements::無;
 
         Unit(int X座標, int Y座標, int 大きさ, Sprite *sprite) :
-            Object(new Rect(X座標 * 20 + 大きさ * 10, Y座標 * 20 + 大きさ * 10, 大きさ * 20, 大きさ * 20), sprite, Belong::砲台)
+            Object(new Rect(X座標 * Land::ChipSize + 大きさ * 10, Y座標 * Land::ChipSize + 大きさ * 10, 大きさ * Land::ChipSize, 大きさ * Land::ChipSize), sprite, Belong::砲台)
         {
             SetWait();
         }
@@ -31,7 +31,7 @@ namespace SDX
         /**.*/
         void SetWait()
         {
-            待機時間 =  int(性能.攻撃間隔[レベル] * 速度補正);
+            待機時間 = int(性能.攻撃間隔[レベル] * 速度補正);
         }
 
         /**.*/
@@ -39,6 +39,7 @@ namespace SDX
         {
             shape->Draw(Color::Green, 128);
             Drawing::String((int)GetX() + 2, (int)GetY() + 2, Color::Red, { レベル });
+            //強化中or送還中
         }
 
         /**.*/
@@ -73,9 +74,8 @@ namespace SDX
 
             if (待機時間 <= 0 && 送還時間 < 0 && 強化時間 < 0)
             {
-                Scene::Add(new    Shot((int)GetX(), (int)GetY(), Scene::GetNearDirect(this), (1 + レベル) * 100));
+                IStage::now->Add(new Shot((int)GetX(), (int)GetY(), IStage::now->GetNearDirect(this), (1 + レベル) * 100));
                 SetWait();
-                if (Rand::Get(9)) 強化時間 = 120;
             }
         }
     };
