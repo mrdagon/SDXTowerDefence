@@ -1,8 +1,14 @@
 ﻿#pragma once//☀Unicode
-#include "IStage.h"
+#include "Object.h"
 
 namespace SDX_TD
 {
     using namespace SDX;
-    IStage* IStage::now;
+
+    class Button : public Object
+    {
+
+
+
+    };
 }

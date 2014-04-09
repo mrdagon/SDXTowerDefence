@@ -1,7 +1,9 @@
 ﻿#pragma once//☀Unicode
 
-namespace SDX
+namespace SDX_TD
 {
+    using namespace SDX;
+
     namespace TDSystem
     {
         static int 素材数[4];

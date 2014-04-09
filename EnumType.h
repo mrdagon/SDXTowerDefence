@@ -1,6 +1,8 @@
 ﻿#pragma  once//☀Unicode
-namespace SDX
+namespace SDX_TD
 {
+    using namespace SDX;
+
     /**所属するレイヤーの識別子.*/
     enum class Belong
     {

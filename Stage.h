@@ -11,8 +11,9 @@
 #include "Shot.h"
 #include "Wave.h"
 
-namespace SDX
+namespace SDX_TD
 {
+    using namespace SDX;
     /**.*/
     class Stage : public IStage
     {
@@ -197,8 +198,6 @@ namespace SDX
         int timer = 0;
 
         std::unique_ptr<Camera> camera;
-        Object *selected;//選択中のオブジェクト
-        Object *popUp;//マウスカーソルが乗っているオブジェクト
 
         Stage() :
             camera(new Camera(400, 300, 1))

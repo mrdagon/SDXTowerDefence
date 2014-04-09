@@ -4,8 +4,9 @@
 #include "IStage.h"
 #include "UnitData.h"
 
-namespace SDX
+namespace SDX_TD
 {
+    using namespace SDX;
     class Unit : public Object
     {
     protected:
@@ -53,6 +54,8 @@ namespace SDX
                 const int x = int(GetX() - 大きさ * 10) / 20;
                 const int y = int(GetY() - 大きさ * 10) / 20;
                 Land::now->RemoveUnit(x, y, 大きさ);
+
+                IStage::now->選択解除(this);
                 Remove();
             }
 

@@ -2,8 +2,9 @@
 #include <SDXFrameWork.h>
 #include "EnumType.h"
 
-namespace SDX
+namespace SDX_TD
 {
+    using namespace SDX;
     namespace Land
     {
         static const int 到達不可 = 99999999;

@@ -1,7 +1,8 @@
 ﻿#pragma once//☀Unicode
 
-namespace SDX
+namespace SDX_TD
 {
+    using namespace SDX;
     /**魔女.*/
     class Witch
     {

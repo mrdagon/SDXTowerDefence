@@ -1,8 +1,9 @@
 ﻿#pragma once//☀SDL
 #include "EnumType.h"
 
-namespace SDX
+namespace SDX_TD
 {
+    using namespace SDX;
     struct Wave
     {
         int 現在Wave = -1;

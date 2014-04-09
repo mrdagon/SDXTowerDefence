@@ -1,8 +1,9 @@
 ﻿#pragma once//☀Unicode
 #include "Object.h"
 
-namespace SDX
+namespace SDX_TD
 {
+    using namespace SDX;
     /**Objectのコンテナクラス.*/
     template <class TObject>
     class Layer

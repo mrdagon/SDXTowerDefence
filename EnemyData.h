@@ -1,8 +1,9 @@
 ﻿#pragma once//☀Unicode
 #include "EnumType.h"
 
-namespace SDX
+namespace SDX_TD
 {
+    using namespace SDX;
     struct EnemyData
     {
         int スコア;

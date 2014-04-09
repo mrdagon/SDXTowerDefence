@@ -4,81 +4,82 @@
 #include "RouteMap.h"
 #include "EnumType.h"
 
-namespace SDX
+namespace SDX_TD
 {
-/**.*/
-template <class T> class Layer;
-class Object : public Model , public ModelMove
-{
-
-template<class T> friend class Layer;
-
-protected:
-    int timer    = 0;///発生してから経過したフレーム数
-    int lifeTime = -1;///生存期間
-    Belong belong;///所属するレイヤー
-
-    /**消滅判定を行う.*/
-    virtual bool RemoveCheck()
+    using namespace SDX;
+    /**.*/
+    template <class T> class Layer;
+    class Object : public Model, public ModelMove , private BanCopy// , public Allocater<Object>
     {
-        if (timer == lifeTime)
+
+        template<class T> friend class Layer;
+
+    protected:
+        int timer = 0;///発生してから経過したフレーム数
+        int lifeTime = -1;///生存期間
+        Belong belong;///所属するレイヤー
+
+        /**消滅判定を行う.*/
+        virtual bool RemoveCheck()
         {
-            isRemove = true;
+            if (timer == lifeTime)
+            {
+                isRemove = true;
+            }
+
+            if (isRemove) Remove();
+
+            return isRemove;
         }
 
-        if (isRemove) Remove();
+        /**経過フレームをセット.*/
+        void SetTimer(int フレーム数)
+        {
+            timer = フレーム数;
+        }
 
-        return isRemove;
-    }
+    public:
+        bool    isSelect = false;
+        double  power;
 
-    /**経過フレームをセット.*/
-    void SetTimer(int フレーム数)
-    {
-        timer = フレーム数;
-    }
+        /**.*/
+        Object(Shape *当たり判定 = nullptr, Sprite *デフォルトスプライト = nullptr, Belong 所属 = Belong::その他, double 攻撃力 = 0) :
+            Model(当たり判定, デフォルトスプライト),
+            ModelMove(this),
+            belong(所属),
+            power(攻撃力)
+        {}
 
-public:
-    bool    isSelect = false;
-    double  power;
+        /**.*/
+        virtual ~Object(){}
 
-    /**.*/
-    Object(Shape *当たり判定 , Sprite *デフォルトスプライト , Belong 所属 = Belong::その他 , double 攻撃力 = 0):
-        Model(当たり判定 , デフォルトスプライト),
-        ModelMove(this),
-        belong(所属),
-        power(攻撃力)
-    {}
+        /**経過フレームを取得.*/
+        int GetTimer()
+        {
+            return timer;
+        }
 
-    /**.*/
-    virtual ~Object(){}
+        /**毎フレームの更新処理.*/
+        virtual void Update()
+        {
+            this->timer++;
+            AnimeUpdate();
+            this->Act();
+        }
 
-    /**経過フレームを取得.*/
-    int GetTimer()
-    {
-        return timer;
-    }
+        /**.*/
+        Belong GetBelong()
+        {
+            return belong;
+        }
 
-    /**毎フレームの更新処理.*/
-    virtual void Update()
-    {
-        this->timer++;
-        AnimeUpdate();
-        this->Act();
-    }
+        /**Update時の追加処理.*/
+        virtual void Act(){}
 
-    /**.*/
-    Belong GetBelong()
-    {
-        return belong;
-    }
+        /**消滅時の追加処理.*/
+        virtual void Remove(){}
 
-    /**Update時の追加処理.*/
-    virtual void Act(){}
-
-    /**消滅時の追加処理.*/
-    virtual void Remove(){}
-
-    /**ダメージ処理.*/
-    virtual void Damaged(Object* 衝突相手){}
-};
+        /**ダメージ処理.*/
+        virtual void Damaged(Object* 衝突相手){}
+    };
 }

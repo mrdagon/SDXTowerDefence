@@ -2,8 +2,9 @@
 #include "Object.h"
 #include "Shot.h"
 
-namespace SDX
+namespace SDX_TD
 {
+    using namespace SDX;
     class Enemy :public Object
     {
     public:
@@ -72,6 +73,7 @@ namespace SDX
             if (Land::now->地形[x][y] == ChipType::畑)
             {
                 isRemove = true;
+                IStage::now->選択解除(this);
             }
 
             if (体力 <= 0) Dead();
