@@ -1,26 +1,56 @@
 ﻿#pragma once//☀Unicode
 #include "Object.h"
+#include "MagicData.h"
+#include "EnumType.h"
 
 namespace SDX_TD
 {
     using namespace SDX;
+    /**通常弾.*/
     class Shot : public Object
     {
     public:
-        bool is貫通 = false;
-        bool isSmall = true;//分割木用
+        MagicData &基礎ステ;
+        int    レベル;
+        double 攻撃力;
 
-        int 属性効果;
-        int 発動率;
+        bool   is貫通 = false;
+        bool   isSmall = true;//分割当たり判定用
 
-        Elements  魔法属性;
+        int    属性効果;
+
+        double 炸裂威力 = 0;
+        double 炸裂範囲 = 0;
+
         std::unique_ptr<ISpeed> 速度;
 
-        Shot(int X座標, int Y座標, double 角度, double 攻撃力):
-            Object(new Rect(X座標, Y座標, 10, 10), nullptr, Belong::弾, 攻撃力),
-            速度(new Speed::Liner(2))
+        Shot(double X座標, double Y座標, double 角度, MagicData &基礎ステ , int レベル, double 支援補正):
+            Object(new Circle(X座標, Y座標, 基礎ステ.半径 ), nullptr, Belong::弾),
+            速度(new Speed::Liner(2)),
+            基礎ステ(基礎ステ)
         {
             SetAngle(角度);
+            CulcPower(支援補正);
+        }
+        
+        Shot(Shape* 当たり判定, MagicData &基礎ステ, int レベル, double 支援補正) :
+            Object(当たり判定, nullptr, Belong::弾),
+            速度(new Speed::Liner(2)),
+            基礎ステ(基礎ステ),
+            isSmall(false)
+        {
+            CulcPower(支援補正);
+        }
+
+        /**攻撃力の計算.*/
+        void CulcPower(double 支援補正)
+        {
+            攻撃力 = 基礎ステ.攻撃力[レベル] * 支援補正;
+            //ウィッチによる補正
+
+            //大魔法による補正
+
+            //属性効果が付くかどうかの判定
         }
 
         /**消滅判定.*/
@@ -60,6 +90,27 @@ namespace SDX_TD
             {
                 MoveFront(速度->Ease());
             }
+        }
+    };
+
+    /**ビーム弾.*/
+    class Beam : public Shot
+    {
+        Beam(double X座標, double Y座標, double 角度, double 太さ, MagicData &基礎ステ, int レベル, double 支援補正) :
+            Shot(new Line(X座標,Y座標,角度,100,0,太さ),基礎ステ,レベル,支援補正)
+        {
+            SetAngle(角度);
+        }
+
+    };
+
+    /**範囲攻撃.*/
+    class Impact : public Shot
+    {
+        Impact(double X座標, double Y座標, double 半径 , MagicData &基礎ステ, int レベル, double 補正) :
+            Shot(new Circle(X座標, Y座標, 半径), 基礎ステ, レベル, 補正)
+        {
+            
         }
     };
 }

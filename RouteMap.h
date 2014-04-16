@@ -59,9 +59,6 @@ namespace SDX_TD
                             case ChipType::水://陸のみ障害物扱い
                                 is通行[i][j] = (種類 != Belong::陸);
                                 break;
-                            case ChipType::高山://常に通行不可
-                                is通行[i][j] = false;
-                                break;
                         }
                     }
                 }
@@ -172,6 +169,7 @@ namespace SDX_TD
 
             bool 地上配置[MapSize][MapSize];
             bool 水上配置[MapSize][MapSize];
+            double    支援効果[MapSize][MapSize];
 
             std::vector<int> 塔の位置;
 
@@ -184,7 +182,7 @@ namespace SDX_TD
                     {
                         地形[i][j] = ChipType::草;
 
-                        if (i == 0 || j == 0 || i == MapSize-1 || j == MapSize-1) 地形[i][j] = ChipType::高山;
+                        if (i == 0 || j == 0 || i == MapSize-1 || j == MapSize-1) 地形[i][j] = ChipType::山;
                     }
                 }
                 地形[1][1] = ChipType::穴;
@@ -285,7 +283,6 @@ namespace SDX_TD
                             break;
                         case ChipType::森:
                         case ChipType::山:
-                        case ChipType::高山:
                             地上配置[i][j] = false;
                             水上配置[i][j] = false;
                             break;
@@ -362,7 +359,7 @@ namespace SDX_TD
             }
 
             /**ユニットをどかして経路を再計算する.*/
-            void RemoveUnit(int X座標, int Y座標, int 大きさ)
+            void RemoveMagic(int X座標, int Y座標, int 大きさ)
             {
                 for (int i = 0; i < 大きさ; ++i)
                 {

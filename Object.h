@@ -9,7 +9,7 @@ namespace SDX_TD
     using namespace SDX;
     /**.*/
     template <class T> class Layer;
-    class Object : public Model, public ModelMove , private BanCopy// , public Allocater<Object>
+    class Object : public Model, public ModelMove , private BanCopy
     {
 
         template<class T> friend class Layer;
@@ -40,14 +40,12 @@ namespace SDX_TD
 
     public:
         bool    isSelect = false;
-        double  power;
 
         /**.*/
-        Object(Shape *当たり判定 = nullptr, Sprite *デフォルトスプライト = nullptr, Belong 所属 = Belong::その他, double 攻撃力 = 0) :
+        Object(Shape *当たり判定 = nullptr, Sprite *デフォルトスプライト = nullptr, Belong 所属 = Belong::その他) :
             Model(当たり判定, デフォルトスプライト),
             ModelMove(this),
-            belong(所属),
-            power(攻撃力)
+            belong(所属)
         {}
 
         /**.*/

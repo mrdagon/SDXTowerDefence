@@ -15,7 +15,7 @@ namespace SDX_TD
         その他
     };
 
-    /**UnitとShotの魔法属性.*/
+    /**MagicとShotの魔法属性.*/
     enum class Elements
     {
         炎,
@@ -25,38 +25,67 @@ namespace SDX_TD
         無
     };
 
-    /**.*/
+    enum class Difficulty
+    {
+        Normal,
+        Hard,
+        Maniac,
+        Lunatic,
+        Hell,
+        DeathMarch,
+        MAX
+    };
+
+    /**地形の種類.*/
     enum class ChipType
     {
         草,//通常地形
         氷,//移動速度2倍
         沼,//移動速度半減
         森,//配置可能、通行不可
+        道,//配置不可、通行可
+        橋,//配置不可、通行可
+        ↑,//ベルトコンベア四種
+        ↓,
+        ←,
+        →,
         //ここより↓は配置不可能
         山,//配置＆通行不可
         水,//一部敵のみ通行可
         穴,//敵が湧く
-        畑//防衛拠点
+        畑,//防衛拠点
+
     };
 
-    /**.*/
+    /**敵の種族.*/
     enum class EnemyType
     {
         スライム,
-        None,
+        MAX,
     };
 
-    /**.*/
-    enum class UnitType
+    /**魔法の種類.*/
+    enum class MagicType
     {
         火炎,
+        MAX,
     };
 
-    /**.*/
+    /**ウィッチの種類.*/
     enum class WitchType
     {
-        スライム,
-        None,
+        ライナ,
+        ナツメ,
+        ルコウ,
+        ディアネラ,
+        ミナエ,
+        トレニア,
+        ロチエ,
+        バロゥ,
+        フィオナ,
+        ナズナ,
+        委員長,
+        ミルラ
     };
 
 }

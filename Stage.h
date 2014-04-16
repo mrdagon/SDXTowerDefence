@@ -7,7 +7,7 @@
 #include "IStage.h"
 
 #include "Enemy.h"
-#include "Unit.h"
+#include "Magic.h"
 #include "Shot.h"
 #include "Wave.h"
 
@@ -28,7 +28,7 @@ namespace SDX_TD
 
         Layer<Shot> shotS;
 
-        Layer<Unit> unitS;
+        Layer<Magic> unitS;
 
         std::vector<std::shared_ptr<IModule>> eventS;
 
@@ -207,18 +207,18 @@ namespace SDX_TD
 
         virtual ~Stage(){}
 
-        /**.*/
+        /**Stageを初期化する.*/
         void Init()
         {
-            IStage::now = this;
+            SStage = this;
             if( !Land::now )Land::now = new Land::Land();
             Land::now->Init();
         }
 
-        /**.*/
+        /**毎フレーム実行される更新処理.*/
         void Update() override
         {
-            IStage::now = this;
+            SStage = this;
             ++timer;
 
             //イベント処理
@@ -266,6 +266,7 @@ namespace SDX_TD
             SetCheck();
         }
 
+        /**Waveの処理.*/
         void WaveCheck()
         {
             if (!wave.Check()) return;
@@ -276,14 +277,13 @@ namespace SDX_TD
                 int x = Land::now->塔の位置[0] % Land::MapSize;
                 int y = Land::now->塔の位置[0] % Land::MapSize;
 
-                Add(new Enemy(x, y, nullptr, Belong::水陸), i * 16);
+                Add(new Enemy(x, y, EnemyDataS[0]), i * 16);
             }
         }
 
         /**クリックの選択処理.*/
         void SelectCheck()
         {
-            
         }
 
         /**配置と強化処理.*/
@@ -293,15 +293,15 @@ namespace SDX_TD
             {
                 if (Land::now->SetCheck(Input::mouse.x / Land::ChipSize, Input::mouse.y / Land::ChipSize, 2))
                 {
-                    Add(new Unit(Input::mouse.x / Land::ChipSize, Input::mouse.y / Land::ChipSize, 2, nullptr));
+                    Add(new Magic(Input::mouse.x / Land::ChipSize, Input::mouse.y / Land::ChipSize ,MagicType::火炎));
                 }
             }
         }
 
-        /**.*/
+        /**画面の描画.*/
         void Draw() override
         {
-            IStage::now = this;
+            SStage = this;
 
             Land::now->Draw();
 
@@ -333,12 +333,12 @@ namespace SDX_TD
             skyEnemyS.Draw();
             frontEffectS.Draw();
         }
-
-        /**.*/
+        /**エフェクト等を追加.*/
         void Add(Object *追加するオブジェクト, int 待機時間 = 0) override
         {
             midEffectS.Add(追加するオブジェクト, 待機時間);
         }
+        /**敵を追加.*/
         void Add(Enemy *追加するオブジェクト, int 待機時間 = 0) override
         {
             switch (追加するオブジェクト->GetBelong())
@@ -352,34 +352,36 @@ namespace SDX_TD
                     break;
             }
         }
-        void Add(Unit *追加するオブジェクト, int 待機時間 = 0) override
+        /**魔法陣を追加.*/
+        void Add(Magic *追加するオブジェクト, int 待機時間 = 0) override
         {
             unitS.Add(追加するオブジェクト, 待機時間);
         }
+        /**自弾を追加.*/
         void Add(Shot *追加するオブジェクト, int 待機時間 = 0) override
         {
             shotS.Add(追加するオブジェクト, 待機時間);
         }
 
-        /**.*/
+        /**前景オブジェクトを追加.*/
         void AddFront(Object *追加するオブジェクト, int 待機時間 = 0) override
         {
             frontEffectS.Add(追加するオブジェクト, 待機時間);
         }
 
-        /**.*/
+        /**背景オブジェクトを追加.*/
         void AddBack(Object *追加するオブジェクト, int 待機時間 = 0) override
         {
             backEffectS.Add(追加するオブジェクト, 待機時間);
         }
 
-        /**.*/
+        /**Stageにイベントを追加.*/
         void AddEvent(IModule *追加する関数オブジェクト) override
         {
             eventS.emplace_back(追加する関数オブジェクト);
         }
 
-        /**.*/
+        /**一番近いEnemyを返す.*/
         Object* GetNearEnemy(Object* 比較対象) override
         {
             Object* 一番近いObject = nullptr;
@@ -426,7 +428,8 @@ namespace SDX_TD
             return 一番近いObject;
         }
 
-        /**.*/
+        /**一番近いEnemyの方向を返す.*/
+        /**Enemyがいない場合0を返す*/
         double GetNearDirect(Object* 比較対象) override
         {
             Object* 一番近いObject = GetNearEnemy( 比較対象 );
@@ -435,6 +438,5 @@ namespace SDX_TD
 
             return 0;
         }
-
     };
 }

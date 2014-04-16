@@ -1,6 +1,7 @@
 ﻿#pragma  once//☀Unicode
 #include "Object.h"
 #include "Shot.h"
+#include "EnemyData.h"
 
 namespace SDX_TD
 {
@@ -8,24 +9,30 @@ namespace SDX_TD
     class Enemy :public Object
     {
     public:
+        EnemyData &基礎ステ;
         Enemy*  next;//当たり判定チェイン用
+        int     レベル = 0;
         int     方向   = 5;
         double  体力   = 1000;
         int     防御力 = 0;
         int     麻痺時間 = 0;
         int     凍結時間 = 0;
-        int     火傷時間 = 0;
-        double  吹飛距離 = 0;
-        bool    isBoss = false;
-        bool    is逆走 = false;
+        int     炎上時間 = 0;
+        double  吹き飛びX = 0;
+        double  吹き飛びY = 0;
+        bool    isボス = false;
 
-        Enemy(double x, double y, Image *image, Belong 所属) :
-            Object(new Rect(x*Land::ChipSize, y*Land::ChipSize, 12, 12), nullptr, 所属)
+        Enemy(double x, double y, EnemyData& 基礎ステ , bool isボス = false) :
+            Object(new Rect(x*Land::ChipSize, y*Land::ChipSize, 12, 12), nullptr, 基礎ステ.移動タイプ),
+            isボス(isボス),
+            基礎ステ(基礎ステ)
         {}
 
         /**デフォルト死亡.*/
         void Dead()
         {
+            //MP&SP&スコア増
+
             isRemove = true;
             DeadSp();
         }
@@ -33,6 +40,8 @@ namespace SDX_TD
         /**.*/
         void Act()
         {
+            //炎上による方向固定
+
             switch (belong)
             {
             case Belong::空:
@@ -51,11 +60,33 @@ namespace SDX_TD
 
             double speed = 1;
 
+            //痺れ、凍結補正
+
+            //斜め移動補正
             if (方向 % 2 == 0) speed *= 0.7;
+
             double mx = (方向 % 3 - 1);
             double my = (方向 / 3 - 1);
 
+            //吹き飛び処理
+            if (吹き飛びX > 0)
+            {
+                mx += 吹き飛びX / 8;
+                吹き飛びX *= 7.0 / 8;
+            }
+            if (吹き飛びY > 0)
+            {
+                my += 吹き飛びX / 8;
+                吹き飛びY *= 7.0 / 8;
+            }
+
+            //地形衝突処理
+
+            //移動処理
             Move(mx, my);
+
+            //敵毎の特殊処理
+            ActSp();
         }
 
         /**デバッグ用描画処理.*/
@@ -67,13 +98,14 @@ namespace SDX_TD
         /**消滅判定.*/
         bool RemoveCheck() override
         {
-            int x = (int)GetX() / Land::ChipSize;
-            int y = (int)GetY() / Land::ChipSize;
+            const int x = (int)GetX() / Land::ChipSize;
+            const int y = (int)GetY() / Land::ChipSize;
 
+            //ゴール判定
             if (Land::now->地形[x][y] == ChipType::畑)
             {
                 isRemove = true;
-                IStage::now->選択解除(this);
+                SStage->選択解除(this);
             }
 
             if (体力 <= 0) Dead();
@@ -85,21 +117,33 @@ namespace SDX_TD
         /**攻撃された時の処理.*/
         void Damaged(Object* 衝突相手) override
         {
-            体力 -= 衝突相手->power;
-            React();
         }
 
         /**攻撃された時の処理.*/
         void Damaged(Shot* 衝突相手)
         {
-            体力 -= 衝突相手->power;
-            React();
+            double ダメージ量 = 衝突相手->攻撃力;
+            //弱点補正
+            
+            //防御補正
+
+            //属性効果判定
+
+            //最低ダメージ補正
+
+            体力 -= ダメージ量;
+
+            React( ダメージ量 );
         }
 
         /**ダメージを受けた時の特殊処理.*/
-        virtual void React(){}
+        virtual void React(double ダメージ量){}
 
         /**死亡時の特殊処理.*/
         virtual void DeadSp(){}
+
+        /**敵別の特殊処理.*/
+        virtual void ActSp(){}
+
     };
 }
