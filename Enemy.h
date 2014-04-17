@@ -23,7 +23,7 @@ namespace SDX_TD
         bool    isボス = false;
 
         Enemy(double x, double y, EnemyData& 基礎ステ , bool isボス = false) :
-            Object(new Rect(x*Land::ChipSize, y*Land::ChipSize, 12, 12), nullptr, 基礎ステ.移動タイプ),
+            Object(new Rect( (x+0.5)*Land::ChipSize, (y+0.5)*Land::ChipSize, 14, 14), nullptr, 基礎ステ.移動タイプ),
             isボス(isボス),
             基礎ステ(基礎ステ)
         {}
@@ -45,16 +45,16 @@ namespace SDX_TD
             switch (belong)
             {
             case Belong::空:
-                方向 = Land::now->空路.CulculateDistance(方向, (int)GetX(), (int)GetY());
+                方向 = SLand->空路.距離計算(方向, (int)GetX(), (int)GetY());
                 break;
             case Belong::陸:
-                方向 = Land::now->陸路.CulculateDistance(方向, (int)GetX(), (int)GetY());
+                方向 = SLand->陸路.距離計算(方向, (int)GetX(), (int)GetY());
                 break;
             case Belong::水陸:
-                方向 = Land::now->水路.CulculateDistance(方向, (int)GetX(), (int)GetY());
+                方向 = SLand->水路.距離計算(方向, (int)GetX(), (int)GetY());
                 break;
             case Belong::水中:
-                方向 = Land::now->海路.CulculateDistance(方向, (int)GetX(), (int)GetY());
+                方向 = SLand->海路.距離計算(方向, (int)GetX(), (int)GetY());
                 break;
             }
 
@@ -102,7 +102,7 @@ namespace SDX_TD
             const int y = (int)GetY() / Land::ChipSize;
 
             //ゴール判定
-            if (Land::now->地形[x][y] == ChipType::畑)
+            if ( SLand->地形[x][y] == ChipType::畑)
             {
                 isRemove = true;
                 SStage->選択解除(this);

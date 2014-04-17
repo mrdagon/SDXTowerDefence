@@ -7,10 +7,10 @@ namespace SDX_TD
     struct EnemyData
     {
         //基礎ステータス
-        int スコア;//MPの量
-        int 体力;
-        double 防御力;
-        double 移動速度;
+        int スコア = 50;
+        int 体力 = 100;
+        double 防御力 = 0;
+        double 移動速度 = 1;
 
         //高い程ききやすい 0_無効 1_通常 2_倍
         int 突風耐性;//吹き飛び量
@@ -19,5 +19,7 @@ namespace SDX_TD
         int 火傷耐性;//炎上時間
         Belong 移動タイプ = Belong::陸;
         Elements 魔法属性;
-    } EnemyDataS[(int)EnemyType::MAX];
+    };
+    
+    namespace{ EnemyData EnemyDataS[(int)EnemyType::MAX]; }
 }

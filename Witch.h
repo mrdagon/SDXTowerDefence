@@ -8,9 +8,6 @@ namespace SDX_TD
     class Witch
     {
     public:
-        static Witch* now;//現在アクティブなウィッチ
-        static Witch* sub;//控えのウィッチ
-
         WitchType 種類;
 
         //固定パラメータ
@@ -47,4 +44,11 @@ namespace SDX_TD
 
         int       詠唱回数[10];
     };
+
+    namespace
+    {
+        Witch* MainWitch;//現在アクティブなウィッチ
+        Witch* SubWitch;//控えのウィッチ
+    }
+
 }

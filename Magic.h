@@ -25,10 +25,8 @@ namespace SDX_TD
         int    送還時間 = -1;
         int    強化時間 = -1;
 
-        Elements 魔法属性 = Elements::無;
-
         Magic(int X座標, int Y座標 , MagicType 魔法種) :
-            Object(new Rect(X座標 * Land::ChipSize + Size * 10, Y座標 * Land::ChipSize + Size * 10, Size * Land::ChipSize, Size * Land::ChipSize), nullptr , Belong::砲台),
+            Object(new Rect( (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize, Size * Land::ChipSize), nullptr , Belong::砲台),
             基礎ステ(MagicDataS[(int)魔法種])
         {
             SetWait();
@@ -39,6 +37,7 @@ namespace SDX_TD
         /**.*/
         void SetWait()
         {
+            基礎ステ.速度[レベル] = 100;
             待機時間 = int( 速度値 / 基礎ステ.速度[レベル] / 速度補正);
         }
 
@@ -60,7 +59,7 @@ namespace SDX_TD
             {
                 const int x = int(GetX() - Size * 10) / 20;
                 const int y = int(GetY() - Size * 10) / 20;
-                Land::now->RemoveMagic(x, y, Size);
+                SLand->RemoveMagic(x, y, Size);
 
                 SStage->選択解除(this);
                 Remove();

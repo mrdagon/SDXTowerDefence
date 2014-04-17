@@ -181,16 +181,16 @@ namespace SDX_TD
         /**地形の敵配置状態を更新.*/
         void LandUpdate()
         {
-            Land::now->InitEnemyPost();
+            SLand->InitEnemyPos();
 
             for (auto &&it : groundEnemyS.objectS)
             {
-                Land::now->SetGroungPost((int)it->GetX(), (int)it->GetY());
+                SLand->Update陸の敵((int)it->GetX(), (int)it->GetY());
             }
 
             for (auto &&it : seaEnemyS.objectS)
             {
-                Land::now->SetSeaPost((int)it->GetX(), (int)it->GetY());
+                SLand->Update水の敵((int)it->GetX(), (int)it->GetY());
             }
         }
 
@@ -211,8 +211,8 @@ namespace SDX_TD
         void Init()
         {
             SStage = this;
-            if( !Land::now )Land::now = new Land::Land();
-            Land::now->Init();
+            if( !SLand )SLand = new Land::Land();
+            SLand->Init();
         }
 
         /**毎フレーム実行される更新処理.*/
@@ -274,8 +274,8 @@ namespace SDX_TD
             //発生処理
             for (int i = 0; i < 16; ++i)
             {
-                int x = Land::now->塔の位置[0] % Land::MapSize;
-                int y = Land::now->塔の位置[0] % Land::MapSize;
+                int x = SLand->畑の位置[0] % Land::MapSize;
+                int y = SLand->畑の位置[0] / Land::MapSize;
 
                 Add(new Enemy(x, y, EnemyDataS[0]), i * 16);
             }
@@ -284,6 +284,19 @@ namespace SDX_TD
         /**クリックの選択処理.*/
         void SelectCheck()
         {
+            //敵を選択
+
+            //ポーズを選択
+
+            //Wave送り
+
+            //配置された魔法を選択
+
+            //一覧の魔法を選択
+
+            //大魔法を発動
+
+            //強化or送還or発動or配置
         }
 
         /**配置と強化処理.*/
@@ -291,7 +304,7 @@ namespace SDX_TD
         {
             if (Input::mouse.Left.on)
             {
-                if (Land::now->SetCheck(Input::mouse.x / Land::ChipSize, Input::mouse.y / Land::ChipSize, 2))
+                if (SLand->SetCheck(Input::mouse.x / Land::ChipSize, Input::mouse.y / Land::ChipSize, 2))
                 {
                     Add(new Magic(Input::mouse.x / Land::ChipSize, Input::mouse.y / Land::ChipSize ,MagicType::火炎));
                 }
@@ -303,7 +316,7 @@ namespace SDX_TD
         {
             SStage = this;
 
-            Land::now->Draw();
+            SLand->Draw();
 
             //Wave一覧の表示
             int x = wave.GetPosition();
@@ -345,9 +358,8 @@ namespace SDX_TD
             {
                 case Belong::陸: groundEnemyS.Add(追加するオブジェクト, 待機時間); break;
                 case Belong::空: skyEnemyS.Add(追加するオブジェクト, 待機時間); break;
-                case Belong::水中:
-                case Belong::水陸:
-                                 seaEnemyS.Add(追加するオブジェクト, 待機時間); break;
+                case Belong::水陸: seaEnemyS.Add(追加するオブジェクト, 待機時間); break;
+                case Belong::水中: seaEnemyS.Add(追加するオブジェクト, 待機時間); break;
                 default:
                     break;
             }
