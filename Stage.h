@@ -34,6 +34,11 @@ namespace SDX_TD
 
         Wave wave;
 
+        Enemy* 地上Top[Land::MapSize][Land::MapSize];
+        Enemy* 地上End[Land::MapSize][Land::MapSize];
+        Enemy* 空中Top[Land::MapSize][Land::MapSize];
+        Enemy* 空中End[Land::MapSize][Land::MapSize];
+
         /**レイヤー等を初期化.*/
         void Clear()
         {
@@ -51,129 +56,113 @@ namespace SDX_TD
             unitS.Clear();
         }
 
+        void AddChainList(Layer<Enemy> &処理するレイヤ, Enemy* 始点[Land::MapSize][Land::MapSize], Enemy* 終点[Land::MapSize][Land::MapSize])
+        {
+            for (auto &&it : 処理するレイヤ.objectS)
+            {
+                const int x = (int)it->GetX() / Land::ChipSize;
+                const int y = (int)it->GetY() / Land::ChipSize;
+                if ( 始点[x][y] == nullptr)
+                {
+                    始点[x][y] = it.get();
+                    終点[x][y] = it.get();
+                }
+                else
+                {
+                    終点[x][y]->next = it.get();
+                    終点[x][y] = it.get();
+                }
+                it->next = nullptr;
+            }
+        }
+
+        void HitShotEnemy(Shot* 弾, Enemy* 敵)
+        {
+            while (敵)
+            {
+                if (弾->Hit(敵))
+                {
+                    弾->Damaged(敵);
+                    敵->Damaged(弾);
+                }
+                敵 = 敵->next;
+            }
+
+        }
+
+        /**大型弾の判定.*/
+        void HitLine(Shot* 弾, Enemy* 始点[Land::MapSize][Land::MapSize])
+        {
+            for (int x = 0; x < Land::MapSize; ++x)
+            for (int y = 0; y < Land::MapSize; ++y)
+            {
+                HitShotEnemy(弾, 始点[x][y]);
+            }
+        }
+        /**小型弾の判定.*/
+        void HitCircle(Shot* 弾, Enemy* 始点[Land::MapSize][Land::MapSize])
+        {
+            const int xa = (int)(弾->GetX() - Land::ChipSize / 2) / Land::ChipSize;
+            const int ya = (int)(弾->GetY() - Land::ChipSize / 2) / Land::ChipSize;
+            const int xb = (int)(弾->GetX() + Land::ChipSize / 2) / Land::ChipSize;
+            const int yb = (int)(弾->GetY() + Land::ChipSize / 2) / Land::ChipSize;
+
+            if (xa >= 0 && xa < Land::MapSize)
+            {
+                if (ya >= 0 && ya < Land::MapSize)
+                {
+                    HitShotEnemy(弾, 始点[xa][ya]);
+                }
+
+                if (yb >= 0 && yb < Land::MapSize && ya != yb)
+                {
+                    HitShotEnemy(弾, 始点[xa][yb]);
+                }
+            }
+
+            if (xa == xb) return;//X座標同じなら以降処理しない
+
+            if (xb >= 0 && xb < Land::MapSize)
+            {
+                if (ya >= 0 && ya < Land::MapSize)
+                {
+                    HitShotEnemy(弾, 始点[xb][ya]);
+                }
+
+                if (yb >= 0 && yb < Land::MapSize && ya != yb)
+                {
+                    HitShotEnemy(弾, 始点[xb][yb]);
+                }
+            }
+        }
+
         /**当たり判定処理を行う.*/
         void Hit()
         {
-            //分割木を作成
-            Enemy* chainFirst[Land::MapSize][Land::MapSize] = {};
-            Enemy* chainEnd[Land::MapSize][Land::MapSize] = {};
+            //空と地上の分割木を初期化
+            for (int i = 0; i < Land::MapSize; ++i )
+            for (int j = 0; j < Land::MapSize; ++j )
+            {
+                地上Top[i][j] = nullptr;
+                空中Top[i][j] = nullptr;
+            }
 
-            for (auto &&it : groundEnemyS.objectS)
-            {
-                const int x = (int)it->GetX() / 20;
-                const int y = (int)it->GetY() / 20;
-                if (chainFirst[x][y] == nullptr)
-                {
-                    chainFirst[x][y] = it.get();
-                    chainEnd[x][y] = it.get();
-                }
-                else
-                {
-                    chainEnd[x][y]->next = it.get();
-                    chainEnd[x][y] = it.get();
-                }
-                it->next = nullptr;
-            }
-            for (auto &&it : skyEnemyS.objectS)
-            {
-                const int x = (int)it->GetX() / 20;
-                const int y = (int)it->GetY() / 20;
-                if (chainFirst[x][y] == nullptr)
-                {
-                    chainFirst[x][y] = it.get();
-                    chainEnd[x][y] = it.get();
-                }
-                else
-                {
-                    chainEnd[x][y]->next = it.get();
-                    chainEnd[x][y] = it.get();
-                }
-                it->next = nullptr;
-            }
-            for (auto &&it : seaEnemyS.objectS)
-            {
-                const int x = (int)it->GetX() / 20;
-                const int y = (int)it->GetY() / 20;
-                if (chainFirst[x][y] == nullptr)
-                {
-                    chainFirst[x][y] = it.get();
-                    chainEnd[x][y] = it.get();
-                }
-                else
-                {
-                    chainEnd[x][y]->next = it.get();
-                    chainEnd[x][y] = it.get();
-                }
-                it->next = nullptr;
-            }
+            AddChainList(groundEnemyS, 地上Top, 地上End);
+            AddChainList(skyEnemyS, 空中Top, 空中End);
+            AddChainList(seaEnemyS, 地上Top, 地上End);
 
             //判定開始
             for (auto && shot : shotS.objectS)
             {
-                const int xa = (int)(shot->GetX() - 10) / 20;
-                const int ya = (int)(shot->GetY() - 10) / 20;
-                const int xb = (int)(shot->GetX() + 10) / 20;
-                const int yb = (int)(shot->GetY() + 10) / 20;
-                Enemy* it;
-
-                if (xa >= 0 && xa < 24)
+                if (shot->isSmall)
                 {
-                    if (ya >= 0 && ya < 24)
-                    {
-                        it = chainFirst[xa][ya];
-                        while (it)
-                        {
-                            if (shot->Hit(it))
-                            {
-                                shot->Damaged(it);
-                                it->Damaged(shot.get());
-                            }
-                            it = it->next;
-                        }
-                    }
-                    if (yb >= 0 && yb < 24 && ya != yb)
-                    {
-                        it = chainFirst[xa][yb];
-                        while (it)
-                        {
-                            if (shot->Hit(it))
-                            {
-                                shot->Damaged(it);
-                                it->Damaged(shot.get());
-                            }
-                            it = it->next;
-                        }
-                    }
+                    if (shot->基礎ステ.is対地) HitCircle(shot.get() , 地上Top);
+                    if (shot->基礎ステ.is対空) HitCircle(shot.get() , 空中Top);
                 }
-                if (xb >= 0 && xb < 24 && xa != xb)
+                else
                 {
-                    if (ya >= 0 && ya < 24)
-                    {
-                        it = chainFirst[xb][ya];
-                        while (it)
-                        {
-                            if (shot->Hit(it))
-                            {
-                                shot->Damaged(it);
-                                it->Damaged(shot.get());
-                            }
-                            it = it->next;
-                        }
-                    }
-
-                    if (yb >= 0 && yb < 24 && ya != yb)
-                    {
-                        it = chainFirst[xb][yb];
-                        while (it)
-                        {
-                            if (shot->Hit(it))
-                            {
-                                shot->Damaged(it);
-                                it->Damaged(shot.get());
-                            }
-                            it = it->next;
-                        }
-                    }
+                    if (shot->基礎ステ.is対地) HitLine(shot.get(), 地上Top);
+                    if (shot->基礎ステ.is対空) HitLine(shot.get(), 空中Top);
                 }
             }
         }
@@ -277,7 +266,7 @@ namespace SDX_TD
                 int x = SLand->畑の位置[0] % Land::MapSize;
                 int y = SLand->畑の位置[0] / Land::MapSize;
 
-                Add(new Enemy(x, y, EnemyDataS[0]), i * 16);
+                Add(new Enemy(x, y, EnemyDataS[EnemyType::スライム]), i * 16);
             }
         }
 

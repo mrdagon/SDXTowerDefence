@@ -24,16 +24,25 @@ namespace SDX_TD
 
         int 属性効果[最大レベル];
         double 発動率[最大レベル];
-        double 半径;
+        double 半径 = 10;//当たり判定の大きさ
 
-        bool is対空;//空の敵に当たるかどうか
-        bool is対地;//地上の敵に当たるかどうか
+        bool is対空 = true;//空の敵に当たるかどうか
+        bool is対地 = true;//地上の敵に当たるかどうか
 
-        bool is貫通;//命中時に消滅するかどうか
+        bool is貫通 = true;//命中時に消滅するかどうか
 
-        bool is使い捨て;
+        bool is防御低下 = false;//防御低下効果の有無
 
-        bool isウィッチ;//指揮官魔法、詠唱回数の管理が違う
+        bool is使い捨て = false;
+
+        bool isウィッチ = false;//指揮官魔法、詠唱回数の管理が違う
     };
-    namespace{MagicData MagicDataS[(int)MagicType::MAX];}
+
+    namespace{ DataPack<MagicData, MagicType> MagicDataS; }
+
+    void LoadMagicData()
+    {
+
+    }
+
 }

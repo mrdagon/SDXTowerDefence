@@ -4,6 +4,7 @@
 namespace SDX_TD
 {
     using namespace SDX;
+
     struct EnemyData
     {
         //基礎ステータス
@@ -20,6 +21,11 @@ namespace SDX_TD
         Belong 移動タイプ = Belong::陸;
         Elements 魔法属性;
     };
-    
-    namespace{ EnemyData EnemyDataS[(int)EnemyType::MAX]; }
+
+    namespace{ DataPack<EnemyData,EnemyType> EnemyDataS; }
+
+    void LoadEnemyData()
+    {
+
+    }
 }
