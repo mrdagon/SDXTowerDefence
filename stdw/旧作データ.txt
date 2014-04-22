@@ -1,12 +1,12 @@
 ・難易度
-	   Normal| Hard | Mania | Luna | Hell | Death |
+       Normal| Hard | Mania | Luna | Hell | Death |
 Lv補正|   100|   125|    150|   175|   200|    250|
 Hp補正|   100|   110|    120|   130|   140|    150|
 　敵数|    16|    20|     24|    28|    32|     44|
 　ボス|全て 2|
 Wave数|    25|    50|     70|    85|   100|    130|
 パワー
-	   Normal| Hard | Mania | Luna | Hell | Death |
+       Normal| Hard | Mania | Luna | Hell | Death |
 Lv補正|   120|   130|    140|   200|   300|    500|
 Hp補正|   110|   125|    140|   160|   180|    200|
 　敵数|    24|    24|     24|    32|    32|     40|
@@ -14,16 +14,16 @@ Hp補正|   110|   125|    140|   160|   180|    200|
 Wave数|    30|    55|     80|   120|   300|   1000|
 
 Wave速度
-	stage[0].wave_sp=5000;
-	stage[1].wave_sp=4500;
-	stage[2].wave_sp=4500;
-	stage[3].wave_sp=5000;
-	stage[10].wave_sp=3500;
-	stage[11].wave_sp=3500;
-	stage[12].wave_sp=3500;
-	stage[15].wave_sp=3500;
-	stage[17].wave_sp=5000;
-	stage[18].wave_sp=2000;
+    stage[0].wave_sp=5000;
+    stage[1].wave_sp=4500;
+    stage[2].wave_sp=4500;
+    stage[3].wave_sp=5000;
+    stage[10].wave_sp=3500;
+    stage[11].wave_sp=3500;
+    stage[12].wave_sp=3500;
+    stage[15].wave_sp=3500;
+    stage[17].wave_sp=5000;
+    stage[18].wave_sp=2000;
 
 敵性能計算式
  hp   = 種族HP   * ( (100+LV) * 20 + LV*LV*6 ) / 100;
