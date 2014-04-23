@@ -1,5 +1,6 @@
 ﻿#pragma once//☀Unicode
 #include "Utility/File.h"
+#include "DataType.h"
 
 namespace SDX_TD
 {
@@ -8,18 +9,15 @@ namespace SDX_TD
     namespace TDSystem
     {
         int 難易度;
-        int ステージ番号;
+        StageData* 現在ステージ;
         bool isトライアル;
         bool isシングル;
 
         int Hp;
         int 素材数[4];
 
-        //各ステージのハイスコア
-
         //実績関連
 
-        //ウィッチの強化
 
         //設定関連
         double 効果音の音量;

@@ -1,7 +1,6 @@
 ﻿#pragma once//☀Unicode
 #include "Object.h"
-#include "MagicData.h"
-#include "EnumType.h"
+#include "DataType.h"
 
 namespace SDX_TD
 {

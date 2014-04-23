@@ -2,7 +2,7 @@
 #include "Object.h"
 #include "Shot.h"
 #include "IStage.h"
-#include "MagicData.h"
+#include "DataType.h"
 
 namespace SDX_TD
 {
@@ -24,7 +24,7 @@ namespace SDX_TD
         int    待機時間 = -1;
         int    送還時間 = -1;
         int    強化時間 = -1;
-
+        
         Magic(int X座標, int Y座標 , MagicType 魔法種) :
             Object(new Rect( (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize, Size * Land::ChipSize), nullptr , Belong::砲台),
             基礎ステ(MagicDataS[(int)魔法種])

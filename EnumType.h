@@ -25,6 +25,7 @@ namespace SDX_TD
         無
     };
 
+    /**難易度の種類.*/
     enum class Difficulty
     {
         Normal,
@@ -56,7 +57,6 @@ namespace SDX_TD
         MAX
     };
 
-
     /**敵の種族.*/
     enum class EnemyType
     {
@@ -86,6 +86,12 @@ namespace SDX_TD
         ナズナ,
         委員長,
         ミルラ,
+        MAX
+    };
+
+    /**ステージの種類.*/
+    enum class StageType
+    {
         MAX
     };
 

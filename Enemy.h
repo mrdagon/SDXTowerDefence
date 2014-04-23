@@ -13,6 +13,7 @@ namespace SDX_TD
         Enemy*  next;//当たり判定チェイン用
         int     レベル = 0;
         int     方向   = 5;
+        double  最大HP = 1000;
         double  体力   = 1000;
         int     防御力 = 0;
         int     麻痺時間 = 0;
