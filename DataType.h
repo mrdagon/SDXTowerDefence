@@ -71,6 +71,7 @@ namespace SDX_TD
         double 範囲補正 = 1.0;
         double 射程補正 = 1.0;
         double 支援補正 = 1.0;
+        double 支援範囲 = 1.0;
         double 弾速補正 = 1.0;
 
         double 回収率   = 0.5;
