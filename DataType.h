@@ -9,23 +9,23 @@ namespace SDX_TD
     /**魔法の基礎性能.*/
     struct MagicData
     {
-        static const int 最大レベル = 6;
+        static const int 最大強化 = 6;
 
         MagicType 魔法種;
         Elements 魔法属性;
 
-        int コスト[最大レベル];
-        int 攻撃力[最大レベル];
-        int 速度[最大レベル];
-        int 射程[最大レベル];
-        double 支援範囲[最大レベル];
-        double 支援効果[最大レベル];
+        int コスト[最大強化];
+        int 攻撃力[最大強化];
+        int 速度[最大強化];
+        int 射程[最大強化];
+        double 支援範囲[最大強化];
+        double 支援効果[最大強化];
 
-        double 炸裂範囲[最大レベル];
-        double 炸裂威力[最大レベル];
+        double 炸裂範囲[最大強化];
+        double 炸裂威力[最大強化];
 
-        int 属性効果[最大レベル];
-        double 発動率[最大レベル];
+        int 属性効果[最大強化];
+        double 発動率[最大強化];
 
         double 半径 = 10;//当たり判定の大きさ
 
@@ -40,7 +40,7 @@ namespace SDX_TD
 
         bool isウィッチ = false;//指揮官魔法、詠唱回数の管理が違う
 
-        int  錬魔回数 = 1;//素材による強化回数
+        int  レベル = 1;//素材による強化回数
     };
 
     /**敵の基礎性能.*/
@@ -56,11 +56,8 @@ namespace SDX_TD
         double 防御力 = 0;
         double 移動速度 = 1;
 
-        //高い程ききやすい 0_無効 1_通常 2_倍
-        double 突風耐性;//吹き飛び量
-        double 麻痺耐性;//移動速度低下率増加
-        double 冷凍耐性;//移動不可能時間
-        double 火傷耐性;//炎上時間
+        //無効 or 有効
+        bool 異状耐性[4];//各属性効果への耐性
     };
 
     /**ウィッチの基礎性能.*/
@@ -77,23 +74,25 @@ namespace SDX_TD
         double 回収率   = 0.5;
         double 回収速度 = 1.0;
         double 強化速度 = 1.0;
-        
-        int    大魔法時間 = 3000;
-        double 必要SP = 100;
 
-        int    初期HP = 20;
-        int    初期MP = 50;
-        double MP消費 = 1.0;
         double 弱点補正 = 1.1;
         double 状態強化[4];
         double 属性強化[4];
 
-        MagicType 魔法タイプ[10];
-        int    初期詠唱回数[10];
+        //ステージ開始時しか参照しないパラメータ
+        int    初期HP = 20;
+        int    初期MP = 50;
 
-        int    スキルレベル[10];
-        int    レベル;
-        int    経験値;
+        //レベルで変化しないパラメータ
+        int    大魔法時間 = 3000;
+        double 必要SP = 100;
+        double MP消費 = 1.0;
+
+        MagicType 魔法タイプ[10];
+        double 詠唱回数補正;
+
+        int レベル;
+        int 経験値;
     };
 
     struct StageData

@@ -17,7 +17,7 @@ namespace SDX_TD
 
         MagicData &基礎ステ;//基礎ステータス
 
-        int    レベル = 0;
+        int    強化回数 = 0;
         double 支援補正 = 1;
         double 速度補正 = 1;
 
@@ -31,23 +31,25 @@ namespace SDX_TD
         {
             SetWait();
             //画像の設定
-
         }
 
         /**.*/
         void SetWait()
         {
-            基礎ステ.速度[レベル] = 1000;
-            基礎ステ.攻撃力[レベル] = 10;
-            基礎ステ.射程[レベル] = 60;
-            待機時間 = int( 速度値 / 基礎ステ.速度[レベル] / 速度補正);
+            基礎ステ.速度[強化回数] = 30;
+            基礎ステ.攻撃力[強化回数] = 1;
+            基礎ステ.射程[強化回数] = 60;
+            基礎ステ.属性効果[強化回数] = 0;
+            基礎ステ.発動率[強化回数] = 0;
+            基礎ステ.魔法属性 = Elements::空;
+            待機時間 = int(速度値 / 基礎ステ.速度[強化回数] / 速度補正);
         }
 
         /**.*/
         void Draw() const
         {
             shape->Draw(Color::Green, 128);
-            Drawing::String((int)GetX() + 2, (int)GetY() + 2, Color::Red, { レベル });
+            Drawing::String((int)GetX() + 2, (int)GetY() + 2, Color::Red, { 強化回数 });
             //強化中or送還中
         }
 
@@ -78,20 +80,20 @@ namespace SDX_TD
             --待機時間;
             if (強化時間 == 0)
             {
-                レベル++;
+                強化回数++;
                 強化時間 = -1;
                 SetWait();
             }
 
             if (待機時間 <= 0 && 送還時間 < 0 && 強化時間 < 0)
             {
-                auto   一番近い敵 = SStage->GetNearEnemy(this);
+                auto 一番近い敵 = SStage->GetNearEnemy(this);
 
                 if (一番近い敵)
                 {
                     double 距離 = GetDistance(一番近い敵);
                 
-                    if (距離 <= 基礎ステ.射程[レベル])
+                    if (距離 <= 基礎ステ.射程[強化回数])
                     {
                         Shoot( GetDirect(一番近い敵) );
                         SetWait();
@@ -109,7 +111,7 @@ namespace SDX_TD
 
         void MakeShot(double 角度)
         {
-            SStage->Add(new Shot(GetX(), GetY(), 角度 , 基礎ステ, レベル, 支援補正));
+            SStage->Add(new Shot(GetX(), GetY(), 角度, 基礎ステ, 強化回数, 支援補正));
         }
 
     };

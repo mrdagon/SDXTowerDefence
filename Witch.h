@@ -22,28 +22,14 @@ namespace SDX_TD
         double 回収速度 = 1.0;
         double 強化速度 = 1.0;
 
-        int    大魔法時間 = 3000;
-        double 必要SP = 100;
-
-        int    初期HP = 20;
-        int    初期MP = 50;
-        double MP消費 = 1.0;
-
         double 弱点補正 = 1.1;
         double 状態強化[4];
         double 属性強化[4];
 
-        MagicType 魔法タイプ[10];
-        int       初期詠唱回数[10];
-
         //変動パラメータ
-        int    スキルレベル[10];
-        int    レベル;
-        int    経験値;
-
         double MP;
         double SP;
-
+        int    大魔法残り時間;
         int    詠唱回数[10];
     };
 

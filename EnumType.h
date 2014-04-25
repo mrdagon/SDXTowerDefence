@@ -22,7 +22,7 @@ namespace SDX_TD
         氷,
         樹,
         空,
-        無
+        無//無は最後にしないとバグる
     };
 
     /**難易度の種類.*/
@@ -92,6 +92,7 @@ namespace SDX_TD
     /**ステージの種類.*/
     enum class StageType
     {
+        一面,
         MAX
     };
 

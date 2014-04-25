@@ -1,7 +1,7 @@
 ﻿#pragma  once//☀Unicode
 #include "Object.h"
 #include "Shot.h"
-#include "EnemyData.h"
+#include "DataType.h"
 
 namespace SDX_TD
 {
@@ -9,6 +9,8 @@ namespace SDX_TD
     class Enemy :public Object
     {
     public:
+        const static int 判定大きさ = 14;
+
         EnemyData &基礎ステ;
         Enemy*  next;//当たり判定チェイン用
         int     レベル = 0;
@@ -41,53 +43,201 @@ namespace SDX_TD
         /**.*/
         void Act()
         {
-            //炎上による方向固定
-
-            switch (belong)
-            {
-            case Belong::空:
-                方向 = SLand->空路.距離計算(方向, (int)GetX(), (int)GetY());
-                break;
-            case Belong::陸:
-                方向 = SLand->陸路.距離計算(方向, (int)GetX(), (int)GetY());
-                break;
-            case Belong::水陸:
-                方向 = SLand->水路.距離計算(方向, (int)GetX(), (int)GetY());
-                break;
-            case Belong::水中:
-                方向 = SLand->海路.距離計算(方向, (int)GetX(), (int)GetY());
-                break;
-            }
+            //方向を更新
+            方向更新();
 
             double speed = 1;
 
             //痺れ、凍結補正
+            if (麻痺時間 > 0)
+            {
+                speed = 0;
+                --麻痺時間;
+            }
+
+            if (凍結時間 > 0)
+            {
+                speed /= 2;
+            }
+
+            if (SLand->Get地形(GetX(), GetY()) == ChipType::沼 && 基礎ステ.移動タイプ != Belong::空)
+            {
+                speed /= 2;
+            }
 
             //斜め移動補正
             if (方向 % 2 == 0) speed *= 0.7;
 
-            double mx = (方向 % 3 - 1);
-            double my = (方向 / 3 - 1);
+            double mx = (方向 % 3 - 1) * speed * 基礎ステ.移動速度;
+            double my = (方向 / 3 - 1) * speed * 基礎ステ.移動速度;
 
             //吹き飛び処理
-            if (吹き飛びX > 0)
-            {
-                mx += 吹き飛びX / 8;
-                吹き飛びX *= 7.0 / 8;
-            }
-            if (吹き飛びY > 0)
-            {
-                my += 吹き飛びX / 8;
-                吹き飛びY *= 7.0 / 8;
-            }
+            mx += 吹き飛びX / 8;
+            吹き飛びX *= 7.0 / 8;
+            
+            my += 吹き飛びY / 8;
+            吹き飛びY *= 7.0 / 8;
 
-            //地形衝突処理
+            地形処理(mx , my);
 
-            //移動処理
+            地形衝突(mx, my);
+
             Move(mx, my);
 
             //敵毎の特殊処理
             ActSp();
+        }
+
+        void 方向更新()
+        {
+            //水のマスにいても炎は有効
+            //炎上中は方向固定
+            if (炎上時間 > 0)
+            {
+                --炎上時間;
+                return;
+            }
+
+            switch (belong)
+            {
+            case Belong::空:
+                方向 = SLand->空路.方向計算(方向, (int)GetX(), (int)GetY());
+                break;
+            case Belong::陸:
+                方向 = SLand->陸路.方向計算(方向, (int)GetX(), (int)GetY());
+                break;
+            case Belong::水陸:
+                方向 = SLand->水路.方向計算(方向, (int)GetX(), (int)GetY());
+                break;
+            case Belong::水中:
+                方向 = SLand->海路.方向計算(方向, (int)GetX(), (int)GetY());
+                break;
+            }
+
+        }
+
+        /**特殊地形の処理.*/
+        void 地形処理(double &移動量X , double &移動量Y)
+        {
+            //飛んでる敵は影響無し
+            if (基礎ステ.移動タイプ == Belong::空) return;
+
+            auto 地形種 = SLand->Get地形(GetX(), GetY());
+
+            switch (地形種)
+            {
+            case SDX_TD::ChipType::沼:
+                移動量X /= 2;
+                移動量Y /= 2;
+                break;
+            case SDX_TD::ChipType::↑:
+                移動量Y -= Land::自動床速度;
+                break;
+            case SDX_TD::ChipType::↓:
+                移動量Y += Land::自動床速度;
+                break;
+            case SDX_TD::ChipType::←:
+                移動量X -= Land::自動床速度;
+                break;
+            case SDX_TD::ChipType::→:
+                移動量X += Land::自動床速度;
+                break;
+            case SDX_TD::ChipType::水:
+                炎上時間 = 0;//消火
+                break;
+            default:
+                break;
+            }
+
+        }
+
+        /**地形との衝突.*/
+        void 地形衝突(double &移動量X, double &移動量Y)
+        {
+            const int X差 = (int)GetX() % Land::ChipSize;
+            const int Y差 = (int)GetY() % Land::ChipSize;
+
+            //各方向にはみ出ているか
+            const bool is↑ = Y差 < 7;
+            const bool is↓ = Y差 > 8;
+            const bool is← = X差 < 7;
+            const bool is→ = X差 > 8;
+
+            bool 衝突[9] = {};
+
+            //平面にめりこみ
+            if (is↑)         衝突[1] = SLand->Check地形(GetX()    , GetY() - 7, 基礎ステ.移動タイプ);
+            if (is←)         衝突[3] = SLand->Check地形(GetX() - 7, GetY()    , 基礎ステ.移動タイプ);
+            if (is→)         衝突[5] = SLand->Check地形(GetX() + 7, GetY()    , 基礎ステ.移動タイプ);
+            if (is↓)         衝突[6] = SLand->Check地形(GetX() - 7, GetY() + 7, 基礎ステ.移動タイプ);
+
+            //角にめりこみ
+            if (is↑ && is←) 衝突[0] = SLand->Check地形(GetX() - 7, GetY() - 7, 基礎ステ.移動タイプ);
+            if (is↑ && is→) 衝突[2] = SLand->Check地形(GetX() + 7, GetY() - 7, 基礎ステ.移動タイプ);
+            if (is↓ && is←) 衝突[7] = SLand->Check地形(GetX()    , GetY() + 7, 基礎ステ.移動タイプ);
+            if (is↓ && is→) 衝突[8] = SLand->Check地形(GetX() + 7, GetY() + 7, 基礎ステ.移動タイプ);
+
+            //現在のマスが移動不可能
+            衝突[4] = SLand->Check地形(GetX(), GetY(), 基礎ステ.移動タイプ);
+
+            //斜め衝突
+            if (衝突[0] && 衝突[1] == 衝突[3])
+            {
+                移動量X += 7 - X差;
+                移動量Y += 7 - Y差;
+                //移動量X += 2;
+                //移動量Y += 2;
+                return;
+            }
+
+            if (衝突[2] && 衝突[1] == 衝突[5])
+            {
+                移動量X += 7 - X差;
+                移動量Y += 7 - Y差;
+                //移動量X -= 2;
+                //移動量Y += 2;
+                return;
+            }
+
+            if (衝突[6] && 衝突[3] == 衝突[7])
+            {
+                移動量X += 7 - X差;
+                移動量Y += 7 - Y差;
+                //移動量X += 2;
+                //移動量Y -= 2;
+                return;
+            }
+
+            if (衝突[8] && 衝突[5] == 衝突[7])
+            {
+                移動量X += 7 - X差;
+                移動量Y += 7 - Y差;
+                //移動量X -= 2;
+                //移動量Y -= 2;
+                return;
+            }
+
+            if ( 衝突[3] )
+            {
+                移動量X += 7 - X差;
+                //移動量X += 2;
+            }
+            if ( 衝突[5] )
+            {
+                移動量X += 7 - X差;
+                //移動量X -= 2;
+            }
+            if ( 衝突[1] )
+            {
+                移動量Y += 7 - Y差;
+                //移動量Y += 2;
+            }
+            if ( 衝突[7] )
+            {
+                移動量Y += 7 - Y差;
+                //移動量Y -= 2;
+            }
+
         }
 
         /**デバッグ用描画処理.*/
@@ -124,17 +274,79 @@ namespace SDX_TD
         void Damaged(Shot* 衝突相手)
         {
             double ダメージ量 = 衝突相手->攻撃力;
-            //弱点補正
-            
-            //防御補正
 
             //属性効果判定
+            if (衝突相手->属性効果 > 0)
+            {
+                switch (衝突相手->基礎ステ.魔法属性)
+                {
+                case Elements::炎:炎上付与(衝突相手); break;
+                case Elements::空:吹飛付与(衝突相手); break;
+                case Elements::樹:麻痺付与(衝突相手); break;
+                case Elements::氷:凍結付与(衝突相手); break;
+                default:break;
+                }
+            }
 
-            //最低ダメージ補正
+            //弱点補正
+            if ( 弱点判定(衝突相手) )
+            {
+                ダメージ量 *= MainWitch->弱点補正;
+            }
+
+            //防御補正
+            ダメージ量 = std::max( ダメージ量 - 防御力 , 1.0);
 
             体力 -= ダメージ量;
-
             React( ダメージ量 );
+        }
+
+        /**状態異状判定.*/
+        void 炎上付与(Shot* 衝突相手)
+        {
+            //判定
+            if ( !衝突相手->Get状態異状() || 基礎ステ.異状耐性[(int)Elements::炎]) return;
+
+            //付与処理
+            炎上時間 = 衝突相手->属性効果;
+        }
+        void 凍結付与(Shot* 衝突相手)
+        {
+            //判定
+            if ( 基礎ステ.異状耐性[(int)Elements::氷] ) return;
+
+            //付与処理
+            凍結時間 = 衝突相手->属性効果;
+        }
+        void 麻痺付与(Shot* 衝突相手)
+        {
+            //判定
+            if ( !衝突相手->Get状態異状() || 基礎ステ.異状耐性[(int)Elements::樹]) return;
+
+            //付与処理
+            麻痺時間 = 衝突相手->属性効果;
+        }
+        void 吹飛付与(Shot* 衝突相手)
+        {
+            //判定
+            if (基礎ステ.異状耐性[(int)Elements::空] ) return;
+
+            //付与処理
+            const double 吹き飛び距離 = 衝突相手->属性効果;
+
+            吹き飛びX += std::cos(衝突相手->GetAngle()) * 吹き飛び距離;
+            吹き飛びY += std::sin(衝突相手->GetAngle()) * 吹き飛び距離;
+        }
+
+        bool 弱点判定(Shot* 衝突相手)
+        {
+            return
+                (
+                    (衝突相手->基礎ステ.魔法属性 == Elements::炎 && 基礎ステ.魔法属性 == Elements::氷) ||
+                    (衝突相手->基礎ステ.魔法属性 == Elements::氷 && 基礎ステ.魔法属性 == Elements::炎) ||
+                    (衝突相手->基礎ステ.魔法属性 == Elements::樹 && 基礎ステ.魔法属性 == Elements::空) ||
+                    (衝突相手->基礎ステ.魔法属性 == Elements::空 && 基礎ステ.魔法属性 == Elements::樹)
+                );
         }
 
         /**ダメージを受けた時の特殊処理.*/
