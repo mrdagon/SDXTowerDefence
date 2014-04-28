@@ -105,8 +105,8 @@ namespace SDX_TD
         int タッグのハイスコア[3];        
         std::tuple<WitchType,WitchType> タッグの組み合わせ[3];
 
-        Difficulty シングルの難易度[(int)WitchType::MAX];
-        Difficulty タッグの難易度[3];
+        Difficulty シングルの達成難易度[(int)WitchType::MAX];
+        Difficulty タッグの達成難易度[3];
 
         double Wave速度;
 

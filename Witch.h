@@ -26,6 +26,8 @@ namespace SDX_TD
         double 状態強化[4];
         double 属性強化[4];
 
+        bool   森林補正;
+
         //変動パラメータ
         double MP;
         double SP;
