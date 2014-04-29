@@ -19,6 +19,8 @@ int main(int argc, char* argv[])
 
     System::Initialise("sample", 640, 480);//ライブラリの初期化
 
+    LoadMaterial();
+
     Director::AddScene( new Stage() );
     Director::Run();
 

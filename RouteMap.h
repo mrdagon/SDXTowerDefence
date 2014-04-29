@@ -1,6 +1,7 @@
 ﻿#pragma once//☀Unicode
 #include <SDXFrameWork.h>
 #include "DataType.h"
+#include "Material.h"
 
 namespace SDX_TD
 {
@@ -236,6 +237,7 @@ namespace SDX_TD
         {
         public:
             ChipType 地形[MapSize][MapSize];
+            int      地形画像[MapSize][MapSize];
             Route    陸路;
             Route    空路;
             Route    水路;
@@ -422,6 +424,8 @@ namespace SDX_TD
                 for (int i = 0; i < MapSize; ++i)
                 for (int j = 0; j < MapSize; ++j)
                 {
+                    MSystem::マップチップ[0]->Draw(i * ChipSize, j * ChipSize);
+                    if ( 地形[i][j] == ChipType::草)  MSystem::マップチップ[32]->Draw(i * ChipSize, j * ChipSize);
                     if ( 地形[i][j] != ChipType::草)  Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Blue, true);
                     if ( 地形[i][j] == ChipType::畑)  Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Red, true);
                     if ( is魔法[i][j])                Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Yellow, true);

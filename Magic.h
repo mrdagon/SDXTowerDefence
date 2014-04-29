@@ -48,9 +48,20 @@ namespace SDX_TD
         /**.*/
         void Draw() const
         {
-            shape->Draw(Color::Green, 128);
-            Drawing::String((int)GetX() + 2, (int)GetY() + 2, Color::Red, { 強化回数 });
+            MSystem::魔法枠[1].Draw((int)GetX()-16, (int)GetY()-16,32,32);            
+            MMagic::魔法[0]->DrawRotate((int)GetX(), (int)GetY(),1,0);            
+
+            //レベル表示
+
             //強化中or送還中
+            if( 強化時間 > 0)
+            {
+            
+            }
+            if( 送還時間 > 0)
+            {
+            
+            }
         }
 
         /**.*/
