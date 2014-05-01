@@ -18,7 +18,7 @@ namespace SDX_TD
         int 攻撃力[最大強化];
         int 速度[最大強化];
         int 射程[最大強化];
-        double 支援範囲[最大強化];
+        int 支援範囲[最大強化];//マス目換算
         double 支援効果[最大強化];
 
         double 炸裂範囲[最大強化];
