@@ -98,4 +98,21 @@ namespace SDX_TD
         MAX
     };
 
+    enum class RangeType
+    {
+        円,
+        四角,
+        十字細,
+        十字太
+    };
+
+    enum class DebuffType
+    {
+        痺れ,
+        眠り,
+        吹き飛ばし,
+        防御低下,
+        無し
+    };
+
 }

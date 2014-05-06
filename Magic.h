@@ -36,20 +36,20 @@ namespace SDX_TD
         /**.*/
         void SetWait()
         {
-            基礎ステ.速度[強化回数] = 30;
+            基礎ステ.連射[強化回数] = 30;
             基礎ステ.攻撃力[強化回数] = 1;
             基礎ステ.射程[強化回数] = 60;
-            基礎ステ.属性効果[強化回数] = 0;
-            基礎ステ.発動率[強化回数] = 0;
+            基礎ステ.デバフ効果[強化回数] = 0;
+            基礎ステ.デバフ率[強化回数] = 0;
             基礎ステ.魔法属性 = Elements::空;
-            待機時間 = int(速度値 / 基礎ステ.速度[強化回数] / 速度補正);
+            待機時間 = int(速度値 / 基礎ステ.連射[強化回数] / 速度補正);
         }
 
         /**.*/
         void Draw() const
         {
             shape->Draw(Color::Green, 128);
-            Drawing::String((int)GetX() + 2, (int)GetY() + 2, Color::Red, { 強化回数 });
+            Drawing::String((int)GetX() + 2, (int)GetY() + 2, Color::Red, { MagicDataS[0].名前 });
             //強化中or送還中
         }
 

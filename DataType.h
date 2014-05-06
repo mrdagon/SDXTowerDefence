@@ -11,36 +11,44 @@ namespace SDX_TD
     {
         static const int 最大強化 = 6;
 
+        std::string 名前;
+        std::string 説明文;
+
         MagicType 魔法種;
+        RangeType 射程種;
         Elements 魔法属性;
 
         int コスト[最大強化];
         int 攻撃力[最大強化];
-        int 速度[最大強化];
+        int 連射[最大強化];
         int 射程[最大強化];
-        int 支援範囲[最大強化];//マス目換算
-        double 支援効果[最大強化];
+        double 弾速[最大強化];
 
-        double 炸裂範囲[最大強化];
+        double 支援効果[最大強化];
+        double 連射支援[最大強化];
+        double 射程支援[最大強化];
+
+        int 炸裂範囲[最大強化];
         double 炸裂威力[最大強化];
 
-        int 属性効果[最大強化];
-        double 発動率[最大強化];
+        DebuffType デバフ種;
+        int    デバフ効果[最大強化];
+        double デバフ率[最大強化];
 
         double 半径 = 10;//当たり判定の大きさ
 
         bool is対空 = true;//空の敵に当たるかどうか
         bool is対地 = true;//地上の敵に当たるかどうか
+        bool is支援 = false;//支援専用
+        bool is使い捨て = false;
 
         bool is貫通 = true;//命中時に消滅するかどうか
 
-        bool is防御低下 = false;//防御低下効果の有無
-
-        bool is使い捨て = false;
-
         bool isウィッチ = false;//指揮官魔法、詠唱回数の管理が違う
 
-        int  レベル = 1;//素材による強化回数
+        int  Hit数[最大強化];
+
+        int  基礎詠唱回数;
     };
 
     /**敵の基礎性能.*/
@@ -122,8 +130,56 @@ namespace SDX_TD
         DataPack<StageData, StageType> StageDataS;
     }
 
+    void LoatIntToDouble(File& 読み込むファイル, double 読み込み先[] , int 分母)
+    {
+        int paramS[6];
+        読み込むファイル.Read(paramS, 6);
+
+        for (int i = 0; i < 6; ++i)
+        {
+            読み込み先[i] = double(paramS[i]) / 分母;
+        }
+    }
+
     void LoadMagicData()
     {
+        File magicFile("data.txt", FileMode::Read, true);
+
+        for (int i = 0; i<(int)MagicType::MAX; ++i)
+        {
+            magicFile.Read(MagicDataS[i].名前);
+            magicFile.Read(MagicDataS[i].説明文);
+
+            magicFile.Read(MagicDataS[i].魔法属性);//属性
+            magicFile.Read(MagicDataS[i].射程種);//判定
+
+            int param;
+            magicFile.Read(param);//種類
+            if (param % 3 == 1) MagicDataS[i].is対空 = false;
+            if (param % 3 == 2) MagicDataS[i].is対地 = false;
+            if (param % 3 >= 3) MagicDataS[i].is貫通 = true;
+            if (param == 6) MagicDataS[i].is支援 = true;
+            if (param == 7) MagicDataS[i].is使い捨て = true;
+
+            magicFile.Read(MagicDataS[i].基礎詠唱回数);//詠唱数
+            magicFile.Read(MagicDataS[i].デバフ種);//追加効果
+
+            magicFile.Read(MagicDataS[i].コスト, 6);//コスト
+            magicFile.Read(MagicDataS[i].攻撃力, 6);//攻撃力
+            magicFile.Read(MagicDataS[i].射程, 6);//射程
+            magicFile.Read(MagicDataS[i].連射, 6);//連射
+
+            LoatIntToDouble(magicFile, MagicDataS[i].弾速 , 100);//弾速
+
+            LoatIntToDouble(magicFile, MagicDataS[i].連射支援 , 100);//支援連射
+            LoatIntToDouble(magicFile, MagicDataS[i].射程支援 , 100);//支援射程
+            LoatIntToDouble(magicFile, MagicDataS[i].炸裂威力 , 100);//爆発威力
+            magicFile.Read(MagicDataS[i].炸裂範囲,6);//爆発範囲
+
+            magicFile.Read(MagicDataS[i].デバフ効果,6);//効果量
+            LoatIntToDouble(magicFile, MagicDataS[i].デバフ率,100);//発生率
+            magicFile.Read(MagicDataS[i].Hit数, 6);//Hit数
+        }
 
     }
 

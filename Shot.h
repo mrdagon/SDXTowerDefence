@@ -62,7 +62,7 @@ namespace SDX_TD
             //属性効果
             if (基礎ステ.魔法属性 != Elements::無)
             {
-                属性効果 = int(基礎ステ.属性効果[強化回数] * MainWitch->状態強化[(int)基礎ステ.魔法属性]);
+                属性効果 = int(基礎ステ.デバフ効果[強化回数] * MainWitch->状態強化[(int)基礎ステ.魔法属性]);
             }
 
         }
@@ -109,7 +109,7 @@ namespace SDX_TD
         /**確率に応じて状態異状を発生.*/
         bool Get状態異状()
         {
-            return Rand::Coin( 基礎ステ.発動率[強化回数] );
+            return Rand::Coin( 基礎ステ.デバフ率[強化回数] );
         }
     };
 
