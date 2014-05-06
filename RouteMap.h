@@ -327,6 +327,9 @@ namespace SDX_TD
             /**配置が可能か確認、可能なら配置.*/
             bool SetCheck(int X座標, int Y座標, int 大きさ)
             {
+                if( X座標 < 2 || X座標 >= MapSize-3 || Y座標 < 2 || Y座標 >= MapSize-3 ) return false;
+
+
                 //壁の中にいる敵は無視する
                 for (int i = 0; i < MapSize; ++i)
                 for (int j = 0; j < MapSize; ++j)
@@ -340,7 +343,7 @@ namespace SDX_TD
                 for (int j = 0; j < 大きさ; ++j)
                 {
                     if (is魔法[X座標 + i][Y座標 + j])                                     return false;//既に魔法が配置されているか
-                    if (!Check配置可能(地形[X座標 + i][Y座標 + j]))                            return false;
+                    if (!Check配置可能(地形[X座標 + i][Y座標 + j]))                       return false;
                     if (is陸の敵[X座標 + i][Y座標 + j] || is水の敵[X座標 + i][Y座標 + j]) return false;//敵がいるかどうか
                 }
 
@@ -420,6 +423,7 @@ namespace SDX_TD
                     Drawing::Line(0, i, MapSize*ChipSize, i, Color::White, 1);
                 }
 
+
                 //地形の表示
                 for (int i = 0; i < MapSize; ++i)
                 for (int j = 0; j < MapSize; ++j)
@@ -428,10 +432,19 @@ namespace SDX_TD
                     if ( 地形[i][j] == ChipType::草)  MSystem::マップチップ[32]->Draw(i * ChipSize, j * ChipSize);
                     if ( 地形[i][j] != ChipType::草)  Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Blue, true);
                     if ( 地形[i][j] == ChipType::畑)  Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Red, true);
-                    if ( is魔法[i][j])                Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Yellow, true);
-                    if ( is陸の敵[i][j])              Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Gray, true);
-                    if ( is水の敵[i][j])              Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Purple, true);
+                    //if ( is魔法[i][j])                Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Yellow, true);
+                    //if ( is陸の敵[i][j])              Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Gray, true);
+                    //if ( is水の敵[i][j])              Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Purple, true);
                 }
+
+                //配置先の表示
+                const int x = (Input::mouse.x - ChipSize/2) / ChipSize;
+                const int y = (Input::mouse.y - ChipSize/2) / ChipSize;
+
+                Screen::SetBlendMode(BlendMode::Alpha,200);
+                Drawing::Rect( x * ChipSize,y *ChipSize, ChipSize*2 , ChipSize *2 , Color::Green , true );
+                Screen::SetBlendMode(BlendMode::NoBlend,0);
+
 
             }
 
@@ -443,20 +456,25 @@ namespace SDX_TD
             /**地形との衝突しているか返す.*/
             bool Check地形(double X座標, double Y座標, Belong 移動種)
             {
+                int x = (int)X座標 / ChipSize;
+                int y = (int)Y座標 / ChipSize;
+
+                if( x < 0 || x >= MapSize || y < 0 || y >= MapSize ) return false; 
+
                 //trueなら通行不可
                 switch (移動種)
                 {
                 case SDX_TD::Belong::空:
-                    return !空路.is通行[(int)X座標 / ChipSize][(int)Y座標 / ChipSize];
+                    return !空路.is通行[x][y];
                     break;
                 case SDX_TD::Belong::陸:
-                    return !陸路.is通行[(int)X座標 / ChipSize][(int)Y座標 / ChipSize];
+                    return !陸路.is通行[x][y];
                     break;
                 case SDX_TD::Belong::水陸:
-                    return !水路.is通行[(int)X座標 / ChipSize][(int)Y座標 / ChipSize];
+                    return !水路.is通行[x][y];
                     break;
                 case SDX_TD::Belong::水中:
-                    return !海路.is通行[(int)X座標 / ChipSize][(int)Y座標 / ChipSize];
+                    return !海路.is通行[x][y];
                     break;
                 default:
                     return false;

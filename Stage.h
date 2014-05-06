@@ -293,9 +293,12 @@ namespace SDX_TD
         {
             if (Input::mouse.Left.on)
             {
-                if (SLand->SetCheck(Input::mouse.x / Land::ChipSize, Input::mouse.y / Land::ChipSize, 2))
+                const int x = (Input::mouse.x - Land::ChipSize/2) / Land::ChipSize;
+                const int y = (Input::mouse.y - Land::ChipSize/2) / Land::ChipSize;
+
+                if (SLand->SetCheck( x , y , 2))
                 {
-                    Add(new Magic(Input::mouse.x / Land::ChipSize, Input::mouse.y / Land::ChipSize ,MagicType::火炎));
+                    Add(new Magic( x , y ,MagicType::火炎));
                 }
             }
         }
