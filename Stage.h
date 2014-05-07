@@ -298,7 +298,7 @@ namespace SDX_TD
 
                 if (SLand->SetCheck( x , y , 2))
                 {
-                    Add(new Magic( x , y ,MagicType::火炎));
+                    Add(new Magic( x , y ,MagicType::炎基礎1));
                 }
             }
         }
