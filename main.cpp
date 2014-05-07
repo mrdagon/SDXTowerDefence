@@ -19,11 +19,8 @@ int main(int argc, char* argv[])
 
     System::Initialise("sample", 640, 480);//ライブラリの初期化
 
-<<<<<<< HEAD
     LoadMagicData();
-=======
     LoadMaterial();
->>>>>>> 3c08b007913f4a5b535923678d815b250f1e6303
 
     Director::AddScene( new Stage() );
     Director::Run();
