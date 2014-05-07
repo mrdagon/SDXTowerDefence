@@ -48,9 +48,32 @@ namespace SDX_TD
         /**.*/
         void Draw() const
         {
+<<<<<<< HEAD
             shape->Draw(Color::Green, 128);
             Drawing::String((int)GetX() + 2, (int)GetY() + 2, Color::Red, { MagicDataS[0].名前 });
+=======
+            MSystem::魔法枠[1].Draw((int)GetX()-Land::ChipSize, (int)GetY()-Land::ChipSize,Land::ChipSize*2,Land::ChipSize*2);            
+            MMagic::魔法[0]->DrawRotate((int)GetX(), (int)GetY(),1,0);            
+            //MUnit::魔女[WitchType::ミナエ][0]->DrawRotate((int)GetX(),(int)GetY(),2,0);
+
+            //レベル表示
+            for(int i=0;i<5;++i)
+            {
+                MSystem::マーク[3]->DrawRotate( (int)GetX()+6*i - 12,(int)GetY() + 12,1,0);
+            }
+
+            MFont::BMP黒.Draw(100,100,Color::White,"Test123456789");
+
+>>>>>>> 3c08b007913f4a5b535923678d815b250f1e6303
             //強化中or送還中
+            if( 強化時間 > 0)
+            {
+            
+            }
+            if( 送還時間 > 0)
+            {
+            
+            }
         }
 
         /**.*/

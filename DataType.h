@@ -1,5 +1,6 @@
 ﻿#pragma once//☀Unicode
 #include "EnumType.h"
+#include "Material.h"
 
 namespace SDX_TD
 {
