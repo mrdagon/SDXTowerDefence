@@ -61,7 +61,7 @@ namespace SDX_TD
         Elements 魔法属性;
 
         int スコア = 50;
-        int 体力 = 100;
+        int 最大HP = 100;
         double 防御力 = 0;
         double 移動速度 = 1;
 
@@ -131,7 +131,7 @@ namespace SDX_TD
         DataPack<StageData, StageType> StageDataS;
     }
 
-    void LoatIntToDouble(File& 読み込むファイル, double 読み込み先[] , int 分母)
+    void LoatIntToDouble(File& 読み込むファイル, double 読み込み先[] , int 分母 = 100)
     {
         int paramS[6];
         読み込むファイル.Read(paramS, 6);
@@ -151,35 +151,35 @@ namespace SDX_TD
             magicFile.Read(MagicDataS[i].名前);
             magicFile.Read(MagicDataS[i].説明文);
 
-            magicFile.Read(MagicDataS[i].魔法属性);//属性
-            magicFile.Read(MagicDataS[i].射程種);//判定
+            magicFile.Read(MagicDataS[i].魔法属性);
+            magicFile.Read(MagicDataS[i].射程種);
 
             int param;
-            magicFile.Read(param);//種類
+            magicFile.Read(param);
             if (param % 3 == 1) MagicDataS[i].is対空 = false;
             if (param % 3 == 2) MagicDataS[i].is対地 = false;
             if (param % 3 >= 3) MagicDataS[i].is貫通 = true;
             if (param == 6) MagicDataS[i].is支援 = true;
             if (param == 7) MagicDataS[i].is使い捨て = true;
 
-            magicFile.Read(MagicDataS[i].基礎詠唱回数);//詠唱数
-            magicFile.Read(MagicDataS[i].デバフ種);//追加効果
+            magicFile.Read(MagicDataS[i].基礎詠唱回数);
+            magicFile.Read(MagicDataS[i].デバフ種);
 
-            magicFile.Read(MagicDataS[i].コスト, 6);//コスト
-            magicFile.Read(MagicDataS[i].攻撃力, 6);//攻撃力
-            magicFile.Read(MagicDataS[i].射程, 6);//射程
-            magicFile.Read(MagicDataS[i].連射, 6);//連射
+            magicFile.Read(MagicDataS[i].コスト, 6);
+            magicFile.Read(MagicDataS[i].攻撃力, 6);
+            magicFile.Read(MagicDataS[i].射程, 6);
+            magicFile.Read(MagicDataS[i].連射, 6);
 
-            LoatIntToDouble(magicFile, MagicDataS[i].弾速 , 100);//弾速
+            LoatIntToDouble(magicFile, MagicDataS[i].弾速 );
 
-            LoatIntToDouble(magicFile, MagicDataS[i].連射支援 , 100);//支援連射
-            LoatIntToDouble(magicFile, MagicDataS[i].射程支援 , 100);//支援射程
-            LoatIntToDouble(magicFile, MagicDataS[i].炸裂威力 , 100);//爆発威力
-            magicFile.Read(MagicDataS[i].炸裂範囲,6);//爆発範囲
+            LoatIntToDouble(magicFile, MagicDataS[i].連射支援 );
+            LoatIntToDouble(magicFile, MagicDataS[i].射程支援 );
+            LoatIntToDouble(magicFile, MagicDataS[i].炸裂威力 );
+            magicFile.Read(MagicDataS[i].炸裂範囲,6);
 
-            magicFile.Read(MagicDataS[i].デバフ効果,6);//効果量
-            LoatIntToDouble(magicFile, MagicDataS[i].デバフ率,100);//発生率
-            magicFile.Read(MagicDataS[i].Hit数, 6);//Hit数
+            magicFile.Read(MagicDataS[i].デバフ効果,6);
+            LoatIntToDouble(magicFile, MagicDataS[i].デバフ率 );
+            magicFile.Read(MagicDataS[i].Hit数, 6);
         }
 
     }

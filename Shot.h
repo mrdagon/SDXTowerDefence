@@ -25,7 +25,8 @@ namespace SDX_TD
         //double 麻痺率;
         //int 防御低下量;
 
-        int    属性効果;
+        int    デバフ効果;
+        double デバフ率;
 
         double 炸裂威力 = 0;
         double 炸裂範囲 = 0;
@@ -60,9 +61,9 @@ namespace SDX_TD
             攻撃力 = 基礎ステ.攻撃力[強化回数] * 支援補正 * MainWitch->攻撃補正;
 
             //属性効果
-            if (基礎ステ.魔法属性 != Elements::無)
+            if (基礎ステ.デバフ種 != DebuffType::無)
             {
-                属性効果 = int(基礎ステ.デバフ効果[強化回数] * MainWitch->状態強化[(int)基礎ステ.魔法属性]);
+                デバフ効果 = int(基礎ステ.デバフ効果[強化回数] * MainWitch->状態強化[(int)基礎ステ.魔法属性]);
             }
 
         }
@@ -106,11 +107,6 @@ namespace SDX_TD
             }
         }
 
-        /**確率に応じて状態異状を発生.*/
-        bool Get状態異状()
-        {
-            return Rand::Coin( 基礎ステ.デバフ率[強化回数] );
-        }
     };
 
     /**ビーム弾.*/

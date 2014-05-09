@@ -8,7 +8,7 @@ namespace SDX_TD
 
     namespace TDSystem
     {
-        int 難易度;
+        Difficulty 難易度;
         StageData* 現在ステージ;
         bool isトライアル;
         bool isシングル;
@@ -17,7 +17,6 @@ namespace SDX_TD
         int 素材数[4];
 
         //実績関連
-
 
         //設定関連
         double 効果音の音量;

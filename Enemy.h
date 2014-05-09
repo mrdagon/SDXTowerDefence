@@ -13,28 +13,45 @@ namespace SDX_TD
 
         EnemyData &基礎ステ;
         Enemy*  next;//当たり判定チェイン用
-        int     レベル = 0;
+        double  レベル = 0;
         int     方向   = 5;
         double  最大HP = 1000;
-        double  体力   = 1000;
+        double  残りHP = 1000;
         int     防御力 = 0;
-        int     麻痺時間 = 0;
-        int     凍結時間 = 0;
-        int     炎上時間 = 0;
+        double  痺れ率 = 1.0;
+        int     痺れ時間 = 0;
+        int     眠り時間 = 0;
         double  吹き飛びX = 0;
         double  吹き飛びY = 0;
         bool    isボス = false;
+
+        int     スコア;
 
         Enemy(double x, double y, EnemyData& 基礎ステ , bool isボス = false) :
             Object(new Rect( (x+0.5)*Land::ChipSize, (y+0.5)*Land::ChipSize, 14, 14), nullptr, 基礎ステ.移動タイプ),
             isボス(isボス),
             基礎ステ(基礎ステ)
-        {}
+        {
+            スコア = int(基礎ステ.スコア * (1.0 + レベル/30 ));
+            最大HP = 基礎ステ.最大HP * (1.0 + (レベル-1)* 0.2 + (レベル-1) * (レベル-1) * 0.06);
+            防御力 = int(基礎ステ.防御力 * レベル);
+
+            if (isボス)
+            {
+                スコア *= 16;
+                最大HP *= 16;
+                防御力 *= 2;
+            }
+
+            残りHP = 最大HP;
+        }
 
         /**デフォルト死亡.*/
         void Dead()
         {
             //MP&SP&スコア増
+            MainWitch->MP += スコア;
+            MainWitch->SP += スコア;
 
             isRemove = true;
             DeadSp();
@@ -46,18 +63,20 @@ namespace SDX_TD
             //方向を更新
             方向更新();
 
-            double speed = 1;
+            double speed = 基礎ステ.移動速度;
+            
+            if ( isボス) speed *= 0.66;
 
             //痺れ、凍結補正
-            if (麻痺時間 > 0)
+            if (眠り時間 > 0)
             {
                 speed = 0;
-                --麻痺時間;
+                --眠り時間;
             }
 
-            if (凍結時間 > 0)
+            if (痺れ時間 > 0)
             {
-                speed /= 2;
+                speed = speed * 痺れ率;
             }
 
             if (SLand->Get地形(GetX(), GetY()) == ChipType::沼 && 基礎ステ.移動タイプ != Belong::空)
@@ -90,13 +109,6 @@ namespace SDX_TD
 
         void 方向更新()
         {
-            //水のマスにいても炎は有効
-            //炎上中は方向固定
-            if (炎上時間 > 0)
-            {
-                --炎上時間;
-                return;
-            }
 
             switch (belong)
             {
@@ -141,9 +153,6 @@ namespace SDX_TD
                 break;
             case SDX_TD::ChipType::→:
                 移動量X += Land::自動床速度;
-                break;
-            case SDX_TD::ChipType::水:
-                炎上時間 = 0;//消火
                 break;
             default:
                 break;
@@ -259,15 +268,10 @@ namespace SDX_TD
                 SStage->選択解除(this);
             }
 
-            if (体力 <= 0) Dead();
+            if (残りHP <= 0) Dead();
             if (isRemove)  Remove();
 
             return isRemove;
-        }
-
-        /**攻撃された時の処理.*/
-        void Damaged(Object* 衝突相手) override
-        {
         }
 
         /**攻撃された時の処理.*/
@@ -276,15 +280,15 @@ namespace SDX_TD
             double ダメージ量 = 衝突相手->攻撃力;
 
             //属性効果判定
-            if (衝突相手->属性効果 > 0)
+            if (衝突相手->デバフ効果 > 0)
             {
-                switch (衝突相手->基礎ステ.魔法属性)
+                switch (衝突相手->基礎ステ.デバフ種)
                 {
-                case Elements::炎:炎上付与(衝突相手); break;
-                case Elements::空:吹飛付与(衝突相手); break;
-                case Elements::樹:麻痺付与(衝突相手); break;
-                case Elements::氷:凍結付与(衝突相手); break;
-                default:break;
+                    case DebuffType::痺れ: 痺れ付与(衝突相手); break;
+                    case DebuffType::眠り: 眠り付与(衝突相手); break;
+                    case DebuffType::吹飛: 吹飛付与(衝突相手); break;
+                    case DebuffType::防壊: 防壊付与(衝突相手); break;
+                    default:break;
                 }
             }
 
@@ -297,46 +301,50 @@ namespace SDX_TD
             //防御補正
             ダメージ量 = std::max( ダメージ量 - 防御力 , 1.0);
 
-            体力 -= ダメージ量;
+            残りHP -= ダメージ量;
             React( ダメージ量 );
         }
 
-        /**状態異状判定.*/
-        void 炎上付与(Shot* 衝突相手)
+        void 眠り付与(Shot* 衝突相手)
         {
             //判定
-            if ( !衝突相手->Get状態異状() || 基礎ステ.異状耐性[(int)Elements::炎]) return;
+            if (!Rand::Coin(衝突相手->デバフ率)) return;
+            if ( 基礎ステ.異状耐性[(int)DebuffType::眠り] ) return;
 
             //付与処理
-            炎上時間 = 衝突相手->属性効果;
+            眠り時間 = std::max(衝突相手->デバフ効果, 眠り時間);
         }
-        void 凍結付与(Shot* 衝突相手)
+        void 痺れ付与(Shot* 衝突相手)
         {
             //判定
-            if ( 基礎ステ.異状耐性[(int)Elements::氷] ) return;
+            if ( 基礎ステ.異状耐性[(int)DebuffType::痺れ]) return;
+
+            if (痺れ時間 <= 0) 痺れ率 = 1.0;
 
             //付与処理
-            凍結時間 = 衝突相手->属性効果;
-        }
-        void 麻痺付与(Shot* 衝突相手)
-        {
-            //判定
-            if ( !衝突相手->Get状態異状() || 基礎ステ.異状耐性[(int)Elements::樹]) return;
-
-            //付与処理
-            麻痺時間 = 衝突相手->属性効果;
+            痺れ率 = std::min( 1-衝突相手->デバフ率 , 痺れ率);
+            痺れ時間 = std::max(衝突相手->デバフ効果, 痺れ時間);
         }
         void 吹飛付与(Shot* 衝突相手)
         {
             //判定
-            if (基礎ステ.異状耐性[(int)Elements::空] ) return;
+            if (基礎ステ.異状耐性[(int)DebuffType::吹飛] ) return;
 
             //付与処理
-            const double 吹き飛び距離 = 衝突相手->属性効果;
+            const double 吹き飛び距離 = 衝突相手->デバフ効果;
 
             吹き飛びX += std::cos(衝突相手->GetAngle()) * 吹き飛び距離;
             吹き飛びY += std::sin(衝突相手->GetAngle()) * 吹き飛び距離;
         }
+        void 防壊付与(Shot* 衝突相手)
+        {
+            //判定
+            if (基礎ステ.異状耐性[(int)DebuffType::吹飛]) return;
+
+            //付与処理
+            防御力 = std::max(0, 防御力 - 衝突相手->デバフ効果);
+        }
+
 
         bool 弱点判定(Shot* 衝突相手)
         {
