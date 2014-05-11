@@ -263,10 +263,10 @@ namespace SDX_TD
             //発生処理
             for (int i = 0; i < 16; ++i)
             {
-                int x = SLand->畑の位置[0] % Land::MapSize;
-                int y = SLand->畑の位置[0] / Land::MapSize;
+                int x = SLand->穴の位置[0] % Land::MapSize;
+                int y = SLand->穴の位置[0] / Land::MapSize;
 
-                Add(new Enemy(x, y, EnemyDataS[EnemyType::スライム]), i * 16);
+                Add(new Enemy(x, y, EnemyDataS[EnemyType::ゼリー]), i * 16);
             }
         }
 
@@ -296,7 +296,7 @@ namespace SDX_TD
                 const int x = (Input::mouse.x - Land::ChipSize/2) / Land::ChipSize;
                 const int y = (Input::mouse.y - Land::ChipSize/2) / Land::ChipSize;
 
-                if (SLand->SetCheck( x , y , 2))
+                if (SLand->SetMagic( x , y , 2))
                 {
                     Add(new Magic( x , y ,MagicType::炎基礎1));
                 }
@@ -308,7 +308,7 @@ namespace SDX_TD
         {
             SStage = this;
 
-            SLand->Draw();
+            SLand->Draw();            
 
             //Wave一覧の表示
             int x = wave.GetPosition();
@@ -319,6 +319,7 @@ namespace SDX_TD
             //ゲーム速度の表示
 
             //ウィッチの表示
+            MSystem::フレーム[4].Draw( 448 ,0 , 640-448,480);
 
             //砲台一覧の表示
 

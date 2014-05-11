@@ -56,7 +56,7 @@ namespace SDX_TD
     struct EnemyData
     {
         //基礎ステータス
-        EnemyType 種族;
+        EnemyType 種族 = EnemyType::マーマン;
         Belong 移動タイプ = Belong::陸;
         Elements 魔法属性;
 

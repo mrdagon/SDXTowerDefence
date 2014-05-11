@@ -10,6 +10,7 @@ namespace SDX_TD
     namespace MUnit
     {
         DataPack<ImagePack,WitchType> 魔女;
+        DataPack<ImagePack,EnemyType> 敵;
 
         //ImagePack 魔女[(int)WitchType::MAX];
 
@@ -27,6 +28,23 @@ namespace SDX_TD
             魔女[WitchType::ナズナ].Load("File/Unit/Nazuna.png",9,3,3);
             魔女[WitchType::委員長].Load("File/Unit/Chairwoman.png",9,3,3);
             魔女[WitchType::ミルラ].Load("File/Unit/Myrra.png",9,3,3);
+
+            敵[EnemyType::ゼリー].Load("File/Enemy/000.png",9,3,3);
+            敵[EnemyType::ゴブリン].Load("File/Enemy/001.png",9,3,3);
+            敵[EnemyType::ケットシー].Load("File/Enemy/002.png",9,3,3);
+            敵[EnemyType::オーガ].Load("File/Enemy/003.png",9,3,3);
+            敵[EnemyType::マーマン].Load("File/Enemy/004.png",9,3,3);
+            敵[EnemyType::ゴーレム].Load("File/Enemy/005.png",9,3,3);
+            敵[EnemyType::ケルベロス].Load("File/Enemy/006.png",9,3,3);
+            敵[EnemyType::スケルトン].Load("File/Enemy/007.png",9,3,3);
+            敵[EnemyType::シャーマン].Load("File/Enemy/008.png",9,3,3);
+            敵[EnemyType::コボルド].Load("File/Enemy/009.png",9,3,3);
+            敵[EnemyType::ゼリーキング].Load("File/Enemy/010.png",9,3,3);
+            敵[EnemyType::ドラゴン].Load("File/Enemy/011.png",9,3,3);
+            敵[EnemyType::インプ].Load("File/Enemy/012.png",9,3,3);
+            敵[EnemyType::ゴースト].Load("File/Enemy/013.png",9,3,3);
+            敵[EnemyType::グリフィン].Load("File/Enemy/014.png",9,3,3);
+
         }
     }
 
@@ -65,8 +83,8 @@ namespace SDX_TD
     namespace MSystem
     {
         ImagePack マップチップ;
-        ImagePack 枠画像[3];
-        BmpFrame  魔法枠[3];
+        ImagePack 枠画像[5];
+        BmpFrame  フレーム[5];
 
         ImagePack マーク;
         
@@ -74,13 +92,18 @@ namespace SDX_TD
         static void Load()
         {
             マップチップ.Load("File/System/base.png", 8 * 292 , 8 , 292);
-            枠画像[0].Load("File/System/magic_frame000.png",9,3,3);
-            枠画像[1].Load("File/System/magic_frame001.png",9,3,3);
-            枠画像[2].Load("File/System/magic_frame002.png",9,3,3);
-            魔法枠[0].Make( &枠画像[0] );
-            魔法枠[1].Make( &枠画像[1] );
-            魔法枠[2].Make( &枠画像[2] );
-            
+            枠画像[0].Load("File/System/frame000.png",9,3,3);
+            枠画像[1].Load("File/System/frame001.png",9,3,3);
+            枠画像[2].Load("File/System/frame002.png",9,3,3);
+            枠画像[3].Load("File/System/frame003.png",9,3,3);
+            枠画像[4].Load("File/System/frame004.png",9,3,3);
+            フレーム[0].Make( &枠画像[0] );
+            フレーム[1].Make( &枠画像[1] );
+            フレーム[2].Make( &枠画像[2] );
+            フレーム[3].Make( &枠画像[3] );
+            フレーム[4].Make( &枠画像[4] );
+
+
             マーク.Load("File/System/mark.png",4,4,1);         
         }
     }

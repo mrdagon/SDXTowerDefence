@@ -35,6 +35,7 @@ namespace SDX_TD
             スコア = int(基礎ステ.スコア * (1.0 + レベル/30 ));
             最大HP = 基礎ステ.最大HP * (1.0 + (レベル-1)* 0.2 + (レベル-1) * (レベル-1) * 0.06);
             防御力 = int(基礎ステ.防御力 * レベル);
+            レベル = Rand::Get(2)+1;
 
             if (isボス)
             {
@@ -252,7 +253,46 @@ namespace SDX_TD
         /**デバッグ用描画処理.*/
         void Draw() const
         {
-            Drawing::Rect((int)GetX() - 7, (int)GetY() - 7, 14, 14, Color::Red, false);
+            int アニメ;
+            bool 反転 = false;
+
+            switch (方向)
+            {
+            case 0:
+            case 1:
+                アニメ = 3;
+                break;
+            case 2:
+            case 5:
+                アニメ = 6;
+                反転 = true;
+                break;
+            case 3:
+            case 6:
+                アニメ = 6;
+                break;
+            case 7:
+            case 8:
+                アニメ = 0;
+                break;
+            }
+
+            switch(timer/10%4)
+            {
+            case 0:
+                break;
+            case 1:
+            case 3:
+                アニメ += 1;
+                break;
+            case 2:
+                アニメ += 2;
+                break;
+            }
+
+            MUnit::敵[基礎ステ.種族][アニメ]->DrawRotate(int(GetX()),int(GetY()),2+isボス,0,反転);
+
+            //Drawing::Rect((int)GetX() - 7, (int)GetY() - 7, 14, 14, Color::Red, false);
         }
 
         /**消滅判定.*/
