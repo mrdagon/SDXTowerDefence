@@ -1,6 +1,6 @@
 ﻿#pragma once//☀Unicode
 #include <SDXFrameWork.h>
-#include "DataType.h"
+#include "EnumType.h"
 #include "Material.h"
 
 namespace SDX_TD

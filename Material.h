@@ -12,8 +12,6 @@ namespace SDX_TD
         DataPack<ImagePack,WitchType> 魔女;
         DataPack<ImagePack,EnemyType> 敵;
 
-        //ImagePack 魔女[(int)WitchType::MAX];
-
         static void Load()
         {
             魔女[WitchType::ライナ].Load("File/Unit/Lina.png",9,3,3);
@@ -39,7 +37,7 @@ namespace SDX_TD
             敵[EnemyType::スケルトン].Load("File/Enemy/007.png",9,3,3);
             敵[EnemyType::シャーマン].Load("File/Enemy/008.png",9,3,3);
             敵[EnemyType::コボルド].Load("File/Enemy/009.png",9,3,3);
-            敵[EnemyType::ゼリーキング].Load("File/Enemy/010.png",9,3,3);
+            敵[EnemyType::ゼリー王].Load("File/Enemy/010.png",9,3,3);
             敵[EnemyType::ドラゴン].Load("File/Enemy/011.png",9,3,3);
             敵[EnemyType::インプ].Load("File/Enemy/012.png",9,3,3);
             敵[EnemyType::ゴースト].Load("File/Enemy/013.png",9,3,3);

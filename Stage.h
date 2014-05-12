@@ -266,7 +266,7 @@ namespace SDX_TD
                 int x = SLand->穴の位置[0] % Land::MapSize;
                 int y = SLand->穴の位置[0] / Land::MapSize;
 
-                Add(new Enemy(x, y, EnemyDataS[EnemyType::ゼリー]), i * 16);
+                Add(new Enemy(x, y, EnemyS[EnemyType::ゼリー]), i * 16);
             }
         }
 
