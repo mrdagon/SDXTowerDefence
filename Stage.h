@@ -266,7 +266,7 @@ namespace SDX_TD
                 int x = SLand->穴の位置[0] % Land::MapSize;
                 int y = SLand->穴の位置[0] / Land::MapSize;
 
-                Add(new Enemy(x, y, EnemyS[EnemyType::ゼリー]), i * 16);
+                Add(new Enemy(x, y, EnemyDataS[EnemyType::ゼリー]), i * 16);
             }
         }
 
@@ -311,8 +311,7 @@ namespace SDX_TD
             SLand->Draw();            
 
             //Wave一覧の表示
-            int x = wave.GetPosition();
-            Drawing::Rect( x , 440, 60, 40, Color::Red, false);
+            wave.Draw();
 
             //スコアの表示
 
@@ -351,8 +350,7 @@ namespace SDX_TD
             {
                 case Belong::陸: groundEnemyS.Add(追加するオブジェクト, 待機時間); break;
                 case Belong::空: skyEnemyS.Add(追加するオブジェクト, 待機時間); break;
-                case Belong::水陸: seaEnemyS.Add(追加するオブジェクト, 待機時間); break;
-                case Belong::水中: seaEnemyS.Add(追加するオブジェクト, 待機時間); break;
+                case Belong::水: seaEnemyS.Add(追加するオブジェクト, 待機時間); break;
                 default:
                     break;
             }
@@ -443,5 +441,11 @@ namespace SDX_TD
 
             return 0;
         }
+
+        Wave* GetWave()
+        {
+            return &wave;
+        }
+
     };
 }

@@ -20,6 +20,7 @@ int main(int argc, char* argv[])
     System::Initialise("sample", 800, 600);//ライブラリの初期化
 
     LoadMagicS();
+
     LoadMaterial();
 
     Director::AddScene( new Stage() );

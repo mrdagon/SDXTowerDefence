@@ -1,12 +1,18 @@
 ﻿#pragma once//☀Unicode
 #include "EnumType.h"
 #include "Material.h"
-#include "RouteMap.h"
 
 namespace SDX_TD
 {
     using namespace SDX;
     //パラメータ用のデータ型
+    namespace Land
+    {
+        static const int MapSize = 30;
+        static const int ChipSize = 20;
+        static const int 到達不可 = 99999999;
+        static const double 自動床速度 = 0.5;
+    }
 
     /**魔法の基礎性能.*/
     struct MagicData
@@ -97,10 +103,6 @@ namespace SDX_TD
                 状態強化[a] = 1.0;
                 属性強化[a] = 1.0;
             }
-
-            状態強化[0] = 1.0;
-            状態強化[0] = 1.0;
-            状態強化[0] = 1.0;
         }
 
         double 攻撃補正 = 1.0;
@@ -120,6 +122,8 @@ namespace SDX_TD
         double 属性強化[4];
 
         double 逆境補正 = 0.01;//ライフ-1につき1%攻撃力が上がる
+
+        ChipType 地形補正;
 
         //ステージ開始時しか参照しないパラメータ
         int    初期HP = 20;
@@ -153,7 +157,7 @@ namespace SDX_TD
         double Wave速度;
 
         EnemyType 敵発生リスト[100];
-        ChipType  地形情報[Land::MapSize][Land::MapSize];
+        ChipType  地形情報[30][30];
     };
 
     struct DifficultyData
@@ -164,7 +168,7 @@ namespace SDX_TD
         int 雑魚召喚数;
         int ボス召喚数;
 
-        void SetData(int Wave数, int 雑魚召喚数, int ボス召喚数, double HP補正, double レベル補正)
+        void Set(int Wave数, int 雑魚召喚数, int ボス召喚数, double HP補正, double レベル補正)
         {
             this->Wave数 = Wave数;
             this->雑魚召喚数 = 雑魚召喚数;
@@ -174,25 +178,30 @@ namespace SDX_TD
         }
     };
 
+    struct ChipData
+    {
+        bool is配置可能;
+        bool is陸移動;
+        bool is水上移動;
+
+        void Set(bool is配置可能, bool is陸移動, bool is水上移動)
+        {
+            this->is配置可能 = is配置可能;
+            this->is陸移動 = is陸移動;
+            this->is水上移動 = is水上移動;
+        }
+
+    };
+
     namespace
     {
-        DataPack<EnemyData, EnemyType> EnemyS;
-        DataPack<MagicData, MagicType> MagicS;
-        DataPack<WitchData, WitchType> WitchS;
-        DataPack<StageData, StageType> StageS;
-        DataPack<DifficultyData, Difficulty> TrialS;
-        DataPack<DifficultyData, Difficulty> PowerS;
-    }
-
-    void LoatIntToDouble(File& 読み込むファイル, double 読み込み先[] , int 分母 = 100)
-    {
-        int paramS[6];
-        読み込むファイル.Read(paramS, 6);
-
-        for (int i = 0; i < 6; ++i)
-        {
-            読み込み先[i] = double(paramS[i]) / 分母;
-        }
+        DataPack<EnemyData, EnemyType> EnemyDataS;
+        DataPack<MagicData, MagicType> MagicDataS;
+        DataPack<WitchData, WitchType> WitchDataS;
+        DataPack<StageData, StageType> StageDataS;
+        DataPack<DifficultyData, Difficulty> TrialDataS;
+        DataPack<DifficultyData, Difficulty> PowerDataS;
+        DataPack<ChipData, ChipType> ChipDataS;
     }
 
     void LoadMagicS()
@@ -201,87 +210,72 @@ namespace SDX_TD
 
         for (int i = 0; i<(int)MagicType::MAX; ++i)
         {
-            magicFile.Read(MagicS[i].名前);
-            magicFile.Read(MagicS[i].説明文);
+            magicFile.Read(MagicDataS[i].名前);
+            magicFile.Read(MagicDataS[i].説明文);
 
-            magicFile.Read(MagicS[i].魔法属性);
-            magicFile.Read(MagicS[i].射程種);
+            magicFile.Read(MagicDataS[i].魔法属性);
+            magicFile.Read(MagicDataS[i].射程種);
 
             int param;
             magicFile.Read(param);
-            if (param % 3 == 1) MagicS[i].is対空 = false;
-            if (param % 3 == 2) MagicS[i].is対地 = false;
-            if (param % 3 >= 3) MagicS[i].is貫通 = true;
-            if (param == 6) MagicS[i].is支援 = true;
-            if (param == 7) MagicS[i].is使い捨て = true;
+            if (param % 3 == 1) MagicDataS[i].is対空 = false;
+            if (param % 3 == 2) MagicDataS[i].is対地 = false;
+            if (param % 3 >= 3) MagicDataS[i].is貫通 = true;
+            if (param == 6) MagicDataS[i].is支援 = true;
+            if (param == 7) MagicDataS[i].is使い捨て = true;
 
-            magicFile.Read(MagicS[i].基礎詠唱回数);
-            magicFile.Read(MagicS[i].デバフ種);
+            magicFile.Read(MagicDataS[i].基礎詠唱回数);
+            magicFile.Read(MagicDataS[i].デバフ種);
 
-            magicFile.Read(MagicS[i].コスト, 6);
-            magicFile.Read(MagicS[i].攻撃力, 6);
-            magicFile.Read(MagicS[i].射程, 6);
-            magicFile.Read(MagicS[i].連射, 6);
+            magicFile.Read(MagicDataS[i].コスト, 6);
+            magicFile.Read(MagicDataS[i].攻撃力, 6);
+            magicFile.Read(MagicDataS[i].射程, 6);
+            magicFile.Read(MagicDataS[i].連射, 6);
 
-            LoatIntToDouble(magicFile, MagicS[i].弾速 );
+            magicFile.Read<int>(MagicDataS[i].弾速, 6 , 100);
 
-            LoatIntToDouble(magicFile, MagicS[i].連射支援 );
-            LoatIntToDouble(magicFile, MagicS[i].射程支援 );
-            LoatIntToDouble(magicFile, MagicS[i].炸裂威力 );
-            magicFile.Read(MagicS[i].炸裂範囲,6);
+            magicFile.Read<int>(MagicDataS[i].連射支援 , 6 , 100);
+            magicFile.Read<int>(MagicDataS[i].射程支援 , 6 , 100);
+            magicFile.Read<int>(MagicDataS[i].炸裂威力 , 6 , 100);
 
-            magicFile.Read(MagicS[i].デバフ効果,6);
-            LoatIntToDouble(magicFile, MagicS[i].デバフ率 );
-            magicFile.Read(MagicS[i].Hit数, 6);
+            magicFile.Read(MagicDataS[i].炸裂範囲,6);
+
+            magicFile.Read(MagicDataS[i].デバフ効果,6);
+            magicFile.Read<int>(MagicDataS[i].デバフ率 , 6 , 100);
+            magicFile.Read(MagicDataS[i].Hit数, 6);
         }
 
-    }
-
-    void SetEnemyData(EnemyType 種族, const char* 種族名 ,Belong 移動タイプ, Elements 魔法属性, int スコア, int 最大HP, double 防御力, double 移動速度, std::vector<bool> 異状耐性 = { false, false, false, false })
-    {
-        EnemyS[種族].種族 = 種族;
-        EnemyS[種族].種族名 = 種族名;
-        EnemyS[種族].移動タイプ = 移動タイプ;
-        EnemyS[種族].魔法属性 = 魔法属性;
-        EnemyS[種族].スコア = スコア;
-        EnemyS[種族].最大HP = 最大HP;
-        EnemyS[種族].防御力 = 防御力;
-        EnemyS[種族].移動速度 = 移動速度;
-        EnemyS[種族].異状耐性[0] = 異状耐性[0];
-        EnemyS[種族].異状耐性[1] = 異状耐性[1];
-        EnemyS[種族].異状耐性[2] = 異状耐性[2];
-        EnemyS[種族].異状耐性[3] = 異状耐性[3];
     }
 
     void LoadEnemyS()
     {
         for (int a = 0; a < (int)EnemyType::MAX; ++a)
         {
-            EnemyS[a].種族 = (EnemyType)a;
+            EnemyDataS[a].種族 = (EnemyType)a;
         }
 
-        EnemyS[EnemyType::ゼリー    ].Set("", Belong::陸  , Elements::氷, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::ゴブリン  ].Set("", Belong::陸, Elements::樹, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::ケットシー].Set("", Belong::陸, Elements::空, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::オーガ    ].Set("", Belong::陸, Elements::炎, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::マーマン  ].Set("", Belong::水陸, Elements::氷, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::ゴーレム  ].Set("", Belong::陸, Elements::樹, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::ケルベロス].Set("", Belong::陸, Elements::炎, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::スケルトン].Set("", Belong::陸, Elements::氷, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::シャーマン].Set("", Belong::陸, Elements::炎, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::コボルド  ].Set("", Belong::陸, Elements::樹, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::ゼリー王  ].Set("", Belong::陸, Elements::氷, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::ドラゴン  ].Set("", Belong::陸, Elements::炎, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::インプ    ].Set("", Belong::空, Elements::空, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::ゴースト  ].Set("", Belong::空, Elements::氷, 50, 50, 0.0, 1.0);
-        EnemyS[EnemyType::グリフィン].Set("", Belong::陸, Elements::空, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ゼリー    ].Set("", Belong::陸  , Elements::氷, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ゴブリン  ].Set("", Belong::陸, Elements::樹, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ケットシー].Set("", Belong::陸, Elements::空, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::オーガ    ].Set("", Belong::陸, Elements::炎, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::マーマン  ].Set("", Belong::水, Elements::氷, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ゴーレム  ].Set("", Belong::陸, Elements::樹, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ケルベロス].Set("", Belong::陸, Elements::炎, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::スケルトン].Set("", Belong::陸, Elements::氷, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::シャーマン].Set("", Belong::陸, Elements::炎, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::コボルド  ].Set("", Belong::陸, Elements::樹, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ゼリー王  ].Set("", Belong::陸, Elements::氷, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ドラゴン  ].Set("", Belong::陸, Elements::炎, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::インプ    ].Set("", Belong::空, Elements::空, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ゴースト  ].Set("", Belong::空, Elements::氷, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::グリフィン].Set("", Belong::陸, Elements::空, 50, 50, 0.0, 1.0);
     }
 
     void LoadWitchS()
     {
         //ライナ
 
-        WitchS[WitchType::ライナ].魔法タイプ[0] = MagicType::ライナ1;
+        WitchDataS[WitchType::ライナ].魔法タイプ[0] = MagicType::ライナ1;
 
 
     }
@@ -294,18 +288,37 @@ namespace SDX_TD
 
     void LoadDifficultyS()
     {
-        TrialS[Difficulty::Easy      ].SetData( 20, 16 , 2, 1.00 , 1.00 );
-        TrialS[Difficulty::Normal    ].SetData( 30, 20 , 2, 1.25 , 1.10 );
-        TrialS[Difficulty::Hard      ].SetData( 40, 24 , 2, 1.50 , 1.20 );
-        TrialS[Difficulty::Maniac    ].SetData( 60, 28 , 2, 1.75 , 1.30 );
-        TrialS[Difficulty::Hell      ].SetData( 80, 32 , 2, 2.00 , 1.40 );
-        TrialS[Difficulty::DeathMarch].SetData(100, 44 , 2, 2.50 , 1.50 );
+        TrialDataS[Difficulty::Easy      ].Set( 20, 16 , 2, 1.00 , 1.00 );
+        TrialDataS[Difficulty::Normal    ].Set(30, 20, 2, 1.25, 1.10);
+        TrialDataS[Difficulty::Hard      ].Set(40, 24, 2, 1.50, 1.20);
+        TrialDataS[Difficulty::Maniac    ].Set(60, 28, 2, 1.75, 1.30);
+        TrialDataS[Difficulty::Hell      ].Set(80, 32, 2, 2.00, 1.40);
+        TrialDataS[Difficulty::DeathMarch].Set(100, 44, 2, 2.50, 1.50);
 
-        PowerS[Difficulty::Easy      ].SetData(  25, 24, 3, 1.00, 1.00);
-        PowerS[Difficulty::Normal    ].SetData(  50, 24, 3, 1.30, 1.20);
-        PowerS[Difficulty::Hard      ].SetData(  75, 24, 3, 1.60, 1.40);
-        PowerS[Difficulty::Maniac    ].SetData( 100, 32, 4, 2.00, 1.60);
-        PowerS[Difficulty::Hell      ].SetData( 300, 32, 4, 3.00, 1.80);
-        PowerS[Difficulty::DeathMarch].SetData(1000, 40, 5, 5.00, 2.00);
+        PowerDataS[Difficulty::Easy      ].Set(25, 24, 3, 1.00, 1.00);
+        PowerDataS[Difficulty::Normal    ].Set(50, 24, 3, 1.30, 1.20);
+        PowerDataS[Difficulty::Hard      ].Set(75, 24, 3, 1.60, 1.40);
+        PowerDataS[Difficulty::Maniac    ].Set(100, 32, 4, 2.00, 1.60);
+        PowerDataS[Difficulty::Hell      ].Set(300, 32, 4, 3.00, 1.80);
+        PowerDataS[Difficulty::DeathMarch].Set(1000, 40, 5, 5.00, 2.00);
+    }
+
+    void LoadChipS()
+    {
+        //配置,陸,海
+        ChipDataS[ChipType::草].Set(true, true, true);
+        ChipDataS[ChipType::沼].Set(true, true, true);
+        ChipDataS[ChipType::森].Set(true, false, false);
+        ChipDataS[ChipType::道].Set(false, true, true);
+        ChipDataS[ChipType::橋].Set(false, true, true);
+        ChipDataS[ChipType::↑].Set(true, true, true);
+        ChipDataS[ChipType::↓].Set(true, true, true);
+        ChipDataS[ChipType::←].Set(true, true, true);
+        ChipDataS[ChipType::→].Set(true, true, true);
+        ChipDataS[ChipType::山].Set(false, false, false);
+        ChipDataS[ChipType::水].Set(false, false, true);
+        ChipDataS[ChipType::穴].Set(false, true, true);
+        ChipDataS[ChipType::畑].Set(false, true, true);
+        ChipDataS[ChipType::高山].Set(false,false,false);
     }
 }

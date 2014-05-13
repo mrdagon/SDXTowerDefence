@@ -10,6 +10,7 @@ namespace SDX_TD
     class Enemy;
     class Magic;
     class Shot;
+    class Wave;
 
     /**.*/
     class IStage : public IScene
@@ -44,6 +45,8 @@ namespace SDX_TD
 
         /**.*/
         virtual double GetNearDirect(Object* 比較対象) = 0;
+
+        virtual Wave* GetWave() = 0;
     };
 
     /**唯一のアクティブなStage.*/

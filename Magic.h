@@ -2,6 +2,7 @@
 #include "Object.h"
 #include "Shot.h"
 #include "IStage.h"
+#include "Wave.h"
 #include "DataType.h"
 
 namespace SDX_TD
@@ -27,7 +28,7 @@ namespace SDX_TD
         
         Magic(int X座標, int Y座標 , MagicType 魔法種) :
             Object(new Rect( (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize, Size * Land::ChipSize), nullptr , Belong::砲台),
-            基礎ステ(MagicS[(int)魔法種])
+            基礎ステ(MagicDataS[(int)魔法種])
         {
             SetWait();
             //画像の設定
@@ -87,6 +88,19 @@ namespace SDX_TD
             }
 
             return this->isRemove;
+        }
+
+        bool 強化開始()
+        {
+            int 必要MP = 基礎ステ.コスト[強化回数+1] - 基礎ステ.コスト[強化回数];
+
+            強化時間 = int( (強化回数 + 1) * (強化回数 + 1) * 60 * MainWitch->強化速度 );
+
+        }
+
+        bool 送還開始()
+        {
+            送還時間 = int( (SStage->GetWave()->現在Wave) * 60 * MainWitch->回収速度 );
         }
 
         /**.*/

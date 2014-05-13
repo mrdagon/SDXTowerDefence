@@ -119,11 +119,8 @@ namespace SDX_TD
             case Belong::陸:
                 方向 = SLand->陸路.方向計算(方向, (int)GetX(), (int)GetY());
                 break;
-            case Belong::水陸:
+            case Belong::水:
                 方向 = SLand->水路.方向計算(方向, (int)GetX(), (int)GetY());
-                break;
-            case Belong::水中:
-                方向 = SLand->海路.方向計算(方向, (int)GetX(), (int)GetY());
                 break;
             }
 

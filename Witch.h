@@ -9,6 +9,7 @@ namespace SDX_TD
     {
     public:
         WitchType 種類;
+        WitchData 基礎ステ;
 
         //補正後のパラメータ
         double 攻撃補正 = 1.0;

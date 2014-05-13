@@ -4,8 +4,9 @@
 namespace SDX_TD
 {
     using namespace SDX;
-    struct Wave
+    class Wave
     {
+    public:
         int 現在Wave = -1;
         int 待ち時間 = 240;
         int 最終Wave = 25;
@@ -13,11 +14,6 @@ namespace SDX_TD
 
         EnemyType 敵種類[100];
         bool isBoss[100];
-
-        int GetPosition()
-        {
-            return 待ち時間 * 60 / Wave間隔 - 60;
-        }
 
         bool Check()
         {
@@ -31,6 +27,12 @@ namespace SDX_TD
             }
 
             return false;
+        }
+
+        void Draw()
+        {
+            int x = 待ち時間 * 60 / Wave間隔 - 60;
+            Drawing::Rect( x , Window::GetHeight() - 40, 60, 40, Color::Red, false);
         }
     };
 }
