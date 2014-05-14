@@ -17,9 +17,13 @@ int main(int argc, char* argv[])
     MainWitch = new Witch(WitchType::ライナ);
     MainWitch->特殊補正[DebuffType::吹飛] = 1;
 
-    System::Initialise("sample", 800, 600);//ライブラリの初期化
+    System::Initialise("sample", 640, 480);//ライブラリの初期化
+
+    //16:9
+    //40:
 
     LoadMagicS();
+    LoadChipS();
 
     LoadMaterial();
 

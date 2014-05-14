@@ -52,7 +52,7 @@ namespace SDX_TD
 
             MSystem::フレーム[1].Draw((int)GetX()-Land::ChipSize, (int)GetY()-Land::ChipSize,Land::ChipSize*2,Land::ChipSize*2);            
             MMagic::魔法[0]->DrawRotate((int)GetX(), (int)GetY(),1,0);            
-            MUnit::魔女[WitchType::ライナ][1]->DrawRotate((int)GetX(),(int)GetY(),2,0);
+            MUnit::魔女[WitchType::ライナ][1]->DrawRotate((int)GetX(),(int)GetY()-4,1,0);
 
             //レベル表示
             for(int a=0;a<強化回数;++a)

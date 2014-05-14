@@ -287,7 +287,7 @@ namespace SDX_TD
                 break;
             }
 
-            MUnit::敵[基礎ステ.種族][アニメ]->DrawRotate(int(GetX()),int(GetY()),2+isボス,0,反転);
+            MUnit::敵[基礎ステ.種族][アニメ]->DrawRotate(int(GetX()),int(GetY()),1+isボス,0,反転);
 
             //Drawing::Rect((int)GetX() - 7, (int)GetY() - 7, 14, 14, Color::Red, false);
         }
