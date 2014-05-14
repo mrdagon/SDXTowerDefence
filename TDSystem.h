@@ -13,6 +13,9 @@ namespace SDX_TD
         bool isトライアル;
         bool isシングル;
 
+        MagicType 魔法タイプ[10];
+        int    詠唱回数[10];
+
         int Hp;
         int 素材数[4];
 

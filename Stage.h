@@ -140,11 +140,11 @@ namespace SDX_TD
         void Hit()
         {
             //空と地上の分割木を初期化
-            for (int i = 0; i < Land::MapSize; ++i )
-            for (int j = 0; j < Land::MapSize; ++j )
+            for (int a = 0; a < Land::MapSize; ++a )
+            for (int b = 0; b < Land::MapSize; ++b )
             {
-                地上Top[i][j] = nullptr;
-                空中Top[i][j] = nullptr;
+                地上Top[a][b] = nullptr;
+                空中Top[a][b] = nullptr;
             }
 
             AddChainList(groundEnemyS, 地上Top, 地上End);
@@ -261,12 +261,12 @@ namespace SDX_TD
             if (!wave.Check()) return;
             
             //発生処理
-            for (int i = 0; i < 16; ++i)
+            for (int a = 0; a < 16; ++a)
             {
                 int x = SLand->穴の位置[0] % Land::MapSize;
                 int y = SLand->穴の位置[0] / Land::MapSize;
 
-                Add(new Enemy(x, y, EnemyDataS[EnemyType::ゼリー]), i * 16);
+                Add(new Enemy(x, y, EnemyDataS[EnemyType::ゼリー]), a * 16);
             }
         }
 

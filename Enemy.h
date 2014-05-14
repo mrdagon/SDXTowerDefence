@@ -317,7 +317,7 @@ namespace SDX_TD
             double ダメージ量 = 衝突相手->攻撃力;
 
             //属性効果判定
-            if (衝突相手->デバフ効果 > 0)
+            if (衝突相手->デバフ効果 > 0 && !基礎ステ.特殊耐性[衝突相手->基礎ステ.デバフ種])
             {
                 switch (衝突相手->基礎ステ.デバフ種)
                 {
@@ -346,16 +346,12 @@ namespace SDX_TD
         {
             //判定
             if (!Rand::Coin(衝突相手->デバフ率)) return;
-            if ( 基礎ステ.異状耐性[(int)DebuffType::眠り] ) return;
 
             //付与処理
             眠り時間 = std::max(衝突相手->デバフ効果, 眠り時間);
         }
         void 痺れ付与(Shot* 衝突相手)
         {
-            //判定
-            if ( 基礎ステ.異状耐性[(int)DebuffType::痺れ]) return;
-
             if (痺れ時間 <= 0) 痺れ率 = 1.0;
 
             //付与処理
@@ -364,9 +360,6 @@ namespace SDX_TD
         }
         void 吹飛付与(Shot* 衝突相手)
         {
-            //判定
-            if (基礎ステ.異状耐性[(int)DebuffType::吹飛] ) return;
-
             //付与処理
             const double 吹き飛び距離 = 衝突相手->デバフ効果;
 
@@ -375,9 +368,6 @@ namespace SDX_TD
         }
         void 防壊付与(Shot* 衝突相手)
         {
-            //判定
-            if (基礎ステ.異状耐性[(int)DebuffType::吹飛]) return;
-
             //付与処理
             防御力 = std::max(0, 防御力 - 衝突相手->デバフ効果);
         }
@@ -387,10 +377,10 @@ namespace SDX_TD
         {
             return
                 (
-                    (衝突相手->基礎ステ.魔法属性 == Elements::炎 && 基礎ステ.魔法属性 == Elements::氷) ||
-                    (衝突相手->基礎ステ.魔法属性 == Elements::氷 && 基礎ステ.魔法属性 == Elements::炎) ||
-                    (衝突相手->基礎ステ.魔法属性 == Elements::樹 && 基礎ステ.魔法属性 == Elements::空) ||
-                    (衝突相手->基礎ステ.魔法属性 == Elements::空 && 基礎ステ.魔法属性 == Elements::樹)
+                    (衝突相手->基礎ステ.属性 == Element::炎 && 基礎ステ.属性 == Element::氷) ||
+                    (衝突相手->基礎ステ.属性 == Element::氷 && 基礎ステ.属性 == Element::炎) ||
+                    (衝突相手->基礎ステ.属性 == Element::樹 && 基礎ステ.属性 == Element::空) ||
+                    (衝突相手->基礎ステ.属性 == Element::空 && 基礎ステ.属性 == Element::樹)
                 );
         }
 

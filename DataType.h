@@ -9,7 +9,7 @@ namespace SDX_TD
     namespace Land
     {
         static const int MapSize = 30;
-        static const int ChipSize = 20;
+        static const int ChipSize = 16;
         static const int 到達不可 = 99999999;
         static const double 自動床速度 = 0.5;
     }
@@ -24,7 +24,7 @@ namespace SDX_TD
 
         MagicType 魔法種;
         RangeType 射程種;
-        Elements 魔法属性;
+        Element 属性;
 
         int コスト[最大強化];
         int 攻撃力[最大強化];
@@ -66,7 +66,7 @@ namespace SDX_TD
         std::string 種族名;
         EnemyType 種族 = EnemyType::マーマン;
         Belong 移動タイプ = Belong::陸;
-        Elements 魔法属性;
+        Element 属性;
 
         int スコア = 50;
         int 最大HP = 100;
@@ -74,21 +74,21 @@ namespace SDX_TD
         double 移動速度 = 1;
 
         //無効 or 有効
-        bool 異状耐性[4];//各属性効果への耐性
+        DataPack<bool, DebuffType> 特殊耐性;
 
-        void Set(const char* 種族名, Belong 移動タイプ, Elements 魔法属性, int スコア, int 最大HP, double 防御力, double 移動速度, std::vector<bool> 異状耐性 = { false, false, false, false })
+        void Set(const char* 種族名, Belong 移動タイプ, Element 属性, int スコア, int 最大HP, double 防御力, double 移動速度, std::vector<bool> 特殊耐性 = { false, false, false, false })
         {
             this->種族名 = 種族名;
             this->移動タイプ = 移動タイプ;
-            this->魔法属性 = 魔法属性;
+            this->属性 = 属性;
             this->スコア = スコア;
             this->最大HP = 最大HP;
             this->防御力 = 防御力;
             this->移動速度 = 移動速度;
-            this->異状耐性[0] = 異状耐性[0];
-            this->異状耐性[1] = 異状耐性[1];
-            this->異状耐性[2] = 異状耐性[2];
-            this->異状耐性[3] = 異状耐性[3];
+            this->特殊耐性[0] = 特殊耐性[0];
+            this->特殊耐性[1] = 特殊耐性[1];
+            this->特殊耐性[2] = 特殊耐性[2];
+            this->特殊耐性[3] = 特殊耐性[3];
         }
 
     };
@@ -98,11 +98,10 @@ namespace SDX_TD
     {
         WitchData()
         {
-            for (int a = 0; a < 4; ++a)
-            {
-                状態強化[a] = 1.0;
-                属性強化[a] = 1.0;
-            }
+            特殊補正[DebuffType::吹飛] = 1.0;
+            特殊補正[DebuffType::防壊] = 1.0;
+            特殊補正[DebuffType::眠り] = 1.0;
+            特殊補正[DebuffType::痺れ] = 1.0;
         }
 
         double 攻撃補正 = 1.0;
@@ -110,29 +109,26 @@ namespace SDX_TD
         double 範囲補正 = 1.0;
         double 射程補正 = 1.0;
         double 支援補正 = 1.0;
-        double 支援範囲 = 1.0;
         double 弾速補正 = 1.0;
 
+        double MP消費 = 1.0;
         double 回収率   = 0.5;
         double 回収速度 = 1.0;
         double 強化速度 = 1.0;
 
         double 弱点補正 = 1.1;
-        double 状態強化[4];
-        double 属性強化[4];
+
+        Element 得意属性;
+        DataPack<double, DebuffType> 特殊補正;
+
+        int    大魔法時間 = 3000;
+        double 必要SP = 100;
 
         double 逆境補正 = 0.01;//ライフ-1につき1%攻撃力が上がる
-
-        ChipType 地形補正;
 
         //ステージ開始時しか参照しないパラメータ
         int    初期HP = 20;
         int    初期MP = 50;
-
-        //レベルで変化しないパラメータ
-        int    大魔法時間 = 3000;
-        double 必要SP = 100;
-        double MP消費 = 1.0;
 
         MagicType 魔法タイプ[10];
         double 詠唱回数補正 = 1.0;
@@ -208,41 +204,42 @@ namespace SDX_TD
     {
         File magicFile("data.txt", FileMode::Read, true);
 
-        for (int i = 0; i<(int)MagicType::MAX; ++i)
+        for (int a = 0; a<(int)MagicType::MAX; ++a)
         {
-            magicFile.Read(MagicDataS[i].名前);
-            magicFile.Read(MagicDataS[i].説明文);
+            magicFile.Read(MagicDataS[a].名前);
+            magicFile.Read(MagicDataS[a].説明文);
 
-            magicFile.Read(MagicDataS[i].魔法属性);
-            magicFile.Read(MagicDataS[i].射程種);
+            magicFile.Read(MagicDataS[a].属性);
+            magicFile.Read(MagicDataS[a].射程種);
 
             int param;
             magicFile.Read(param);
-            if (param % 3 == 1) MagicDataS[i].is対空 = false;
-            if (param % 3 == 2) MagicDataS[i].is対地 = false;
-            if (param % 3 >= 3) MagicDataS[i].is貫通 = true;
-            if (param == 6) MagicDataS[i].is支援 = true;
-            if (param == 7) MagicDataS[i].is使い捨て = true;
+            if (param % 3 == 1) MagicDataS[a].is対空 = false;
+            if (param % 3 == 2) MagicDataS[a].is対地 = false;
+            if (param % 3 >= 3) MagicDataS[a].is貫通 = true;
+            if (param == 6) MagicDataS[a].is支援 = true;
+            if (param == 7) MagicDataS[a].is使い捨て = true;
 
-            magicFile.Read(MagicDataS[i].基礎詠唱回数);
-            magicFile.Read(MagicDataS[i].デバフ種);
+            magicFile.Read(MagicDataS[a].基礎詠唱回数);
+            magicFile.Read(MagicDataS[a].デバフ種);
 
-            magicFile.Read(MagicDataS[i].コスト, 6);
-            magicFile.Read(MagicDataS[i].攻撃力, 6);
-            magicFile.Read(MagicDataS[i].射程, 6);
-            magicFile.Read(MagicDataS[i].連射, 6);
+            magicFile.Read(MagicDataS[a].コスト, 6);
+            magicFile.Read(MagicDataS[a].攻撃力, 6);
+            magicFile.Read(MagicDataS[a].射程, 6);
+            magicFile.Read(MagicDataS[a].連射, 6);
 
-            magicFile.Read<int>(MagicDataS[i].弾速, 6 , 100);
+            magicFile.Read<int>(MagicDataS[a].弾速, 6 , 100);
 
-            magicFile.Read<int>(MagicDataS[i].連射支援 , 6 , 100);
-            magicFile.Read<int>(MagicDataS[i].射程支援 , 6 , 100);
-            magicFile.Read<int>(MagicDataS[i].炸裂威力 , 6 , 100);
+            magicFile.Read<int>(MagicDataS[a].連射支援 , 6 , 100);
+            magicFile.Read<int>(MagicDataS[a].射程支援 , 6 , 100);
+            magicFile.Read<int>(MagicDataS[a].炸裂威力 , 6 , 100);
 
-            magicFile.Read(MagicDataS[i].炸裂範囲,6);
+            magicFile.Read(MagicDataS[a].炸裂範囲,6);
 
-            magicFile.Read(MagicDataS[i].デバフ効果,6);
-            magicFile.Read<int>(MagicDataS[i].デバフ率 , 6 , 100);
-            magicFile.Read(MagicDataS[i].Hit数, 6);
+            magicFile.Read(MagicDataS[a].デバフ効果,6);
+            magicFile.Read<int>(MagicDataS[a].デバフ率 , 6 , 100);
+            magicFile.Read(MagicDataS[a].Hit数, 6);
+
         }
 
     }
@@ -254,30 +251,66 @@ namespace SDX_TD
             EnemyDataS[a].種族 = (EnemyType)a;
         }
 
-        EnemyDataS[EnemyType::ゼリー    ].Set("", Belong::陸  , Elements::氷, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ゴブリン  ].Set("", Belong::陸, Elements::樹, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ケットシー].Set("", Belong::陸, Elements::空, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::オーガ    ].Set("", Belong::陸, Elements::炎, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::マーマン  ].Set("", Belong::水, Elements::氷, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ゴーレム  ].Set("", Belong::陸, Elements::樹, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ケルベロス].Set("", Belong::陸, Elements::炎, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::スケルトン].Set("", Belong::陸, Elements::氷, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::シャーマン].Set("", Belong::陸, Elements::炎, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::コボルド  ].Set("", Belong::陸, Elements::樹, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ゼリー王  ].Set("", Belong::陸, Elements::氷, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ドラゴン  ].Set("", Belong::陸, Elements::炎, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::インプ    ].Set("", Belong::空, Elements::空, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ゴースト  ].Set("", Belong::空, Elements::氷, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::グリフィン].Set("", Belong::陸, Elements::空, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ゼリー    ].Set("", Belong::陸  , Element::氷, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ゴブリン  ].Set("", Belong::陸, Element::樹, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ケットシー].Set("", Belong::陸, Element::空, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::オーガ    ].Set("", Belong::陸, Element::炎, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::マーマン  ].Set("", Belong::水, Element::氷, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ゴーレム  ].Set("", Belong::陸, Element::樹, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ケルベロス].Set("", Belong::陸, Element::炎, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::スケルトン].Set("", Belong::陸, Element::氷, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::シャーマン].Set("", Belong::陸, Element::炎, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::コボルド  ].Set("", Belong::陸, Element::樹, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ゼリー王  ].Set("", Belong::陸, Element::氷, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ドラゴン  ].Set("", Belong::陸, Element::炎, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::インプ    ].Set("", Belong::空, Element::空, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::ゴースト  ].Set("", Belong::空, Element::氷, 50, 50, 0.0, 1.0);
+        EnemyDataS[EnemyType::グリフィン].Set("", Belong::陸, Element::空, 50, 50, 0.0, 1.0);
     }
 
     void LoadWitchS()
     {
         //ライナ
+        WitchDataS[WitchType::ライナ].得意属性 = Element::炎;
+
+        WitchDataS[WitchType::ライナ].連射補正 = 1.0;
+        WitchDataS[WitchType::ライナ].範囲補正 = 1.0;
+        WitchDataS[WitchType::ライナ].射程補正 = 1.0;
+        WitchDataS[WitchType::ライナ].支援補正 = 1.0;
+        WitchDataS[WitchType::ライナ].弾速補正 = 1.0;
+
+        WitchDataS[WitchType::ライナ].回収率 = 0.5;
+        WitchDataS[WitchType::ライナ].回収速度 = 1.0;
+        WitchDataS[WitchType::ライナ].強化速度 = 1.0;
+
+        WitchDataS[WitchType::ライナ].弱点補正 = 1.1;
+
+        WitchDataS[WitchType::ライナ].特殊補正[DebuffType::吹飛] = 1.0;
+        WitchDataS[WitchType::ライナ].特殊補正[DebuffType::防壊] = 1.0;
+        WitchDataS[WitchType::ライナ].特殊補正[DebuffType::眠り] = 1.0;
+        WitchDataS[WitchType::ライナ].特殊補正[DebuffType::痺れ] = 1.0;
+
+        WitchDataS[WitchType::ライナ].逆境補正 = 0.01;
+
+        WitchDataS[WitchType::ライナ].初期HP = 20;
+        WitchDataS[WitchType::ライナ].初期MP = 50;
+
+        WitchDataS[WitchType::ライナ].大魔法時間 = 3000;
+        WitchDataS[WitchType::ライナ].必要SP = 100;
+        WitchDataS[WitchType::ライナ].MP消費 = 1.0;
+
+        WitchDataS[WitchType::ライナ].詠唱回数補正 = 1.0;
 
         WitchDataS[WitchType::ライナ].魔法タイプ[0] = MagicType::ライナ1;
-
-
+        WitchDataS[WitchType::ライナ].魔法タイプ[1] = MagicType::ライナ2;
+        WitchDataS[WitchType::ライナ].魔法タイプ[2] = MagicType::ライナ3;
+        WitchDataS[WitchType::ライナ].魔法タイプ[3] = MagicType::ライナ4;
+        WitchDataS[WitchType::ライナ].魔法タイプ[4] = MagicType::ライナ5;
+        WitchDataS[WitchType::ライナ].魔法タイプ[5] = MagicType::ライナ1;
+        WitchDataS[WitchType::ライナ].魔法タイプ[6] = MagicType::ライナ2;
+        WitchDataS[WitchType::ライナ].魔法タイプ[7] = MagicType::ライナ3;
+        WitchDataS[WitchType::ライナ].魔法タイプ[8] = MagicType::ライナ4;
+        WitchDataS[WitchType::ライナ].魔法タイプ[9] = MagicType::ライナ5;
     }
 
     void LoadStageS()

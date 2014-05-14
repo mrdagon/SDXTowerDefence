@@ -42,7 +42,7 @@ namespace SDX_TD
             基礎ステ.射程[強化回数] = 60;
             基礎ステ.デバフ効果[強化回数] = 0;
             基礎ステ.デバフ率[強化回数] = 0;
-            基礎ステ.魔法属性 = Elements::空;
+            基礎ステ.属性 = Element::空;
             待機時間 = int(速度値 / 基礎ステ.連射[強化回数] / 速度補正);
         }
 
@@ -55,9 +55,9 @@ namespace SDX_TD
             MUnit::魔女[WitchType::ライナ][1]->DrawRotate((int)GetX(),(int)GetY(),2,0);
 
             //レベル表示
-            for(int i=0;i<強化回数;++i)
+            for(int a=0;a<強化回数;++a)
             {
-                MSystem::マーク[3]->DrawRotate( (int)GetX()+6*i - 12,(int)GetY() + 12,1,0);
+                MSystem::マーク[3]->DrawRotate( (int)GetX()+6*a - 12,(int)GetY() + 12,1,0);
             }
 
             //強化中or送還中
@@ -92,15 +92,20 @@ namespace SDX_TD
 
         bool 強化開始()
         {
+            if (強化回数 >= 5) return false;
+
             int 必要MP = 基礎ステ.コスト[強化回数+1] - 基礎ステ.コスト[強化回数];
 
             強化時間 = int( (強化回数 + 1) * (強化回数 + 1) * 60 * MainWitch->強化速度 );
-
+            
+            return true;
         }
 
         bool 送還開始()
         {
             送還時間 = int( (SStage->GetWave()->現在Wave) * 60 * MainWitch->回収速度 );
+
+            return true;
         }
 
         /**.*/

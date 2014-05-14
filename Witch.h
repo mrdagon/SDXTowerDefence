@@ -7,9 +7,15 @@ namespace SDX_TD
     /**魔女.*/
     class Witch
     {
+    private:
+        const WitchData &基礎ステ;
     public:
+
+        Witch(WitchType 魔女タイプ):
+            基礎ステ(WitchDataS[魔女タイプ])
+        {}
+
         WitchType 種類;
-        WitchData 基礎ステ;
 
         //補正後のパラメータ
         double 攻撃補正 = 1.0;
@@ -19,21 +25,23 @@ namespace SDX_TD
         double 支援補正 = 1.0;
         double 弾速補正 = 1.0;
 
+        double MP消費 = 1.0;
         double 回収率   = 0.5;
         double 回収速度 = 1.0;
         double 強化速度 = 1.0;
 
         double 弱点補正 = 1.1;
-        double 状態強化[4];
-        double 属性強化[4];
 
-        bool   森林補正;
+        Element 得意属性;
+        DataPack<double, DebuffType> 特殊補正;
+
+        bool   逆境補正 = 0.0;
 
         //変動パラメータ
         double MP;
         double SP;
         int    大魔法残り時間;
-        int    詠唱回数[10];
+        int    被ダメージ;
     };
 
     namespace

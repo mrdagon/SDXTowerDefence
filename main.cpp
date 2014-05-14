@@ -14,8 +14,8 @@ int main(int argc, char* argv[])
     using namespace SDX;
     using namespace SDX_TD;
 
-    MainWitch = new Witch();
-    MainWitch->状態強化[(int)Elements::空] = 1;
+    MainWitch = new Witch(WitchType::ライナ);
+    MainWitch->特殊補正[DebuffType::吹飛] = 1;
 
     System::Initialise("sample", 800, 600);//ライブラリの初期化
 

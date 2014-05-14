@@ -16,7 +16,7 @@ namespace SDX_TD
     };
 
     /**MagicとShotの魔法属性.*/
-    enum class Elements
+    enum class Element
     {
         炎,
         氷,
@@ -204,7 +204,8 @@ namespace SDX_TD
         眠り,
         吹飛,
         防壊,
-        無
+        無,
+        MAX
     };
 
 }

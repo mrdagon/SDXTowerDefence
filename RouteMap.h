@@ -52,17 +52,17 @@ namespace SDX_TD
             {
                 if ( !isUse ) return;
 
-                for (int i = 0; i < MapSize; ++i)
-                for (int j = 0; j < MapSize; ++j)
+                for (int a = 0; a < MapSize; ++a)
+                for (int b = 0; b < MapSize; ++b)
                 {
                     //魔法が配置されると通行不可能
-                    if (種類 != Belong::空 && 配置リスト[i][j] == true)
+                    if (種類 != Belong::空 && 配置リスト[a][b] == true)
                     {
-                        is通行[i][j] = false;
+                        is通行[a][b] = false;
                         continue;
                     }
 
-                    is通行[i][j] = Check通行( 地形[i][j] , 種類);
+                    is通行[a][b] = Check通行( 地形[a][b] , 種類);
                 }
 
                 経路再計算(地形);
@@ -112,22 +112,22 @@ namespace SDX_TD
             {
                 計算リスト.clear();
 
-                for (int i = 0; i < MapSize; ++i)
-                for (int j = 0; j < MapSize; ++j)
+                for (int a = 0; a < MapSize; ++a)
+                for (int b = 0; b < MapSize; ++b)
                 {
-                    if (地形[i][j] == ChipType::畑)
+                    if (地形[a][b] == ChipType::畑)
                     {
-                        距離[i][j] = 0;
-                        計算リスト.push_back(i + j*MapSize);
+                        距離[a][b] = 0;
+                        計算リスト.push_back(a + b*MapSize);
                     }
                     else{
-                        距離[i][j] = 到達不可;
+                        距離[a][b] = 到達不可;
                     }
                 }
 
-                for (unsigned int i = 0; i < 計算リスト.size(); ++i)
+                for (unsigned int a = 0; a < 計算リスト.size(); ++a)
                 {
-                    経路探索(計算リスト[i] % MapSize, 計算リスト[i] / MapSize);
+                    経路探索(計算リスト[a] % MapSize, 計算リスト[a] / MapSize);
                 }
             }
 
@@ -137,22 +137,22 @@ namespace SDX_TD
                 //斜め方向は距離7、上下左右は5で近似
                 const int distance[2] = { 距離[X座標][Y座標] + 7, 距離[X座標][Y座標] + 5 };
 
-                for (int i = 0; i < 9; ++i)
+                for (int a = 0; a < 9; ++a)
                 {
-                    if (i == 4) continue;
-                    const int X = X座標 - 1 + i % 3;
-                    const int Y = Y座標 - 1 + i / 3;
+                    if (a == 4) continue;
+                    const int X = X座標 - 1 + a % 3;
+                    const int Y = Y座標 - 1 + a / 3;
                     if (X < 0 || X >= MapSize || Y < 0 || Y >= MapSize ) continue;
-                    if (i == 0 && (!is通行[X座標 - 1][Y座標] || !is通行[X座標][Y座標 - 1])) continue;
-                    if (i == 2 && (!is通行[X座標 + 1][Y座標] || !is通行[X座標][Y座標 - 1])) continue;
-                    if (i == 6 && (!is通行[X座標 - 1][Y座標] || !is通行[X座標][Y座標 + 1])) continue;
-                    if (i == 8 && (!is通行[X座標 + 1][Y座標] || !is通行[X座標][Y座標 + 1])) continue;
+                    if (a == 0 && (!is通行[X座標 - 1][Y座標] || !is通行[X座標][Y座標 - 1])) continue;
+                    if (a == 2 && (!is通行[X座標 + 1][Y座標] || !is通行[X座標][Y座標 - 1])) continue;
+                    if (a == 6 && (!is通行[X座標 - 1][Y座標] || !is通行[X座標][Y座標 + 1])) continue;
+                    if (a == 8 && (!is通行[X座標 + 1][Y座標] || !is通行[X座標][Y座標 + 1])) continue;
                     if (!is通行[X][Y]) continue;
 
-                    if (距離[X][Y] > distance[i % 2])
+                    if (距離[X][Y] > distance[a % 2])
                     {
-                        距離[X][Y] = distance[i % 2];
-                        経路[X][Y] = 8 - i;
+                        距離[X][Y] = distance[a % 2];
+                        経路[X][Y] = 8 - a;
                         計算リスト.push_back( X + Y * MapSize);
                     }
                 }
@@ -179,12 +179,12 @@ namespace SDX_TD
             /**初期化を行う.*/
             void Init()
             {
-                for (int i = 0; i < MapSize; ++i)
-                for (int j = 0; j < MapSize; ++j)
+                for (int a = 0; a < MapSize; ++a)
+                for (int b = 0; b < MapSize; ++b)
                 {
-                    地形[i][j] = ChipType::草;
+                    地形[a][b] = ChipType::草;
 
-                    if (i <= 1 || j <= 1 || i >= MapSize-2 || j >= MapSize-2 ) 地形[i][j] = ChipType::山;
+                    if (a <= 1 || b <= 1 || a >= MapSize-2 || b >= MapSize-2 ) 地形[a][b] = ChipType::山;
                 }
 
                 地形[2][2] = ChipType::穴;
@@ -233,11 +233,11 @@ namespace SDX_TD
             /**is陸の敵とis水の敵を初期化.*/
             void InitEnemyPos()
             {
-                for (int i = 0; i < MapSize; ++i)
-                for (int j = 0; j < MapSize; ++j)
+                for (int a = 0; a < MapSize; ++a)
+                for (int b = 0; b < MapSize; ++b)
                 {
-                    is陸の敵[i][j] = false;
-                    is水の敵[i][j] = false;
+                    is陸の敵[a][b] = false;
+                    is水の敵[a][b] = false;
                 }
             }
 
@@ -246,10 +246,10 @@ namespace SDX_TD
                 if( !SetCheck(X座標,Y座標,大きさ) ) return false;
 
                 //仮配置
-                for (int i = 0; i < 大きさ; ++i)
-                for (int j = 0; j < 大きさ; ++j)
+                for (int a = 0; a < 大きさ; ++a)
+                for (int b = 0; b < 大きさ; ++b)
                 {
-                    is魔法[X座標 + i][Y座標 + j] = true;
+                    is魔法[X座標 + a][Y座標 + b] = true;
                 }
 
                 //ルートを塞がないかチェック
@@ -259,10 +259,10 @@ namespace SDX_TD
                 陸路.Init(地形, is魔法);
 
                 //空中でない敵か発生点が到達不可ならfalse
-                for (int i = 0; i < MapSize; ++i)
-                for (int j = 0; j < MapSize; ++j)
+                for (int a = 0; a < MapSize; ++a)
+                for (int b = 0; b < MapSize; ++b)
                 {
-                    if (陸路.距離[i][j] == 到達不可 && (is陸の敵[i][j] == true || 地形[i][j] == ChipType::穴))
+                    if (陸路.距離[a][b] == 到達不可 && (is陸の敵[a][b] == true || 地形[a][b] == ChipType::穴))
                     {
                         isOK = false;
                         break;
@@ -272,11 +272,11 @@ namespace SDX_TD
                 if (isOK && 水路.isUse)
                 {
                     水路.Init(地形, is魔法);
-                    for (int i = 0; i < MapSize; ++i)
-                    for (int j = 0; j < MapSize; ++j)
+                    for (int a = 0; a < MapSize; ++a)
+                    for (int b = 0; b < MapSize; ++b)
                     {
                         //穴が到達不可になってるかは再チェックしない
-                        if (水路.距離[i][j] == 到達不可 && is水の敵[i][j] == true)
+                        if (水路.距離[a][b] == 到達不可 && is水の敵[a][b] == true)
                         {
                             isOK = false;
                             break;
@@ -287,10 +287,10 @@ namespace SDX_TD
                 if (isOK) return true;
 
                 //失敗したら仮配置を戻す
-                for (int i = 0; i < 大きさ; ++i)
-                for (int j = 0; j < 大きさ; ++j)
+                for (int a = 0; a < 大きさ; ++a)
+                for (int b = 0; b < 大きさ; ++b)
                 {
-                    is魔法[X座標 + i][Y座標 + j] = false;
+                    is魔法[X座標 + a][Y座標 + b] = false;
                 }
 
                 陸路.Init(地形, is魔法);
@@ -305,14 +305,14 @@ namespace SDX_TD
                 if( X座標 < 2 || X座標 >= MapSize-3 || Y座標 < 2 || Y座標 >= MapSize-3 ) return false;
 
                 //配置が可能かチェック
-                for (int i = 0; i < 大きさ; ++i)
-                for (int j = 0; j < 大きさ; ++j)
+                for (int a = 0; a < 大きさ; ++a)
+                for (int b = 0; b < 大きさ; ++b)
                 {
                     if (
-                            is魔法[X座標 + i][Y座標 + j] ||
-                            !ChipDataS[地形[X座標 + i][Y座標 + j]].is配置可能 ||
-                            is陸の敵[X座標 + i][Y座標 + j] ||
-                            is水の敵[X座標 + i][Y座標 + j]
+                            is魔法[X座標 + a][Y座標 + b] ||
+                            !ChipDataS[地形[X座標 + a][Y座標 + b]].is配置可能 ||
+                            is陸の敵[X座標 + a][Y座標 + b] ||
+                            is水の敵[X座標 + a][Y座標 + b]
                         ) return false;
                 }
 
@@ -322,10 +322,10 @@ namespace SDX_TD
             /**ユニットをどかして経路を再計算する.*/
             void RemoveMagic(int X座標, int Y座標, int 大きさ)
             {
-                for (int i = 0; i < 大きさ; ++i)
-                for (int j = 0; j < 大きさ; ++j)
+                for (int a = 0; a < 大きさ; ++a)
+                for (int b = 0; b < 大きさ; ++b)
                 {
-                    is魔法[X座標 + i][Y座標 + j] = false;
+                    is魔法[X座標 + a][Y座標 + b] = false;
                 }
 
                 陸路.Init(地形, is魔法);
@@ -335,27 +335,27 @@ namespace SDX_TD
             void Draw() const
             {
                 //罫線の表示
-                for (int i = 0; i <= MapSize*ChipSize; i += ChipSize)
+                for (int a = 0; a <= MapSize*ChipSize; a += ChipSize)
                 {
-                    Drawing::Line(i, 0, i, MapSize * ChipSize, Color::White, 1);
-                    Drawing::Line(0, i, MapSize*ChipSize, i, Color::White, 1);
+                    Drawing::Line(a, 0, a, MapSize * ChipSize, Color::White, 1);
+                    Drawing::Line(0, a, MapSize*ChipSize, a, Color::White, 1);
                 }
 
 
                 //地形の表示
-                for (int i = 0; i < MapSize; ++i)
-                for (int j = 0; j < MapSize; ++j)
+                for (int a = 0; a < MapSize; ++a)
+                for (int b = 0; b < MapSize; ++b)
                 {
                     Image* チップ = MSystem::マップチップ[0];
 
-                    if ( 地形[i][j] == ChipType::草)  チップ = MSystem::マップチップ[32];
-                    if ( 地形[i][j] != ChipType::草)  Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Blue, true);
-                    if ( 地形[i][j] == ChipType::畑)  Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Red, true);
-                    if ( is魔法[i][j])                Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Yellow, true);
-                    if ( is陸の敵[i][j])              Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Gray, true);
-                    if ( is水の敵[i][j])              Drawing::Rect(i * ChipSize, j * ChipSize, ChipSize, ChipSize, Color::Purple, true);
+                    if ( 地形[a][b] == ChipType::草)  チップ = MSystem::マップチップ[32];
+                    if ( 地形[a][b] != ChipType::草)  Drawing::Rect(a * ChipSize, b * ChipSize, ChipSize, ChipSize, Color::Blue, true);
+                    if ( 地形[a][b] == ChipType::畑)  Drawing::Rect(a * ChipSize, b * ChipSize, ChipSize, ChipSize, Color::Red, true);
+                    if ( is魔法[a][b])                Drawing::Rect(a * ChipSize, b * ChipSize, ChipSize, ChipSize, Color::Yellow, true);
+                    if ( is陸の敵[a][b])              Drawing::Rect(a * ChipSize, b * ChipSize, ChipSize, ChipSize, Color::Gray, true);
+                    if ( is水の敵[a][b])              Drawing::Rect(a * ChipSize, b * ChipSize, ChipSize, ChipSize, Color::Purple, true);
 
-                    チップ->DrawExtend(i * ChipSize, j * ChipSize, (i+1)*ChipSize , (j+1)*ChipSize);
+                    チップ->DrawExtend(a * ChipSize, b * ChipSize, (a+1)*ChipSize , (b+1)*ChipSize);
                 }
 
                 //配置先の表示
