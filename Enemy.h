@@ -332,7 +332,7 @@ namespace SDX_TD
             //弱点補正
             if ( 弱点判定(衝突相手) )
             {
-                ダメージ量 *= MainWitch->弱点補正;
+                ダメージ量 *= MainWitch->実ステ.弱点補正;
             }
 
             //防御補正

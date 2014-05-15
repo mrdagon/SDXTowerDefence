@@ -96,14 +96,14 @@ namespace SDX_TD
 
             int 必要MP = 基礎ステ.コスト[強化回数+1] - 基礎ステ.コスト[強化回数];
 
-            強化時間 = int( (強化回数 + 1) * (強化回数 + 1) * 60 * MainWitch->強化速度 );
+            強化時間 = int((強化回数 + 1) * (強化回数 + 1) * 60 * MainWitch->実ステ.強化速度);
             
             return true;
         }
 
         bool 送還開始()
         {
-            送還時間 = int( (SStage->GetWave()->現在Wave) * 60 * MainWitch->回収速度 );
+            送還時間 = int( (SStage->GetWave()->現在Wave) * 60 * MainWitch->実ステ.回収速度 );
 
             return true;
         }

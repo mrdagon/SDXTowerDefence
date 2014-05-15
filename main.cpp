@@ -14,8 +14,7 @@ int main(int argc, char* argv[])
     using namespace SDX;
     using namespace SDX_TD;
 
-    MainWitch = new Witch(WitchType::ライナ);
-    MainWitch->特殊補正[DebuffType::吹飛] = 1;
+    MainWitch = new Witch::ライナ();
 
     System::Initialise("sample", 640, 480);//ライブラリの初期化
 
