@@ -72,6 +72,7 @@ namespace SDX_TD
         int 最大HP = 100;
         double 防御力 = 0;
         double 移動速度 = 1;
+        double 回避力 = 0;
 
         //無効 or 有効
         DataPack<bool, DebuffType> 特殊耐性;
@@ -111,8 +112,8 @@ namespace SDX_TD
         double 支援補正 = 1.0;
         double 弾速補正 = 1.0;
 
-        double MP消費 = 1.0;
-        double 回収率   = 0.5;
+        double MP消費   = 1.0;
+        double 回収率   = 0.7;
         double 回収速度 = 1.0;
         double 強化速度 = 1.0;
 

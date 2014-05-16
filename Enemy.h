@@ -18,6 +18,7 @@ namespace SDX_TD
         double  最大HP = 1000;
         double  残りHP = 1000;
         int     防御力 = 0;
+        double  回避力 = 0;
         double  痺れ率 = 1.0;
         int     痺れ時間 = 0;
         int     眠り時間 = 0;

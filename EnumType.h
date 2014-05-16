@@ -76,6 +76,7 @@ namespace SDX_TD
         インプ,
         ゴースト,
         グリフィン,
+        畑荒らし,
         MAX,
     };
 
@@ -207,5 +208,4 @@ namespace SDX_TD
         無,
         MAX
     };
-
 }

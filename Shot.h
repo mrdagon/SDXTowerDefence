@@ -16,14 +16,7 @@ namespace SDX_TD
 
         bool   is貫通 = false;
         bool   isSmall = true;//分割当たり判定用
-
-        //int 氷結効果;
-        //double 突風効果;
-        //int 炎上効果;
-        //double 炎上率;
-        //int 麻痺効果;
-        //double 麻痺率;
-        //int 防御低下量;
+        bool   is必中 = false;
 
         int    デバフ効果;
         double デバフ率;

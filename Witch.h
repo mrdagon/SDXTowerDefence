@@ -1,5 +1,5 @@
 ﻿#pragma once//☀Unicode
-#include "DataType.h"
+#include "TDSystem.h"
 
 namespace SDX_TD
 {
@@ -7,8 +7,6 @@ namespace SDX_TD
     /**魔女.*/
     namespace Witch
     {
-
-
 
     class Witch
     {
@@ -19,7 +17,7 @@ namespace SDX_TD
 
         //固定パラメータ
         Element 属性;
-        MagicType 魔法タイプ[10];
+        MagicType 魔法タイプ[12];
 
         //変動パラメータ
         double MP;
@@ -33,14 +31,29 @@ namespace SDX_TD
         std::string 名前;
 
         //戦闘開始時の初期化処理
+        void Init(){};
 
         //大魔法発動時の性能計算、効果処理
+        virtual void 大魔法発動() = 0;
 
-        //通常時の性能計算
+        /**通常時の性能計算.*/
+        /**MP等は初期化しない*/
+        void 実ステ計算()
+        {
+
+            //アイテムや成長あり
+            if ( !TDSystem::isトライアル)
+            {
+                レベル補正();
+                アイテム補正();
+            }
+        }
 
         //レベルによる補正計算
+        virtual void レベル補正() = 0;
 
         //アイテムによる補正計算
+        void アイテム補正(){};
 
     };
 
@@ -80,9 +93,22 @@ namespace SDX_TD
             基礎ステ.詠唱回数補正 = 1.0;
 
             魔法タイプ[0] = MagicType::ライナ1;
+            魔法タイプ[1] = MagicType::ライナ1;
+            魔法タイプ[2] = MagicType::ライナ1;
+            魔法タイプ[3] = MagicType::ライナ1;
+            魔法タイプ[4] = MagicType::ライナ1;
+            魔法タイプ[5] = MagicType::ライナ1;
+            魔法タイプ[6] = MagicType::ライナ1;
+            魔法タイプ[7] = MagicType::ライナ1;
+            魔法タイプ[8] = MagicType::ライナ1;
+            魔法タイプ[9] = MagicType::ライナ1;
         }
 
+        void 大魔法発動() override
+        {}
+
     };
+
 
     }
 
