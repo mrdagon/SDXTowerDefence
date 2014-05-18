@@ -8,8 +8,6 @@ namespace SDX_TD
     using namespace SDX;
     namespace Land
     {
-
-
         /**各移動タイプ毎の最短経路.*/
         class Route
         {
@@ -184,14 +182,14 @@ namespace SDX_TD
                 {
                     地形[a][b] = ChipType::草;
 
-                    if (a <= 1 || b <= 1 || a >= MapSize-2 || b >= MapSize-2 ) 地形[a][b] = ChipType::山;
+                    if (a <= 2 || b <= 2 || a >= MapSize-3 || b >= MapSize-3 ) 地形[a][b] = ChipType::山;
                 }
 
-                地形[2][2] = ChipType::穴;
-                地形[26][26] = ChipType::畑;
+                地形[3][3] = ChipType::穴;
+                地形[25][25] = ChipType::畑;
 
                 穴の位置.clear();
-                穴の位置.push_back(2 + 2 * MapSize);
+                穴の位置.push_back(3 + 3 * MapSize);
 
                 陸路.SetState( Belong::陸, true);
                 空路.SetState( Belong::空, true);
@@ -302,7 +300,7 @@ namespace SDX_TD
             /**配置が可能か確認、可能なら配置.*/
             bool SetCheck(int X座標, int Y座標, int 大きさ) const
             {
-                if( X座標 < 2 || X座標 >= MapSize-3 || Y座標 < 2 || Y座標 >= MapSize-3 ) return false;
+                if( X座標 < 3 || X座標 > MapSize-3 || Y座標 < 3 || Y座標 > MapSize-3 ) return false;
 
                 //配置が可能かチェック
                 for (int a = 0; a < 大きさ; ++a)
@@ -346,9 +344,9 @@ namespace SDX_TD
                 for (int a = 0; a < MapSize; ++a)
                 for (int b = 0; b < MapSize; ++b)
                 {
-                    Image* チップ = MSystem::マップチップ[0];
+                    Image* チップ = MSystem::マップチップ[2];
 
-                    if ( 地形[a][b] == ChipType::草)  チップ = MSystem::マップチップ[32];
+                    if ( 地形[a][b] == ChipType::草)  チップ = MSystem::マップチップ[0];
                     if ( 地形[a][b] != ChipType::草)  Drawing::Rect(a * ChipSize, b * ChipSize, ChipSize, ChipSize, Color::Blue, true);
                     if ( 地形[a][b] == ChipType::畑)  Drawing::Rect(a * ChipSize, b * ChipSize, ChipSize, ChipSize, Color::Red, true);
                     if ( is魔法[a][b])                Drawing::Rect(a * ChipSize, b * ChipSize, ChipSize, ChipSize, Color::Yellow, true);

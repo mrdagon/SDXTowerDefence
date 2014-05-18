@@ -8,7 +8,7 @@ namespace SDX_TD
     //パラメータ用のデータ型
     namespace Land
     {
-        static const int MapSize = 30;
+        static const int MapSize = 32;
         static const int ChipSize = 16;
         static const int 到達不可 = 99999999;
         static const double 自動床速度 = 0.5;

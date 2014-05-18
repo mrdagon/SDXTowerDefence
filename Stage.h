@@ -308,25 +308,76 @@ namespace SDX_TD
         {
             SStage = this;
 
-            SLand->Draw();            
+            SLand->Draw();
+            MSystem::背景.DrawPart(0,0,0,0,480,40);
+            MSystem::背景.DrawPart(0,0,0,0,40,480);
+            MSystem::背景.DrawPart(0,472,0,472,480,40);
+            MSystem::背景.DrawPart(472,0,472,0,168,480);
 
             //Wave一覧の表示
             wave.Draw();
 
             //スコアの表示
+            MSystem::フレーム[5].Draw(44,4,120,30);
+            MFont::BMP黒.Draw(46,2,Color::White,"SCORE");
+            MFont::BMP白.DrawExtend(46,12,2,2,Color::White,12345678);
+            
+            MSystem::フレーム[5].Draw(168,4,60,30);
+            MFont::BMP黒.Draw(170,2,Color::White,"ENEMY");
+            MFont::BMP白.DrawExtend(170,12,2,2,Color::White,1234);
+
+            //難易度
 
             //ゲーム速度の表示
+            int spd = 1;
+            for(int a=0; a<4;++a)
+            {
+                int x = 234 + a*60;
+
+                MSystem::フレーム[8].Draw(x,-6,60,42);
+                
+                MFont::BMP黒.DrawExtend( x+8 ,10,2,2,Color::White,"x");
+                MFont::BMP黒.DrawExtend( x+36, 8,2,2,Color::White,spd);
+
+                spd *= 2;
+            }
+
 
             //ウィッチの表示
-            MSystem::フレーム[4].Draw( 16*30 ,0 , 640-16*30,480);
+            MSystem::フレーム[5].Draw( 476 ,  4 , 160 , 96);
+            
+            MSystem::フレーム[7].Draw(590,-6,50,42);//メニュー
 
-            //砲台一覧の表示
+            MFont::BMP黒.Draw(   480 , 2 ,Color::White,"WITCH");
+
+            MSystem::フレーム[8].Draw(486,20,40,40);
+            MUnit::魔女[WitchType::ディアネラ][1]->DrawRotate(506,40,2,0);            
+            MUnit::魔女[WitchType::バロゥ][1]->DrawRotate(536,30,1,0);
 
             //MP,HP,SPの表示
+            MSystem::フレーム[5].Draw(530, 40, 100 ,20);
+            MFont::BMP白.DrawExtend(584,44,2,2,{120,120,255},100);//SP
+
+            MFont::BMP白.DrawExtend(520,72,2,2,{255,60,60},100);//HP
+            MFont::BMP白.DrawExtend(584,72,2,2,{255,255,0},100);//MP
+
+            //砲台一覧の表示
+            MSystem::フレーム[5].Draw(476, 100, 160 ,120);
+            for(int a=0;a<12;++a)
+            {
+                int x = 476 + a%4*40;
+                int y = 100 + a/4*40;
+                MSystem::フレーム[1].Draw(x , y,40,40);
+                MUnit::魔女[WitchType::ライナ][1]->DrawRotate(x+20,y+20,1,0);
+            }
+
+
+            //MFont::BMP黒.DrawExtend(548,10,2,2,Color::White,"Menu");
 
             //枠の表示
 
-            //選択中、砲台や敵能力の表示
+            //選択中、砲台や敵能力の表示            
+            MSystem::フレーム[5].Draw( 476 , 220 , 160 , 254);
 
             backEffectS.Draw();
             unitS.Draw();

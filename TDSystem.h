@@ -1,5 +1,4 @@
 ﻿#pragma once//☀Unicode
-#include "Utility/File.h"
 #include "DataType.h"
 
 namespace SDX_TD

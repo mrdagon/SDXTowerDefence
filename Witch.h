@@ -107,6 +107,9 @@ namespace SDX_TD
         void 大魔法発動() override
         {}
 
+        void レベル補正() override
+        {}
+        
     };
 
 

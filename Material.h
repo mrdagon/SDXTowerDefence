@@ -81,26 +81,38 @@ namespace SDX_TD
     namespace MSystem
     {
         ImagePack マップチップ;
-        ImagePack 枠画像[5];
-        BmpFrame  フレーム[5];
+        ImagePack 枠画像[9];
+        BmpFrame  フレーム[9];
 
         ImagePack マーク;
         
+        Image 背景;
+
 
         static void Load()
         {
-            マップチップ.Load("File/System/base.png", 8 * 292 , 8 , 292);
+            マップチップ.Load("File/System/mapchip.png", 10 , 10 , 1);
             枠画像[0].Load("File/System/frame000.png",9,3,3);
             枠画像[1].Load("File/System/frame001.png",9,3,3);
             枠画像[2].Load("File/System/frame002.png",9,3,3);
             枠画像[3].Load("File/System/frame003.png",9,3,3);
             枠画像[4].Load("File/System/frame004.png",9,3,3);
+            枠画像[5].Load("File/System/frame005.png",9,3,3);
+            枠画像[6].Load("File/System/frame006.png",9,3,3);
+            枠画像[7].Load("File/System/frame007.png",9,3,3);
+            枠画像[8].Load("File/System/frame008.png",9,3,3);
+
             フレーム[0].Make( &枠画像[0] );
             フレーム[1].Make( &枠画像[1] );
             フレーム[2].Make( &枠画像[2] );
             フレーム[3].Make( &枠画像[3] );
             フレーム[4].Make( &枠画像[4] );
+            フレーム[5].Make( &枠画像[5] );
+            フレーム[6].Make( &枠画像[6] );
+            フレーム[7].Make( &枠画像[7] );
+            フレーム[8].Make( &枠画像[8] );
 
+            背景.Load("File/System/back000.jpg");
 
             マーク.Load("File/System/mark.png",4,4,1);         
         }
@@ -138,7 +150,9 @@ namespace SDX_TD
 
         static void Load()
         {
-            英語.Load("File/System/font.png",26,10,3);
+            ゴシック小.Load(SystemFont::Gothic,16);
+
+            英語.Load("File/System/font.png",30,10,3);
             黒数字.Load("File/System/font_num_black.png",10,10,1);
             白数字.Load("File/System/font_num_white.png",10,10,1);
 
@@ -147,6 +161,7 @@ namespace SDX_TD
             BMP黒.SetNumber(&黒数字);
 
             BMP白.SetNumber(&白数字);
+
         }
     }
 
