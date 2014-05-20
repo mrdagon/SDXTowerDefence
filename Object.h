@@ -71,6 +71,9 @@ namespace SDX_TD
             return belong;
         }
 
+        /**Stage右枠のの説明を表示.*/
+        virtual void DrawInfo(){}
+
         /**Update時の追加処理.*/
         virtual void Act(){}
 

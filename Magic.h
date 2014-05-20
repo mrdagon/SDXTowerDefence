@@ -71,6 +71,29 @@ namespace SDX_TD
             }
         }
 
+        void DrawInfo() override
+        {
+            //画像&名前
+
+            //残り召喚数
+
+            //説明文、無し？
+
+            //コスト or 強化、回収
+
+            //性能、現在値&次レベル値
+            //LV
+
+            //攻撃、射程、速度
+
+            //支援3種
+
+            //追加効果
+
+            //被支援
+
+        }
+
         /**.*/
         bool RemoveCheck() override
         {

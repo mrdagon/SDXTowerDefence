@@ -293,6 +293,64 @@ namespace SDX_TD
             //Drawing::Rect((int)GetX() - 7, (int)GetY() - 7, 14, 14, Color::Red, false);
         }
 
+        /**Stage右に表示する情報.*/
+        void DrawInfo() override
+        {
+            //MSystem::フレーム[5].Draw( 476 , 220 , 160 , 254);  
+            基礎ステ.種族名 = "マーマン";
+            基礎ステ.説明文 = "水陸両用のモンスター\n水路もスイスイ移動出来る\nつよいぞ";
+
+            //画像&名前
+            MSystem::フレーム[5].Draw(486,232,140,28);
+            MUnit::敵[基礎ステ.種族][1]->DrawRotate( 502 , 242 , 2 , 0 );
+            MFont::ゴシック中.Draw( 531 , 237 , Color::Black , 基礎ステ.種族名);
+            MFont::ゴシック中.Draw( 530 , 236 , Color::White , 基礎ステ.種族名);
+           
+            //説明文
+            MSystem::フレーム[13].Draw(486,264,140,42);
+            MFont::ゴシック小.Draw( 501 , 270 , Color::White , 基礎ステ.説明文);
+            MFont::ゴシック小.Draw( 500 , 269 , Color::Black , 基礎ステ.説明文);
+
+
+            //性能
+            int y = 340 -12;
+            MSystem::フレーム[5].Draw(486, y-12 ,140,150);
+            MFont::BMP黒.Draw(   480 , y-14 ,Color::White,"STATUS");
+
+            //レベル
+            MIcon::UI[3]->Draw( 500 , y );
+            MFont::BMP白.DrawExtend( 550 , y + 7 , 2 , 2 , Color::White, レベル );
+            
+            //HP
+            y += 26;
+            MIcon::UI[1]->Draw( 500 , y );            
+            MFont::BMP白.DrawExtend( 550 , y + 7 , 2 , 2 , Color::White, 残りHP );
+
+            //素早さ
+            y += 26;
+            MIcon::UI[2]->Draw( 500 , y );
+            MFont::BMP白.DrawExtend( 550 , y + 7 , 2 , 2 , Color::White, 基礎ステ.移動速度 );
+
+            //資金
+            y += 26;
+            MIcon::UI[0]->Draw( 500 , y );
+            MFont::BMP白.DrawExtend( 550 , y + 7 , 2 , 2 , Color::White, スコア );
+
+            //防御or回避
+            y += 26;
+            防御力 = 100;
+            if(防御力 > 0)
+            {
+                MIcon::UI[4]->Draw( 500 , y );
+                MFont::BMP白.DrawExtend( 550 , y + 7 , 2 , 2 , Color::White, 防御力 );
+            }
+            else if(回避力 > 0)
+            {
+                MIcon::UI[19]->Draw( 500 , y );
+                MFont::BMP白.DrawExtend( 550 , y + 7 , 2 , 2 , Color::White, 回避力 );            
+            }
+        }
+
         /**消滅判定.*/
         bool RemoveCheck() override
         {

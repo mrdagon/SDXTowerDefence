@@ -62,9 +62,11 @@ namespace SDX_TD
     /**その他のアイコン.*/
     namespace MIcon
     {
+        ImagePack UI;
+
         static void Load()
         {
-        
+            UI.Load("File/System/icon.png", 40 , 10 , 4);
         }
     }
 
@@ -81,8 +83,8 @@ namespace SDX_TD
     namespace MSystem
     {
         ImagePack マップチップ;
-        ImagePack 枠画像[9];
-        BmpFrame  フレーム[9];
+        ImagePack 枠画像[14];
+        BmpFrame  フレーム[14];
 
         ImagePack マーク;
         
@@ -101,8 +103,18 @@ namespace SDX_TD
             枠画像[6].Load("File/System/frame006.png",9,3,3);
             枠画像[7].Load("File/System/frame007.png",9,3,3);
             枠画像[8].Load("File/System/frame008.png",9,3,3);
+            枠画像[9].Load("File/System/frame009.png",9,3,3);
+            枠画像[10].Load("File/System/frame010.png",9,3,3);
+            枠画像[11].Load("File/System/frame011.png",9,3,3);
+            枠画像[12].Load("File/System/frame012.png",9,3,3);
+            枠画像[13].Load("File/System/frame013.png",9,3,3);
 
-            フレーム[0].Make( &枠画像[0] );
+            for(int a = 0;a<14;++a)
+            {
+                フレーム[a].Make( &枠画像[a] );
+            }
+
+
             フレーム[1].Make( &枠画像[1] );
             フレーム[2].Make( &枠画像[2] );
             フレーム[3].Make( &枠画像[3] );
@@ -111,6 +123,7 @@ namespace SDX_TD
             フレーム[6].Make( &枠画像[6] );
             フレーム[7].Make( &枠画像[7] );
             フレーム[8].Make( &枠画像[8] );
+            フレーム[9].Make( &枠画像[9] );
 
             背景.Load("File/System/back000.jpg");
 
@@ -150,7 +163,8 @@ namespace SDX_TD
 
         static void Load()
         {
-            ゴシック小.Load(SystemFont::Gothic,16);
+            ゴシック小.Load(SystemFont::Gothic,10);
+            ゴシック中.Load(SystemFont::Gothic,16);
 
             英語.Load("File/System/font.png",30,10,3);
             黒数字.Load("File/System/font_num_black.png",10,10,1);

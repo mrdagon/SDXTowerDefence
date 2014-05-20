@@ -64,6 +64,7 @@ namespace SDX_TD
     {
         //基礎ステータス
         std::string 種族名;
+        std::string 説明文;
         EnemyType 種族 = EnemyType::マーマン;
         Belong 移動タイプ = Belong::陸;
         Element 属性;

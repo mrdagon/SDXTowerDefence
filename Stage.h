@@ -309,6 +309,24 @@ namespace SDX_TD
             SStage = this;
 
             SLand->Draw();
+
+            DrawUI();
+
+            //敵等の表示
+            backEffectS.Draw();
+            unitS.Draw();
+            seaEnemyS.Draw();
+            groundEnemyS.Draw();
+
+            midEffectS.Draw();
+            shotS.Draw();
+            skyEnemyS.Draw();
+            frontEffectS.Draw();
+        }
+
+        /**UIの描画.*/
+        void DrawUI()
+        {
             MSystem::背景.DrawPart(0,0,0,0,480,40);
             MSystem::背景.DrawPart(0,0,0,0,40,480);
             MSystem::背景.DrawPart(0,472,0,472,480,40);
@@ -344,10 +362,8 @@ namespace SDX_TD
 
 
             //ウィッチの表示
-            MSystem::フレーム[5].Draw( 476 ,  4 , 160 , 96);
-            
-            MSystem::フレーム[7].Draw(590,-6,50,42);//メニュー
-
+            MSystem::フレーム[5].Draw( 476 ,  4 , 160 , 96 + 120);
+           
             MFont::BMP黒.Draw(   480 , 2 ,Color::White,"WITCH");
 
             MSystem::フレーム[8].Draw(486,20,40,40);
@@ -355,40 +371,44 @@ namespace SDX_TD
             MUnit::魔女[WitchType::バロゥ][1]->DrawRotate(536,30,1,0);
 
             //MP,HP,SPの表示
-            MSystem::フレーム[5].Draw(530, 40, 100 ,20);
-            MFont::BMP白.DrawExtend(584,44,2,2,{120,120,255},100);//SP
+            MSystem::フレーム[5].Draw(530, 40, 100 ,20);//SP
+            MFont::BMP白.DrawExtend(584,44,2,2,{120,120,255},100);
 
-            MFont::BMP白.DrawExtend(520,72,2,2,{255,60,60},100);//HP
-            MFont::BMP白.DrawExtend(584,72,2,2,{255,255,0},100);//MP
+            MIcon::UI[1]->Draw(486,66);
+            MFont::BMP白.DrawExtend(510,72,2,2,{255,60,60}, 20);//HP
+
+            MIcon::UI[0]->Draw(550,66);
+            MFont::BMP白.DrawExtend(574,72,2,2,{255,255,0},1000);//MP
+
+            //メニューボタン
+            MSystem::フレーム[7].Draw(570,-6,80,42);
 
             //砲台一覧の表示
-            MSystem::フレーム[5].Draw(476, 100, 160 ,120);
+            //MSystem::フレーム[5].Draw(476, 100, 160 ,120);
             for(int a=0;a<12;++a)
             {
                 int x = 476 + a%4*40;
                 int y = 100 + a/4*40;
-                MSystem::フレーム[1].Draw(x , y,40,40);
-                MUnit::魔女[WitchType::ライナ][1]->DrawRotate(x+20,y+20,1,0);
+                if( a == 0 ) Screen::SetBright({255,120,120});
+                MSystem::フレーム[3].Draw(x , y,40,40);
+                Screen::SetBright({255,255,255});
+                MMagic::魔法[0]->DrawRotate(x+20,y+20,1,0);
             }
 
+            //情報の表示
+            MSystem::フレーム[5].Draw( 476 , 220 , 160 , 254);        
 
-            //MFont::BMP黒.DrawExtend(548,10,2,2,Color::White,"Menu");
+            if( groundEnemyS.GetCount() > 0)
+            {
+                groundEnemyS[0]->DrawInfo();
+            }
 
-            //枠の表示
-
-            //選択中、砲台や敵能力の表示            
-            MSystem::フレーム[5].Draw( 476 , 220 , 160 , 254);
-
-            backEffectS.Draw();
-            unitS.Draw();
-            seaEnemyS.Draw();
-            groundEnemyS.Draw();
-
-            midEffectS.Draw();
-            shotS.Draw();
-            skyEnemyS.Draw();
-            frontEffectS.Draw();
+            if( selected )
+            {
+                selected->DrawInfo();
+            }
         }
+
         /**エフェクト等を追加.*/
         void Add(Object *追加するオブジェクト, int 待機時間 = 0) override
         {
