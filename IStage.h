@@ -16,8 +16,8 @@ namespace SDX_TD
     class IStage : public IScene
     {
     public:
-        Object *selected = nullptr;//選択中のオブジェクト
-        Object *popUp = nullptr;//マウスカーソルが乗っているオブジェクト
+        Object* selected = nullptr;//選択中のオブジェクト
+        Object* popUp = nullptr;//マウスカーソルが乗っているオブジェクト
 
         /**敵や魔法が消滅する前に呼び出す.*/
         void 選択解除(Object* 消滅するオブジェクト)
@@ -50,6 +50,9 @@ namespace SDX_TD
     };
 
     /**唯一のアクティブなStage.*/
-    namespace{ IStage* SStage; }
+    namespace
+    {
+        IStage* SStage; 
+    }
 
 }
