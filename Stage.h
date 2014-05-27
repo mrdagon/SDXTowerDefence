@@ -10,6 +10,7 @@
 #include "Magic.h"
 #include "Shot.h"
 #include "Wave.h"
+#include "Button.h"
 
 namespace SDX_TD
 {
