@@ -12,10 +12,10 @@ namespace SDX_TD
         bool isトライアル;
         bool isシングル;
 
-        MagicType 魔法タイプ[12];
-        int    詠唱回数[12];
+        std::unique_ptr<Magic> 魔法タイプ[12];
+        int    詠唱回数[(int)MagicType::MAX];
 
-        int Hp;
+        int Hp = 20;
         int 素材数[4];
 
         //実績関連

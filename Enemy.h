@@ -2,6 +2,7 @@
 #include "Object.h"
 #include "Shot.h"
 #include "DataType.h"
+#include "Design.h"
 
 namespace SDX_TD
 {
@@ -13,7 +14,7 @@ namespace SDX_TD
 
         EnemyData &基礎ステ;
         Enemy*  next;//当たり判定チェイン用
-        double  レベル = 0;
+        int     レベル = 0;
         int     方向   = 5;
         double  最大HP = 1000;
         double  残りHP = 1000;
@@ -296,58 +297,43 @@ namespace SDX_TD
         /**Stage右に表示する情報.*/
         void DrawInfo() override
         {
-            //MSystem::フレーム[5].Draw( 476 , 220 , 160 , 254);  
+
             基礎ステ.種族名 = "マーマン";
-            基礎ステ.説明文 = "水陸両用のモンスター\n水路もスイスイ移動出来る\nつよいぞ";
+            基礎ステ.説明文 = "水陸両用のモンスター\n水路もスイスイ移動出来る";
 
             //画像&名前
-            MSystem::フレーム[5].Draw(486,232,140,28);
-            MUnit::敵[基礎ステ.種族][1]->DrawRotate( 502 , 242 , 2 , 0 );
-            MFont::ゴシック中.Draw( 531 , 237 , Color::Black , 基礎ステ.種族名);
-            MFont::ゴシック中.Draw( 530 , 236 , Color::White , 基礎ステ.種族名);
+            MSystem::フレーム[5].Draw( UInfo::F名前() );
+            MUnit::敵[基礎ステ.種族][1]->DrawRotate( UInfo::P画像() , 2 , 0 );
+            MFont::ゴシック中.DrawShadow( UInfo::P名前() , Color::White , Color::Gray , 基礎ステ.種族名);
            
             //説明文
-            MSystem::フレーム[13].Draw(486,264,140,42);
-            MFont::ゴシック小.Draw( 501 , 270 , Color::White , 基礎ステ.説明文);
-            MFont::ゴシック小.Draw( 500 , 269 , Color::Black , 基礎ステ.説明文);
+            MSystem::フレーム[5].Draw( UInfo::F説明());
+            MFont::ゴシック小.DrawShadow( UInfo::P説明() , Color::White , Color::Gray , 基礎ステ.説明文);
 
-
-            //性能
-            int y = 340 -12;
-            MSystem::フレーム[5].Draw(486, y-12 ,140,150);
-            MFont::BMP黒.Draw(   480 , y-14 ,Color::White,"STATUS");
-
-            //レベル
-            MIcon::UI[3]->Draw( 500 , y );
-            MFont::BMP白.DrawExtend( 550 , y + 7 , 2 , 2 , Color::White, レベル );
-            
-            //HP
-            y += 26;
-            MIcon::UI[1]->Draw( 500 , y );            
-            MFont::BMP白.DrawExtend( 550 , y + 7 , 2 , 2 , Color::White, 残りHP );
-
-            //素早さ
-            y += 26;
-            MIcon::UI[2]->Draw( 500 , y );
-            MFont::BMP白.DrawExtend( 550 , y + 7 , 2 , 2 , Color::White, 基礎ステ.移動速度 );
-
-            //資金
-            y += 26;
-            MIcon::UI[0]->Draw( 500 , y );
-            MFont::BMP白.DrawExtend( 550 , y + 7 , 2 , 2 , Color::White, スコア );
-
-            //防御or回避
-            y += 26;
-            防御力 = 100;
-            if(防御力 > 0)
+            //性能           
+            int IconNo[6] = {3,1,2,0,10,4};
+            int Num[6] =
             {
-                MIcon::UI[4]->Draw( 500 , y );
-                MFont::BMP白.DrawExtend( 550 , y + 7 , 2 , 2 , Color::White, 防御力 );
-            }
-            else if(回避力 > 0)
+                レベル,
+                (int)残りHP,
+                (int)(基礎ステ.移動速度 * 10),
+                スコア,
+                防御力 + 10,
+                (int)回避力 + 10
+            };
+
+            int y = 0;
+
+            for(int a=0;a<6;++a)
             {
-                MIcon::UI[19]->Draw( 500 , y );
-                MFont::BMP白.DrawExtend( 550 , y + 7 , 2 , 2 , Color::White, 回避力 );            
+                if(Num[a] <= 0 && a > 3) continue;//防御と回避は0なら表示しない
+
+                Screen::SetBright({128,128,255});
+                MSystem::フレーム[5].Draw( UInfo::F性能(y) );
+                Screen::SetBright({255,255,255});
+                MIcon::UI[IconNo[a]]->Draw( UInfo::P性能アイコン(y) );
+                MFont::BMP白.DrawExtend( UInfo::P性能(y) , 2 , 2 , Color::White, { std::setw(10) , Num[a]} );
+                y += UInfo::ステ間();
             }
         }
 

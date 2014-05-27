@@ -47,7 +47,6 @@ namespace SDX_TD
 
         bool is対空 = true;//空の敵に当たるかどうか
         bool is対地 = true;//地上の敵に当たるかどうか
-        bool is支援 = false;//支援専用
         bool is使い捨て = false;
 
         bool is貫通 = true;//命中時に消滅するかどうか
@@ -213,7 +212,6 @@ namespace SDX_TD
             if (param % 3 == 1) MagicDataS[a].is対空 = false;
             if (param % 3 == 2) MagicDataS[a].is対地 = false;
             if (param % 3 >= 3) MagicDataS[a].is貫通 = true;
-            if (param == 6) MagicDataS[a].is支援 = true;
             if (param == 7) MagicDataS[a].is使い捨て = true;
 
             magicFile.Read(MagicDataS[a].基礎詠唱回数);

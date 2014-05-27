@@ -20,7 +20,7 @@ namespace SDX_TD
         MagicType 魔法タイプ[12];
 
         //変動パラメータ
-        double MP;
+        double MP = 1000;
         double SP;
         int    レベル;
         int    経験値;

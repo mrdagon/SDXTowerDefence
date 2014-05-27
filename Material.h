@@ -163,7 +163,7 @@ namespace SDX_TD
 
         static void Load()
         {
-            ゴシック小.Load(SystemFont::Gothic,10);
+            ゴシック小.Load(SystemFont::Gothic,12);
             ゴシック中.Load(SystemFont::Gothic,16);
 
             英語.Load("File/System/font.png",30,10,3);

@@ -282,10 +282,16 @@ namespace SDX_TD
             //配置された魔法を選択
 
             //一覧の魔法を選択
+            for(int a=0;a<12;++a)
+            {
+            
+            }
 
             //大魔法を発動
 
-            //強化or送還or発動or配置
+            //強化or送還or発動or
+
+            //配置
         }
 
         /**配置と強化処理.*/
@@ -336,13 +342,13 @@ namespace SDX_TD
             wave.Draw();
 
             //スコアの表示
-            MSystem::フレーム[5].Draw(44,4,120,30);
-            MFont::BMP黒.Draw(46,2,Color::White,"SCORE");
-            MFont::BMP白.DrawExtend(46,12,2,2,Color::White,12345678);
+            MSystem::フレーム[5].Draw(UStage::Fスコア());
+            MFont::BMP黒.Draw((int)UStage::Pスコア().x,(int)UStage::Pスコア().y-10,Color::White,"SCORE");
+            MFont::BMP白.DrawExtend(UStage::Pスコア(),2,2,Color::White,{ std::setw(10) , 12345678});
             
-            MSystem::フレーム[5].Draw(168,4,60,30);
-            MFont::BMP黒.Draw(170,2,Color::White,"ENEMY");
-            MFont::BMP白.DrawExtend(170,12,2,2,Color::White,1234);
+            MSystem::フレーム[5].Draw(UStage::F敵数());
+            MFont::BMP黒.Draw((int)UStage::P敵数().x,(int)UStage::P敵数().y-10,Color::White,"ENEMY");
+            MFont::BMP白.DrawExtend(UStage::P敵数(),2,2,Color::White,{ std::setw(5) , 1234});
 
             //難易度
 
@@ -350,9 +356,9 @@ namespace SDX_TD
             int spd = 1;
             for(int a=0; a<4;++a)
             {
-                int x = 234 + a*60;
+                int x = (int)UStage::Fゲーム速度(a).x;
 
-                MSystem::フレーム[8].Draw(x,-6,60,42);
+                MSystem::フレーム[8].Draw(UStage::Fゲーム速度(a));
                 
                 MFont::BMP黒.DrawExtend( x+8 ,10,2,2,Color::White,"x");
                 MFont::BMP黒.DrawExtend( x+36, 8,2,2,Color::White,spd);
@@ -360,48 +366,51 @@ namespace SDX_TD
                 spd *= 2;
             }
 
+            //全体枠
+            MSystem::フレーム[5].Draw( 476 ,  4 , 160 , 96 + 105);
 
-            //ウィッチの表示
-            MSystem::フレーム[5].Draw( 476 ,  4 , 160 , 96 + 120);
-           
+            //ウィッチの表示           
             MFont::BMP黒.Draw(   480 , 2 ,Color::White,"WITCH");
 
-            MSystem::フレーム[8].Draw(486,20,40,40);
-            MUnit::魔女[WitchType::ディアネラ][1]->DrawRotate(506,40,2,0);            
-            MUnit::魔女[WitchType::バロゥ][1]->DrawRotate(536,30,1,0);
+            MSystem::フレーム[8].Draw( UStage::Fウィッチ() );
+            MUnit::魔女[WitchType::ディアネラ][1]->DrawRotate(UStage::Pサブウィッチ(),1,0);
+            MUnit::魔女[WitchType::バロゥ][1]->DrawRotate(UStage::Pウィッチ(),2,0);
 
             //MP,HP,SPの表示
             MSystem::フレーム[5].Draw(530, 40, 100 ,20);//SP
             MFont::BMP白.DrawExtend(584,44,2,2,{120,120,255},100);
 
-            MIcon::UI[1]->Draw(486,66);
-            MFont::BMP白.DrawExtend(510,72,2,2,{255,60,60}, 20);//HP
+            MIcon::UI[1]->Draw(UStage::P体力());
+            MFont::BMP白.DrawExtend((int)UStage::P体力().x+24,(int)UStage::P体力().y+6,2,2,{255,60,60}, {std::setw(2),TDSystem::Hp});//HP
 
-            MIcon::UI[0]->Draw(550,66);
-            MFont::BMP白.DrawExtend(574,72,2,2,{255,255,0},1000);//MP
+            MIcon::UI[0]->Draw(UStage::P魔力());
+            MFont::BMP白.DrawExtend((int)UStage::P魔力().x+24,(int)UStage::P体力().y+6,2,2,{255,255,0}, {std::setw(4),MainWitch->MP});//MP
 
             //メニューボタン
-            MSystem::フレーム[7].Draw(570,-6,80,42);
+            MSystem::フレーム[8].Draw(UStage::Fメニュー());
 
-            //砲台一覧の表示
-            //MSystem::フレーム[5].Draw(476, 100, 160 ,120);
+            //魔法一覧の表示
             for(int a=0;a<12;++a)
             {
-                int x = 476 + a%4*40;
-                int y = 100 + a/4*40;
-                if( a == 0 ) Screen::SetBright({255,120,120});
-                MSystem::フレーム[3].Draw(x , y,40,40);
+                if( TDSystem::魔法タイプ[a].get() == selected ) Screen::SetBright({255,120,120});
+                MSystem::フレーム[3].Draw(UStage::F魔法一覧(a));
                 Screen::SetBright({255,255,255});
-                MMagic::魔法[0]->DrawRotate(x+20,y+20,1,0);
+                MMagic::魔法[0]->DrawRotate((int)UStage::F魔法一覧(a).x + 20 ,(int)UStage::F魔法一覧(a).y+20,1,0);
             }
 
             //情報の表示
-            MSystem::フレーム[5].Draw( 476 , 220 , 160 , 254);        
+            MSystem::フレーム[5].Draw( UStage::F情報() );        
 
             if( groundEnemyS.GetCount() > 0)
             {
-                groundEnemyS[0]->DrawInfo();
+                selected = groundEnemyS[0];
             }
+
+            if( unitS.GetCount() > 0)
+            {
+                selected = unitS[0];
+            }
+
 
             if( selected )
             {
