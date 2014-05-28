@@ -33,8 +33,6 @@ namespace SDX_TD
         double 弾速[最大強化];
 
         double 支援効果[最大強化];
-        double 連射支援[最大強化];
-        double 射程支援[最大強化];
 
         int 炸裂範囲[最大強化];
         double 炸裂威力[最大強化];
@@ -224,8 +222,6 @@ namespace SDX_TD
 
             magicFile.Read<int>(MagicDataS[a].弾速, 6 , 100);
 
-            magicFile.Read<int>(MagicDataS[a].連射支援 , 6 , 100);
-            magicFile.Read<int>(MagicDataS[a].射程支援 , 6 , 100);
             magicFile.Read<int>(MagicDataS[a].炸裂威力 , 6 , 100);
 
             magicFile.Read(MagicDataS[a].炸裂範囲,6);
