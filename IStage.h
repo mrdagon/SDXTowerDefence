@@ -17,12 +17,20 @@ namespace SDX_TD
     {
     public:
         Object* selected = nullptr;//選択中のオブジェクト
+        Enemy* selectEnemy = nullptr;//選択中の敵
+        Magic* selectMagic = nullptr;//選択中の魔法
+
         Object* popUp = nullptr;//マウスカーソルが乗っているオブジェクト
 
         /**敵や魔法が消滅する前に呼び出す.*/
         void 選択解除(Object* 消滅するオブジェクト)
         {
-            if (selected == 消滅するオブジェクト) selected = nullptr;
+            if (selected == 消滅するオブジェクト)
+            {
+                selected = nullptr;
+                selectMagic = nullptr;
+                selectEnemy = nullptr;
+            }
         }
 
         /**.*/

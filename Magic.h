@@ -25,7 +25,7 @@ namespace SDX_TD
         int    待機時間 = -1;
         int    送還時間 = -1;
         int    強化時間 = -1;
-        bool   is配置リスト;
+        bool   is配置リスト = false;
         
         Magic(int X座標, int Y座標 , MagicType 魔法種) :
             Object(new Rect( (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize, Size * Land::ChipSize), nullptr , Belong::砲台),
@@ -34,7 +34,7 @@ namespace SDX_TD
             SetWait();
             //画像の設定
         }
-
+        
         /**.*/
         void SetWait()
         {
@@ -87,8 +87,6 @@ namespace SDX_TD
             MMagic::魔法[(int)基礎ステ.魔法種]->DrawRotate( UInfo::P画像() , 2 , 0 );
             MFont::ゴシック中.DrawShadow( UInfo::P名前() , Color::White , Color::Gray  , 基礎ステ.名前);
             
-            is配置リスト = false;
-
             //レベル
             if(is配置リスト)
             {

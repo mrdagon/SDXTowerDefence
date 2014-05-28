@@ -4,6 +4,7 @@
 namespace SDX_TD
 {
     using namespace SDX;
+    class Magic;
 
     namespace TDSystem
     {
@@ -12,7 +13,11 @@ namespace SDX_TD
         bool isトライアル;
         bool isシングル;
 
-        std::unique_ptr<Magic> 魔法タイプ[12];
+        bool is魔法選択 = false;
+        bool is一覧選択 = false;
+        bool is敵選択 = false;
+
+        std::vector<std::unique_ptr<Magic>> 魔法リスト;
         int    詠唱回数[(int)MagicType::MAX];
 
         int Hp = 20;

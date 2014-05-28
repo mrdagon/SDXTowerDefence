@@ -201,8 +201,36 @@ namespace SDX_TD
         void Init()
         {
             SStage = this;
+            //地形データ初期化
             if( !SLand )SLand = new Land::Land();
             SLand->Init();
+
+            //ウィッチ初期化
+
+
+            //ウィッチリスト12種初期化
+            TDSystem::魔法リスト.clear();
+            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
+            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
+            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
+            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
+
+            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
+            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
+            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
+            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
+
+            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
+            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
+            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
+            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
+
+            for(auto& it:TDSystem::魔法リスト)
+            {
+                it->is配置リスト = true;
+            }
+
+
         }
 
         /**毎フレーム実行される更新処理.*/
@@ -252,8 +280,6 @@ namespace SDX_TD
             LandUpdate();
 
             SelectCheck();
-
-            SetCheck();
         }
 
         /**Waveの処理.*/
@@ -274,39 +300,135 @@ namespace SDX_TD
         /**クリックの選択処理.*/
         void SelectCheck()
         {
+            Point マウス座標(Input::mouse.x,Input::mouse.y);
+
+            //右クリックで解除
+            if(Input::mouse.Right.on)
+            {
+                selected = nullptr;
+                selectEnemy = nullptr;
+                selectMagic = nullptr;
+            }
+
+            //左クリックしていないなら処理しない
+            if( !Input::mouse.Left.on )
+            {
+                return;
+            }
+
             //敵を選択
+            for(auto it : groundEnemyS.objectS)
+            {
+                if( it->Hit(&マウス座標) )
+                {
+                    SetSelect(it.get());
+                    return;
+                }
+            }
+            for(auto it : seaEnemyS.objectS)
+            {
+                if( it->Hit(&マウス座標) )
+                {
+                    SetSelect(it.get());
+                    return;
+                }
+            }
+            for(auto it : skyEnemyS.objectS)
+            {
+                if( it->Hit(&マウス座標) )
+                {
+                    SetSelect(it.get());
+                    return;
+                }
+            }
 
             //ポーズを選択
-
-            //Wave送り
-
-            //配置された魔法を選択
-
-            //一覧の魔法を選択
-            for(int a=0;a<12;++a)
+            if( UStage::Fメニュー().Hit(&マウス座標) )
+            {
+            
+            }
+            
+            //大魔法を発動
+            if( UStage::F大魔法().Hit(&マウス座標) )
             {
             
             }
 
-            //大魔法を発動
+            //Wave送り
+            if( マウス座標.x < 38)
+            {
+                
+            }
 
-            //強化or送還or発動or
+            //配置された魔法を選択、一覧選択中は不可能
+            for(auto it : unitS.objectS)
+            {
+                if( selectMagic && selectMagic->is配置リスト ) break;
 
-            //配置
+                if( it->Hit(&マウス座標) )
+                {
+                    SetSelect(it.get());
+                    return;
+                }
+            }
+
+            //一覧の魔法を選択
+            for(int a=0;a<12;++a)
+            {
+                if( UStage::F魔法一覧(a).Hit( &マウス座標 ) )
+                {
+                    SetSelect( TDSystem::魔法リスト[a].get() );
+                    return;
+                }
+            }
+
+            //強化など
+            if( selectMagic && !selectMagic->is配置リスト )
+            {
+                //強化
+                if( UMagic::F強化().Hit(&マウス座標) )
+                {
+                    selectMagic->強化開始();
+                    return;
+                }
+                //回収or発動
+                if( UMagic::F回収().Hit(&マウス座標) )
+                {
+                    selectMagic->送還開始();
+                    return;
+                }
+            }
+            
+            //新規配置
+            if( selectMagic && selectMagic->is配置リスト )
+            {
+                SetCheck( selectMagic->基礎ステ.魔法種 );
+            }
+        }
+
+        void SetSelect(Enemy* 選択した敵)
+        {
+            selected = 選択した敵;
+            selectEnemy = 選択した敵;
+            selectMagic = nullptr;
+        }
+
+        void SetSelect(Magic* 選択した魔法)
+        {
+            selected = 選択した魔法;
+            selectEnemy = nullptr;
+            selectMagic = 選択した魔法;
         }
 
         /**配置と強化処理.*/
-        void SetCheck()
+        void SetCheck(MagicType 魔法種)
         {
-            if (Input::mouse.Left.on)
-            {
-                const int x = (Input::mouse.x - Land::ChipSize/2) / Land::ChipSize;
-                const int y = (Input::mouse.y - Land::ChipSize/2) / Land::ChipSize;
+            const int x = (Input::mouse.x - Land::ChipSize/2) / Land::ChipSize;
+            const int y = (Input::mouse.y - Land::ChipSize/2) / Land::ChipSize;
 
-                if (SLand->SetMagic( x , y , 2))
-                {
-                    Add(new Magic( x , y ,MagicType::炎基礎1));
-                }
+            if (SLand->SetMagic( x , y , 2))
+            {
+                Add( new Magic( x , y , 魔法種 ) );
             }
         }
 
@@ -393,7 +515,7 @@ namespace SDX_TD
             //魔法一覧の表示
             for(int a=0;a<12;++a)
             {
-                if( TDSystem::魔法タイプ[a].get() == selected ) Screen::SetBright({255,120,120});
+                if( TDSystem::魔法リスト[a].get() == selected ) Screen::SetBright({255,120,120});
                 MSystem::フレーム[3].Draw(UStage::F魔法一覧(a));
                 Screen::SetBright({255,255,255});
                 MMagic::魔法[0]->DrawRotate((int)UStage::F魔法一覧(a).x + 20 ,(int)UStage::F魔法一覧(a).y+20,1,0);
@@ -401,17 +523,6 @@ namespace SDX_TD
 
             //情報の表示
             MSystem::フレーム[5].Draw( UStage::F情報() );        
-
-            if( groundEnemyS.GetCount() > 0)
-            {
-                selected = groundEnemyS[0];
-            }
-
-            if( unitS.GetCount() > 0)
-            {
-                selected = unitS[0];
-            }
-
 
             if( selected )
             {
