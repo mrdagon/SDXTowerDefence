@@ -116,17 +116,24 @@ namespace SDX_TD
                 //支援補正
                 int y = UInfo::ステ間()*5;
                 MSystem::フレーム[5].Draw( UInfo::F性能(y));
-                MIcon::UI[18]->Draw( UInfo::P性能アイコン(y) );         
+                MIcon::UI[IconType::強化].Draw( UInfo::P性能アイコン(y) );         
                 MFont::BMP白.DrawExtend( UInfo::P性能(y) , 2 , 2 , Color::White, { std::setw(10) , (int)(支援補正*100)} );
             }
         }
 
         void DrawInfoState(int 表示Lv , bool 変化量表示 )
         {
-            int アイコン[5] = {0,10,11,16,15};
+            IconType アイコン[5] =
+            {
+                IconType::レベル,
+                IconType::攻撃,
+                IconType::連射,
+                IconType::支援,
+                IconType::麻痺
+            };
             int 性能[5] =
             {
-                基礎ステ.コスト[Lv],//上3つは確定、最大5つ
+                Lv,//上3つは確定、最大5つ
                 基礎ステ.攻撃力[Lv],
                 基礎ステ.連射[Lv],
                 (int)(基礎ステ.支援効果[Lv]*100),
@@ -134,12 +141,20 @@ namespace SDX_TD
             };
             int 次性能[5] =
             {
-                基礎ステ.コスト[(Lv+1)%5],//上3つは確定、最大5つ
+                (Lv+1)%5,//上3つは確定、最大5つ
                 基礎ステ.攻撃力[(Lv+1)%5],
                 基礎ステ.連射[(Lv+1)%5],
                 (int)(基礎ステ.支援効果[(Lv+1)%5]*100),
                 基礎ステ.デバフ効果[(Lv+1)%5]
             };
+
+            switch (基礎ステ.デバフ種 )
+            {
+                case DebuffType::鈍足:アイコン[4] = IconType::鈍足;break;
+                case DebuffType::麻痺:アイコン[4] = IconType::麻痺;break;
+                case DebuffType::吹飛:アイコン[4] = IconType::吹飛;break;
+                case DebuffType::防壊:アイコン[4] = IconType::防壊;break;
+            }
 
             int y = 0;
             
@@ -151,7 +166,7 @@ namespace SDX_TD
                 Screen::SetBright({255,255,255});
 
                 //変化前
-                MIcon::UI[アイコン[a]]->Draw( UInfo::P性能アイコン(y) );
+                MIcon::UI[アイコン[a]].Draw( UInfo::P性能アイコン(y) );
                 int 桁数 = 5;
                 if( !変化量表示 ) 桁数 = 10;
 
@@ -161,7 +176,7 @@ namespace SDX_TD
                 {
                     MFont::ゴシック中.Draw(565,(int)UInfo::P性能アイコン(y).y+8,Color::Yellow,"+");
                     //変化量
-                    MIcon::UI[アイコン[a]]->Draw( UInfo::P性能アイコン(y) );
+                    MIcon::UI[アイコン[a]].Draw( UInfo::P性能アイコン(y) );
                     MFont::BMP白.DrawExtend( UInfo::P性能(y) , 2 , 2 , Color::Yellow, {std::setw(10),次性能[a]-性能[a]} );
                 }
 

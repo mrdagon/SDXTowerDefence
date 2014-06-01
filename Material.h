@@ -62,11 +62,52 @@ namespace SDX_TD
     /**その他のアイコン.*/
     namespace MIcon
     {
-        ImagePack UI;
+        ImagePack ターゲット;
+        DataPack<Image,IconType> UI; 
+        DataPack<Image,WitchType> 魔導具;
+        DataPack<Image,Element> 属性;
 
         static void Load()
         {
-            UI.Load("File/System/icon.png", 40 , 10 , 4);
+            ターゲット.Load("File/System/target.png",3,3,1);
+
+            //UI.Load("File/System/icon.png", 20 , 10 , 2);
+            UI[IconType::ライフ].Load("File/System/icon/000.png");
+            UI[IconType::マナ].Load("File/System/icon/001.png");
+            UI[IconType::レベル].Load("File/System/icon/002.png");
+            UI[IconType::攻撃].Load("File/System/icon/003.png");
+            UI[IconType::連射].Load("File/System/icon/004.png");
+            UI[IconType::支援].Load("File/System/icon/005.png");
+            UI[IconType::鈍足].Load("File/System/icon/006.png");
+            UI[IconType::麻痺].Load("File/System/icon/007.png");
+            UI[IconType::強化].Load("File/System/icon/008.png");
+            UI[IconType::吹飛].Load("File/System/icon/009.png");
+            UI[IconType::防壊].Load("File/System/icon/010.png");
+            UI[IconType::速度].Load("File/System/icon/011.png");
+            UI[IconType::回避].Load("File/System/icon/012.png");
+            UI[IconType::防御].Load("File/System/icon/013.png");
+            UI[IconType::回復].Load("File/System/icon/014.png");
+
+            魔導具[WitchType::ライナ].Load("File/Magic/artifact/000.png");
+            魔導具[WitchType::ナツメ].Load("File/Magic/artifact/001.png");
+            魔導具[WitchType::ルコウ].Load("File/Magic/artifact/002.png");
+            魔導具[WitchType::ディアネラ].Load("File/Magic/artifact/003.png");
+            魔導具[WitchType::ミナエ].Load("File/Magic/artifact/004.png");
+            魔導具[WitchType::トレニア].Load("File/Magic/artifact/005.png");
+            魔導具[WitchType::ロチエ].Load("File/Magic/artifact/006.png");
+            魔導具[WitchType::バロゥ].Load("File/Magic/artifact/007.png");
+            魔導具[WitchType::フィオナ].Load("File/Magic/artifact/008.png");
+            魔導具[WitchType::ナズナ].Load("File/Magic/artifact/009.png");
+            魔導具[WitchType::委員長].Load("File/Magic/artifact/010.png");
+            魔導具[WitchType::ミルラ].Load("File/Magic/artifact/011.png");
+
+            属性[Element::炎].Load("File/Magic/element/000.png");
+            属性[Element::氷].Load("File/Magic/element/001.png");
+            属性[Element::空].Load("File/Magic/element/002.png");
+            属性[Element::樹].Load("File/Magic/element/003.png");
+            属性[Element::無].Load("File/Magic/element/004.png");
+
+
         }
     }
 

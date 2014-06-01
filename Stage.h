@@ -492,21 +492,22 @@ namespace SDX_TD
             //全体枠
             MSystem::フレーム[5].Draw( 476 ,  4 , 160 , 96 + 105);
 
-            //ウィッチの表示           
-            MFont::BMP黒.Draw(   480 , 2 ,Color::White,"WITCH");
-
+            //ウィッチの表示
             MSystem::フレーム[8].Draw( UStage::Fウィッチ() );
-            MUnit::魔女[WitchType::ディアネラ][1]->DrawRotate(UStage::Pサブウィッチ(),1,0);
-            MUnit::魔女[WitchType::バロゥ][1]->DrawRotate(UStage::Pウィッチ(),2,0);
+
+            MUnit::魔女[SubWitch->種類][1]->DrawRotate(UStage::Pサブウィッチ(),1,0);
+            MFont::BMP黒.Draw( (int)UStage::Pサブウィッチ().x , (int)UStage::Pサブウィッチ().y ,Color::White,"SUB");
+            MUnit::魔女[MainWitch->種類][1]->DrawRotate(UStage::Pウィッチ(),2,0);
 
             //MP,HP,SPの表示
             MSystem::フレーム[5].Draw(530, 40, 100 ,20);//SP
+            MIcon::魔導具[MainWitch->種類].Draw(530-2,40);
             MFont::BMP白.DrawExtend(584,44,2,2,{120,120,255},100);
 
-            MIcon::UI[1]->Draw(UStage::P体力());
+            MIcon::UI[IconType::ライフ].Draw(UStage::P体力());
             MFont::BMP白.DrawExtend((int)UStage::P体力().x+24,(int)UStage::P体力().y+6,2,2,{255,60,60}, {std::setw(2),TDSystem::Hp});//HP
 
-            MIcon::UI[0]->Draw(UStage::P魔力());
+            MIcon::UI[IconType::マナ].Draw(UStage::P魔力());
             MFont::BMP白.DrawExtend((int)UStage::P魔力().x+24,(int)UStage::P体力().y+6,2,2,{255,255,0}, {std::setw(4),MainWitch->MP});//MP
 
             //メニューボタン

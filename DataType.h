@@ -99,8 +99,8 @@ namespace SDX_TD
         {
             特殊補正[DebuffType::吹飛] = 1.0;
             特殊補正[DebuffType::防壊] = 1.0;
-            特殊補正[DebuffType::眠り] = 1.0;
-            特殊補正[DebuffType::痺れ] = 1.0;
+            特殊補正[DebuffType::麻痺] = 1.0;
+            特殊補正[DebuffType::鈍足] = 1.0;
         }
 
         double 攻撃補正 = 1.0;

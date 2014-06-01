@@ -201,11 +201,31 @@ namespace SDX_TD
 
     enum class DebuffType
     {
-        痺れ,
-        眠り,
+        鈍足,
+        麻痺,
         吹飛,
         防壊,
         無,
         MAX
+    };
+
+    enum class IconType
+    {
+        ライフ,
+        マナ,
+        レベル,
+        攻撃,
+        連射,
+        支援,
+        鈍足,
+        麻痺,
+        強化,
+        吹飛,
+        防壊,
+        速度,
+        回避,
+        防御,
+        回復,
+        MAX       
     };
 }
