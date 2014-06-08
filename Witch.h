@@ -17,7 +17,7 @@ namespace SDX_TD
 
         //固定パラメータ
         Element 属性;
-        MagicType 魔法タイプ[12];
+        UnitType 魔法タイプ[12];
 
         //変動パラメータ
         double MP = 1000;
@@ -92,16 +92,18 @@ namespace SDX_TD
 
             基礎ステ.詠唱回数補正 = 1.0;
 
-            魔法タイプ[0] = MagicType::ライナ1;
-            魔法タイプ[1] = MagicType::ライナ1;
-            魔法タイプ[2] = MagicType::ライナ1;
-            魔法タイプ[3] = MagicType::ライナ1;
-            魔法タイプ[4] = MagicType::ライナ1;
-            魔法タイプ[5] = MagicType::ライナ1;
-            魔法タイプ[6] = MagicType::ライナ1;
-            魔法タイプ[7] = MagicType::ライナ1;
-            魔法タイプ[8] = MagicType::ライナ1;
-            魔法タイプ[9] = MagicType::ライナ1;
+            魔法タイプ[0] = UnitType::踊り子;
+            魔法タイプ[1] = UnitType::踊り子;
+            魔法タイプ[2] = UnitType::踊り子;
+            魔法タイプ[3] = UnitType::踊り子;
+            魔法タイプ[4] = UnitType::踊り子;
+            魔法タイプ[5] = UnitType::踊り子;
+            魔法タイプ[6] = UnitType::踊り子;
+            魔法タイプ[7] = UnitType::踊り子;
+            魔法タイプ[8] = UnitType::踊り子;
+            魔法タイプ[9] = UnitType::踊り子;
+            魔法タイプ[10] = UnitType::踊り子;
+            魔法タイプ[11] = UnitType::踊り子;
         }
 
         void 大魔法発動() override

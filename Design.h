@@ -23,7 +23,7 @@ namespace SDX_TD
         const int ステ間();
     }
 
-    namespace UMagic
+    namespace UUnit
     {
         const Rect F強化();
         const Point P強化();

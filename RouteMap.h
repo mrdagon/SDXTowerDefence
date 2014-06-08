@@ -239,7 +239,7 @@ namespace SDX_TD
                 }
             }
 
-            bool SetMagic(int X座標 ,int Y座標 , int 大きさ)
+            bool SetUnit(int X座標 ,int Y座標 , int 大きさ)
             {
                 if( !SetCheck(X座標,Y座標,大きさ) ) return false;
 
@@ -318,7 +318,7 @@ namespace SDX_TD
             }
 
             /**ユニットをどかして経路を再計算する.*/
-            void RemoveMagic(int X座標, int Y座標, int 大きさ)
+            void RemoveUnit(int X座標, int Y座標, int 大きさ)
             {
                 for (int a = 0; a < 大きさ; ++a)
                 for (int b = 0; b < 大きさ; ++b)
@@ -339,7 +339,6 @@ namespace SDX_TD
                     Drawing::Line(0, a, MapSize*ChipSize, a, Color::White, 1);
                 }
 
-
                 //地形の表示
                 for (int a = 0; a < MapSize; ++a)
                 for (int b = 0; b < MapSize; ++b)
@@ -355,8 +354,11 @@ namespace SDX_TD
 
                     チップ->DrawExtend(a * ChipSize, b * ChipSize, (a+1)*ChipSize , (b+1)*ChipSize);
                 }
+            }
 
-                //配置先の表示
+            //配置先の表示
+            void DrawSetPos()
+            {
                 const int x = (Input::mouse.x - ChipSize/2) / ChipSize;
                 const int y = (Input::mouse.y - ChipSize/2) / ChipSize;
 
@@ -367,8 +369,9 @@ namespace SDX_TD
                 }else{
                     Drawing::Rect( x * ChipSize,y *ChipSize, ChipSize*2 , ChipSize *2 , Color::Red , true );
                 }
-                Screen::SetBlendMode(BlendMode::NoBlend,0);
+                Screen::SetBlendMode(BlendMode::NoBlend,0);            
             }
+
 
             ChipType Get地形(double X座標, double Y座標)
             {

@@ -10,7 +10,7 @@ namespace SDX_TD
     class Shot : public Object
     {
     public:
-        MagicData &基礎ステ;
+        UnitData &基礎ステ;
         int    強化回数;
         double 攻撃力;
 
@@ -27,7 +27,7 @@ namespace SDX_TD
         std::unique_ptr<ISpeed> 速度;
 
         /**円形弾.*/
-        Shot(double X座標, double Y座標, double 角度, MagicData &基礎ステ, int 強化回数, double 支援補正) :
+        Shot(double X座標, double Y座標, double 角度, UnitData &基礎ステ, int 強化回数, double 支援補正) :
             Object(new Circle(X座標, Y座標, 基礎ステ.半径 ), nullptr, Belong::弾),
             速度(new Speed::Liner(2)),
             基礎ステ(基礎ステ),
@@ -38,7 +38,7 @@ namespace SDX_TD
         }
         
         /**円形以外の弾.*/
-        Shot(Shape* 当たり判定, MagicData &基礎ステ, int 強化回数, double 支援補正) :
+        Shot(Shape* 当たり判定, UnitData &基礎ステ, int 強化回数, double 支援補正) :
             Object(当たり判定, nullptr, Belong::弾),
             速度(new Speed::Liner(2)),
             基礎ステ(基礎ステ),
@@ -105,7 +105,7 @@ namespace SDX_TD
     /**ビーム弾.*/
     class Beam : public Shot
     {
-        Beam(double X座標, double Y座標, double 角度, double 太さ, MagicData &基礎ステ, int レベル, double 支援補正) :
+        Beam(double X座標, double Y座標, double 角度, double 太さ, UnitData &基礎ステ, int レベル, double 支援補正) :
             Shot(new Line(X座標,Y座標,角度,100,0,太さ),基礎ステ,レベル,支援補正)
         {
             SetAngle(角度);
@@ -115,7 +115,7 @@ namespace SDX_TD
     /**範囲攻撃.*/
     class Impact : public Shot
     {
-        Impact(double X座標, double Y座標, double 半径 , MagicData &基礎ステ, int レベル, double 補正) :
+        Impact(double X座標, double Y座標, double 半径 , UnitData &基礎ステ, int レベル, double 補正) :
             Shot(new Circle(X座標, Y座標, 半径), 基礎ステ, レベル, 補正)
         {
             

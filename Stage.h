@@ -7,7 +7,7 @@
 #include "IStage.h"
 
 #include "Enemy.h"
-#include "Magic.h"
+#include "Unit.h"
 #include "Shot.h"
 #include "Wave.h"
 #include "Button.h"
@@ -29,7 +29,7 @@ namespace SDX_TD
 
         Layer<Shot> shotS;
 
-        Layer<Magic> unitS;
+        Layer<Unit> unitS;
 
         std::vector<std::shared_ptr<IModule>> eventS;
 
@@ -210,27 +210,15 @@ namespace SDX_TD
 
             //ウィッチリスト12種初期化
             TDSystem::魔法リスト.clear();
-            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
-            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
-            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
-            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
-
-            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
-            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
-            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
-            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
-
-            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
-            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
-            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
-            TDSystem::魔法リスト.emplace_back( new Magic(0,0,MagicType::ディアネラ1) );
+            for(int a=0; a<12 ; ++a)
+            {
+                TDSystem::魔法リスト.emplace_back( new Unit(0,0,MainWitch->魔法タイプ[a]) );            
+            }
 
             for(auto& it:TDSystem::魔法リスト)
             {
                 it->is配置リスト = true;
             }
-
-
         }
 
         /**毎フレーム実行される更新処理.*/
@@ -307,7 +295,7 @@ namespace SDX_TD
             {
                 selected = nullptr;
                 selectEnemy = nullptr;
-                selectMagic = nullptr;
+                selectUnit = nullptr;
             }
 
             //左クリックしていないなら処理しない
@@ -363,7 +351,7 @@ namespace SDX_TD
             //配置された魔法を選択、一覧選択中は不可能
             for(auto it : unitS.objectS)
             {
-                if( selectMagic && selectMagic->is配置リスト ) break;
+                if( selectUnit && selectUnit->is配置リスト ) break;
 
                 if( it->Hit(&マウス座標) )
                 {
@@ -383,26 +371,26 @@ namespace SDX_TD
             }
 
             //強化など
-            if( selectMagic && !selectMagic->is配置リスト )
+            if( selectUnit && !selectUnit->is配置リスト )
             {
                 //強化
-                if( UMagic::F強化().Hit(&マウス座標) )
+                if( UUnit::F強化().Hit(&マウス座標) )
                 {
-                    selectMagic->強化開始();
+                    selectUnit->強化開始();
                     return;
                 }
                 //回収or発動
-                if( UMagic::F回収().Hit(&マウス座標) )
+                if( UUnit::F回収().Hit(&マウス座標) )
                 {
-                    selectMagic->送還開始();
+                    selectUnit->送還開始();
                     return;
                 }
             }
             
             //新規配置
-            if( selectMagic && selectMagic->is配置リスト )
+            if( selectUnit && selectUnit->is配置リスト )
             {
-                SetCheck( selectMagic->基礎ステ.魔法種 );
+                SetCheck( selectUnit->基礎ステ.魔法種 );
             }
         }
 
@@ -410,25 +398,25 @@ namespace SDX_TD
         {
             selected = 選択した敵;
             selectEnemy = 選択した敵;
-            selectMagic = nullptr;
+            selectUnit = nullptr;
         }
 
-        void SetSelect(Magic* 選択した魔法)
+        void SetSelect(Unit* 選択した魔法)
         {
             selected = 選択した魔法;
             selectEnemy = nullptr;
-            selectMagic = 選択した魔法;
+            selectUnit = 選択した魔法;
         }
 
         /**配置と強化処理.*/
-        void SetCheck(MagicType 魔法種)
+        void SetCheck(UnitType 魔法種)
         {
             const int x = (Input::mouse.x - Land::ChipSize/2) / Land::ChipSize;
             const int y = (Input::mouse.y - Land::ChipSize/2) / Land::ChipSize;
 
-            if (SLand->SetMagic( x , y , 2))
+            if (SLand->SetUnit( x , y , 2))
             {
-                Add( new Magic( x , y , 魔法種 ) );
+                Add( new Unit( x , y , 魔法種 ) );
             }
         }
 
@@ -438,6 +426,11 @@ namespace SDX_TD
             SStage = this;
 
             SLand->Draw();
+
+            if( SStage->selectUnit && SStage->selectUnit->is配置リスト )
+            {
+                SLand->DrawSetPos();
+            }
 
             DrawUI();
 
@@ -495,9 +488,9 @@ namespace SDX_TD
             //ウィッチの表示
             MSystem::フレーム[8].Draw( UStage::Fウィッチ() );
 
-            MUnit::魔女[SubWitch->種類][1]->DrawRotate(UStage::Pサブウィッチ(),1,0);
+            MUnit::魔女[(int)SubWitch->種類][1]->DrawRotate(UStage::Pサブウィッチ(),1,0);
             MFont::BMP黒.Draw( (int)UStage::Pサブウィッチ().x , (int)UStage::Pサブウィッチ().y ,Color::White,"SUB");
-            MUnit::魔女[MainWitch->種類][1]->DrawRotate(UStage::Pウィッチ(),2,0);
+            MUnit::魔女[(int)MainWitch->種類][1]->DrawRotate(UStage::Pウィッチ(),2,0);
 
             //MP,HP,SPの表示
             MSystem::フレーム[5].Draw(530, 40, 100 ,20);//SP
@@ -519,7 +512,7 @@ namespace SDX_TD
                 if( TDSystem::魔法リスト[a].get() == selected ) Screen::SetBright({255,120,120});
                 MSystem::フレーム[3].Draw(UStage::F魔法一覧(a));
                 Screen::SetBright({255,255,255});
-                MMagic::魔法[0]->DrawRotate((int)UStage::F魔法一覧(a).x + 20 ,(int)UStage::F魔法一覧(a).y+20,1,0);
+                MUnit::魔女[a][1]->DrawRotate((int)UStage::F魔法一覧(a).x + 20 ,(int)UStage::F魔法一覧(a).y+20,1,0);
             }
 
             //情報の表示
@@ -549,7 +542,7 @@ namespace SDX_TD
             }
         }
         /**魔法陣を追加.*/
-        void Add(Magic *追加するオブジェクト, int 待機時間 = 0) override
+        void Add(Unit *追加するオブジェクト, int 待機時間 = 0) override
         {
             unitS.Add(追加するオブジェクト, 待機時間);
         }
