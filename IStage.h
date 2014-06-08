@@ -8,7 +8,7 @@ namespace SDX_TD
     using namespace SDX;
     class Object;
     class Enemy;
-    class Magic;
+    class Unit;
     class Shot;
     class Wave;
 
@@ -18,7 +18,7 @@ namespace SDX_TD
     public:
         Object* selected = nullptr;//選択中のオブジェクト
         Enemy* selectEnemy = nullptr;//選択中の敵
-        Magic* selectMagic = nullptr;//選択中の魔法
+        Unit* selectUnit = nullptr;//選択中の魔法
 
         Object* popUp = nullptr;//マウスカーソルが乗っているオブジェクト
 
@@ -28,14 +28,14 @@ namespace SDX_TD
             if (selected == 消滅するオブジェクト)
             {
                 selected = nullptr;
-                selectMagic = nullptr;
+                selectUnit = nullptr;
                 selectEnemy = nullptr;
             }
         }
 
         /**.*/
         virtual void Add(Object *追加するオブジェクト, int 待機時間 = 0) = 0;
-        virtual void Add(Magic  *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void Add(Unit  *追加するオブジェクト, int 待機時間 = 0) = 0;
         virtual void Add(Enemy  *追加するオブジェクト, int 待機時間 = 0) = 0;
         virtual void Add(Shot   *追加するオブジェクト, int 待機時間 = 0) = 0;
 

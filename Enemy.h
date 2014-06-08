@@ -20,9 +20,10 @@ namespace SDX_TD
         double  残りHP = 1000;
         int     防御力 = 0;
         double  回避力 = 0;
-        double  痺れ率 = 1.0;
-        int     痺れ時間 = 0;
-        int     眠り時間 = 0;
+        double  鈍足率 = 1.0;
+        double  再生力 = 0;
+        int     鈍足時間 = 0;
+        int     麻痺時間 = 0;
         double  吹き飛びX = 0;
         double  吹き飛びY = 0;
         bool    isボス = false;
@@ -70,16 +71,16 @@ namespace SDX_TD
             
             if ( isボス) speed *= 0.66;
 
-            //痺れ、凍結補正
-            if (眠り時間 > 0)
+            //異常補正
+            if (麻痺時間 > 0)
             {
                 speed = 0;
-                --眠り時間;
+                --麻痺時間;
             }
 
-            if (痺れ時間 > 0)
+            if (鈍足時間 > 0)
             {
-                speed = speed * 痺れ率;
+                speed = speed * 鈍足率;
             }
 
             if (SLand->Get地形(GetX(), GetY()) == ChipType::沼 && 基礎ステ.移動タイプ != Belong::空)
@@ -291,7 +292,11 @@ namespace SDX_TD
 
             MUnit::敵[基礎ステ.種族][アニメ]->DrawRotate(int(GetX()),int(GetY()),1+isボス,0,反転);
 
-            //Drawing::Rect((int)GetX() - 7, (int)GetY() - 7, 14, 14, Color::Red, false);
+            //ターゲット
+            if(SStage->selected == this)
+            {
+                MIcon::ターゲット[(timer/10)%3]->DrawRotate(int(GetX()),int(GetY()),1,0);
+            }
         }
 
         /**Stage右に表示する情報.*/
@@ -310,16 +315,27 @@ namespace SDX_TD
             MSystem::フレーム[5].Draw( UInfo::F説明());
             MFont::ゴシック小.DrawShadow( UInfo::P説明() , Color::White , Color::Gray , 基礎ステ.説明文);
 
-            //性能           
-            int IconNo[6] = {3,1,2,0,10,4};
-            int Num[6] =
+            //性能
+            
+            IconType IconNo[7] = 
+            {   
+                IconType::レベル,
+                IconType::ライフ,
+                IconType::速度,
+                IconType::マナ,
+                IconType::防御,
+                IconType::回避,
+                IconType::回復
+            };
+            int Num[7] =
             {
                 レベル,
                 (int)残りHP,
                 (int)(基礎ステ.移動速度 * 10),
                 スコア,
-                防御力 + 10,
-                (int)回避力 + 10
+                防御力,
+                (int)回避力,
+                (int)再生力
             };
 
             int y = 0;
@@ -331,7 +347,7 @@ namespace SDX_TD
                 Screen::SetBright({128,128,255});
                 MSystem::フレーム[5].Draw( UInfo::F性能(y) );
                 Screen::SetBright({255,255,255});
-                MIcon::UI[IconNo[a]]->Draw( UInfo::P性能アイコン(y) );
+                MIcon::UI[IconNo[a]].Draw( UInfo::P性能アイコン(y) );
                 MFont::BMP白.DrawExtend( UInfo::P性能(y) , 2 , 2 , Color::White, { std::setw(10) , Num[a]} );
                 y += UInfo::ステ間();
             }
@@ -366,8 +382,8 @@ namespace SDX_TD
             {
                 switch (衝突相手->基礎ステ.デバフ種)
                 {
-                    case DebuffType::痺れ: 痺れ付与(衝突相手); break;
-                    case DebuffType::眠り: 眠り付与(衝突相手); break;
+                case DebuffType::鈍足: 鈍足付与(衝突相手); break;
+                case DebuffType::麻痺: 麻痺付与(衝突相手); break;
                     case DebuffType::吹飛: 吹飛付与(衝突相手); break;
                     case DebuffType::防壊: 防壊付与(衝突相手); break;
                     default:break;
@@ -387,21 +403,21 @@ namespace SDX_TD
             React( ダメージ量 );
         }
 
-        void 眠り付与(Shot* 衝突相手)
+        void 麻痺付与(Shot* 衝突相手)
         {
             //判定
             if (!Rand::Coin(衝突相手->デバフ率)) return;
 
             //付与処理
-            眠り時間 = std::max(衝突相手->デバフ効果, 眠り時間);
+            麻痺時間 = std::max(衝突相手->デバフ効果, 麻痺時間);
         }
-        void 痺れ付与(Shot* 衝突相手)
+        void 鈍足付与(Shot* 衝突相手)
         {
-            if (痺れ時間 <= 0) 痺れ率 = 1.0;
+            if (鈍足時間 <= 0) 鈍足率 = 1.0;
 
             //付与処理
-            痺れ率 = std::min( 1-衝突相手->デバフ率 , 痺れ率);
-            痺れ時間 = std::max(衝突相手->デバフ効果, 痺れ時間);
+            鈍足率 = std::min( 1-衝突相手->デバフ率 , 鈍足率);
+            鈍足時間 = std::max(衝突相手->デバフ効果, 鈍足時間);
         }
         void 吹飛付与(Shot* 衝突相手)
         {

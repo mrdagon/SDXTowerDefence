@@ -21,7 +21,7 @@ namespace SDX_TD
         const int ステ間() { return 27; };
     }
 
-    namespace UMagic
+    namespace UUnit
     {
         const Rect F強化() { return {486,249,69,48,0,0}; };
         const Point P強化() { return {F強化().x+19,F強化().y+8}; };
@@ -61,7 +61,7 @@ namespace SDX_TD
         const Rect F大魔法() { return {530, 40, 100 ,20,0,0}; };
 
         const Rect Fメニュー() { return {570,-6,80,42,0,0}; };
-        
+       
         const Rect F魔法一覧(int a) { return {476+a%4*40,85+a/4*40,40,40,0,0}; };
 
         const Rect F情報() { return {476,205,160,269,0,0}; };

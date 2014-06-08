@@ -15,14 +15,14 @@ namespace SDX_TD
     }
 
     /**魔法の基礎性能.*/
-    struct MagicData
+    struct UnitData
     {
         static const int 最大強化 = 6;
 
         std::string 名前;
         std::string 説明文;
 
-        MagicType 魔法種;
+        UnitType 魔法種;
         RangeType 射程種;
         Element 属性;
 
@@ -99,8 +99,8 @@ namespace SDX_TD
         {
             特殊補正[DebuffType::吹飛] = 1.0;
             特殊補正[DebuffType::防壊] = 1.0;
-            特殊補正[DebuffType::眠り] = 1.0;
-            特殊補正[DebuffType::痺れ] = 1.0;
+            特殊補正[DebuffType::麻痺] = 1.0;
+            特殊補正[DebuffType::鈍足] = 1.0;
         }
 
         double 攻撃補正 = 1.0;
@@ -186,51 +186,49 @@ namespace SDX_TD
     namespace
     {
         DataPack<EnemyData, EnemyType> EnemyDataS;
-        DataPack<MagicData, MagicType> MagicDataS;
+        DataPack<UnitData, UnitType> UnitDataS;
         DataPack<StageData, StageType> StageDataS;
         DataPack<DifficultyData, Difficulty> TrialDataS;
         DataPack<DifficultyData, Difficulty> PowerDataS;
         DataPack<ChipData, ChipType> ChipDataS;
     }
 
-    void LoadMagicS()
+    void LoadUnitS()
     {
-        File magicFile("data.txt", FileMode::Read, true);
+        File UnitFile("data.txt", FileMode::Read, true);
 
-
-        for (MagicType a = (MagicType)0; a != MagicType::MAX; a = MagicType(int(a)+1))
+        for (int a = 0; a<(int)UnitType::MAX; ++a)
         {
-            magicFile.Read(MagicDataS[a].名前);
-            magicFile.Read(MagicDataS[a].説明文);
+            UnitFile.Read(UnitDataS[a].名前);
+            UnitFile.Read(UnitDataS[a].説明文);
 
-            magicFile.Read(MagicDataS[a].属性);
-            magicFile.Read(MagicDataS[a].射程種);
+            UnitFile.Read(UnitDataS[a].属性);
+            UnitFile.Read(UnitDataS[a].射程種);
 
             int param;
-            magicFile.Read(param);
-            if (param % 3 == 1) MagicDataS[a].is対空 = false;
-            if (param % 3 == 2) MagicDataS[a].is対地 = false;
-            if (param % 3 >= 3) MagicDataS[a].is貫通 = true;
-            if (param == 7) MagicDataS[a].is使い捨て = true;
+            UnitFile.Read(param);
+            if (param % 3 == 1) UnitDataS[a].is対空 = false;
+            if (param % 3 == 2) UnitDataS[a].is対地 = false;
+            if (param % 3 >= 3) UnitDataS[a].is貫通 = true;
+            if (param == 7) UnitDataS[a].is使い捨て = true;
 
-            magicFile.Read(MagicDataS[a].基礎詠唱回数);
-            magicFile.Read(MagicDataS[a].デバフ種);
+            UnitFile.Read(UnitDataS[a].基礎詠唱回数);
+            UnitFile.Read(UnitDataS[a].デバフ種);
 
-            magicFile.Read(MagicDataS[a].コスト, 6);
-            magicFile.Read(MagicDataS[a].攻撃力, 6);
-            magicFile.Read(MagicDataS[a].射程, 6);
-            magicFile.Read(MagicDataS[a].連射, 6);
+            UnitFile.Read(UnitDataS[a].コスト, 6);
+            UnitFile.Read(UnitDataS[a].攻撃力, 6);
+            UnitFile.Read(UnitDataS[a].射程, 6);
+            UnitFile.Read(UnitDataS[a].連射, 6);
 
-            magicFile.Read<int>(MagicDataS[a].弾速, 6 , 100);
+            UnitFile.Read<int>(UnitDataS[a].弾速, 6 , 100);
 
-            magicFile.Read<int>(MagicDataS[a].炸裂威力 , 6 , 100);
+            UnitFile.Read<int>(UnitDataS[a].炸裂威力 , 6 , 100);
 
-            magicFile.Read(MagicDataS[a].炸裂範囲,6);
+            UnitFile.Read(UnitDataS[a].炸裂範囲,6);
 
-            magicFile.Read(MagicDataS[a].デバフ効果,6);
-            magicFile.Read<int>(MagicDataS[a].デバフ率 , 6 , 100);
-            magicFile.Read(MagicDataS[a].Hit数, 6);
-
+            UnitFile.Read(UnitDataS[a].デバフ効果,6);
+            UnitFile.Read<int>(UnitDataS[a].デバフ率 , 6 , 100);
+            UnitFile.Read(UnitDataS[a].Hit数, 6);
         }
 
     }
