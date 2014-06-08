@@ -29,7 +29,7 @@ namespace SDX_TD
         
         Magic(int X座標, int Y座標 , MagicType 魔法種) :
             Object(new Rect( (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize, Size * Land::ChipSize), nullptr , Belong::砲台),
-            基礎ステ(MagicDataS[(int)魔法種])
+            基礎ステ(MagicDataS[魔法種])
         {
             SetWait();
             //画像の設定

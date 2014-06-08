@@ -84,10 +84,10 @@ namespace SDX_TD
             this->最大HP = 最大HP;
             this->防御力 = 防御力;
             this->移動速度 = 移動速度;
-            this->特殊耐性[0] = 特殊耐性[0];
-            this->特殊耐性[1] = 特殊耐性[1];
-            this->特殊耐性[2] = 特殊耐性[2];
-            this->特殊耐性[3] = 特殊耐性[3];
+            //this->特殊耐性[0] = 特殊耐性[0];
+            //this->特殊耐性[1] = 特殊耐性[1];
+            //this->特殊耐性[2] = 特殊耐性[2];
+            //this->特殊耐性[3] = 特殊耐性[3];
         }
 
     };
@@ -197,7 +197,8 @@ namespace SDX_TD
     {
         File magicFile("data.txt", FileMode::Read, true);
 
-        for (int a = 0; a<(int)MagicType::MAX; ++a)
+
+        for (MagicType a = (MagicType)0; a != MagicType::MAX; a = MagicType(int(a)+1))
         {
             magicFile.Read(MagicDataS[a].名前);
             magicFile.Read(MagicDataS[a].説明文);
@@ -238,7 +239,7 @@ namespace SDX_TD
     {
         for (int a = 0; a < (int)EnemyType::MAX; ++a)
         {
-            EnemyDataS[a].種族 = (EnemyType)a;
+            EnemyDataS[(EnemyType)a].種族 = (EnemyType)a;
         }
 
         EnemyDataS[EnemyType::ゼリー    ].Set("", Belong::陸  , Element::氷, 50, 50, 0.0, 1.0);
