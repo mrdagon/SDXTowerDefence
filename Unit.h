@@ -98,7 +98,7 @@ namespace SDX_TD
 
             //画像&名前
             MSystem::フレーム[5].Draw( UInfo::F名前() );
-            MUnit::魔女[(int)基礎ステ.魔法種][1]->DrawRotate( UInfo::P画像() , 2 , 0 );
+            MUnit::魔女[基礎ステ.魔法種][1]->DrawRotate( UInfo::P画像() , 2 , 0 );
             MFont::ゴシック中.DrawShadow( UInfo::P名前() , Color::White , Color::Gray  , 基礎ステ.名前);
             
             //レベル

@@ -488,9 +488,9 @@ namespace SDX_TD
             //ウィッチの表示
             MSystem::フレーム[8].Draw( UStage::Fウィッチ() );
 
-            MUnit::魔女[(int)SubWitch->種類][1]->DrawRotate(UStage::Pサブウィッチ(),1,0);
+            MUnit::魔女[(UnitType)SubWitch->種類][1]->DrawRotate(UStage::Pサブウィッチ(),1,0);
             MFont::BMP黒.Draw( (int)UStage::Pサブウィッチ().x , (int)UStage::Pサブウィッチ().y ,Color::White,"SUB");
-            MUnit::魔女[(int)MainWitch->種類][1]->DrawRotate(UStage::Pウィッチ(),2,0);
+            MUnit::魔女[(UnitType)MainWitch->種類][1]->DrawRotate(UStage::Pウィッチ(), 2, 0);
 
             //MP,HP,SPの表示
             MSystem::フレーム[5].Draw(530, 40, 100 ,20);//SP
@@ -512,7 +512,7 @@ namespace SDX_TD
                 if( TDSystem::魔法リスト[a].get() == selected ) Screen::SetBright({255,120,120});
                 MSystem::フレーム[3].Draw(UStage::F魔法一覧(a));
                 Screen::SetBright({255,255,255});
-                MUnit::魔女[a][1]->DrawRotate((int)UStage::F魔法一覧(a).x + 20 ,(int)UStage::F魔法一覧(a).y+20,1,0);
+                MUnit::魔女[TDSystem::魔法リスト[a]->基礎ステ.魔法種][1]->DrawRotate((int)UStage::F魔法一覧(a).x + 20, (int)UStage::F魔法一覧(a).y + 20, 1, 0);
             }
 
             //情報の表示

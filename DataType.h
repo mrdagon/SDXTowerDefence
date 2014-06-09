@@ -197,40 +197,39 @@ namespace SDX_TD
     {
         File UnitFile("data.txt", FileMode::Read, true);
 
-        for (int a = 0; a<(int)UnitType::MAX; ++a)
+        for (auto &it : UnitDataS)
         {
-            UnitFile.Read(UnitDataS[a].名前);
-            UnitFile.Read(UnitDataS[a].説明文);
+            UnitFile.Read(it.名前);
+            UnitFile.Read(it.説明文);
 
-            UnitFile.Read(UnitDataS[a].属性);
-            UnitFile.Read(UnitDataS[a].射程種);
+            UnitFile.Read(it.属性);
+            UnitFile.Read(it.射程種);
 
             int param;
             UnitFile.Read(param);
-            if (param % 3 == 1) UnitDataS[a].is対空 = false;
-            if (param % 3 == 2) UnitDataS[a].is対地 = false;
-            if (param % 3 >= 3) UnitDataS[a].is貫通 = true;
-            if (param == 7) UnitDataS[a].is使い捨て = true;
+            if (param % 3 == 1) it.is対空 = false;
+            if (param % 3 == 2) it.is対地 = false;
+            if (param % 3 >= 3) it.is貫通 = true;
+            if (param == 7) it.is使い捨て = true;
 
-            UnitFile.Read(UnitDataS[a].基礎詠唱回数);
-            UnitFile.Read(UnitDataS[a].デバフ種);
+            UnitFile.Read(it.基礎詠唱回数);
+            UnitFile.Read(it.デバフ種);
 
-            UnitFile.Read(UnitDataS[a].コスト, 6);
-            UnitFile.Read(UnitDataS[a].攻撃力, 6);
-            UnitFile.Read(UnitDataS[a].射程, 6);
-            UnitFile.Read(UnitDataS[a].連射, 6);
+            UnitFile.Read(it.コスト, 6);
+            UnitFile.Read(it.攻撃力, 6);
+            UnitFile.Read(it.射程, 6);
+            UnitFile.Read(it.連射, 6);
 
-            UnitFile.Read<int>(UnitDataS[a].弾速, 6 , 100);
+            UnitFile.Read<int>(it.弾速, 6, 100);
 
-            UnitFile.Read<int>(UnitDataS[a].炸裂威力 , 6 , 100);
+            UnitFile.Read<int>(it.炸裂威力, 6, 100);
 
-            UnitFile.Read(UnitDataS[a].炸裂範囲,6);
+            UnitFile.Read(it.炸裂範囲, 6);
 
-            UnitFile.Read(UnitDataS[a].デバフ効果,6);
-            UnitFile.Read<int>(UnitDataS[a].デバフ率 , 6 , 100);
-            UnitFile.Read(UnitDataS[a].Hit数, 6);
+            UnitFile.Read(it.デバフ効果, 6);
+            UnitFile.Read<int>(it.デバフ率, 6, 100);
+            UnitFile.Read(it.Hit数, 6);
         }
-
     }
 
     void LoadEnemyS()

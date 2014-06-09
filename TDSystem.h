@@ -18,7 +18,7 @@ namespace SDX_TD
         bool is敵選択 = false;
 
         std::vector<std::unique_ptr<Unit>> 魔法リスト;
-        int    詠唱回数[(int)UnitType::MAX];
+        DataPack<int,UnitType> 詠唱回数;
 
         int Hp = 20;
         int 素材数[4];
