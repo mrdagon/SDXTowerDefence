@@ -75,20 +75,27 @@ namespace SDX_TD
         //無効 or 有効
         DataPack<bool, DebuffType> 特殊耐性;
 
-        void Set(const char* 種族名, Belong 移動タイプ, Element 属性, int スコア, int 最大HP, double 防御力, double 移動速度, std::vector<bool> 特殊耐性 = { false, false, false, false })
+        void Set(Belong 移動タイプ, Element 属性, int 最大HP, int スコア, double 移動速度, double 防御力, double 回避力)
         {
-            this->種族名 = 種族名;
             this->移動タイプ = 移動タイプ;
             this->属性 = 属性;
             this->スコア = スコア;
             this->最大HP = 最大HP;
             this->防御力 = 防御力;
+            this->回避力 = 回避力;
             this->移動速度 = 移動速度;
-            //this->特殊耐性[0] = 特殊耐性[0];
-            //this->特殊耐性[1] = 特殊耐性[1];
-            //this->特殊耐性[2] = 特殊耐性[2];
-            //this->特殊耐性[3] = 特殊耐性[3];
+            this->特殊耐性[DebuffType::鈍足] = false;
+            this->特殊耐性[DebuffType::麻痺] = false;
+            this->特殊耐性[DebuffType::吹飛] = false;
+            this->特殊耐性[DebuffType::防壊] = false;
         }
+
+        void SetInfo(const char* 種族名, const char* 説明文)
+        {
+            this->種族名 = 種族名;
+            this->説明文 = 説明文;
+        }
+
 
     };
 
@@ -239,21 +246,24 @@ namespace SDX_TD
             EnemyDataS[(EnemyType)a].種族 = (EnemyType)a;
         }
 
-        EnemyDataS[EnemyType::ゼリー    ].Set("", Belong::陸  , Element::氷, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ゴブリン  ].Set("", Belong::陸, Element::樹, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ケットシー].Set("", Belong::陸, Element::空, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::オーガ    ].Set("", Belong::陸, Element::炎, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::マーマン  ].Set("", Belong::水, Element::氷, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ゴーレム  ].Set("", Belong::陸, Element::樹, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ケルベロス].Set("", Belong::陸, Element::炎, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::スケルトン].Set("", Belong::陸, Element::氷, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::シャーマン].Set("", Belong::陸, Element::炎, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::コボルド  ].Set("", Belong::陸, Element::樹, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ゼリー王  ].Set("", Belong::陸, Element::氷, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ドラゴン  ].Set("", Belong::陸, Element::炎, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::インプ    ].Set("", Belong::空, Element::空, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::ゴースト  ].Set("", Belong::空, Element::氷, 50, 50, 0.0, 1.0);
-        EnemyDataS[EnemyType::グリフィン].Set("", Belong::陸, Element::空, 50, 50, 0.0, 1.0);
+        //スコア HP 防御 移動速度
+        EnemyDataS[EnemyType::ゼリー    ].Set(Belong::陸, Element::氷, 50, 15, 0.4, 0.0, 0.0);
+        EnemyDataS[EnemyType::ゴブリン  ].Set(Belong::陸, Element::樹, 50, 10, 0.0, 1.0, 0.0);
+        EnemyDataS[EnemyType::オーガ    ].Set(Belong::陸, Element::炎, 50, 20, 0.0, 1.0, 0.0);
+        EnemyDataS[EnemyType::コボルド  ].Set(Belong::陸, Element::樹, 50, 15, 0.0, 1.0, 0.0);
+        EnemyDataS[EnemyType::ケットシー].Set(Belong::陸, Element::空, 50, 15, 0.0, 1.0, 0.0);
+        EnemyDataS[EnemyType::シャーマン].Set(Belong::陸, Element::炎, 50, 20, 0.0, 1.0, 0.0);
+        EnemyDataS[EnemyType::スケルトン].Set(Belong::陸, Element::氷, 50, 15, 0.0, 1.0, 0.0);
+        EnemyDataS[EnemyType::インプ    ].Set(Belong::空, Element::空, 50, 15, 0.0, 1.0, 0.0);
+        EnemyDataS[EnemyType::グリフィン].Set(Belong::陸, Element::空, 50, 20, 0.0, 1.0, 0.0);
+        EnemyDataS[EnemyType::ケルベロス].Set(Belong::陸, Element::炎, 50, 20, 0.0, 1.0, 0.0);
+        EnemyDataS[EnemyType::ゴーレム  ].Set(Belong::陸, Element::樹, 50, 20, 0.0, 1.0, 0.0);
+        EnemyDataS[EnemyType::ドラゴン  ].Set(Belong::陸, Element::炎, 50, 25, 0.0, 1.0, 0.0);
+        EnemyDataS[EnemyType::ゼリー王  ].Set(Belong::陸, Element::氷, 50, 20, 0.0, 1.0, 0.0);
+        EnemyDataS[EnemyType::マーマン  ].Set(Belong::水, Element::氷, 50, 15, 0.0, 1.0, 0.0);
+        EnemyDataS[EnemyType::ゴースト  ].Set(Belong::空, Element::氷, 50, 20, 0.0, 1.0, 0.0);
+
+
     }
 
     void LoadStageS()
@@ -264,6 +274,7 @@ namespace SDX_TD
 
     void LoadDifficultyS()
     {
+        //Wave数,雑魚数,ボス数,HP補正,Lv補正
         TrialDataS[Difficulty::Easy      ].Set( 20, 16 , 2, 1.00 , 1.00 );
         TrialDataS[Difficulty::Normal    ].Set(30, 20, 2, 1.25, 1.10);
         TrialDataS[Difficulty::Hard      ].Set(40, 24, 2, 1.50, 1.20);
