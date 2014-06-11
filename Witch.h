@@ -27,9 +27,6 @@ namespace SDX_TD
         int    大魔法残り時間;
         int    被ダメージ;
 
-        //名前とか説明文とか
-        std::string 名前;
-
         //戦闘開始時の初期化処理
         void Init(){};
 
@@ -40,7 +37,6 @@ namespace SDX_TD
         /**MP等は初期化しない*/
         void 実ステ計算()
         {
-
             //アイテムや成長あり
             if ( !TDSystem::isトライアル)
             {
