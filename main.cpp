@@ -1,5 +1,6 @@
 ﻿//☀Unicode
 #include "stdafx.h"
+
 #include "Stage.h"
 #include "Enemy.h"
 #include "Shot.h"
@@ -7,7 +8,6 @@
 #include "Menu.h"
 
 #include "TitleMenu.h"
-#include "Sample/Sample.h"
 
 int main(int argc, char* argv[])
 {
@@ -18,9 +18,6 @@ int main(int argc, char* argv[])
     SubWitch = new Witch::ライナ();
 
     System::Initialise("sample", 640, 480);//ライブラリの初期化
-
-    //16:9
-    //40:
 
     LoadUnitS();
     LoadChipS();
