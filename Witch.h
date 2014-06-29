@@ -18,7 +18,7 @@ namespace SDX_TD
         //固定パラメータ
         Element 属性;
         UnitType 魔法タイプ[12];
-        
+
         //変動パラメータ
         double MP = 1000;
         double SP;

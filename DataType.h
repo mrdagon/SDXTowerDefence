@@ -204,7 +204,7 @@ namespace SDX_TD
         DataPack<ChipData, ChipType> ChipDataS;
     }
 
-    static void LoadUnitS()
+    void LoadUnitS()
     {
         File UnitFile("data.txt", FileMode::Read, true);
 
@@ -243,7 +243,7 @@ namespace SDX_TD
         }
     }
 
-    static void LoadEnemyS()
+    void LoadEnemyS()
     {
         for (int a = 0; a < (int)EnemyType::MAX; ++a)
         {
@@ -283,13 +283,13 @@ namespace SDX_TD
 
     }
 
-    static void LoadStageS()
+    void LoadStageS()
     {
 
 
     }
 
-    static void LoadDifficultyS()
+    void LoadDifficultyS()
     {
         //Wave数,雑魚数,ボス数,HP補正,Lv補正
         TrialDataS[Difficulty::Easy      ].Set( 20, 16 , 2, 1.00 , 1.00 );
@@ -307,7 +307,7 @@ namespace SDX_TD
         PowerDataS[Difficulty::DeathMarch].Set(1000, 40, 5, 5.00, 2.00);
     }
 
-    static void LoadChipS()
+    void LoadChipS()
     {
         //配置,陸,海
         ChipDataS[ChipType::草].Set(true, true, true);

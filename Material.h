@@ -9,8 +9,8 @@ namespace SDX_TD
     /**敵＆ウィッチの画像.*/
     namespace MUnit
     {
-        static DataPack<ImagePack, UnitType> 魔女;
-        static DataPack<ImagePack, EnemyType> 敵;
+        DataPack<ImagePack,UnitType> 魔女;
+        DataPack<ImagePack,EnemyType> 敵;
 
         static void Load()
         {
@@ -29,20 +29,20 @@ namespace SDX_TD
 
             魔女[UnitType::兵士].Load("File/Unit/Common/000.png",9,3,3);
             魔女[UnitType::踊り子].Load("File/Unit/Common/001.png",9,3,3);
-            //魔女[UnitType::弓使い].Load("File/Unit/Common/002.png",9,3,3);
+            魔女[UnitType::弓使い].Load("File/Unit/Common/002.png",9,3,3);
             魔女[UnitType::執事].Load("File/Unit/Common/003.png",9,3,3);
             魔女[UnitType::技師].Load("File/Unit/Common/004.png",9,3,3);
             魔女[UnitType::くノ一].Load("File/Unit/Common/005.png",9,3,3);
             魔女[UnitType::師範].Load("File/Unit/Common/006.png",9,3,3);
-            魔女[UnitType::魔術師].Load("File/Unit/Common/007.png",9,3,3);
+            魔女[UnitType::魔法使い].Load("File/Unit/Common/007.png",9,3,3);
             魔女[UnitType::賢者].Load("File/Unit/Common/008.png",9,3,3);
             魔女[UnitType::武闘家].Load("File/Unit/Common/009.png",9,3,3);
             魔女[UnitType::忍者].Load("File/Unit/Common/010.png",9,3,3);
             魔女[UnitType::剣豪].Load("File/Unit/Common/011.png",9,3,3);
-            //魔女[UnitType::呪術師].Load("File/Unit/Common/012.png",9,3,3);
+            魔女[UnitType::呪術師].Load("File/Unit/Common/012.png",9,3,3);
             魔女[UnitType::勇者].Load("File/Unit/Common/013.png",9,3,3);
-            //魔女[UnitType::詩人].Load("File/Unit/Common/014.png",9,3,3);
-            //魔女[UnitType::風水師].Load("File/Unit/Common/015.png",9,3,3);
+            魔女[UnitType::詩人].Load("File/Unit/Common/014.png",9,3,3);
+            魔女[UnitType::風水師].Load("File/Unit/Common/015.png",9,3,3);
             魔女[UnitType::騎士].Load("File/Unit/Common/016.png",9,3,3);
             魔女[UnitType::司祭].Load("File/Unit/Common/017.png",9,3,3);
             魔女[UnitType::僧侶].Load("File/Unit/Common/018.png",9,3,3);
@@ -54,7 +54,7 @@ namespace SDX_TD
             魔女[UnitType::剣士].Load("File/Unit/Common/024.png",9,3,3);
             魔女[UnitType::槍士].Load("File/Unit/Common/025.png",9,3,3);
             魔女[UnitType::給仕].Load("File/Unit/Common/026.png",9,3,3);
-            //魔女[UnitType::槍使い].Load("File/Unit/Common/027.png",9,3,3);
+            魔女[UnitType::槍使い].Load("File/Unit/Common/027.png",9,3,3);
             魔女[UnitType::将軍].Load("File/Unit/Common/028.png",9,3,3);
             魔女[UnitType::軍師].Load("File/Unit/Common/029.png",9,3,3);
 
@@ -79,10 +79,10 @@ namespace SDX_TD
     /**その他のアイコン.*/
     namespace MIcon
     {
-        static ImagePack ターゲット;
-        static DataPack<Image, IconType> UI;
-        static DataPack<Image, WitchType> 魔導具;
-        static DataPack<Image, Element> 属性;
+        ImagePack ターゲット;
+        DataPack<Image,IconType> UI; 
+        DataPack<Image,WitchType> 魔導具;
+        DataPack<Image,Element> 属性;
 
         static void Load()
         {
@@ -140,13 +140,14 @@ namespace SDX_TD
     /**UI等のシステム.*/
     namespace MSystem
     {
-        static ImagePack マップチップ;
-        static ImagePack 枠画像[14];
-        static BmpFrame  フレーム[14];
+        ImagePack マップチップ;
+        ImagePack 枠画像[14];
+        BmpFrame  フレーム[14];
 
-        static ImagePack マーク;
+        ImagePack マーク;
         
-        static Image 背景;
+        Image 背景;
+
 
         static void Load()
         {
@@ -209,14 +210,14 @@ namespace SDX_TD
     /**フォント.*/
     namespace MFont
     {
-        static Font ゴシック小;
-        static Font ゴシック中;
-        static BmpFont BMP黒;
-        static BmpFont BMP白;
+        Font ゴシック小;
+        Font ゴシック中;
+        BmpFont BMP黒;
+        BmpFont BMP白;
 
-        static ImagePack 英語;
-        static ImagePack 黒数字;
-        static ImagePack 白数字;
+        ImagePack 英語;
+        ImagePack 黒数字;
+        ImagePack 白数字;
 
         static void Load()
         {
