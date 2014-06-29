@@ -12,8 +12,10 @@
 int main(int argc, char* argv[])
 {
     using namespace SDX;
-    using namespace SDX_TD;
+    SampleDrawing();
 
+    
+    using namespace SDX_TD;
     MainWitch = new Witch::ライナ();
     SubWitch = new Witch::ライナ();
 
@@ -21,7 +23,6 @@ int main(int argc, char* argv[])
 
     //16:9
     //40:
-
     LoadUnitS();
     LoadChipS();
 
@@ -31,6 +32,6 @@ int main(int argc, char* argv[])
     Director::Run();
 
     System::End();//ライブラリの終了処理
-
+    
     return 0;
 }

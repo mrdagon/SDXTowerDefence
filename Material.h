@@ -29,20 +29,20 @@ namespace SDX_TD
 
             魔女[UnitType::兵士].Load("File/Unit/Common/000.png",9,3,3);
             魔女[UnitType::踊り子].Load("File/Unit/Common/001.png",9,3,3);
-            魔女[UnitType::弓使い].Load("File/Unit/Common/002.png",9,3,3);
+            魔女[UnitType::狩人].Load("File/Unit/Common/002.png",9,3,3);
             魔女[UnitType::執事].Load("File/Unit/Common/003.png",9,3,3);
             魔女[UnitType::技師].Load("File/Unit/Common/004.png",9,3,3);
             魔女[UnitType::くノ一].Load("File/Unit/Common/005.png",9,3,3);
             魔女[UnitType::師範].Load("File/Unit/Common/006.png",9,3,3);
-            魔女[UnitType::魔法使い].Load("File/Unit/Common/007.png",9,3,3);
+            魔女[UnitType::魔術師].Load("File/Unit/Common/007.png",9,3,3);
             魔女[UnitType::賢者].Load("File/Unit/Common/008.png",9,3,3);
             魔女[UnitType::武闘家].Load("File/Unit/Common/009.png",9,3,3);
             魔女[UnitType::忍者].Load("File/Unit/Common/010.png",9,3,3);
             魔女[UnitType::剣豪].Load("File/Unit/Common/011.png",9,3,3);
-            魔女[UnitType::呪術師].Load("File/Unit/Common/012.png",9,3,3);
+            魔女[UnitType::技師].Load("File/Unit/Common/012.png",9,3,3);
             魔女[UnitType::勇者].Load("File/Unit/Common/013.png",9,3,3);
-            魔女[UnitType::詩人].Load("File/Unit/Common/014.png",9,3,3);
-            魔女[UnitType::風水師].Load("File/Unit/Common/015.png",9,3,3);
+            魔女[UnitType::射手].Load("File/Unit/Common/014.png",9,3,3);
+            魔女[UnitType::料理人].Load("File/Unit/Common/015.png",9,3,3);
             魔女[UnitType::騎士].Load("File/Unit/Common/016.png",9,3,3);
             魔女[UnitType::司祭].Load("File/Unit/Common/017.png",9,3,3);
             魔女[UnitType::僧侶].Load("File/Unit/Common/018.png",9,3,3);
@@ -54,7 +54,7 @@ namespace SDX_TD
             魔女[UnitType::剣士].Load("File/Unit/Common/024.png",9,3,3);
             魔女[UnitType::槍士].Load("File/Unit/Common/025.png",9,3,3);
             魔女[UnitType::給仕].Load("File/Unit/Common/026.png",9,3,3);
-            魔女[UnitType::槍使い].Load("File/Unit/Common/027.png",9,3,3);
+            魔女[UnitType::足軽].Load("File/Unit/Common/027.png",9,3,3);
             魔女[UnitType::将軍].Load("File/Unit/Common/028.png",9,3,3);
             魔女[UnitType::軍師].Load("File/Unit/Common/029.png",9,3,3);
 

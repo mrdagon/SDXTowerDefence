@@ -59,13 +59,13 @@ namespace SDX_TD
             if(SStage->selectUnit == this)
             {
                 Screen::SetBlendMode(BlendMode::Alpha,128);
-                Drawing::Rect((int)GetX()-Land::ChipSize, (int)GetY()-Land::ChipSize,Land::ChipSize*2,Land::ChipSize*2,Color::Red,true);                
+                Drawing::Rect({GetX()-Land::ChipSize, GetY()-Land::ChipSize,Land::ChipSize*2,Land::ChipSize*2},Color::Red,true);                
                 Screen::SetBlendMode(BlendMode::NoBlend,255);
                 Screen::SetBright({255,128,128});
-                MSystem::フレーム[1].Draw((int)GetX()-Land::ChipSize, (int)GetY()-Land::ChipSize,Land::ChipSize*2,Land::ChipSize*2);            
+                MSystem::フレーム[1].Draw({GetX()-Land::ChipSize, GetY()-Land::ChipSize,Land::ChipSize*2,Land::ChipSize*2});            
                 Screen::SetBright(Color::White);
             }else{
-                MSystem::フレーム[1].Draw((int)GetX()-Land::ChipSize, (int)GetY()-Land::ChipSize,Land::ChipSize*2,Land::ChipSize*2);                        
+                MSystem::フレーム[1].Draw({GetX()-Land::ChipSize, GetY()-Land::ChipSize,Land::ChipSize*2,Land::ChipSize*2});                        
             }
 
             //強化中or送還中

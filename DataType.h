@@ -38,6 +38,7 @@ namespace SDX_TD
         double 炸裂威力[最大強化];
 
         DebuffType デバフ種;
+        EnemyType 特攻種族;
         int    デバフ効果[最大強化];
         double デバフ率[最大強化];
 
@@ -206,7 +207,7 @@ namespace SDX_TD
 
     void LoadUnitS()
     {
-        File UnitFile("data.txt", FileMode::Read, true);
+        File UnitFile("File/Data/unit_data.dat", FileMode::Read, true);
 
         for (auto &it : UnitDataS)
         {
@@ -225,6 +226,8 @@ namespace SDX_TD
 
             UnitFile.Read(it.基礎詠唱回数);
             UnitFile.Read(it.デバフ種);
+
+            UnitFile.Read(it.特攻種族);
 
             UnitFile.Read(it.コスト, 6);
             UnitFile.Read(it.攻撃力, 6);
