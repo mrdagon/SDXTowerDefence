@@ -335,8 +335,8 @@ namespace SDX_TD
                 //罫線の表示
                 for (int a = 0; a <= MapSize*ChipSize; a += ChipSize)
                 {
-                    Drawing::Line(a, 0, a, MapSize * ChipSize, Color::White, 1);
-                    Drawing::Line(0, a, MapSize*ChipSize, a, Color::White, 1);
+                    Drawing::Line({(double)a, 0}, {(double)a, MapSize * ChipSize}, Color::White, 1);
+                    Drawing::Line({0, (double)a}, {MapSize*ChipSize, (double)a}, Color::White, 1);
                 }
 
                 //地形の表示
@@ -344,13 +344,14 @@ namespace SDX_TD
                 for (int b = 0; b < MapSize; ++b)
                 {
                     Image* チップ = MSystem::マップチップ[2];
+                    Rect 位置(a * ChipSize + ChipSize/2, b * ChipSize + ChipSize/2, ChipSize, ChipSize);
 
                     if ( 地形[a][b] == ChipType::草)  チップ = MSystem::マップチップ[0];
-                    if ( 地形[a][b] != ChipType::草)  Drawing::Rect(a * ChipSize, b * ChipSize, ChipSize, ChipSize, Color::Blue, true);
-                    if ( 地形[a][b] == ChipType::畑)  Drawing::Rect(a * ChipSize, b * ChipSize, ChipSize, ChipSize, Color::Red, true);
-                    if ( is魔法[a][b])                Drawing::Rect(a * ChipSize, b * ChipSize, ChipSize, ChipSize, Color::Yellow, true);
-                    if ( is陸の敵[a][b])              Drawing::Rect(a * ChipSize, b * ChipSize, ChipSize, ChipSize, Color::Gray, true);
-                    if ( is水の敵[a][b])              Drawing::Rect(a * ChipSize, b * ChipSize, ChipSize, ChipSize, Color::Purple, true);
+                    if ( 地形[a][b] != ChipType::草)  Drawing::Rect(位置, Color::Blue, true);
+                    if ( 地形[a][b] == ChipType::畑)  Drawing::Rect(位置, Color::Red, true);
+                    if ( is魔法[a][b])                Drawing::Rect(位置, Color::Yellow, true);
+                    if ( is陸の敵[a][b])              Drawing::Rect(位置, Color::Gray, true);
+                    if ( is水の敵[a][b])              Drawing::Rect(位置, Color::Purple, true);
 
                     チップ->DrawExtend(a * ChipSize, b * ChipSize, (a+1)*ChipSize , (b+1)*ChipSize);
                 }
@@ -359,15 +360,15 @@ namespace SDX_TD
             //配置先の表示
             void DrawSetPos()
             {
-                const int x = (Input::mouse.x - ChipSize/2) / ChipSize;
-                const int y = (Input::mouse.y - ChipSize/2) / ChipSize;
+                const double x = (Input::mouse.x - ChipSize/2) / ChipSize;
+                const double y = (Input::mouse.y - ChipSize/2) / ChipSize;
 
                 Screen::SetBlendMode(BlendMode::Alpha,200);
-                if( SetCheck(x,y,2) )
+                if( SetCheck((int)x,(int)y,2) )
                 {
-                    Drawing::Rect( x * ChipSize,y *ChipSize, ChipSize*2 , ChipSize *2 , Color::Green , true );
+                    Drawing::Rect( {x * ChipSize,y *ChipSize, ChipSize*2 , ChipSize *2} , Color::Green , true );
                 }else{
-                    Drawing::Rect( x * ChipSize,y *ChipSize, ChipSize*2 , ChipSize *2 , Color::Red , true );
+                    Drawing::Rect( {x * ChipSize,y *ChipSize, ChipSize*2 , ChipSize *2} , Color::Red , true );
                 }
                 Screen::SetBlendMode(BlendMode::NoBlend,0);            
             }
