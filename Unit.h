@@ -72,22 +72,22 @@ namespace SDX_TD
             if( 強化時間 > 0)
             {
                 int Num = 99 - 強化時間*99/強化or送還長さ;   
-                MFont::BMP黒.DrawExtend((int)GetX()-14,(int)GetY()-12,2,2,Color::White,{std::setw(2),Num});
+                MFont::BMP黒.DrawExtend({ GetX() - 14, GetY() - 12 }, 2, 2, Color::White, { std::setw(2), Num });
             }
             else if( 送還時間 > 0)
             {
                 int Num = 送還時間*99/強化or送還長さ;
-                MFont::BMP黒.DrawExtend((int)GetX()-14,(int)GetY()-12,2,2,Color::White,{std::setw(2),Num});
+                MFont::BMP黒.DrawExtend({ GetX() - 14, GetY() - 12 }, 2, 2, Color::White, { std::setw(2), Num });
             }
             else
             {
-                MUnit::魔女[UnitType::ディアネラ][1]->DrawRotate((int)GetX(),(int)GetY(),1+0.2*Lv,0);            
+                MUnit::魔女[UnitType::ディアネラ][1]->DrawRotate({GetX(),GetY()},1+0.2*Lv,0);
             }
 
             //レベル表示
             for(int a=0;a<Lv;++a)
             {
-                MSystem::マーク[3]->DrawRotate( (int)GetX()+6*a - 12,(int)GetY() + 12,1,0);
+                MSystem::マーク[3]->DrawRotate({ GetX() + 6 * a - 12, GetY() + 12 }, 1, 0);
             }
         }
 
@@ -115,14 +115,14 @@ namespace SDX_TD
                 //強化
                 MSystem::フレーム[8].Draw(UUnit::F強化());
                 MFont::ゴシック中.DrawShadow( UUnit::P強化(),Color::White , Color::Gray , "強化");
-                MFont::ゴシック中.DrawExtend((int)UUnit::P強化().x-16,(int)UUnit::P強化().y+13,2,2,Color::Red,"-");
-                MFont::BMP白.DrawExtend((int)UUnit::P強化().x-6,(int)UUnit::P強化().y+20,2,2,Color::White,{std::setw(4),123});
+                MFont::ゴシック中.DrawExtend({ UUnit::P強化().x - 16, UUnit::P強化().y + 13 }, 2, 2, Color::Red, "-");
+                MFont::BMP白.DrawExtend({ UUnit::P強化().x - 6, (int)UUnit::P強化().y + 20 }, 2, 2, Color::White, { std::setw(4), 123 });
 
                 //売却or発動
                 MSystem::フレーム[8].Draw(UUnit::F回収());
                 MFont::ゴシック中.DrawShadow( UUnit::P回収() , Color::White , Color::Gray , "回収");
-                MFont::ゴシック中.DrawExtend((int)UUnit::P回収().x-12,(int)UUnit::P回収().y+13,2,2,Color::Blue,"+");
-                MFont::BMP白.DrawExtend((int)UUnit::P回収().x-6,(int)UUnit::P回収().y+20,2,2,Color::White,{std::setw(4),123});
+                MFont::ゴシック中.DrawExtend({ UUnit::P回収().x - 12, UUnit::P回収().y + 13 }, 2, 2, Color::Blue, "+");
+                MFont::BMP白.DrawExtend({ UUnit::P回収().x - 6, UUnit::P回収().y + 20 }, 2, 2, Color::White, { std::setw(4), 123 });
 
                 //強化前後の性能
                 DrawInfoState(Lv, (Lv!=5) );
@@ -188,7 +188,7 @@ namespace SDX_TD
 
                 if(変化量表示)
                 {
-                    MFont::ゴシック中.Draw(565,(int)UInfo::P性能アイコン(y).y+8,Color::Yellow,"+");
+                    MFont::ゴシック中.Draw({ 565, UInfo::P性能アイコン(y).y + 8 }, Color::Yellow, "+");
                     //変化量
                     MIcon::UI[アイコン[a]].Draw( UInfo::P性能アイコン(y) );
                     MFont::BMP白.DrawExtend( UInfo::P性能(y) , 2 , 2 , Color::Yellow, {std::setw(10),次性能[a]-性能[a]} );

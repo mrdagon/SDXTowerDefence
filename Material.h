@@ -9,8 +9,8 @@ namespace SDX_TD
     /**敵＆ウィッチの画像.*/
     namespace MUnit
     {
-        DataPack<ImagePack,UnitType> 魔女;
-        DataPack<ImagePack,EnemyType> 敵;
+        EnumArray<ImagePack, UnitType> 魔女;
+        EnumArray<ImagePack, EnemyType> 敵;
 
         static void Load()
         {
@@ -80,9 +80,9 @@ namespace SDX_TD
     namespace MIcon
     {
         ImagePack ターゲット;
-        DataPack<Image,IconType> UI; 
-        DataPack<Image,WitchType> 魔導具;
-        DataPack<Image,Element> 属性;
+        EnumArray<Image,IconType> UI; 
+        EnumArray<Image,WitchType> 魔導具;
+        EnumArray<Image,Element> 属性;
 
         static void Load()
         {

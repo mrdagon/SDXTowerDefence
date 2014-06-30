@@ -290,12 +290,12 @@ namespace SDX_TD
                 break;
             }
 
-            MUnit::敵[基礎ステ.種族][アニメ]->DrawRotate(int(GetX()),int(GetY()),1+isボス,0,反転);
+            MUnit::敵[基礎ステ.種族][アニメ]->DrawRotate({ GetX(), GetY() }, 1 + isボス, 0, 反転);
 
             //ターゲット
             if(SStage->selected == this)
             {
-                MIcon::ターゲット[(timer/10)%3]->DrawRotate(int(GetX()),int(GetY()),1,0);
+                MIcon::ターゲット[(timer / 10) % 3]->DrawRotate({ GetX(), GetY() }, 1, 0);
             }
         }
 

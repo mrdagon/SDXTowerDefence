@@ -41,22 +41,21 @@ namespace SDX_TD
             {
                 敵種類[no] = EnemyType::マーマン; 
 
-
                 isBoss[no] = (no% 2 == 0);
 
                 if(isBoss[no] )
                 {
-                    MSystem::フレーム[0].Draw(x,y,40,80);
-                    MUnit::敵[敵種類[no]][1]->DrawRotate( x + 20, y + 50 , 2 , 0 );
+                    MSystem::フレーム[0].Draw({ x, y, 40, 80 });
+                    MUnit::敵[敵種類[no]][1]->DrawRotate({ x + 20, y + 50 }, 2, 0);
                 }else{
-                    MSystem::フレーム[0].Draw(x,y,40,80);
+                    MSystem::フレーム[0].Draw({ x, y, 40, 80 });
 
-                    MUnit::敵[敵種類[no]][1]->Draw( x + 4   , y + 36 );
-                    MUnit::敵[敵種類[no]][1]->Draw( x + 4+16, y + 36 );
-                    MUnit::敵[敵種類[no]][1]->Draw( x + 4+8 , y + 36+8 );
+                    MUnit::敵[敵種類[no]][1]->Draw({ x + 4, y + 36 });
+                    MUnit::敵[敵種類[no]][1]->Draw({ x + 4 + 16, y + 36 });
+                    MUnit::敵[敵種類[no]][1]->Draw({ x + 4 + 8, y + 36 + 8 });
                 }
                 //Wave数
-                MFont::BMP黒.DrawExtend( x+6 , y+4 , 2 - (no / 99) , 2 - (no / 99) , Color::White , no+1 );
+                MFont::BMP黒.DrawExtend({ x + 6, y + 4 }, 2 - (no / 99), 2 - (no / 99), Color::White, no + 1);
 
                 y += 80;
                 no++;

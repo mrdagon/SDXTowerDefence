@@ -77,7 +77,7 @@ namespace SDX_TD
         bool   isステルス = false;//
 
         //無効 or 有効
-        DataPack<bool, DebuffType> 特殊耐性;
+        EnumArray<bool, DebuffType> 特殊耐性;
 
         void Set(Belong 移動タイプ, Element 属性, int 最大HP, int スコア, int 移動速度)
         {
@@ -128,7 +128,7 @@ namespace SDX_TD
 
         double 弱点補正 = 1.1;
 
-        DataPack<double, DebuffType> 特殊補正;
+        EnumArray<double, DebuffType> 特殊補正;
 
         int    大魔法時間 = 3000;
         double 必要SP = 1.0;
@@ -197,12 +197,12 @@ namespace SDX_TD
 
     namespace
     {
-        DataPack<EnemyData, EnemyType> EnemyDataS;
-        DataPack<UnitData, UnitType> UnitDataS;
-        DataPack<StageData, StageType> StageDataS;
-        DataPack<DifficultyData, Difficulty> TrialDataS;
-        DataPack<DifficultyData, Difficulty> PowerDataS;
-        DataPack<ChipData, ChipType> ChipDataS;
+        EnumArray<EnemyData, EnemyType> EnemyDataS;
+        EnumArray<UnitData, UnitType> UnitDataS;
+        EnumArray<StageData, StageType> StageDataS;
+        EnumArray<DifficultyData, Difficulty> TrialDataS;
+        EnumArray<DifficultyData, Difficulty> PowerDataS;
+        EnumArray<ChipData, ChipType> ChipDataS;
     }
 
     void LoadUnitS()

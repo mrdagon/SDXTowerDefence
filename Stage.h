@@ -459,11 +459,11 @@ namespace SDX_TD
 
             //スコアの表示
             MSystem::フレーム[5].Draw(UStage::Fスコア());
-            MFont::BMP黒.Draw((int)UStage::Pスコア().x,(int)UStage::Pスコア().y-10,Color::White,"SCORE");
+            MFont::BMP黒.Draw({ UStage::Pスコア().x, UStage::Pスコア().y - 10 }, Color::White, "SCORE");
             MFont::BMP白.DrawExtend(UStage::Pスコア(),2,2,Color::White,{ std::setw(10) , 12345678});
             
             MSystem::フレーム[5].Draw(UStage::F敵数());
-            MFont::BMP黒.Draw((int)UStage::P敵数().x,(int)UStage::P敵数().y-10,Color::White,"ENEMY");
+            MFont::BMP黒.Draw({ UStage::P敵数().x, UStage::P敵数().y - 10 }, Color::White, "ENEMY");
             MFont::BMP白.DrawExtend(UStage::P敵数(),2,2,Color::White,{ std::setw(5) , 1234});
 
             //難易度
@@ -476,32 +476,32 @@ namespace SDX_TD
 
                 MSystem::フレーム[8].Draw(UStage::Fゲーム速度(a));
                 
-                MFont::BMP黒.DrawExtend( x+8 ,10,2,2,Color::White,"x");
-                MFont::BMP黒.DrawExtend( x+36, 8,2,2,Color::White,spd);
+                MFont::BMP黒.DrawExtend({ x + 8, 10 }, 2, 2, Color::White, "x");
+                MFont::BMP黒.DrawExtend({ x + 36, 8 }, 2, 2, Color::White, spd);
 
                 spd *= 2;
             }
 
             //全体枠
-            MSystem::フレーム[5].Draw( 476 ,  4 , 160 , 96 + 105);
+            MSystem::フレーム[5].Draw({ 476, 4, 160, 96 + 105 });
 
             //ウィッチの表示
             MSystem::フレーム[8].Draw( UStage::Fウィッチ() );
 
             MUnit::魔女[(UnitType)SubWitch->種類][1]->DrawRotate(UStage::Pサブウィッチ(),1,0);
-            MFont::BMP黒.Draw( (int)UStage::Pサブウィッチ().x , (int)UStage::Pサブウィッチ().y ,Color::White,"SUB");
+            MFont::BMP黒.Draw({ UStage::Pサブウィッチ().x, UStage::Pサブウィッチ().y }, Color::White, "SUB");
             MUnit::魔女[(UnitType)MainWitch->種類][1]->DrawRotate(UStage::Pウィッチ(), 2, 0);
 
             //MP,HP,SPの表示
-            MSystem::フレーム[5].Draw(530, 40, 100 ,20);//SP
-            MIcon::魔導具[MainWitch->種類].Draw(530-2,40);
-            MFont::BMP白.DrawExtend(584,44,2,2,{120,120,255},100);
+            MSystem::フレーム[5].Draw({ 530, 40, 100, 20 });//SP
+            MIcon::魔導具[MainWitch->種類].Draw({ 530 - 2, 40 });
+            MFont::BMP白.DrawExtend({ 584, 44 }, 2, 2, { 120, 120, 255 }, 100);
 
             MIcon::UI[IconType::ライフ].Draw(UStage::P体力());
-            MFont::BMP白.DrawExtend((int)UStage::P体力().x+24,(int)UStage::P体力().y+6,2,2,{255,60,60}, {std::setw(2),TDSystem::Hp});//HP
+            MFont::BMP白.DrawExtend({ UStage::P体力().x + 24, UStage::P体力().y + 6 }, 2, 2, { 255, 60, 60 }, { std::setw(2), TDSystem::Hp });//HP
 
             MIcon::UI[IconType::マナ].Draw(UStage::P魔力());
-            MFont::BMP白.DrawExtend((int)UStage::P魔力().x+24,(int)UStage::P体力().y+6,2,2,{255,255,0}, {std::setw(4),MainWitch->MP});//MP
+            MFont::BMP白.DrawExtend({ UStage::P魔力().x + 24, UStage::P体力().y + 6 }, 2, 2, { 255, 255, 0 }, { std::setw(4), MainWitch->MP });//MP
 
             //メニューボタン
             MSystem::フレーム[8].Draw(UStage::Fメニュー());
@@ -512,7 +512,7 @@ namespace SDX_TD
                 if( TDSystem::魔法リスト[a].get() == selected ) Screen::SetBright({255,120,120});
                 MSystem::フレーム[3].Draw(UStage::F魔法一覧(a));
                 Screen::SetBright({255,255,255});
-                MUnit::魔女[TDSystem::魔法リスト[a]->基礎ステ.魔法種][1]->DrawRotate((int)UStage::F魔法一覧(a).x + 20, (int)UStage::F魔法一覧(a).y + 20, 1, 0);
+                MUnit::魔女[TDSystem::魔法リスト[a]->基礎ステ.魔法種][1]->DrawRotate({ UStage::F魔法一覧(a).x + 20, UStage::F魔法一覧(a).y + 20 }, 1, 0);
             }
 
             //情報の表示
