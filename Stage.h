@@ -12,6 +12,8 @@
 #include "Wave.h"
 #include "Button.h"
 
+#include "UnitDerived.h"
+
 namespace SDX_TD
 {
     using namespace SDX;

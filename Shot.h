@@ -78,8 +78,8 @@ namespace SDX_TD
             shape->Draw(Color::Yellow, 255);
         }
 
-        /**ダメージを受けた時の処理.*/
-        virtual void Damaged(Object* 衝突相手)
+        /**衝突した時の処理.*/
+        void Damaged(Object* 衝突相手)
         {
             if (!is貫通)
             {
