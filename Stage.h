@@ -211,7 +211,7 @@ namespace SDX_TD
             TDSystem::魔法リスト.clear();
             for(int a=0; a<12 ; ++a)
             {
-                //TDSystem::魔法リスト.emplace_back( new Unit(0,0,MainWitch->魔法タイプ[a]) );
+                TDSystem::魔法リスト.emplace_back( new Unit<SpImage>(0,0,MainWitch->魔法タイプ[a], nullptr ) );
             }
 
             for(auto& it:TDSystem::魔法リスト)
@@ -274,7 +274,7 @@ namespace SDX_TD
                 int x = SLand->穴の位置[0] % Land::MapSize;
                 int y = SLand->穴の位置[0] / Land::MapSize;
 
-                Add(new Enemy(x, y, EnemyDataS[EnemyType::ゼリー]), a * 16);
+                //Add(new Enemy(x, y, EnemyDataS[EnemyType::ゼリー]), a * 16);
             }
         }
 
@@ -409,7 +409,7 @@ namespace SDX_TD
 
             if (SLand->SetUnit( x , y , 2))
             {
-                Add( new Unit( x , y , 魔法種 ) );
+                Add( new Unit<SpImage>( x , y , 魔法種 , nullptr) );
             }
         }
 
@@ -560,7 +560,7 @@ namespace SDX_TD
         /**一番近いEnemyを返す.*/
         IObject* GetNearEnemy(IObject* 比較対象) override
         {
-            Object* 一番近いObject = nullptr;
+            IObject* 一番近いObject = nullptr;
             double  最短距離 = 9999999999;
             double  距離;
 
@@ -608,7 +608,7 @@ namespace SDX_TD
         /**Enemyがいない場合0を返す*/
         double GetNearDirect(IObject* 比較対象) override
         {
-            Object* 一番近いObject = GetNearEnemy( 比較対象 );
+            IObject* 一番近いObject = GetNearEnemy( 比較対象 );
 
             if (一番近いObject) return 比較対象->GetDirect(一番近いObject);
 

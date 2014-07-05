@@ -81,13 +81,37 @@ namespace SDX_TD
     };
 
     template <class TShape,class TSprite>
-    class Object : public IObject , public ModelBase<TShape,TSprite>
+    class Object : public IObject
     {
-        public:
-            Object(const TShape &図形と位置, const TSprite &描画方法 , Belong 所属):
-                IObject(所属),
-                ModelBase(図形と位置,描画方法)
-            {}
+    public:
+        TShape shape;
+        TSprite sprite;
+
+        Object(const TShape &図形と位置, const TSprite &描画方法 , Belong 所属):
+            IObject(所属),
+            shape(図形と位置),
+            sprite(描画方法)
+        {}
+
+        Shape& GetShape() override
+        {
+            return shape;
+        }
+
+        Sprite& GetSprite() override
+        {
+            return sprite;
+        }
+
+        const Shape& GetShape() const override
+        {
+            return shape;
+        }
+
+        const Sprite& GetSprite() const override
+        {
+            return sprite;
+        }
     };
 
 }

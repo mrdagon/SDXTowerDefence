@@ -7,9 +7,9 @@
 #include "Enemy.h"
 
 #include "Stage.h"
-//#include "Menu.h"
+#include "Menu.h"
 
-//#include "TitleMenu.h"
+#include "TitleMenu.h"
 
 
 //#include "Sample/Sample.h"
@@ -17,8 +17,8 @@
 int main(int argc, char* argv[])
 {
     using namespace SDX;
-    //using namespace SDX_TD;
-    /*
+    using namespace SDX_TD;
+    
     MainWitch = new Witch::ライナ();
     SubWitch = new Witch::ライナ();
 
@@ -35,6 +35,6 @@ int main(int argc, char* argv[])
     Director::Run();
 
     System::End();//ライブラリの終了処理
-    */
+    
     return 0;
 }

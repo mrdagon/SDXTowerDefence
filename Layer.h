@@ -1,7 +1,7 @@
 ﻿#pragma once//☀Unicode
 #include "Object.h"
 
-namespace SDX
+namespace SDX_TD
 {
     using namespace SDX;
     /**Objectのコンテナクラス.*/
@@ -103,7 +103,7 @@ namespace SDX
         }
 
         /**.*/
-        TObject* GetNearest(Object* 比較対象)
+        TObject* GetNearest(IObject* 比較対象)
         {
             double   nearest = -1;
             TObject* nearObject = nullptr;

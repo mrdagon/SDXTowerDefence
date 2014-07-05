@@ -282,12 +282,37 @@ namespace SDX_TD
     };
 
     template <class TSprite>
-    class Unit : public IUnit , public ModelBase<Rect,TSprite>
+    class Unit : public IUnit
     {
-        public:
-            Unit(int X座標, int Y座標 , UnitType 魔法種, const TSprite &描画方法):
-                IUnit( 魔法種 ),
-                ModelBase(Rect( (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize/2, Size * Land::ChipSize/2 ,  Size * Land::ChipSize/2, Size * Land::ChipSize/2 ),描画方法)
-            {}
+    public:
+        Rect shape;
+        TSprite sprite;
+
+        Unit(int X座標, int Y座標 , UnitType 魔法種, const TSprite &描画方法):
+            IUnit( 魔法種 ),
+            sprite(描画方法),
+            shape( (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize/2, Size * Land::ChipSize/2 ,  Size * Land::ChipSize/2, Size * Land::ChipSize/2 )
+        {}
+
+        Shape& GetShape() override
+        {
+            return shape;
+        }
+
+        Sprite& GetSprite() override
+        {
+            return sprite;
+        }
+
+        const Shape& GetShape() const override
+        {
+            return shape;
+        }
+
+        const Sprite& GetSprite() const override
+        {
+            return sprite;
+        }
+
     };
 }

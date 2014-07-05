@@ -11,9 +11,9 @@ namespace SDX_TD
     class Menu : public IMenu
     {
     private:
-        Layer<Object> backEffectS;
-        Layer<Object> midEffectS;
-        Layer<Object> frontEffectS;
+        Layer<IObject> backEffectS;
+        Layer<IObject> midEffectS;
+        Layer<IObject> frontEffectS;
     public:
 
         int timer = 0;
@@ -64,17 +64,17 @@ namespace SDX_TD
         }
 
         /**エフェクト等を追加.*/
-        void Add(Object *追加するオブジェクト, int 待機時間 = 0) override
+        void Add(IObject *追加するオブジェクト, int 待機時間 = 0) override
         {
             midEffectS.Add(追加するオブジェクト, 待機時間);
         }
         /**前景オブジェクトを追加.*/
-        void AddFront(Object *追加するオブジェクト, int 待機時間 = 0) override
+        void AddFront(IObject *追加するオブジェクト, int 待機時間 = 0) override
         {
             frontEffectS.Add(追加するオブジェクト, 待機時間);
         }
         /**背景オブジェクトを追加.*/
-        void AddBack(Object *追加するオブジェクト, int 待機時間 = 0) override
+        void AddBack(IObject *追加するオブジェクト, int 待機時間 = 0) override
         {
             backEffectS.Add(追加するオブジェクト, 待機時間);
         }

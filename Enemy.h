@@ -459,12 +459,33 @@ namespace SDX_TD
     };
     
     template <class TSprite>
-    class Enemy : public IEnemy , public ModelBase<Rect,TSprite>
+    class Enemy : public IEnemy
     {
-        public:
-            Enemy(double X座標 , double Y座標 , const TSprite &描画方法 ):
-                Enemy(角度,基礎ステ),
-                ModelBase(Rect( (X座標+0.5)*Land::ChipSize, (Y座標+0.5)*Land::ChipSize, 14, 14),描画方法)
-            {}
+    public:
+        Enemy(double X座標 , double Y座標 , const TSprite &描画方法 ):
+            Enemy(角度,基礎ステ),
+            sprite(描画方法),
+            shape(Rect( (X座標+0.5)*Land::ChipSize, (Y座標+0.5)*Land::ChipSize, 14, 14),描画方法)
+        {}
+
+        Shape& GetShape() override
+        {
+            return shape;
+        }
+
+        Sprite& GetSprite() override
+        {
+            return sprite;
+        }
+
+        const Shape& GetShape() const override
+        {
+            return shape;
+        }
+
+        const Sprite& GetSprite() const override
+        {
+            return sprite;
+        }
     };
 }

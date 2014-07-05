@@ -86,12 +86,36 @@ namespace SDX_TD
     };
 
     template <class TShape,class TSprite>
-    class Shot : public IShot , public ModelBase<TShape,TSprite>
+    class Shot : public IShot
     {
-        public:
-            Shot(const TShape &図形と位置, const TSprite &描画方法 , double 角度, UnitData &基礎ステ):
-                IShot(角度,基礎ステ),
-                ModelBase(図形と位置,描画方法)
-            {}
+    public:
+        TShape shape;
+        TSprite sprite;
+
+        Shot(const TShape &図形と位置, const TSprite &描画方法 , double 角度, UnitData &基礎ステ):
+            IShot(角度,基礎ステ),
+            shape(図形と位置),
+            sprite(描画方法)
+        {}
+
+        Shape& GetShape() override
+        {
+            return shape;
+        }
+
+        Sprite& GetSprite() override
+        {
+            return sprite;
+        }
+
+        const Shape& GetShape() const override
+        {
+            return shape;
+        }
+
+        const Sprite& GetSprite() const override
+        {
+            return sprite;
+        }
     };
 }
