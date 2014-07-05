@@ -7,13 +7,13 @@
 namespace SDX_TD
 {
     using namespace SDX;
-    class Enemy :public Object
+    class IEnemy :public IObject
     {
     public:
         const static int 判定大きさ = 14;
 
         EnemyData &基礎ステ;
-        Enemy*  next;//当たり判定チェイン用
+        IEnemy*  next;//当たり判定チェイン用
         int     レベル = 0;
         int     方向   = 5;
         double  最大HP = 1000;
@@ -30,8 +30,8 @@ namespace SDX_TD
 
         int     スコア;
 
-        Enemy(double x, double y, EnemyData& 基礎ステ , bool isボス = false) :
-            Object(new Rect( (x+0.5)*Land::ChipSize, (y+0.5)*Land::ChipSize, 14, 14), nullptr, 基礎ステ.移動タイプ),
+        IEnemy(EnemyData& 基礎ステ , bool isボス = false) :
+            IObject( 基礎ステ.移動タイプ ),
             isボス(isボス),
             基礎ステ(基礎ステ)
         {
@@ -49,6 +49,8 @@ namespace SDX_TD
 
             残りHP = 最大HP;
         }
+
+        virtual ~IEnemy(){}
 
         /**デフォルト死亡.*/
         void Dead()
@@ -373,7 +375,7 @@ namespace SDX_TD
         }
 
         /**攻撃された時の処理.*/
-        void Damaged(Shot* 衝突相手)
+        void Damaged(IShot* 衝突相手)
         {
             double ダメージ量 = 衝突相手->攻撃力;
 
@@ -403,7 +405,7 @@ namespace SDX_TD
             React( ダメージ量 );
         }
 
-        void 麻痺付与(Shot* 衝突相手)
+        void 麻痺付与(IShot* 衝突相手)
         {
             //判定
             if (!Rand::Coin(衝突相手->デバフ率)) return;
@@ -411,7 +413,7 @@ namespace SDX_TD
             //付与処理
             麻痺時間 = std::max(衝突相手->デバフ効果, 麻痺時間);
         }
-        void 鈍足付与(Shot* 衝突相手)
+        void 鈍足付与(IShot* 衝突相手)
         {
             if (鈍足時間 <= 0) 鈍足率 = 1.0;
 
@@ -419,7 +421,7 @@ namespace SDX_TD
             鈍足率 = std::min( 1-衝突相手->デバフ率 , 鈍足率);
             鈍足時間 = std::max(衝突相手->デバフ効果, 鈍足時間);
         }
-        void 吹飛付与(Shot* 衝突相手)
+        void 吹飛付与(IShot* 衝突相手)
         {
             //付与処理
             const double 吹き飛び距離 = 衝突相手->デバフ効果;
@@ -427,14 +429,14 @@ namespace SDX_TD
             吹き飛びX += std::cos(衝突相手->GetAngle()) * 吹き飛び距離;
             吹き飛びY += std::sin(衝突相手->GetAngle()) * 吹き飛び距離;
         }
-        void 防壊付与(Shot* 衝突相手)
+        void 防壊付与(IShot* 衝突相手)
         {
             //付与処理
             防御力 = std::max(0, 防御力 - 衝突相手->デバフ効果);
         }
 
 
-        bool 弱点判定(Shot* 衝突相手)
+        bool 弱点判定(IShot* 衝突相手)
         {
             return
                 (
@@ -454,5 +456,15 @@ namespace SDX_TD
         /**敵別の特殊処理.*/
         virtual void ActSp(){}
 
+    };
+    
+    template <class TSprite>
+    class Enemy : public IEnemy , public ModelBase<Rect,TSprite>
+    {
+        public:
+            Enemy(double X座標 , double Y座標 , const TSprite &描画方法 ):
+                Enemy(角度,基礎ステ),
+                ModelBase(Rect( (X座標+0.5)*Land::ChipSize, (Y座標+0.5)*Land::ChipSize, 14, 14),描画方法)
+            {}
     };
 }

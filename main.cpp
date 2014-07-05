@@ -1,14 +1,17 @@
 ﻿//☀Unicode
 #include "stdafx.h"
-/*
-#include "Stage.h"
-#include "Enemy.h"
+
+#include "Object.h"
 #include "Shot.h"
 #include "Unit.h"
-#include "Menu.h"
+#include "Enemy.h"
 
-#include "TitleMenu.h"
-*/
+#include "Stage.h"
+//#include "Menu.h"
+
+//#include "TitleMenu.h"
+
+
 //#include "Sample/Sample.h"
 
 int main(int argc, char* argv[])

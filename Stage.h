@@ -20,24 +20,24 @@ namespace SDX_TD
     class Stage : public IStage
     {
     private:
-        Layer<Object> backEffectS;
-        Layer<Object> midEffectS;
-        Layer<Object> frontEffectS;
+        Layer<IObject> backEffectS;
+        Layer<IObject> midEffectS;
+        Layer<IObject> frontEffectS;
 
-        Layer<Enemy> skyEnemyS;
-        Layer<Enemy> seaEnemyS;
-        Layer<Enemy> groundEnemyS;
+        Layer<IEnemy> skyEnemyS;
+        Layer<IEnemy> seaEnemyS;
+        Layer<IEnemy> groundEnemyS;
 
-        Layer<Shot> shotS;
+        Layer<IShot> shotS;
 
-        Layer<Unit> unitS;
+        Layer<IUnit> unitS;
 
         Wave wave;
 
-        Enemy* 地上Top[Land::MapSize][Land::MapSize];
-        Enemy* 地上End[Land::MapSize][Land::MapSize];
-        Enemy* 空中Top[Land::MapSize][Land::MapSize];
-        Enemy* 空中End[Land::MapSize][Land::MapSize];
+        IEnemy* 地上Top[Land::MapSize][Land::MapSize];
+        IEnemy* 地上End[Land::MapSize][Land::MapSize];
+        IEnemy* 空中Top[Land::MapSize][Land::MapSize];
+        IEnemy* 空中End[Land::MapSize][Land::MapSize];
 
         /**レイヤー等を初期化.*/
         void Clear()
@@ -56,7 +56,7 @@ namespace SDX_TD
             unitS.Clear();
         }
 
-        void AddChainList(Layer<Enemy> &処理するレイヤ, Enemy* 始点[Land::MapSize][Land::MapSize], Enemy* 終点[Land::MapSize][Land::MapSize])
+        void AddChainList(Layer<IEnemy> &処理するレイヤ, IEnemy* 始点[Land::MapSize][Land::MapSize], IEnemy* 終点[Land::MapSize][Land::MapSize])
         {
             for (auto &&it : 処理するレイヤ.objectS)
             {
@@ -76,7 +76,7 @@ namespace SDX_TD
             }
         }
 
-        void HitShotEnemy(Shot* 弾, Enemy* 敵)
+        void HitShotEnemy(IShot* 弾, IEnemy* 敵)
         {
             while (敵)
             {
@@ -91,7 +91,7 @@ namespace SDX_TD
         }
 
         /**大型弾の判定.*/
-        void HitLine(Shot* 弾, Enemy* 始点[Land::MapSize][Land::MapSize])
+        void HitLine(IShot* 弾, IEnemy* 始点[Land::MapSize][Land::MapSize])
         {
             for (int x = 0; x < Land::MapSize; ++x)
             for (int y = 0; y < Land::MapSize; ++y)
@@ -100,7 +100,7 @@ namespace SDX_TD
             }
         }
         /**小型弾の判定.*/
-        void HitCircle(Shot* 弾, Enemy* 始点[Land::MapSize][Land::MapSize])
+        void HitCircle(IShot* 弾, IEnemy* 始点[Land::MapSize][Land::MapSize])
         {
             const int xa = (int)(弾->GetX() - Land::ChipSize / 2) / Land::ChipSize;
             const int ya = (int)(弾->GetY() - Land::ChipSize / 2) / Land::ChipSize;
@@ -211,7 +211,7 @@ namespace SDX_TD
             TDSystem::魔法リスト.clear();
             for(int a=0; a<12 ; ++a)
             {
-                TDSystem::魔法リスト.emplace_back( new Unit(0,0,MainWitch->魔法タイプ[a]) );            
+                //TDSystem::魔法リスト.emplace_back( new Unit(0,0,MainWitch->魔法タイプ[a]) );
             }
 
             for(auto& it:TDSystem::魔法リスト)
@@ -387,14 +387,14 @@ namespace SDX_TD
             }
         }
 
-        void SetSelect(Enemy* 選択した敵)
+        void SetSelect(IEnemy* 選択した敵)
         {
             selected = 選択した敵;
             selectEnemy = 選択した敵;
             selectUnit = nullptr;
         }
 
-        void SetSelect(Unit* 選択した魔法)
+        void SetSelect(IUnit* 選択した魔法)
         {
             selected = 選択した魔法;
             selectEnemy = nullptr;
@@ -518,12 +518,12 @@ namespace SDX_TD
         }
 
         /**エフェクト等を追加.*/
-        void Add(Object *追加するオブジェクト, int 待機時間 = 0) override
+        void Add(IObject *追加するオブジェクト, int 待機時間 = 0) override
         {
             midEffectS.Add(追加するオブジェクト, 待機時間);
         }
         /**敵を追加.*/
-        void Add(Enemy *追加するオブジェクト, int 待機時間 = 0) override
+        void Add(IEnemy *追加するオブジェクト, int 待機時間 = 0) override
         {
             switch (追加するオブジェクト->GetBelong())
             {
@@ -535,30 +535,30 @@ namespace SDX_TD
             }
         }
         /**魔法陣を追加.*/
-        void Add(Unit *追加するオブジェクト, int 待機時間 = 0) override
+        void Add(IUnit *追加するオブジェクト, int 待機時間 = 0) override
         {
             unitS.Add(追加するオブジェクト, 待機時間);
         }
         /**自弾を追加.*/
-        void Add(Shot *追加するオブジェクト, int 待機時間 = 0) override
+        void Add(IShot *追加するオブジェクト, int 待機時間 = 0) override
         {
             shotS.Add(追加するオブジェクト, 待機時間);
         }
 
         /**前景オブジェクトを追加.*/
-        void AddFront(Object *追加するオブジェクト, int 待機時間 = 0) override
+        void AddFront(IObject *追加するオブジェクト, int 待機時間 = 0) override
         {
             frontEffectS.Add(追加するオブジェクト, 待機時間);
         }
 
         /**背景オブジェクトを追加.*/
-        void AddBack(Object *追加するオブジェクト, int 待機時間 = 0) override
+        void AddBack(IObject *追加するオブジェクト, int 待機時間 = 0) override
         {
             backEffectS.Add(追加するオブジェクト, 待機時間);
         }
 
         /**一番近いEnemyを返す.*/
-        Object* GetNearEnemy(Object* 比較対象) override
+        IObject* GetNearEnemy(IObject* 比較対象) override
         {
             Object* 一番近いObject = nullptr;
             double  最短距離 = 9999999999;
@@ -606,7 +606,7 @@ namespace SDX_TD
 
         /**一番近いEnemyの方向を返す.*/
         /**Enemyがいない場合0を返す*/
-        double GetNearDirect(Object* 比較対象) override
+        double GetNearDirect(IObject* 比較対象) override
         {
             Object* 一番近いObject = GetNearEnemy( 比較対象 );
 

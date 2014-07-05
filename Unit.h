@@ -9,7 +9,7 @@
 namespace SDX_TD
 {
     using namespace SDX;
-    class Unit : public Object
+    class IUnit : public IObject
     {
     protected:
         virtual void Dead(){}
@@ -28,8 +28,8 @@ namespace SDX_TD
         int    強化or送還長さ;
         bool   is配置リスト = false;
         
-        Unit(int X座標, int Y座標 , UnitType 魔法種) :
-            Object(new Rect( (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize/2, Size * Land::ChipSize/2 ,  Size * Land::ChipSize/2, Size * Land::ChipSize/2 ) , nullptr , Belong::砲台),
+        IUnit(UnitType 魔法種) :
+            IObject(Belong::砲台),
             基礎ステ(UnitDataS[魔法種])
         {
             SetWait();
@@ -271,14 +271,23 @@ namespace SDX_TD
         /**攻撃処理.*/
         virtual void Shoot(double 角度)
         {
-            MakeShot<Shot>( 角度 );
+            //MakeShot<Shot<Point,SpImage>>({GetX(),GetY()}, 角度 );
         }
 
         template <class TShot>        
-        void MakeShot(double 角度)
+        void MakeShot(const TShot& 図形 , double 角度)
         {
-            SStage->Add(new TShot(GetX(), GetY(), 角度, 基礎ステ, Lv, 支援補正));
+            //SStage->Add(new TShot(図形, 角度));
         }
+    };
 
+    template <class TSprite>
+    class Unit : public IUnit , public ModelBase<Rect,TSprite>
+    {
+        public:
+            Unit(int X座標, int Y座標 , UnitType 魔法種, const TSprite &描画方法):
+                IUnit( 魔法種 ),
+                ModelBase(Rect( (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize/2, Size * Land::ChipSize/2 ,  Size * Land::ChipSize/2, Size * Land::ChipSize/2 ),描画方法)
+            {}
     };
 }

@@ -1,7 +1,7 @@
 ﻿#pragma once//☀Unicode
 #include "Object.h"
 
-namespace SDX_TD
+namespace SDX
 {
     using namespace SDX;
     /**Objectのコンテナクラス.*/

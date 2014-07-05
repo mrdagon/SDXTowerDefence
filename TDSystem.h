@@ -4,7 +4,7 @@
 namespace SDX_TD
 {
     using namespace SDX;
-    class Unit;
+    class IUnit;
 
     namespace TDSystem
     {
@@ -17,7 +17,7 @@ namespace SDX_TD
         bool is一覧選択 = false;
         bool is敵選択 = false;
 
-        std::vector<std::unique_ptr<Unit>> 魔法リスト;
+        std::vector<std::unique_ptr<IUnit>> 魔法リスト;
         EnumArray<int,UnitType> 詠唱回数;
 
         int Hp = 20;

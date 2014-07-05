@@ -9,11 +9,9 @@ namespace SDX_TD
     using namespace SDX;
     /**.*/
     template <class T> class Layer;
-    class Object : public Model, public ModelMove
+    class IObject : public IModel
     {
-
         template<class T> friend class Layer;
-
     protected:
         int timer = 0;///発生してから経過したフレーム数
         int lifeTime = -1;///生存期間
@@ -42,14 +40,12 @@ namespace SDX_TD
         bool    isSelect = false;
 
         /**.*/
-        Object(Shape *当たり判定 = nullptr, Sprite *デフォルトスプライト = nullptr, Belong 所属 = Belong::その他) :
-            Model(当たり判定, デフォルトスプライト),
-            ModelMove(this),
+        IObject(Belong 所属 = Belong::その他) :
             belong(所属)
         {}
 
         /**.*/
-        virtual ~Object(){}
+        virtual ~IObject(){}
 
         /**経過フレームを取得.*/
         int GetTimer()
@@ -81,6 +77,17 @@ namespace SDX_TD
         virtual void Remove(){}
 
         /**ダメージ処理.*/
-        virtual void Damaged(Object* 衝突相手){}
+        virtual void Damaged(IObject* 衝突相手){}
     };
+
+    template <class TShape,class TSprite>
+    class Object : public IObject , public ModelBase<TShape,TSprite>
+    {
+        public:
+            Object(const TShape &図形と位置, const TSprite &描画方法 , Belong 所属):
+                IObject(所属),
+                ModelBase(図形と位置,描画方法)
+            {}
+    };
+
 }

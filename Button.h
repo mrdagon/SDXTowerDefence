@@ -6,7 +6,8 @@
 namespace SDX_TD
 {
     using namespace SDX;
-
+    
+    /*
     class Button : public Object
     {
         private:
@@ -22,8 +23,8 @@ namespace SDX_TD
                 }
             }
 
-            /**ボタンが押された時の派生クラスでの共通処理.*/
-            virtual void Pushed(){}
+             virtual void Pushed(){}
 
     };
+    */
 }
