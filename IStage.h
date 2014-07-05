@@ -1,28 +1,29 @@
 ﻿#pragma once//☀Unicode
 #include <SDXFrameWork.h>
 #include <Framework/IScene.h>
+#include <Utility/Module.h>
 
 namespace SDX_TD
 {
     using namespace SDX;
-    class IObject;
-    class IEnemy;
-    class IUnit;
-    class IShot;
+    class Object;
+    class Enemy;
+    class Unit;
+    class Shot;
     class Wave;
 
     /**.*/
     class IStage : public IScene
     {
     public:
-        IObject* selected = nullptr;//選択中のオブジェクト
-        IEnemy* selectEnemy = nullptr;//選択中の敵
-        IUnit* selectUnit = nullptr;//選択中の魔法
+        Object* selected = nullptr;//選択中のオブジェクト
+        Enemy* selectEnemy = nullptr;//選択中の敵
+        Unit* selectUnit = nullptr;//選択中の魔法
 
-        IObject* popUp = nullptr;//マウスカーソルが乗っているオブジェクト
+        Object* popUp = nullptr;//マウスカーソルが乗っているオブジェクト
 
         /**敵や魔法が消滅する前に呼び出す.*/
-        void 選択解除(IObject* 消滅するオブジェクト)
+        void 選択解除(Object* 消滅するオブジェクト)
         {
             if (selected == 消滅するオブジェクト)
             {
@@ -33,22 +34,25 @@ namespace SDX_TD
         }
 
         /**.*/
-        virtual void Add(IObject *追加するオブジェクト, int 待機時間 = 0) = 0;
-        virtual void Add(IUnit  *追加するオブジェクト, int 待機時間 = 0) = 0;
-        virtual void Add(IEnemy  *追加するオブジェクト, int 待機時間 = 0) = 0;
-        virtual void Add(IShot   *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void Add(Object *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void Add(Unit  *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void Add(Enemy  *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void Add(Shot   *追加するオブジェクト, int 待機時間 = 0) = 0;
 
         /**.*/
-        virtual void AddFront(IObject *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void AddFront(Object *追加するオブジェクト, int 待機時間 = 0) = 0;
 
         /**.*/
-        virtual void AddBack(IObject *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void AddBack(Object *追加するオブジェクト, int 待機時間 = 0) = 0;
 
         /**.*/
-        virtual IObject* GetNearEnemy(IObject* 比較対象) = 0;
+        virtual void AddEvent(IModule *追加する関数オブジェクト) = 0;
 
         /**.*/
-        virtual double GetNearDirect(IObject* 比較対象) = 0;
+        virtual Object* GetNearEnemy(Object* 比較対象) = 0;
+
+        /**.*/
+        virtual double GetNearDirect(Object* 比較対象) = 0;
 
         virtual Wave* GetWave() = 0;
     };

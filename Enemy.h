@@ -1,15 +1,13 @@
 ﻿#pragma  once//☀Unicode
 #include "Object.h"
-#include "IShot.h"
+#include "Shot.h"
 #include "DataType.h"
 #include "Design.h"
-#include "Witch.h"
 
 namespace SDX_TD
 {
     using namespace SDX;
-
-    class Enemy :public Object<Rect,SpImage>
+    class Enemy :public Object
     {
     public:
         const static int 判定大きさ = 14;
@@ -33,7 +31,7 @@ namespace SDX_TD
         int     スコア;
 
         Enemy(double x, double y, EnemyData& 基礎ステ , bool isボス = false) :
-            Object({ (x+0.5)*Land::ChipSize, (y+0.5)*Land::ChipSize, 14, 14}, nullptr, 基礎ステ.移動タイプ),
+            Object(new Rect( (x+0.5)*Land::ChipSize, (y+0.5)*Land::ChipSize, 14, 14), nullptr, 基礎ステ.移動タイプ),
             isボス(isボス),
             基礎ステ(基礎ステ)
         {
@@ -375,29 +373,28 @@ namespace SDX_TD
         }
 
         /**攻撃された時の処理.*/
-        void Damaged(IShot* 衝突相手)
+        void Damaged(Shot* 衝突相手)
         {
-            double ダメージ量 = 衝突相手->State().攻撃力;
-            const auto state = 衝突相手->State();
+            double ダメージ量 = 衝突相手->攻撃力;
 
             //属性効果判定
-            if (state.デバフ効果 > 0 && !基礎ステ.特殊耐性[state.基礎ステ.デバフ種])
+            if (衝突相手->デバフ効果 > 0 && !基礎ステ.特殊耐性[衝突相手->基礎ステ.デバフ種])
             {
-                switch (state.基礎ステ.デバフ種)
+                switch (衝突相手->基礎ステ.デバフ種)
                 {
-                    case DebuffType::鈍足: 鈍足付与(衝突相手); break;
-                    case DebuffType::麻痺: 麻痺付与(衝突相手); break;
+                case DebuffType::鈍足: 鈍足付与(衝突相手); break;
+                case DebuffType::麻痺: 麻痺付与(衝突相手); break;
                     case DebuffType::吹飛: 吹飛付与(衝突相手); break;
                     case DebuffType::防壊: 防壊付与(衝突相手); break;
                     default:break;
                 }
             }
 
-            //弱点補正 とりあえず無し
-            //if ( 弱点判定(衝突相手) )
-            //{
-            //    ダメージ量 *= MainWitch->実ステ.弱点補正;
-            //}
+            //弱点補正
+            if ( 弱点判定(衝突相手) )
+            {
+                ダメージ量 *= MainWitch->実ステ.弱点補正;
+            }
 
             //防御補正
             ダメージ量 = std::max( ダメージ量 - 防御力 , 1.0);
@@ -406,55 +403,46 @@ namespace SDX_TD
             React( ダメージ量 );
         }
 
-        void 麻痺付与(IShot* 衝突相手)
+        void 麻痺付与(Shot* 衝突相手)
         {
             //判定
-            if (!Rand::Coin(衝突相手->State().デバフ率)) return;
+            if (!Rand::Coin(衝突相手->デバフ率)) return;
 
             //付与処理
-            麻痺時間 = std::max(衝突相手->State().デバフ効果, 麻痺時間);
+            麻痺時間 = std::max(衝突相手->デバフ効果, 麻痺時間);
         }
-        void 鈍足付与(IShot* 衝突相手)
+        void 鈍足付与(Shot* 衝突相手)
         {
             if (鈍足時間 <= 0) 鈍足率 = 1.0;
 
             //付与処理
-            鈍足率 = std::min( 1-衝突相手->State().デバフ率 , 鈍足率);
-            鈍足時間 = std::max(衝突相手->State().デバフ効果, 鈍足時間);
+            鈍足率 = std::min( 1-衝突相手->デバフ率 , 鈍足率);
+            鈍足時間 = std::max(衝突相手->デバフ効果, 鈍足時間);
         }
-        void 吹飛付与(IShot* 衝突相手)
+        void 吹飛付与(Shot* 衝突相手)
         {
             //付与処理
-            const double 吹き飛び距離 = 衝突相手->State().デバフ効果;
+            const double 吹き飛び距離 = 衝突相手->デバフ効果;
 
             吹き飛びX += std::cos(衝突相手->GetAngle()) * 吹き飛び距離;
             吹き飛びY += std::sin(衝突相手->GetAngle()) * 吹き飛び距離;
         }
-        void 防壊付与(IShot* 衝突相手)
+        void 防壊付与(Shot* 衝突相手)
         {
             //付与処理
-            防御力 = std::max(0, 防御力 - 衝突相手->State().デバフ効果);
+            防御力 = std::max(0, 防御力 - 衝突相手->デバフ効果);
         }
 
-        bool 弱点判定(IShot* 衝突相手)
-        {
-            switch (衝突相手->State().基礎ステ.属性)
-            {
-                case Element::炎:
-                    if(基礎ステ.属性 == Element::氷) return true;
-                break;
-                case Element::氷:
-                    if(基礎ステ.属性 == Element::炎) return true;
-                break;
-                case Element::樹:
-                    if(基礎ステ.属性 == Element::空) return true;
-                break;
-                case Element::空:
-                    if(基礎ステ.属性 == Element::樹) return true;
-                break;
-            }
 
-            return false;
+        bool 弱点判定(Shot* 衝突相手)
+        {
+            return
+                (
+                    (衝突相手->基礎ステ.属性 == Element::炎 && 基礎ステ.属性 == Element::氷) ||
+                    (衝突相手->基礎ステ.属性 == Element::氷 && 基礎ステ.属性 == Element::炎) ||
+                    (衝突相手->基礎ステ.属性 == Element::樹 && 基礎ステ.属性 == Element::空) ||
+                    (衝突相手->基礎ステ.属性 == Element::空 && 基礎ステ.属性 == Element::樹)
+                );
         }
 
         /**ダメージを受けた時の特殊処理.*/

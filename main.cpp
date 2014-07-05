@@ -1,23 +1,17 @@
 ﻿//☀Unicode
 #include "stdafx.h"
-
-#include "Object.h"
-#include "Unit.h"
-#include "Shot.h"
+#include "Stage.h"
 #include "Enemy.h"
+#include "Shot.h"
+#include "Unit.h"
+#include "Menu.h"
 
-//#include "Stage.h"
-//#include "Menu.h"
-
-//#include "TitleMenu.h"
-
-//#include "Sample/Sample.h"
+#include "TitleMenu.h"
+#include "Sample/Sample.h"
 
 int main(int argc, char* argv[])
 {
     using namespace SDX;
-
-    /*
     SampleDrawing();
 
     
@@ -38,6 +32,6 @@ int main(int argc, char* argv[])
     Director::Run();
 
     System::End();//ライブラリの終了処理
-    */    
+    
     return 0;
 }
