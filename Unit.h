@@ -5,11 +5,14 @@
 #include "Wave.h"
 #include "DataType.h"
 #include "Design.h"
+#include "IUnit.h"
+#include "Witch.h"
 
 namespace SDX_TD
 {
     using namespace SDX;
-    class Unit : public Object
+
+    class Unit : public Object<Rect,SpImage> , public IUnit
     {
     protected:
         virtual void Dead(){}
@@ -29,7 +32,7 @@ namespace SDX_TD
         bool   is配置リスト = false;
         
         Unit(int X座標, int Y座標 , UnitType 魔法種) :
-            Object(new Rect( (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize/2, Size * Land::ChipSize/2 ,  Size * Land::ChipSize/2, Size * Land::ChipSize/2 ) , nullptr , Belong::砲台),
+            Object({ (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize/2, Size * Land::ChipSize/2 ,  Size * Land::ChipSize/2, Size * Land::ChipSize/2 } , nullptr , Belong::砲台),
             基礎ステ(UnitDataS[魔法種])
         {
             SetWait();
@@ -271,13 +274,13 @@ namespace SDX_TD
         /**攻撃処理.*/
         virtual void Shoot(double 角度)
         {
-            MakeShot<Shot>( 角度 );
+            //MakeShot<Shot>( 角度 );
         }
 
         template <class TShot>        
         void MakeShot(double 角度)
         {
-            SStage->Add(new TShot(GetX(), GetY(), 角度, 基礎ステ, Lv, 支援補正));
+            //SStage->Add(new TShot(GetX(), GetY(), 角度, 基礎ステ, Lv, 支援補正));
         }
 
     };

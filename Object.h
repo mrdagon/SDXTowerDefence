@@ -1,26 +1,26 @@
 ﻿#pragma once//☀Unicode
 #include <SDXFrameWork.h>
-#include <Framework/ModelMove.h>
 #include "RouteMap.h"
 #include "EnumType.h"
+#include "IObject.h"
 
 namespace SDX_TD
 {
     using namespace SDX;
     /**.*/
-    template <class T> class Layer;
-    class Object : public Model, public ModelMove , private BanCopy
+    template <class TShape = Point , class TSprite = SpImage>
+    class Object : public Model<TShape,TSprite> , public IObject
     {
-
-        template<class T> friend class Layer;
-
     protected:
-        int timer = 0;///発生してから経過したフレーム数
         int lifeTime = -1;///生存期間
+
+        int timer = 0;///発生してから経過したフレーム数
         Belong belong;///所属するレイヤー
+        bool isSelect = false;
+        bool isRemove = false;
 
         /**消滅判定を行う.*/
-        virtual bool RemoveCheck()
+        bool RemoveCheck() override
         {
             if (timer == lifeTime)
             {
@@ -32,55 +32,53 @@ namespace SDX_TD
             return isRemove;
         }
 
-        /**経過フレームをセット.*/
-        void SetTimer(int フレーム数)
-        {
-            timer = フレーム数;
-        }
-
     public:
-        bool    isSelect = false;
-
         /**.*/
-        Object(Shape *当たり判定 = nullptr, Sprite *デフォルトスプライト = nullptr, Belong 所属 = Belong::その他) :
-            Model(当たり判定, デフォルトスプライト),
-            ModelMove(this),
+        Object(const TShape &当たり判定 , const TSprite &デフォルトスプライト , Belong 所属 = Belong::その他) :
+            Model<TShape,TSprite>(当たり判定, デフォルトスプライト),
             belong(所属)
         {}
 
         /**.*/
         virtual ~Object(){}
 
-        /**経過フレームを取得.*/
-        int GetTimer()
-        {
-            return timer;
-        }
-
         /**毎フレームの更新処理.*/
-        virtual void Update()
+        void Update()
         {
             this->timer++;
             AnimeUpdate();
             this->Act();
         }
 
-        /**.*/
-        Belong GetBelong()
+        bool& IsRemove()
+        {
+            return isRemove();
+        }
+
+        bool& IsSelect()
+        {
+            return isSelect;
+        }
+
+        /**経過フレームを取得.*/
+        int& Timer()
+        {
+            return timer;
+        }
+
+        /**所属レイヤーを返す.*/
+        Belong& BelongLayer()
         {
             return belong;
         }
 
         /**Stage右枠のの説明を表示.*/
-        virtual void DrawInfo(){}
+        void DrawInfo() override{}
 
         /**Update時の追加処理.*/
-        virtual void Act(){}
+        void Act() override{}
 
         /**消滅時の追加処理.*/
-        virtual void Remove(){}
-
-        /**ダメージ処理.*/
-        virtual void Damaged(Object* 衝突相手){}
+        void Remove() override{}
     };
 }
