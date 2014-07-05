@@ -1,6 +1,7 @@
 ﻿#pragma once//☀Unicode
 #include "Object.h"
 #include "IStage.h"
+#include <functional>
 
 namespace SDX_TD
 {

@@ -1,5 +1,6 @@
 ﻿//☀Unicode
 #include "stdafx.h"
+/*
 #include "Stage.h"
 #include "Enemy.h"
 #include "Shot.h"
@@ -7,15 +8,14 @@
 #include "Menu.h"
 
 #include "TitleMenu.h"
-#include "Sample/Sample.h"
+*/
+//#include "Sample/Sample.h"
 
 int main(int argc, char* argv[])
 {
     using namespace SDX;
-    SampleDrawing();
-
-    
-    using namespace SDX_TD;
+    //using namespace SDX_TD;
+    /*
     MainWitch = new Witch::ライナ();
     SubWitch = new Witch::ライナ();
 
@@ -32,6 +32,6 @@ int main(int argc, char* argv[])
     Director::Run();
 
     System::End();//ライブラリの終了処理
-    
+    */
     return 0;
 }

@@ -1,7 +1,6 @@
 ﻿#pragma once//☀Unicode
 #include <SDXFrameWork.h>
 #include <Framework/IScene.h>
-#include <Utility/Module.h>
 #include "RouteMap.h"
 #include "Layer.h"
 #include "IStage.h"
@@ -32,8 +31,6 @@ namespace SDX_TD
         Layer<Shot> shotS;
 
         Layer<Unit> unitS;
-
-        std::vector<std::shared_ptr<IModule>> eventS;
 
         Wave wave;
 
@@ -228,12 +225,6 @@ namespace SDX_TD
         {
             SStage = this;
             ++timer;
-
-            //イベント処理
-            for (auto it : eventS)
-            {
-                it->Update();
-            }
 
             //Wave処理
             WaveCheck();
@@ -564,12 +555,6 @@ namespace SDX_TD
         void AddBack(Object *追加するオブジェクト, int 待機時間 = 0) override
         {
             backEffectS.Add(追加するオブジェクト, 待機時間);
-        }
-
-        /**Stageにイベントを追加.*/
-        void AddEvent(IModule *追加する関数オブジェクト) override
-        {
-            eventS.emplace_back(追加する関数オブジェクト);
         }
 
         /**一番近いEnemyを返す.*/

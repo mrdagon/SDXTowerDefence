@@ -9,7 +9,7 @@ namespace SDX_TD
     using namespace SDX;
     /**.*/
     template <class T> class Layer;
-    class Object : public Model, public ModelMove , private BanCopy
+    class Object : public Model, public ModelMove
     {
 
         template<class T> friend class Layer;

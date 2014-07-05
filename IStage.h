@@ -1,7 +1,6 @@
 ﻿#pragma once//☀Unicode
 #include <SDXFrameWork.h>
 #include <Framework/IScene.h>
-#include <Utility/Module.h>
 
 namespace SDX_TD
 {
@@ -44,9 +43,6 @@ namespace SDX_TD
 
         /**.*/
         virtual void AddBack(Object *追加するオブジェクト, int 待機時間 = 0) = 0;
-
-        /**.*/
-        virtual void AddEvent(IModule *追加する関数オブジェクト) = 0;
 
         /**.*/
         virtual Object* GetNearEnemy(Object* 比較対象) = 0;
