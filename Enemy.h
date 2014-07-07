@@ -30,8 +30,8 @@ namespace SDX_TD
 
         int     スコア;
 
-        IEnemy(EnemyData& 基礎ステ , bool isボス = false) :
-            IObject( 基礎ステ.移動タイプ ),
+        IEnemy(IShape &図形, ISprite &描画方法, EnemyData& 基礎ステ, bool isボス = false) :
+            IObject(図形, 描画方法, 基礎ステ.移動タイプ),
             isボス(isボス),
             基礎ステ(基礎ステ)
         {
@@ -462,30 +462,12 @@ namespace SDX_TD
     class Enemy : public IEnemy
     {
     public:
-        Enemy(double X座標 , double Y座標 , const TSprite &描画方法 ):
-            Enemy(角度,基礎ステ),
+        Rect shape;
+
+        Enemy(double X座標 , double Y座標 , TSprite &&描画方法 ):
+            Enemy(sprite,shape,角度,基礎ステ),
             sprite(描画方法),
             shape(Rect( (X座標+0.5)*Land::ChipSize, (Y座標+0.5)*Land::ChipSize, 14, 14),描画方法)
         {}
-
-        Shape& GetShape() override
-        {
-            return shape;
-        }
-
-        Sprite& GetSprite() override
-        {
-            return sprite;
-        }
-
-        const Shape& GetShape() const override
-        {
-            return shape;
-        }
-
-        const Sprite& GetSprite() const override
-        {
-            return sprite;
-        }
     };
 }

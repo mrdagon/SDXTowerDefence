@@ -28,8 +28,8 @@ namespace SDX_TD
         int    強化or送還長さ;
         bool   is配置リスト = false;
         
-        IUnit(UnitType 魔法種) :
-            IObject(Belong::砲台),
+        IUnit(IShape &図形, ISprite &描画方法, UnitType 魔法種) :
+            IObject(図形, 描画方法,Belong::砲台),
             基礎ステ(UnitDataS[魔法種])
         {
             SetWait();
@@ -289,30 +289,9 @@ namespace SDX_TD
         TSprite sprite;
 
         Unit(int X座標, int Y座標 , UnitType 魔法種, const TSprite &描画方法):
-            IUnit( 魔法種 ),
+            IUnit( shape,sprite,魔法種 ),
             sprite(描画方法),
             shape( (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize/2, Size * Land::ChipSize/2 ,  Size * Land::ChipSize/2, Size * Land::ChipSize/2 )
         {}
-
-        Shape& GetShape() override
-        {
-            return shape;
-        }
-
-        Sprite& GetSprite() override
-        {
-            return sprite;
-        }
-
-        const Shape& GetShape() const override
-        {
-            return shape;
-        }
-
-        const Sprite& GetSprite() const override
-        {
-            return sprite;
-        }
-
     };
 }

@@ -1,6 +1,5 @@
 ﻿#pragma once//☀Unicode
 #include <SDXFrameWork.h>
-#include <Framework/ModelMove.h>
 #include "RouteMap.h"
 #include "EnumType.h"
 
@@ -40,7 +39,8 @@ namespace SDX_TD
         bool    isSelect = false;
 
         /**.*/
-        IObject(Belong 所属 = Belong::その他) :
+        IObject(IShape &図形,ISprite &描画方法,Belong 所属 = Belong::その他) :
+            IModel(図形,描画方法),
             belong(所属)
         {}
 
@@ -87,31 +87,12 @@ namespace SDX_TD
         TShape shape;
         TSprite sprite;
 
-        Object(const TShape &図形と位置, const TSprite &描画方法 , Belong 所属):
-            IObject(所属),
+        Object(TShape &&図形と位置, TSprite &&描画方法 , Belong 所属):
+            IObject(shape,sprite,所属),
             shape(図形と位置),
             sprite(描画方法)
         {}
 
-        Shape& GetShape() override
-        {
-            return shape;
-        }
-
-        Sprite& GetSprite() override
-        {
-            return sprite;
-        }
-
-        const Shape& GetShape() const override
-        {
-            return shape;
-        }
-
-        const Sprite& GetSprite() const override
-        {
-            return sprite;
-        }
     };
 
 }

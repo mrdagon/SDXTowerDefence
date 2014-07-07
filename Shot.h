@@ -24,9 +24,11 @@ namespace SDX_TD
         double 炸裂威力 = 0;
         double 炸裂範囲 = 0;
 
+
+
         /**円形弾.*/
-        IShot(double 角度, UnitData &基礎ステ) :
-            IObject(Belong::弾),
+        IShot(IShape &図形, ISprite &描画方法, double 角度, UnitData &基礎ステ) :
+            IObject(図形, 描画方法,Belong::弾),
             基礎ステ(基礎ステ),
             isSmall(true)
         {
@@ -64,7 +66,7 @@ namespace SDX_TD
         /**描画処理.*/
         void Draw() const
         {
-            GetShape().Draw(Color::Yellow, 255);
+            iShape.Draw(Color::Yellow, 255);
         }
 
         /**衝突した時の処理.*/
@@ -92,30 +94,10 @@ namespace SDX_TD
         TShape shape;
         TSprite sprite;
 
-        Shot(const TShape &図形と位置, const TSprite &描画方法 , double 角度, UnitData &基礎ステ):
-            IShot(角度,基礎ステ),
-            shape(図形と位置),
+        Shot(TShape &&図形, TSprite &&描画方法 , double 角度, UnitData &基礎ステ):
+            IShot(shape,sprite,角度,基礎ステ),
+            shape(図形),
             sprite(描画方法)
         {}
-
-        Shape& GetShape() override
-        {
-            return shape;
-        }
-
-        Sprite& GetSprite() override
-        {
-            return sprite;
-        }
-
-        const Shape& GetShape() const override
-        {
-            return shape;
-        }
-
-        const Sprite& GetSprite() const override
-        {
-            return sprite;
-        }
     };
 }
