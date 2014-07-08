@@ -56,8 +56,8 @@ namespace SDX_TD
         void Dead()
         {
             //MP&SP&スコア増
-            MainWitch->MP += スコア;
-            MainWitch->SP += スコア;
+            WITCH::Main->MP += スコア;
+            WITCH::Main->SP += スコア;
 
             isRemove = true;
             DeadSp();
@@ -395,7 +395,7 @@ namespace SDX_TD
             //弱点補正
             if ( 弱点判定(衝突相手) )
             {
-                ダメージ量 *= MainWitch->実ステ.弱点補正;
+                ダメージ量 *= WITCH::Main->実ステ.弱点補正;
             }
 
             //防御補正
@@ -455,8 +455,8 @@ namespace SDX_TD
 
         /**敵別の特殊処理.*/
         virtual void ActSp(){}
-
     };
+
     
     template <class TSprite>
     class Enemy : public IEnemy
@@ -469,28 +469,5 @@ namespace SDX_TD
             sprite(描画方法),
             shape(Rect( (X座標+0.5)*Land::ChipSize, (Y座標+0.5)*Land::ChipSize, 14, 14),描画方法)
         {}
-<<<<<<< HEAD
-
-        IShape& GetShape() override
-        {
-            return shape;
-        }
-
-        ISprite& GetSprite() override
-        {
-            return sprite;
-        }
-
-        const IShape& GetShape() const override
-        {
-            return shape;
-        }
-
-        const ISprite& GetSprite() const override
-        {
-            return sprite;
-        }
-=======
->>>>>>> origin/master
     };
 }

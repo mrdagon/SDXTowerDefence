@@ -11,7 +11,9 @@
 #include "Wave.h"
 #include "Button.h"
 
-#include "UnitDerived.h"
+#include "UnitCommon.h"
+#include "UnitWitch.h"
+
 
 namespace SDX_TD
 {
@@ -206,12 +208,11 @@ namespace SDX_TD
 
             //ウィッチ初期化
 
-
             //ウィッチリスト12種初期化
             TDSystem::魔法リスト.clear();
             for(int a=0; a<12 ; ++a)
             {
-                TDSystem::魔法リスト.emplace_back( new Unit<SpImage>(0,0,MainWitch->魔法タイプ[a], nullptr ) );
+                TDSystem::魔法リスト.emplace_back( new Unit(WITCH::Main->魔法タイプ[a] ) );
             }
 
             for(auto& it:TDSystem::魔法リスト)
@@ -409,7 +410,7 @@ namespace SDX_TD
 
             if (SLand->SetUnit( x , y , 2))
             {
-                Add( new Unit<SpImage>( x , y , 魔法種 , nullptr) );
+                Add( new Unit( 魔法種 ) );
             }
         }
 
@@ -481,20 +482,20 @@ namespace SDX_TD
             //ウィッチの表示
             MSystem::フレーム[8].Draw( UStage::Fウィッチ() );
 
-            MUnit::魔女[(UnitType)SubWitch->種類][1]->DrawRotate(UStage::Pサブウィッチ(),1,0);
+            MUnit::魔女[(UnitType)WITCH::Sub->種類][1]->DrawRotate(UStage::Pサブウィッチ(),1,0);
             MFont::BMP黒.Draw({ UStage::Pサブウィッチ().x, UStage::Pサブウィッチ().y }, Color::White, "SUB");
-            MUnit::魔女[(UnitType)MainWitch->種類][1]->DrawRotate(UStage::Pウィッチ(), 2, 0);
+            MUnit::魔女[(UnitType)WITCH::Main->種類][1]->DrawRotate(UStage::Pウィッチ(), 2, 0);
 
             //MP,HP,SPの表示
             MSystem::フレーム[5].Draw({ 530, 40, 100, 20 });//SP
-            MIcon::魔導具[MainWitch->種類].Draw({ 530 - 2, 40 });
+            MIcon::魔導具[WITCH::Main->種類].Draw({ 530 - 2, 40 });
             MFont::BMP白.DrawExtend({ 584, 44 }, 2, 2, { 120, 120, 255 }, 100);
 
             MIcon::UI[IconType::ライフ].Draw(UStage::P体力());
             MFont::BMP白.DrawExtend({ UStage::P体力().x + 24, UStage::P体力().y + 6 }, 2, 2, { 255, 60, 60 }, { std::setw(2), TDSystem::Hp });//HP
 
             MIcon::UI[IconType::マナ].Draw(UStage::P魔力());
-            MFont::BMP白.DrawExtend({ UStage::P魔力().x + 24, UStage::P体力().y + 6 }, 2, 2, { 255, 255, 0 }, { std::setw(4), MainWitch->MP });//MP
+            MFont::BMP白.DrawExtend({ UStage::P魔力().x + 24, UStage::P体力().y + 6 }, 2, 2, { 255, 255, 0 }, { std::setw(4), WITCH::Main->MP });//MP
 
             //メニューボタン
             MSystem::フレーム[8].Draw(UStage::Fメニュー());
@@ -505,7 +506,7 @@ namespace SDX_TD
                 if( TDSystem::魔法リスト[a].get() == selected ) Screen::SetBright({255,120,120});
                 MSystem::フレーム[3].Draw(UStage::F魔法一覧(a));
                 Screen::SetBright({255,255,255});
-                MUnit::魔女[TDSystem::魔法リスト[a]->基礎ステ.魔法種][1]->DrawRotate({ UStage::F魔法一覧(a).x + 20, UStage::F魔法一覧(a).y + 20 }, 1, 0);
+                MUnit::魔女[WITCH::Main->魔法タイプ[a]][1]->DrawRotate({ UStage::F魔法一覧(a).x + 20, UStage::F魔法一覧(a).y + 20 }, 1, 0);
             }
 
             //情報の表示

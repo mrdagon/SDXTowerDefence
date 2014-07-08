@@ -81,7 +81,7 @@ namespace SDX_TD
             }
             else
             {
-                MUnit::魔女[UnitType::ディアネラ][1]->DrawRotate({GetX(),GetY()},1+0.2*Lv,0);
+                MUnit::魔女[基礎ステ.魔法種][1]->DrawRotate({GetX(),GetY()},1+0.2*Lv,0);
             }
 
             //レベル表示
@@ -224,7 +224,7 @@ namespace SDX_TD
 
             int 必要MP = 基礎ステ.コスト[Lv+1] - 基礎ステ.コスト[Lv];
 
-            強化時間 = int((Lv + 1) * (Lv + 1) * 60 * MainWitch->実ステ.強化速度);
+            強化時間 = int((Lv + 1) * (Lv + 1) * 60 * WITCH::Main->実ステ.強化速度);
             強化or送還長さ = 強化時間;
 
             return true;
@@ -232,7 +232,7 @@ namespace SDX_TD
 
         bool 送還開始()
         {
-            送還時間 = int( (SStage->GetWave()->現在Wave) * 60 * MainWitch->実ステ.回収速度 );
+            送還時間 = int( (SStage->GetWave()->現在Wave) * 60 * WITCH::Main->実ステ.回収速度 );
             強化or送還長さ = 送還時間;
             return true;
         }
@@ -271,51 +271,24 @@ namespace SDX_TD
         /**攻撃処理.*/
         virtual void Shoot(double 角度)
         {
-            //MakeShot<Shot<Point,SpImage>>({GetX(),GetY()}, 角度 );
-        }
-
-        template <class TShot>        
-        void MakeShot(const TShot& 図形 , double 角度)
-        {
-            //SStage->Add(new TShot(図形, 角度));
         }
     };
 
-    template <class TSprite>
     class Unit : public IUnit
     {
     public:
         Rect shape;
-        TSprite sprite;
+        SpImage sprite;
 
-        Unit(int X座標, int Y座標 , UnitType 魔法種, const TSprite &描画方法):
+        //配置位置
+        const int x = (Input::mouse.x - Land::ChipSize/2) / Land::ChipSize;
+        const int y = (Input::mouse.y - Land::ChipSize/2) / Land::ChipSize;
+
+        Unit(UnitType 魔法種):
             IUnit( shape,sprite,魔法種 ),
-            sprite(描画方法),
-            shape( (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize/2, Size * Land::ChipSize/2 ,  Size * Land::ChipSize/2, Size * Land::ChipSize/2 )
+            sprite(nullptr),
+            shape( (x+1) * Land::ChipSize , (y+1) * Land::ChipSize , Size * Land::ChipSize/2, Size * Land::ChipSize/2 ,  Size * Land::ChipSize/2, Size * Land::ChipSize/2 )
         {}
-<<<<<<< HEAD
 
-        IShape& GetShape() override
-        {
-            return shape;
-        }
-
-        ISprite& GetSprite() override
-        {
-            return sprite;
-        }
-
-        const IShape& GetShape() const override
-        {
-            return shape;
-        }
-
-        const ISprite& GetSprite() const override
-        {
-            return sprite;
-        }
-
-=======
->>>>>>> origin/master
     };
 }

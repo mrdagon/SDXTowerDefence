@@ -93,28 +93,6 @@ namespace SDX_TD
             sprite(描画方法)
         {}
 
-<<<<<<< HEAD
-        IShape& GetShape() override
-        {
-            return shape;
-        }
-
-        ISprite& GetSprite() override
-        {
-            return sprite;
-        }
-
-        const IShape& GetShape() const override
-        {
-            return shape;
-        }
-
-        const ISprite& GetSprite() const override
-        {
-            return sprite;
-        }
-=======
->>>>>>> origin/master
     };
 
 }

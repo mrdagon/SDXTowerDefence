@@ -39,10 +39,10 @@ namespace SDX_TD
             魔女[UnitType::武闘家].Load("File/Unit/Common/009.png",9,3,3);
             魔女[UnitType::忍者].Load("File/Unit/Common/010.png",9,3,3);
             魔女[UnitType::剣豪].Load("File/Unit/Common/011.png",9,3,3);
-            魔女[UnitType::技師].Load("File/Unit/Common/012.png",9,3,3);
+            魔女[UnitType::料理人].Load("File/Unit/Common/012.png",9,3,3);
             魔女[UnitType::勇者].Load("File/Unit/Common/013.png",9,3,3);
             魔女[UnitType::射手].Load("File/Unit/Common/014.png",9,3,3);
-            魔女[UnitType::料理人].Load("File/Unit/Common/015.png",9,3,3);
+            魔女[UnitType::盗賊].Load("File/Unit/Common/015.png",9,3,3);
             魔女[UnitType::騎士].Load("File/Unit/Common/016.png",9,3,3);
             魔女[UnitType::司祭].Load("File/Unit/Common/017.png",9,3,3);
             魔女[UnitType::僧侶].Load("File/Unit/Common/018.png",9,3,3);
