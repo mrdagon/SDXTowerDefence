@@ -294,22 +294,22 @@ namespace SDX_TD
             shape( (X座標+1) * Land::ChipSize , (Y座標+1) * Land::ChipSize , Size * Land::ChipSize/2, Size * Land::ChipSize/2 ,  Size * Land::ChipSize/2, Size * Land::ChipSize/2 )
         {}
 
-        Shape& GetShape() override
+        IShape& GetShape() override
         {
             return shape;
         }
 
-        Sprite& GetSprite() override
+        ISprite& GetSprite() override
         {
             return sprite;
         }
 
-        const Shape& GetShape() const override
+        const IShape& GetShape() const override
         {
             return shape;
         }
 
-        const Sprite& GetSprite() const override
+        const ISprite& GetSprite() const override
         {
             return sprite;
         }

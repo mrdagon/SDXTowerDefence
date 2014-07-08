@@ -1,6 +1,5 @@
 ﻿#pragma once//☀Unicode
 #include <SDXFrameWork.h>
-#include <Framework/ModelMove.h>
 #include "RouteMap.h"
 #include "EnumType.h"
 
@@ -93,22 +92,22 @@ namespace SDX_TD
             sprite(描画方法)
         {}
 
-        Shape& GetShape() override
+        IShape& GetShape() override
         {
             return shape;
         }
 
-        Sprite& GetSprite() override
+        ISprite& GetSprite() override
         {
             return sprite;
         }
 
-        const Shape& GetShape() const override
+        const IShape& GetShape() const override
         {
             return shape;
         }
 
-        const Sprite& GetSprite() const override
+        const ISprite& GetSprite() const override
         {
             return sprite;
         }

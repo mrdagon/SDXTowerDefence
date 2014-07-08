@@ -468,22 +468,22 @@ namespace SDX_TD
             shape(Rect( (X座標+0.5)*Land::ChipSize, (Y座標+0.5)*Land::ChipSize, 14, 14),描画方法)
         {}
 
-        Shape& GetShape() override
+        IShape& GetShape() override
         {
             return shape;
         }
 
-        Sprite& GetSprite() override
+        ISprite& GetSprite() override
         {
             return sprite;
         }
 
-        const Shape& GetShape() const override
+        const IShape& GetShape() const override
         {
             return shape;
         }
 
-        const Sprite& GetSprite() const override
+        const ISprite& GetSprite() const override
         {
             return sprite;
         }
