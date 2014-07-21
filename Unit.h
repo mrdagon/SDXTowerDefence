@@ -54,7 +54,7 @@ namespace SDX_TD
 
         /**.*/
         void Draw() const
-        {            
+        {
             //選択中
             if(SStage->selectUnit == this)
             {
@@ -274,21 +274,45 @@ namespace SDX_TD
         }
     };
 
+    //弾の種類
+    //発射方式
     class Unit : public IUnit
     {
-    public:
+    public:       
         Rect shape;
         SpImage sprite;
 
         //配置位置
-        const int x = (Input::mouse.x - Land::ChipSize/2) / Land::ChipSize;
-        const int y = (Input::mouse.y - Land::ChipSize/2) / Land::ChipSize;
-
         Unit(UnitType 魔法種):
-            IUnit( shape,sprite,魔法種 ),
+            IUnit( shape,sprite, 魔法種 ),
             sprite(nullptr),
-            shape( (x+1) * Land::ChipSize , (y+1) * Land::ChipSize , Size * Land::ChipSize/2, Size * Land::ChipSize/2 ,  Size * Land::ChipSize/2, Size * Land::ChipSize/2 )
-        {}
+            shape( ((Input::mouse.x - Land::ChipSize/2) / Land::ChipSize+1) * Land::ChipSize , ((Input::mouse.y - Land::ChipSize/2) / Land::ChipSize+1) * Land::ChipSize , Size * Land::ChipSize/2, Size * Land::ChipSize/2 ,  Size * Land::ChipSize/2, Size * Land::ChipSize/2 )
+        {
+
+        }
+
+        void Shoot(double 角度)
+        {
+            switch(基礎ステ.魔法種)
+            {
+                default:
+                    MakeShot(角度);
+                break;
+            }
+        }
+
+        using ShotType = Shot<Rect,SpImage,MOTION::ToFront<SPEED::Liner>,MOTION::ToFront<SPEED::Liner>>;
+
+        void MakeShot(double 角度)
+        {
+            switch(基礎ステ.魔法種)
+            {
+                default:
+                break;  
+            }
+
+            //SStageAdd( ShotType({GetX(),GetY(),10,10},nullptr,角度,基礎ステ,{1.0},{1.0}));
+        }
 
     };
 }

@@ -11,13 +11,13 @@ namespace SDX_TD
     public:
         //ボタンやエフェクトの追加
         /**.*/
-        virtual void Add(IObject *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void Add(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
 
         /**.*/
-        virtual void AddFront(IObject *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void AddFront(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
 
         /**.*/
-        virtual void AddBack(IObject *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void AddBack(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
     };
 
     /**唯一のアクティブなMenu.*/

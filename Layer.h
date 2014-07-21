@@ -19,10 +19,10 @@ namespace SDX_TD
 
             if (挿入するObject->GetTimer() >= 0)
             {
-                this->objectS.push_back(std::shared_ptr<TObject>(挿入するObject));
+                this->objectS.push_back( std::shared_ptr<TObject>(挿入するObject) );
             }
             else{
-                this->suspendS.push_back(std::shared_ptr<TObject>(挿入するObject));
+                this->suspendS.push_back( std::shared_ptr<TObject>(挿入するObject) );
             }
         }
 
@@ -52,7 +52,7 @@ namespace SDX_TD
         /**.*/
         void Draw() const
         {
-            for (auto it : objectS)
+            for (auto &&it : objectS)
             {
                 it->Draw();
             }

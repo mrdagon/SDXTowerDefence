@@ -410,7 +410,7 @@ namespace SDX_TD
 
             if (SLand->SetUnit( x , y , 2))
             {
-                Add( new Unit( 魔法種 ) );
+                 Add( new Unit(魔法種) );
             }
         }
 
@@ -519,12 +519,12 @@ namespace SDX_TD
         }
 
         /**エフェクト等を追加.*/
-        void Add(IObject *追加するオブジェクト, int 待機時間 = 0) override
+        void Add(IObject* 追加するオブジェクト, int 待機時間 = 0) override
         {
             midEffectS.Add(追加するオブジェクト, 待機時間);
         }
         /**敵を追加.*/
-        void Add(IEnemy *追加するオブジェクト, int 待機時間 = 0) override
+        void Add(IEnemy* 追加するオブジェクト, int 待機時間 = 0) override
         {
             switch (追加するオブジェクト->GetBelong())
             {
@@ -536,12 +536,12 @@ namespace SDX_TD
             }
         }
         /**魔法陣を追加.*/
-        void Add(IUnit *追加するオブジェクト, int 待機時間 = 0) override
+        void Add(IUnit* 追加するオブジェクト, int 待機時間 = 0) override
         {
-            unitS.Add(追加するオブジェクト, 待機時間);
+            unitS.Add( 追加するオブジェクト , 待機時間);
         }
         /**自弾を追加.*/
-        void Add(IShot *追加するオブジェクト, int 待機時間 = 0) override
+        void Add(IShot* 追加するオブジェクト, int 待機時間 = 0) override
         {
             shotS.Add(追加するオブジェクト, 待機時間);
         }

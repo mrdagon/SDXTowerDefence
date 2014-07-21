@@ -86,27 +86,25 @@ namespace SDX_TD
     public:
         TShape shape;
         TSprite sprite;
+        TMotion motion;
+        TReact react;
 
-        Shot(TShape &&図形, TSprite &&描画方法 , double 角度, UnitData &基礎ステ):
+        Shot(TShape &&図形, TSprite &&描画方法 , double 角度, UnitData &基礎ステ , TMotion &&移動方法 , TReact &&命中時処理):
             IShot(shape,sprite,角度,基礎ステ),
             shape(図形),
-            sprite(描画方法)
+            sprite(描画方法),
+            motion(移動方法),
+            react(命中時処理)
         {}
-
-        void Draw() const override
-        {
-            sprite.Draw({GetX(),GetY()},false);
-        }
 
         void Act() override
         {
-            TMotion::Update(this);
+            motion.Update(this);
         }
 
         void React() override
         {
-            TReact::Update(this);
+            react.Update(this);
         }
-
     };
 }

@@ -32,17 +32,16 @@ namespace SDX_TD
             }
         }
 
-        /**.*/
-        virtual void Add(IObject *追加するオブジェクト, int 待機時間 = 0) = 0;
-        virtual void Add(IUnit  *追加するオブジェクト, int 待機時間 = 0) = 0;
-        virtual void Add(IEnemy  *追加するオブジェクト, int 待機時間 = 0) = 0;
-        virtual void Add(IShot   *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void Add( IObject *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void Add( IUnit *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void Add( IEnemy *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void Add( IShot *追加するオブジェクト, int 待機時間 = 0) = 0;
 
         /**.*/
-        virtual void AddFront(IObject *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void AddFront( IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
 
         /**.*/
-        virtual void AddBack(IObject *追加するオブジェクト, int 待機時間 = 0) = 0;
+        virtual void AddBack( IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
 
         /**.*/
         virtual IObject* GetNearEnemy(IObject* 比較対象) = 0;
@@ -56,7 +55,14 @@ namespace SDX_TD
     /**唯一のアクティブなStage.*/
     namespace
     {
-        IStage* SStage; 
+        IStage* SStage;
+
+        template<class T>
+        void SStageAdd(T &&追加オブジェクト)
+        {
+            SStage->Add(std::make_shared<T>(追加オブジェクト));
+        }
+
     }
 
 }
