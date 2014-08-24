@@ -311,7 +311,7 @@ namespace SDX_TD
                 break;  
             }
 
-            //SStageAdd( ShotType({GetX(),GetY(),10,10},nullptr,角度,基礎ステ,{1.0},{1.0}));
+			SStage->Add( new ShotType({GetX(),GetY(),10,10},nullptr,角度,基礎ステ,{1.0},{1.0}));
         }
 
     };
