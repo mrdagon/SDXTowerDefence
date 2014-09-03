@@ -11,8 +11,6 @@
 
 #include "TitleMenu.h"
 
-#include "Sample/Sample.h"
-
 int main(int argc, char* argv[])
 {
     using namespace SDX;
@@ -20,8 +18,6 @@ int main(int argc, char* argv[])
     
     WITCH::Main.reset(new WITCH::バロゥ());
     WITCH::Sub.reset(new WITCH::ディアネラ());
-
-	SampleThreadLoad();
 
     System::Initialise("sample", 640, 480);//ライブラリの初期化
 

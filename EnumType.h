@@ -12,7 +12,7 @@ namespace SDX_TD
         弾,
         砲台,
         その他,
-        MAX
+        COUNT
     };
 
     /**UnitとShotの魔法属性.*/
@@ -23,7 +23,7 @@ namespace SDX_TD
         樹,
         空,
         無,
-        MAX
+        COUNT
     };
 
     /**難易度の種類.*/
@@ -35,7 +35,7 @@ namespace SDX_TD
         Maniac,
         Hell,
         DeathMarch,
-        MAX
+        COUNT
     };
 
     /**地形の種類.*/
@@ -55,7 +55,7 @@ namespace SDX_TD
         水,//一部敵のみ通行可
         穴,//敵が湧く
         畑,//防衛拠点
-        MAX
+        COUNT
     };
 
     /**敵の種族.*/
@@ -76,7 +76,7 @@ namespace SDX_TD
         ゴースト,
         グリフィン,
         ドラゴン,
-    	MAX,
+    	COUNT,
     };
 
     /**魔法の種類.*/
@@ -138,7 +138,7 @@ namespace SDX_TD
         忍者,//鈍足A
         くノ一,//鈍足B
         
-        MAX,
+        COUNT,
     };
 
     /**ウィッチの種類.*/
@@ -156,14 +156,14 @@ namespace SDX_TD
         ナズナ,
         委員長,
         ミルラ,
-        MAX
+        COUNT
     };
 
     /**ステージの種類.*/
     enum class StageType
     {
         一面,
-        MAX
+        COUNT
     };
 
     enum class RangeType
@@ -181,7 +181,7 @@ namespace SDX_TD
         吹飛,
         防壊,
         無,
-        MAX
+        COUNT
     };
 
     enum class IconType
@@ -201,6 +201,6 @@ namespace SDX_TD
         回避,
         防御,
         回復,
-        MAX       
+        COUNT       
     };
 }

@@ -295,6 +295,8 @@ namespace SDX_TD
         {
             switch(基礎ステ.魔法種)
             {
+                case UnitType::くノ一:
+                break;
                 default:
                     MakeShot(角度);
                 break;

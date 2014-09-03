@@ -147,12 +147,12 @@ namespace SDX_TD
         std::string 名前;
         std::string 説明;
 
-        int シングルのハイスコア[(int)WitchType::MAX];
+        int シングルのハイスコア[(int)WitchType::COUNT];
 
         int タッグのハイスコア[3];        
         std::tuple<WitchType,WitchType> タッグの組み合わせ[3];
 
-        Difficulty シングルの達成難易度[(int)WitchType::MAX];
+        Difficulty シングルの達成難易度[(int)WitchType::COUNT];
         Difficulty タッグの達成難易度[3];
 
         double Wave速度;
@@ -248,7 +248,7 @@ namespace SDX_TD
 
     void LoadEnemyS()
     {
-        for (int a = 0; a < (int)EnemyType::MAX; ++a)
+        for (int a = 0; a < (int)EnemyType::COUNT; ++a)
         {
             EnemyDataS[(EnemyType)a].種族 = (EnemyType)a;
         }
