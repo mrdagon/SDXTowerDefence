@@ -1,4 +1,4 @@
-﻿//☀Unicode
+﻿//©SDXFramework http://sourceforge.jp/projects/dxframework/
 #include "stdafx.h"
 
 #include "Object.h"
@@ -10,6 +10,7 @@
 #include "Menu.h"
 
 #include "TitleMenu.h"
+#include "Sample/Sample.h"
 
 int main(int argc, char* argv[])
 {

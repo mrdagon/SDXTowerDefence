@@ -1,4 +1,4 @@
-﻿#pragma once//☀Unicode
+﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
 #include "Layer.h"
 #include "IMenu.h"
 #include "Object.h"

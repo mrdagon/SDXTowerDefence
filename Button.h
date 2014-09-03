@@ -1,4 +1,4 @@
-﻿#pragma once//☀Unicode
+﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
 #include "Object.h"
 #include "IStage.h"
 #include <functional>
