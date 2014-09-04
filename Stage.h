@@ -1,5 +1,5 @@
 ﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
-#include <SDXFrameWork.h>
+#include <SDXFramework.h>
 #include <Framework/IScene.h>
 #include "RouteMap.h"
 #include "Layer.h"
