@@ -1,4 +1,6 @@
-﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
+﻿//©(´･@･) http://tacoika.blog87.fc2.com/
+//[License] GNU Affero General Public License, version 3
+#pragma once
 #include "Object.h"
 #include "DataType.h"
 #include "Witch.h"
@@ -107,4 +109,5 @@ namespace SDX_TD
             react.Update(this);
         }
     };
+
 }

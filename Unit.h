@@ -1,4 +1,6 @@
-﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
+﻿//©(´･@･) http://tacoika.blog87.fc2.com/
+//[License] GNU Affero General Public License, version 3
+#pragma once
 #include "Object.h"
 #include "Shot.h"
 #include "IStage.h"
@@ -81,7 +83,7 @@ namespace SDX_TD
             }
             else
             {
-                MUnit::魔女[基礎ステ.魔法種][1]->DrawRotate({GetX(),GetY()},1+0.2*Lv,0);
+                MUnit::魔女[基礎ステ.魔法種][1]->DrawRotate({GetX(),GetY()},2,0);
             }
 
             //レベル表示
@@ -93,9 +95,6 @@ namespace SDX_TD
 
         void DrawInfo() override
         {
-            基礎ステ.名前 = "炎斬り";
-            基礎ステ.説明文 = "炎できりつけるぞ\n強い!";
-
             //画像&名前
             MSystem::フレーム[5].Draw( UInfo::F名前() );
             MUnit::魔女[基礎ステ.魔法種][1]->DrawRotate( UInfo::P画像() , 2 , 0 );
@@ -221,6 +220,8 @@ namespace SDX_TD
         bool 強化開始()
         {
             if (Lv >= 5) return false;
+            if (強化時間 > 0) return false;
+            
 
             int 必要MP = 基礎ステ.コスト[Lv+1] - 基礎ステ.コスト[Lv];
 
@@ -232,6 +233,8 @@ namespace SDX_TD
 
         bool 送還開始()
         {
+            if(送還時間 > 0) return false;
+
             送還時間 = int( (SStage->GetWave()->現在Wave) * 60 * WITCH::Main->実ステ.回収速度 );
             強化or送還長さ = 送還時間;
             return true;
@@ -269,9 +272,7 @@ namespace SDX_TD
         }
 
         /**攻撃処理.*/
-        virtual void Shoot(double 角度)
-        {
-        }
+        virtual void Shoot(double 角度) = 0;
     };
 
     //弾の種類
@@ -309,11 +310,13 @@ namespace SDX_TD
         {
             switch(基礎ステ.魔法種)
             {
+                case UnitType::くノ一:
+                break;
                 default:
                 break;  
             }
 
-			SStage->Add( new ShotType({GetX(),GetY(),10,10},nullptr,角度,基礎ステ,{1.0},{1.0}));
+			//SStage->Add( new ShotType({GetX(),GetY(),10,10},nullptr,角度,基礎ステ,{1.0},{1.0}));
         }
 
     };

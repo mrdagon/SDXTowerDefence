@@ -1,4 +1,6 @@
-﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
+﻿//©(´･@･) http://tacoika.blog87.fc2.com/
+//[License] GNU Affero General Public License, version 3
+#pragma once
 #include "EnumType.h"
 #include "Material.h"
 
@@ -208,9 +210,13 @@ namespace SDX_TD
     void LoadUnitS()
     {
         File UnitFile("File/Data/unit_data.dat", FileMode::Read, true);
+        int count = 0;
 
         for (auto &it : UnitDataS)
         {
+            it.魔法種 = UnitType(count);
+            ++count;
+
             UnitFile.Read(it.名前);
             UnitFile.Read(it.説明文);
 
@@ -226,18 +232,17 @@ namespace SDX_TD
 
             UnitFile.Read(it.基礎詠唱回数);
             UnitFile.Read(it.デバフ種);
-
             UnitFile.Read(it.特攻種族);
 
             UnitFile.Read(it.コスト, 6);
             UnitFile.Read(it.攻撃力, 6);
             UnitFile.Read(it.射程, 6);
             UnitFile.Read(it.連射, 6);
-
             UnitFile.Read<int>(it.弾速, 6, 100);
 
+            UnitFile.Read<int>(it.支援効果,6,100);
+            UnitFile.Read<int>(it.支援効果,6,100);
             UnitFile.Read<int>(it.炸裂威力, 6, 100);
-
             UnitFile.Read(it.炸裂範囲, 6);
 
             UnitFile.Read(it.デバフ効果, 6);

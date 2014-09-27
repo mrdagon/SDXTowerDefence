@@ -1,4 +1,6 @@
-﻿#pragma once//©SDXFramework http://sourceforge.jp/projects/dxframework/
+﻿//©(´･@･) http://tacoika.blog87.fc2.com/
+//[License] GNU Affero General Public License, version 3
+#pragma once
 #include <SDXFramework.h>
 #include <Framework/IScene.h>
 #include "RouteMap.h"
@@ -275,11 +277,11 @@ namespace SDX_TD
                 int x = SLand->穴の位置[0] % Land::MapSize;
                 int y = SLand->穴の位置[0] / Land::MapSize;
 
-                //Add(new Enemy(x, y, EnemyDataS[EnemyType::ゼリー]), a * 16);
+                Add(new Enemy(x, y, EnemyType::マーマン), a * 16);
             }
         }
 
-        /**クリックの選択処理.*/
+        /**各種操作、クリックの選択処理.*/
         void SelectCheck()
         {
             Point マウス座標(Input::mouse.x,Input::mouse.y);
@@ -506,7 +508,7 @@ namespace SDX_TD
                 if( TDSystem::魔法リスト[a].get() == selected ) Screen::SetBright({255,120,120});
                 MSystem::フレーム[3].Draw(UStage::F魔法一覧(a));
                 Screen::SetBright({255,255,255});
-                MUnit::魔女[WITCH::Main->魔法タイプ[a]][1]->DrawRotate({ UStage::F魔法一覧(a).x + 20, UStage::F魔法一覧(a).y + 20 }, 1, 0);
+                MUnit::魔女[WITCH::Main->魔法タイプ[a]][1]->DrawRotate({ UStage::F魔法一覧(a).x + 20, UStage::F魔法一覧(a).y + 20 }, 2, 0);
             }
 
             //情報の表示

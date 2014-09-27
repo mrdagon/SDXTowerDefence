@@ -1,4 +1,6 @@
-﻿#pragma  once//©SDXFramework http://sourceforge.jp/projects/dxframework/
+﻿//©(´･@･) http://tacoika.blog87.fc2.com/
+//[License] GNU Affero General Public License, version 3
+#pragma once
 #include "Object.h"
 #include "Shot.h"
 #include "DataType.h"
@@ -304,10 +306,6 @@ namespace SDX_TD
         /**Stage右に表示する情報.*/
         void DrawInfo() override
         {
-
-            基礎ステ.種族名 = "マーマン";
-            基礎ステ.説明文 = "水陸両用のモンスター\n水路もスイスイ移動出来る";
-
             //画像&名前
             MSystem::フレーム[5].Draw( UInfo::F名前() );
             MUnit::敵[基礎ステ.種族][1]->DrawRotate( UInfo::P画像() , 2 , 0 );
@@ -456,18 +454,16 @@ namespace SDX_TD
         /**敵別の特殊処理.*/
         virtual void ActSp(){}
     };
-
     
-    template <class TSprite>
     class Enemy : public IEnemy
     {
     public:
         Rect shape;
+        SpNull 描画方法;
 
-        Enemy(double X座標 , double Y座標 , TSprite &&描画方法 ):
-            Enemy(sprite,shape,角度,基礎ステ),
-            sprite(描画方法),
-            shape(Rect( (X座標+0.5)*Land::ChipSize, (Y座標+0.5)*Land::ChipSize, 14, 14),描画方法)
+        Enemy(double X座標 , double Y座標 , EnemyType 敵種類):
+            IEnemy(shape,描画方法,EnemyDataS[敵種類]),
+            shape( (X座標+0.5)*Land::ChipSize, (Y座標+0.5)*Land::ChipSize, 14, 14)
         {}
     };
 }
