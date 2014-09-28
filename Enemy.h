@@ -433,7 +433,6 @@ namespace SDX_TD
             防御力 = std::max(0, 防御力 - 衝突相手->デバフ効果);
         }
 
-
         bool 弱点判定(IShot* 衝突相手)
         {
             return
