@@ -82,16 +82,15 @@ namespace SDX_TD
     };
 
     /**弾のテンプレート.*/
-    template <class TShape,class TSprite , class TMotion , class TReact>
+    template <class TShape,class TSprite , class TMotion>
     class Shot : public IShot
     {
     public:
         TShape shape;
         TSprite sprite;
         TMotion motion;
-        TReact react;
 
-        Shot(TShape &&図形, TSprite &&描画方法 , double 角度, UnitData &基礎ステ , TMotion &&移動方法 , TReact &&命中時処理):
+        Shot(TShape &&図形, TSprite &&描画方法 , TMotion &&動作方法 , double 角度, UnitData &基礎ステ ):
             IShot(shape,sprite,角度,基礎ステ),
             shape(図形),
             sprite(描画方法),
@@ -106,6 +105,8 @@ namespace SDX_TD
 
         void React() override
         {
+            //範囲攻撃
+            //
             react.Update(this);
         }
     };

@@ -35,7 +35,6 @@ namespace SDX_TD
             基礎ステ(UnitDataS[魔法種])
         {
             SetWait();
-            //画像の設定
         }
         
         /**.*/
@@ -292,31 +291,99 @@ namespace SDX_TD
 
         }
 
+        using ShotType = Shot<Rect,SpImage,MOTION::ToFront<SPEED::Liner>>;
+
         void Shoot(double 角度)
         {
             switch(基礎ステ.魔法種)
             {
-                case UnitType::くノ一:
+            case UnitType::ライナ://防御低下3-8方向、師範強化
                 break;
-                default:
-                    MakeShot(角度);
+            case UnitType::ナツメ://周囲範囲攻撃、僧兵強化
+                break;
+            case UnitType::ルコウ://反射連射攻撃、騎士強化
+                break;
+            case UnitType::ディアネラ://チャージ攻撃、執事強化
+                break;
+            case UnitType::ミナエ://角度乱射、剣豪強化
+                break;
+            case UnitType::トレニア://レーザー攻撃、司祭強化
+                break;
+            case UnitType::ロチエ://長射程凍結、くの一強化
+                break;
+            case UnitType::バロゥ://ホーミング弾、勇者強化
+                break;
+            case UnitType::フィオナ://吹き飛び付きレーザー、司祭強化
+                break;
+            case UnitType::ナズナ://高支援ユニット、軍師強化
+                break;
+            case UnitType::委員長://確定麻痺ホーミング弾、賢者強化
+                break;
+            case UnitType::ミルラ://高支援ユニット、将軍強化
+                break;
+            case UnitType::兵士://通路用A-単発直進
+                break;
+            case UnitType::傭兵://通路用A-単発直進
+                break;
+            case UnitType::足軽://通路用A-単発直進
+                break;
+            case UnitType::技師://必中追尾A-単発型
+                break;
+            case UnitType::勇者://必中追尾B-周囲展開型
+                break;
+            case UnitType::剣士://連射A-単発直進
+                break;
+            case UnitType::剣豪://連射B-乱射直進
+                break;
+            case UnitType::槍士://反射A-3WAY直進
+                break;
+            case UnitType::騎士://反射B-連射加速直進
+                break;
+            case UnitType::斧士://吹き飛びA-後ろ射出加速
+                break;
+            case UnitType::闘士://吹き飛びB-周囲回転
+                break;
+            case UnitType::武闘家://防御破壊A-加速弾
+                break;
+            case UnitType::師範://防御破壊B-炸裂弾
+                break;
+            case UnitType::狩人://対空専用A-長射程、3連射
+                break;
+            case UnitType::射手://対空専用B-中射程、高連射
+                break;
+            case UnitType::僧侶://対地範囲A-麻痺付与
+                break;
+            case UnitType::司祭://対地ビームB
+                break;
+            case UnitType::プリンス://3-8方向攻撃
+                break;
+            case UnitType::プリンセス://3-8方向攻撃
+                break;
+            case UnitType::魔術師://範囲A-加速弾、命中時範囲攻撃
+                break;
+            case UnitType::賢者://範囲B-ホーミング弾、命中時範囲攻撃
+                break;
+            case UnitType::踊り子://支援A-弱麻痺
+                break;
+            case UnitType::軍師://支援B-弱吹飛
+                break;
+            case UnitType::将軍://支援B-弱防御低下
+                break;
+            case UnitType::執事://使い捨てA-円形使い捨て
+                break;
+            case UnitType::給仕://使い捨てB-十字使い捨て
+                break;
+            case UnitType::料理人://使い捨てB-円形使い捨て
+                break;
+            case UnitType::盗賊://鈍足A-高連射、直進弾
+                break;
+            case UnitType::忍者://鈍足A-3-8方向、直進弾
+                break;
+            case UnitType::くノ一://鈍足B-低連射、炸裂効果
                 break;
             }
-        }
 
-        using ShotType = Shot<Rect,SpImage,MOTION::ToFront<SPEED::Liner>,MOTION::ToFront<SPEED::Liner>>;
-
-        void MakeShot(double 角度)
-        {
-            switch(基礎ステ.魔法種)
-            {
-                case UnitType::くノ一:
-                break;
-                default:
-                break;  
-            }
-
-			//SStage->Add( new ShotType({GetX(),GetY(),10,10},nullptr,角度,基礎ステ,{1.0},{1.0}));
+            //SStage->Add( new ShotType({GetX(),GetY(),10,10},nullptr,角度,基礎ステ,{1.0},{1.0}));
         }
 
     };
