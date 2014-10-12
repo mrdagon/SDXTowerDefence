@@ -134,9 +134,11 @@ namespace SDX_TD
     /**エフェクトや弾.*/
     namespace MEffect
     {
+        Image 弾;
+
         static void Load()
         {
-        
+            弾.Load("File/Effect/shot000.png");
         }
     }
 

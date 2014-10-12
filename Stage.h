@@ -428,8 +428,6 @@ namespace SDX_TD
                 SLand->DrawSetPos();
             }
 
-            DrawUI();
-
             //敵等の表示
             backEffectS.Draw();
             unitS.Draw();
@@ -440,6 +438,11 @@ namespace SDX_TD
             shotS.Draw();
             skyEnemyS.Draw();
             frontEffectS.Draw();
+            
+            DrawUI();
+
+            //射程の表示
+            if( selectUnit && !selectUnit->is配置リスト){ selectUnit->DrawRange();}
         }
 
         /**UIの描画.*/

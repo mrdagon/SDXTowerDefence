@@ -91,12 +91,11 @@ namespace SDX_TD
         TSprite sprite;
         TMotion motion;
 
-        Shot(TShape &&図形, TSprite &&描画方法 , TMotion &&動作方法 , double 角度, UnitData &基礎ステ ):
+        Shot(TShape &&図形, TSprite &&描画方法 , TMotion &&移動方法 , double 角度, UnitData &基礎ステ ):
             IShot(shape,sprite,角度,基礎ステ),
             shape(図形),
             sprite(描画方法),
-            motion(移動方法),
-            react(命中時処理)
+            motion(移動方法)
         {}
 
         void Act() override
@@ -107,8 +106,6 @@ namespace SDX_TD
         void React() override
         {
             //範囲攻撃
-            //
-            react.Update(this);
         }
     };
 

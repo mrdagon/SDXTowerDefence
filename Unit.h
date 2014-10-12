@@ -198,6 +198,19 @@ namespace SDX_TD
 
         }
 
+        /*射程を表示する*/
+        void DrawRange()
+        {
+                //射程表示
+                Screen::SetBlendMode(BlendMode::Alpha,128);
+                Drawing::Circle({GetX(),GetY(),(double)基礎ステ.射程[Lv]},Color::White,true);
+                Screen::SetBlendMode(BlendMode::NoBlend,128);
+                
+                Screen::SetBright({255,0,0});
+                Drawing::Circle({GetX(),GetY(),(double)基礎ステ.射程[Lv]},Color::Red,false);                
+                Screen::SetBright({255,255,255});
+        }
+
         /**.*/
         bool RemoveCheck() override
         {
@@ -292,10 +305,12 @@ namespace SDX_TD
 
         }
 
-        using ShotType = Shot<Rect,SpImage,MOTION::ToFront<SPEED::Liner>>;
+        using ShotType = Shot<Circle,SpImage,MOTION::ToFront<SPEED::Liner>>;
 
         void Shoot(double 角度)
         {
+            //SStage->Add( new ShotType({GetX(),GetY(),10,10},nullptr,角度,基礎ステ,{1.0},{1.0}));
+
             switch(基礎ステ.魔法種)
             {
             case UnitType::ライナ://防御低下3-8方向、師範強化
@@ -305,6 +320,7 @@ namespace SDX_TD
             case UnitType::ルコウ://反射連射攻撃、騎士強化
                 break;
             case UnitType::ディアネラ://チャージ攻撃、執事強化
+                    SStage->Add( new ShotType({GetX(),GetY(),10},&MEffect::弾,{{1}},角度,基礎ステ));
                 break;
             case UnitType::ミナエ://角度乱射、剣豪強化
                 break;
@@ -312,7 +328,8 @@ namespace SDX_TD
                 break;
             case UnitType::ロチエ://長射程凍結、くの一強化
                 break;
-            case UnitType::バロゥ://ホーミング弾、勇者強化
+            case UnitType::バロゥ://ホーミング弾、勇者強化                
+                    SStage->Add( new ShotType({GetX(),GetY(),10},&MEffect::弾,{{1}},角度,基礎ステ));
                 break;
             case UnitType::フィオナ://吹き飛び付きレーザー、司祭強化
                 break;
@@ -384,7 +401,7 @@ namespace SDX_TD
                 break;
             }
 
-            //SStage->Add( new ShotType({GetX(),GetY(),10,10},nullptr,角度,基礎ステ,{1.0},{1.0}));
+            
         }
 
     };
