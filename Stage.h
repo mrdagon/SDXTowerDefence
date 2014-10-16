@@ -48,6 +48,8 @@ namespace SDX_TD
         {
             timer = 0;
 
+            wave.Init();
+
             backEffectS.Clear();
             midEffectS.Clear();
             frontEffectS.Clear();
@@ -203,6 +205,8 @@ namespace SDX_TD
         /**Stageを初期化する.*/
         void Init()
         {
+            Clear();
+
             SStage = this;
             //地形データ初期化
             if( !SLand )SLand = new Land::Land();
@@ -230,7 +234,10 @@ namespace SDX_TD
             ++timer;
 
             //Wave処理
-            WaveCheck();
+            if( wave.Check() )
+            {
+                NextWave();
+            }
 
             //レイヤー処理
             backEffectS.Update();
@@ -266,19 +273,21 @@ namespace SDX_TD
             SelectCheck();
         }
 
-        /**Waveの処理.*/
-        void WaveCheck()
+        /**Waveの進行と敵の発生.*/
+        void NextWave()
         {
-            if (!wave.Check()) return;
-            
             //発生処理
+            int waveNo = wave.現在Wave % 100;
+
             for (int a = 0; a < 16; ++a)
             {
                 int x = SLand->穴の位置[0] % Land::MapSize;
                 int y = SLand->穴の位置[0] / Land::MapSize;
 
-                Add(new Enemy(x, y, EnemyType::マーマン), a * 16);
+                Add(new Enemy(x, y, wave.敵種類[waveNo] , wave.isBoss[waveNo]), a * 16);
             }
+
+            ++wave.現在Wave;
         }
 
         /**各種操作、クリックの選択処理.*/
@@ -294,16 +303,10 @@ namespace SDX_TD
                 selectUnit = nullptr;
             }
 
-            //左クリックしていないなら処理しない
-            if( !Input::mouse.Left.on )
-            {
-                return;
-            }
-
             //敵を選択
             for(auto it : groundEnemyS.objectS)
             {
-                if( it->Hit(&マウス座標) )
+                if( it->Hit(&マウス座標) && Input::mouse.Left.on )
                 {
                     SetSelect(it.get());
                     return;
@@ -311,7 +314,7 @@ namespace SDX_TD
             }
             for(auto it : seaEnemyS.objectS)
             {
-                if( it->Hit(&マウス座標) )
+                if( it->Hit(&マウス座標) && Input::mouse.Left.on )
                 {
                     SetSelect(it.get());
                     return;
@@ -319,7 +322,7 @@ namespace SDX_TD
             }
             for(auto it : skyEnemyS.objectS)
             {
-                if( it->Hit(&マウス座標) )
+                if( it->Hit(&マウス座標) && Input::mouse.Left.on )
                 {
                     SetSelect(it.get());
                     return;
@@ -327,21 +330,25 @@ namespace SDX_TD
             }
 
             //ポーズを選択
-            if( UStage::Fメニュー().Hit(&マウス座標) )
+            if( UStage::Fメニュー().Hit(&マウス座標) && Input::mouse.Left.on )
             {
             
             }
             
             //大魔法を発動
-            if( UStage::F大魔法().Hit(&マウス座標) )
+            if( (UStage::F大魔法().Hit(&マウス座標) && Input::mouse.Left.on ) ||
+                Input::key.B.on )
             {
             
             }
 
             //Wave送り
-            if( マウス座標.x < 38)
+            if( (マウス座標.x < 38 && Input::mouse.Left.on ) || Input::key.N.on|| Input::key.Space.hold )
             {
-                
+                if( wave.ToNext() )
+                {
+                    NextWave();
+                }
             }
 
             //配置された魔法を選択、一覧選択中は不可能
@@ -349,7 +356,7 @@ namespace SDX_TD
             {
                 if( selectUnit && selectUnit->is配置リスト ) break;
 
-                if( it->Hit(&マウス座標) )
+                if( it->Hit(&マウス座標) && Input::mouse.Left.on )
                 {
                     SetSelect(it.get());
                     return;
@@ -359,7 +366,7 @@ namespace SDX_TD
             //一覧の魔法を選択
             for(int a=0;a<12;++a)
             {
-                if( UStage::F魔法一覧(a).Hit( &マウス座標 ) )
+                if( UStage::F魔法一覧(a).Hit( &マウス座標 ) && Input::mouse.Left.on )
                 {
                     SetSelect( TDSystem::魔法リスト[a].get() );
                     return;
@@ -370,13 +377,15 @@ namespace SDX_TD
             if( selectUnit && !selectUnit->is配置リスト )
             {
                 //強化
-                if( UUnit::F強化().Hit(&マウス座標) )
+                if( (UUnit::F強化().Hit(&マウス座標) && Input::mouse.Left.on) ||
+                    Input::key.U.on )
                 {
                     selectUnit->強化開始();
                     return;
                 }
                 //回収or発動
-                if( UUnit::F回収().Hit(&マウス座標) )
+                if( (UUnit::F回収().Hit(&マウス座標) && Input::mouse.Left.on) ||
+                    Input::key.S.on )
                 {
                     selectUnit->送還開始();
                     return;
@@ -384,7 +393,7 @@ namespace SDX_TD
             }
             
             //新規配置
-            if( selectUnit && selectUnit->is配置リスト )
+            if( selectUnit && selectUnit->is配置リスト && Input::mouse.Left.on )
             {
                 SetCheck( selectUnit->基礎ステ.魔法種 );
             }
@@ -492,9 +501,11 @@ namespace SDX_TD
             MUnit::魔女[(UnitType)WITCH::Main->種類][1]->DrawRotate(UStage::Pウィッチ(), 2, 0);
 
             //MP,HP,SPの表示
+            int SP値 = int(WITCH::Main->SP*100 / WITCH::Main->最大SP);
+
             MSystem::フレーム[5].Draw({ 530, 40, 100, 20 });//SP
             MIcon::魔導具[WITCH::Main->種類].Draw({ 530 - 2, 40 });
-            MFont::BMP白.DrawExtend({ 584, 44 }, 2, 2, { 120, 120, 255 }, 100);
+            MFont::BMP白.DrawExtend({ 584, 44 }, 2, 2, { 120, 120, 255 }, SP値 );//大魔法チャージ量
 
             MIcon::UI[IconType::ライフ].Draw(UStage::P体力());
             MFont::BMP白.DrawExtend({ UStage::P体力().x + 24, UStage::P体力().y + 6 }, 2, 2, { 255, 60, 60 }, { std::setw(2), TDSystem::Hp });//HP

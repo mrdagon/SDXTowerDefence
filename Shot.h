@@ -106,6 +106,10 @@ namespace SDX_TD
         void React() override
         {
             //範囲攻撃
+            if( this->炸裂範囲 > 0 )
+            {
+            
+            }
         }
     };
 

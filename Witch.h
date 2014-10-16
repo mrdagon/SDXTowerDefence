@@ -24,7 +24,8 @@ namespace WITCH
 
         //変動パラメータ
         double MP = 1000;
-        double SP;
+        double SP = 0;
+        double 最大SP = 1000;
         int    レベル;
         int    経験値;
         int    大魔法残り時間;
@@ -32,6 +33,13 @@ namespace WITCH
 
         //戦闘開始時の初期化処理
         void Init(){};
+
+        /**被ダメージ処理.*/
+        void Damage()
+        {
+            SP += 最大SP / 20;
+            TDSystem::Hp--;
+        }
 
         //大魔法発動時の性能計算、効果処理
         virtual void 大魔法発動() = 0;
@@ -53,7 +61,6 @@ namespace WITCH
 
         //アイテムによる補正計算
         void アイテム補正(){};
-
     };
     
     namespace

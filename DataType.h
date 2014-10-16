@@ -88,7 +88,7 @@ namespace SDX_TD
             this->属性 = 属性;
             this->スコア = スコア;
             this->最大HP = 最大HP;
-            this->移動速度 = (double)移動速度/100;
+            this->移動速度 = double(移動速度)/100;
             this->特殊耐性[DebuffType::鈍足] = false;
             this->特殊耐性[DebuffType::麻痺] = false;
             this->特殊耐性[DebuffType::吹飛] = false;
@@ -274,13 +274,14 @@ namespace SDX_TD
         EnemyDataS[EnemyType::ドラゴン  ].Set(Belong::陸, Element::炎, 80, 25,  40);
         EnemyDataS[EnemyType::ゼリー王  ].Set(Belong::陸, Element::氷, 30, 20,  40);
         EnemyDataS[EnemyType::マーマン  ].Set(Belong::水, Element::氷, 60, 15,  50);
-        EnemyDataS[EnemyType::ゴースト  ].Set(Belong::空, Element::氷, 50, 20,  70);
+        EnemyDataS[EnemyType::ロボット  ].Set(Belong::空, Element::氷, 60, 20,  15);
 
         EnemyDataS[EnemyType::コボルド].回避力 = 1;
 
         EnemyDataS[EnemyType::ケルベロス].防御力 = 0.5;
         EnemyDataS[EnemyType::マーマン].防御力 = 0.5;
         EnemyDataS[EnemyType::ゴーレム].防御力 = 1;
+        EnemyDataS[EnemyType::ロボット].防御力 = 1;
         EnemyDataS[EnemyType::ドラゴン].防御力 = 0.5;
 
         EnemyDataS[EnemyType::グリフィン].is離陸 = true;
@@ -294,7 +295,9 @@ namespace SDX_TD
 
     void LoadStageS()
     {
-
+        StageDataS[StageType::一面].名前 = "チュートリアル";
+        StageDataS[StageType::一面].Wave速度 = 4000;//基準
+        StageDataS[StageType::一面].説明 = "テスト";
 
     }
 

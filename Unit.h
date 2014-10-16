@@ -28,7 +28,7 @@ namespace SDX_TD
         int    待機時間 = -1;
         int    送還時間 = -1;
         int    強化時間 = -1;
-        int    強化or送還長さ;
+        int    強化or送還長さ = 1;
         bool   is配置リスト = false;
         
         IUnit(IShape &図形, ISprite &描画方法, UnitType 魔法種) :
@@ -83,7 +83,7 @@ namespace SDX_TD
             }
             else
             {
-                MUnit::魔女[基礎ステ.魔法種][1]->DrawRotate({GetX(),GetY()},2,0);
+                MUnit::魔女[基礎ステ.魔法種][1]->DrawRotate({GetX(),GetY()},1,0);
             }
 
             //レベル表示
@@ -219,8 +219,8 @@ namespace SDX_TD
 
             if (isRemove)
             {
-                const int x = int(GetX() - Size * Land::ChipSize) / Land::ChipSize;
-                const int y = int(GetY() - Size * Land::ChipSize) / Land::ChipSize;
+                const int x = int(GetX() - Size * Land::ChipSize) / Land::ChipSize + 1;
+                const int y = int(GetY() - Size * Land::ChipSize) / Land::ChipSize + 1;
                 SLand->RemoveUnit(x, y, Size);
 
                 SStage->選択解除(this);
@@ -233,7 +233,7 @@ namespace SDX_TD
         bool 強化開始()
         {
             if (Lv >= 5) return false;
-            if (強化時間 > 0) return false;
+            if (強化時間 >0 || 送還時間 > 0) return false;
             
 
             int 必要MP = 基礎ステ.コスト[Lv+1] - 基礎ステ.コスト[Lv];
@@ -246,9 +246,9 @@ namespace SDX_TD
 
         bool 送還開始()
         {
-            if(送還時間 > 0) return false;
+            if (強化時間 >0 || 送還時間 > 0) return false;
 
-            送還時間 = int( (SStage->GetWave()->現在Wave) * 60 * WITCH::Main->実ステ.回収速度 );
+            送還時間 = int( (SStage->GetWave()->現在Wave+1) * 60 * WITCH::Main->実ステ.回収速度 );
             強化or送還長さ = 送還時間;
             return true;
         }

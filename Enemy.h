@@ -29,13 +29,13 @@ namespace SDX_TD
         int     麻痺時間 = 0;
         double  吹き飛びX = 0;
         double  吹き飛びY = 0;
-        bool    isボス = false;
+        bool    isBoss = false;
 
         int     スコア;
 
-        IEnemy(IShape &図形, ISprite &描画方法, EnemyData& 基礎ステ, bool isボス = false) :
+        IEnemy(IShape &図形, ISprite &描画方法, EnemyData& 基礎ステ, bool isBoss) :
             IObject(図形, 描画方法, 基礎ステ.移動タイプ),
-            isボス(isボス),
+            isBoss(isBoss),
             基礎ステ(基礎ステ)
         {
             スコア = int(基礎ステ.スコア * (1.0 + レベル/30 ));
@@ -43,7 +43,7 @@ namespace SDX_TD
             防御力 = int(基礎ステ.防御力 * レベル);
             レベル = Rand::Get(2)+1;
 
-            if (isボス)
+            if (isBoss)
             {
                 スコア *= 16;
                 最大HP *= 16;
@@ -74,7 +74,7 @@ namespace SDX_TD
 
             double speed = 基礎ステ.移動速度;
             
-            if ( isボス) speed *= 0.66;
+            if ( isBoss) speed *= 0.66;
 
             //異常補正
             if (麻痺時間 > 0)
@@ -96,8 +96,8 @@ namespace SDX_TD
             //斜め移動補正
             if (方向 % 2 == 0) speed *= 0.7;
 
-            double mx = (方向 % 3 - 1) * speed * 基礎ステ.移動速度;
-            double my = (方向 / 3 - 1) * speed * 基礎ステ.移動速度;
+            double mx = (方向 % 3 - 1) * speed;
+            double my = (方向 / 3 - 1) * speed;
 
             //吹き飛び処理
             mx += 吹き飛びX / 8;
@@ -118,7 +118,6 @@ namespace SDX_TD
 
         void 方向更新()
         {
-
             switch (belong)
             {
             case Belong::空:
@@ -295,7 +294,7 @@ namespace SDX_TD
                 break;
             }
 
-            MUnit::敵[基礎ステ.種族][アニメ]->DrawRotate({ GetX(), GetY() }, 1 + isボス, 0, 反転);
+            MUnit::敵[基礎ステ.種族][アニメ]->DrawRotate({ GetX(), GetY() }, 1 + isBoss, 0, 反転);
 
             //ターゲット
             if(SStage->selected == this)
@@ -363,6 +362,7 @@ namespace SDX_TD
             //ゴール判定
             if ( SLand->地形[x][y] == ChipType::畑)
             {
+                WITCH::Main->Damage();
                 isRemove = true;
                 SStage->選択解除(this);
             }
@@ -461,9 +461,11 @@ namespace SDX_TD
         Rect shape;
         SpNull 描画方法;
 
-        Enemy(double X座標 , double Y座標 , EnemyType 敵種類):
-            IEnemy(shape,描画方法,EnemyDataS[敵種類]),
+        Enemy(double X座標 , double Y座標 , EnemyType 敵種類 , bool isBoss):
+            IEnemy(shape,描画方法,EnemyDataS[敵種類],isBoss),
             shape( (X座標+0.5)*Land::ChipSize, (Y座標+0.5)*Land::ChipSize, 14, 14)
-        {}
+        {
+            
+        }
     };
 }
