@@ -41,16 +41,8 @@ namespace SDX_TD
         /**.*/
         void SetWait()
         {
-            基礎ステ.連射[Lv] = 30;
-            基礎ステ.攻撃力[Lv] = 1;
-            基礎ステ.射程[Lv] = 60;
-            基礎ステ.連射[Lv+1] = 60;
-            基礎ステ.攻撃力[Lv+1] = 1000;
-            基礎ステ.射程[Lv+1] = 120;
+            if( 基礎ステ.連射[Lv] == 0 ) 基礎ステ.連射[Lv] = 1;
 
-            基礎ステ.デバフ効果[Lv] = 0;
-            基礎ステ.デバフ率[Lv] = 0;
-            基礎ステ.属性 = Element::空;
             待機時間 = int(速度値 / 基礎ステ.連射[Lv]);
         }
 
@@ -320,7 +312,7 @@ namespace SDX_TD
             case UnitType::ルコウ://反射連射攻撃、騎士強化
                 break;
             case UnitType::ディアネラ://チャージ攻撃、執事強化
-                    SStage->Add( new ShotType({GetX(),GetY(),10},&MEffect::弾,{{1}},角度,基礎ステ));
+                    SStage->Add( new ShotType({GetX(),GetY(),10},&MEffect::弾,{{10}},角度,基礎ステ));
                 break;
             case UnitType::ミナエ://角度乱射、剣豪強化
                 break;

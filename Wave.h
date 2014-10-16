@@ -89,7 +89,7 @@ namespace SDX_TD
                 y += 80;
                 ++no;
 
-                if( y > 480 || 現在Wave >= 最終Wave) break;
+                if( y > 480 || no > 最終Wave) break;
             }
         }
 

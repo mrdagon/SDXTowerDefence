@@ -22,8 +22,6 @@ namespace SDX_TD
         IEnemy* selectEnemy = nullptr;//選択中の敵
         IUnit* selectUnit = nullptr;//選択中の魔法
 
-        IObject* popUp = nullptr;//マウスカーソルが乗っているオブジェクト
-
         /**敵や魔法が消滅する前に呼び出す.*/
         void 選択解除(IObject* 消滅するオブジェクト)
         {

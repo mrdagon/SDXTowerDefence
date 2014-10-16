@@ -82,7 +82,7 @@ namespace SDX_TD
             }
         }
 
-        void HitShotEnemy(IShot* 弾, IEnemy* 敵)
+        bool HitShotEnemy(IShot* 弾, IEnemy* 敵)
         {
             while (敵)
             {
@@ -90,13 +90,14 @@ namespace SDX_TD
                 {
                     弾->Damaged(敵);
                     敵->Damaged(弾);
+                    return true;
                 }
                 敵 = 敵->next;
             }
-
+            return false;
         }
 
-        /**大型弾の判定.*/
+        /**貫通弾の判定.*/
         void HitLine(IShot* 弾, IEnemy* 始点[Land::MapSize][Land::MapSize])
         {
             for (int x = 0; x < Land::MapSize; ++x)
@@ -117,12 +118,12 @@ namespace SDX_TD
             {
                 if (ya >= 0 && ya < Land::MapSize)
                 {
-                    HitShotEnemy(弾, 始点[xa][ya]);
+                    if( HitShotEnemy(弾, 始点[xa][ya]) ){ return; }
                 }
 
                 if (yb >= 0 && yb < Land::MapSize && ya != yb)
                 {
-                    HitShotEnemy(弾, 始点[xa][yb]);
+                    if( HitShotEnemy(弾, 始点[xa][yb]) ){ return; }
                 }
             }
 
@@ -132,12 +133,12 @@ namespace SDX_TD
             {
                 if (ya >= 0 && ya < Land::MapSize)
                 {
-                    HitShotEnemy(弾, 始点[xb][ya]);
+                    if( HitShotEnemy(弾, 始点[xb][ya]) ){ return; }
                 }
 
                 if (yb >= 0 && yb < Land::MapSize && ya != yb)
                 {
-                    HitShotEnemy(弾, 始点[xb][yb]);
+                    if( HitShotEnemy(弾, 始点[xb][yb]) ){ return; }
                 }
             }
         }
@@ -160,15 +161,15 @@ namespace SDX_TD
             //判定開始
             for (auto && shot : shotS.objectS)
             {
-                if (shot->isSmall)
+                if (shot->is貫通)
                 {
-                    if (shot->基礎ステ.is対地) HitCircle(shot.get() , 地上Top);
-                    if (shot->基礎ステ.is対空) HitCircle(shot.get() , 空中Top);
+                    if (shot->基礎ステ.is対地){ HitLine(shot.get(), 地上Top); }
+                    if (shot->基礎ステ.is対空){ HitLine(shot.get(), 空中Top); }
                 }
                 else
                 {
-                    if (shot->基礎ステ.is対地) HitLine(shot.get(), 地上Top);
-                    if (shot->基礎ステ.is対空) HitLine(shot.get(), 空中Top);
+                    if (shot->基礎ステ.is対地){ HitCircle(shot.get() , 地上Top); }
+                    if (shot->基礎ステ.is対空){ HitCircle(shot.get() , 空中Top); }
                 }
             }
         }
@@ -191,6 +192,7 @@ namespace SDX_TD
 
     public:
         int timer = 0;
+        int gamespeed = 1;
 
         std::unique_ptr<Camera> camera;
 
@@ -232,6 +234,7 @@ namespace SDX_TD
         {
             SStage = this;
             ++timer;
+            Director::IsDraw() = ( timer % gamespeed == 0 );
 
             //Wave処理
             if( wave.Check() )
@@ -303,6 +306,11 @@ namespace SDX_TD
                 selectUnit = nullptr;
             }
 
+            if( Input::mouse.Whell > 0 ){ gamespeed *= 2; }            
+            if( Input::mouse.Whell < 0 ){ gamespeed /= 2; }
+            gamespeed = std::max(gamespeed , 8);
+            gamespeed = std::min(gamespeed , 1);
+
             //敵を選択
             for(auto it : groundEnemyS.objectS)
             {
@@ -348,6 +356,7 @@ namespace SDX_TD
                 if( wave.ToNext() )
                 {
                     NextWave();
+                    return;
                 }
             }
 
@@ -481,11 +490,14 @@ namespace SDX_TD
             for(int a=0; a<4;++a)
             {
                 int x = (int)UStage::Fゲーム速度(a).x;
+                const int SIZE = 2;
 
+                if(gamespeed != spd){ Screen::SetBright(Color::Gray);}              
                 MSystem::フレーム[8].Draw(UStage::Fゲーム速度(a));
-                
-                MFont::BMP黒.DrawExtend({ x + 8, 10 }, 2, 2, Color::White, "x");
-                MFont::BMP黒.DrawExtend({ x + 36, 8 }, 2, 2, Color::White, spd);
+                if(gamespeed != spd){ Screen::SetBright(Color::White);}
+
+                MFont::BMP黒.DrawExtend({ x + 8, 10 }, SIZE , SIZE , Color::White, "x");
+                MFont::BMP黒.DrawExtend({ x + 36, 8 }, SIZE , SIZE , Color::White, spd);
 
                 spd *= 2;
             }
@@ -528,7 +540,7 @@ namespace SDX_TD
             //情報の表示
             MSystem::フレーム[5].Draw( UStage::F情報() );        
 
-            if( selected )
+            if( selected)
             {
                 selected->DrawInfo();
             }

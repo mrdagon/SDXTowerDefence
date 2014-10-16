@@ -61,6 +61,7 @@ namespace SDX_TD
             //MP&SP&スコア増
             WITCH::Main->MP += スコア;
             WITCH::Main->SP += スコア;
+            SStage->選択解除(this);
 
             isRemove = true;
             DeadSp();
@@ -130,7 +131,6 @@ namespace SDX_TD
                 方向 = SLand->水路.方向計算(方向, (int)GetX(), (int)GetY());
                 break;
             }
-
         }
 
         /**特殊地形の処理.*/

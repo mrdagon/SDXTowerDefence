@@ -96,7 +96,9 @@ namespace SDX_TD
             shape(図形),
             sprite(描画方法),
             motion(移動方法)
-        {}
+        {
+        
+        }
 
         void Act() override
         {
