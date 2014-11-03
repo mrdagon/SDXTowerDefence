@@ -29,6 +29,14 @@ namespace SDX_TD
         COUNT
     };
 
+    /**ゲームモード.*/
+    enum class GameMode
+    {
+        Trial,
+        Power,
+        COUNT    
+    };
+
     /**難易度の種類.*/
     enum class Difficulty
     {

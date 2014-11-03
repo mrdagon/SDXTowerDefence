@@ -21,6 +21,7 @@ namespace WITCH
         //固定パラメータ
         Element 属性;
         UnitType 魔法タイプ[12];
+        int    召喚数[12];
 
         //変動パラメータ
         double MP = 1000;
@@ -34,11 +35,17 @@ namespace WITCH
         //戦闘開始時の初期化処理
         void Init(){};
 
+        /**配置に必要なMPを取得.*/
+        int GetReqMP(UnitType 魔法種)
+        {
+            return int(UnitDataS[魔法種].コスト[0] * 実ステ.MP消費);
+        }
+
         /**被ダメージ処理.*/
         void Damage()
         {
             SP += 最大SP / 20;
-            TDSystem::Hp--;
+            if( TDSystem::Hp > 0 ){ TDSystem::Hp--; }
         }
 
         //大魔法発動時の性能計算、効果処理

@@ -26,8 +26,8 @@ namespace SDX_TD
         double 支援補正 = 1;
 
         int    待機時間 = -1;
-        int    送還時間 = -1;
-        int    強化時間 = -1;
+        int    残り送還時間 = -1;
+        int    残り強化時間 = -1;
         int    強化or送還長さ = 1;
         bool   is配置リスト = false;
         
@@ -35,9 +35,12 @@ namespace SDX_TD
             IObject(図形, 描画方法,Belong::砲台),
             基礎ステ(UnitDataS[魔法種])
         {
+            WITCH::Main->MP -= WITCH::Main->GetReqMP(魔法種);
+            --TDSystem::詠唱回数[魔法種];
+
             SetWait();
         }
-        
+       
         /**.*/
         void SetWait()
         {
@@ -63,14 +66,14 @@ namespace SDX_TD
             }
 
             //強化中or送還中
-            if( 強化時間 > 0)
+            if( 残り強化時間 > 0)
             {
-                int Num = 99 - 強化時間*99/強化or送還長さ;   
+                int Num = 99 - 残り強化時間*99/強化or送還長さ;   
                 MFont::BMP黒.DrawExtend({ GetX() - 14, GetY() - 12 }, 2, 2, Color::White, { std::setw(2), Num });
             }
-            else if( 送還時間 > 0)
+            else if( 残り送還時間 > 0)
             {
-                int Num = 送還時間*99/強化or送還長さ;
+                int Num = 残り送還時間*99/強化or送還長さ;
                 MFont::BMP黒.DrawExtend({ GetX() - 14, GetY() - 12 }, 2, 2, Color::White, { std::setw(2), Num });
             }
             else
@@ -91,7 +94,7 @@ namespace SDX_TD
             MSystem::フレーム[5].Draw( UInfo::F名前() );
             MUnit::魔女[基礎ステ.魔法種][1]->DrawRotate( UInfo::P画像() , 2 , 0 );
             MFont::ゴシック中.DrawShadow( UInfo::P名前() , Color::White , Color::Gray  , 基礎ステ.名前);
-            
+
             //レベル
             if(is配置リスト)
             {
@@ -101,16 +104,15 @@ namespace SDX_TD
 
                 //LV1の性能
                 DrawInfoState( 0 , false );
-                        
             }else{               
                 //強化
-                MSystem::フレーム[8].Draw(UUnit::F強化());
+                MSystem::フレーム[3].Draw(UUnit::F強化());
                 MFont::ゴシック中.DrawShadow( UUnit::P強化(),Color::White , Color::Gray , "強化");
                 MFont::ゴシック中.DrawExtend({ UUnit::P強化().x - 16, UUnit::P強化().y + 13 }, 2, 2, Color::Red, "-");
                 MFont::BMP白.DrawExtend({ UUnit::P強化().x - 6, (int)UUnit::P強化().y + 20 }, 2, 2, Color::White, { std::setw(4), 123 });
 
                 //売却or発動
-                MSystem::フレーム[8].Draw(UUnit::F回収());
+                MSystem::フレーム[3].Draw(UUnit::F回収());
                 MFont::ゴシック中.DrawShadow( UUnit::P回収() , Color::White , Color::Gray , "回収");
                 MFont::ゴシック中.DrawExtend({ UUnit::P回収().x - 12, UUnit::P回収().y + 13 }, 2, 2, Color::Blue, "+");
                 MFont::BMP白.DrawExtend({ UUnit::P回収().x - 6, UUnit::P回収().y + 20 }, 2, 2, Color::White, { std::setw(4), 123 });
@@ -207,7 +209,11 @@ namespace SDX_TD
         bool RemoveCheck() override
         {
             //送還
-            if (送還時間 == 0) isRemove = true;
+            if (残り送還時間 == 0)
+            {
+                isRemove = true;
+                WITCH::Main->MP += 基礎ステ.コスト[Lv] * WITCH::Main->実ステ.回収率;
+            }
 
             if (isRemove)
             {
@@ -224,41 +230,45 @@ namespace SDX_TD
 
         bool 強化開始()
         {
-            if (Lv >= 5) return false;
-            if (強化時間 >0 || 送還時間 > 0) return false;
+            if (Lv >= 5){ return false; }
+            if (残り強化時間 >0 || 残り送還時間 > 0 ){ return false; }
+            if (TDSystem::詠唱回数[基礎ステ.魔法種] && !基礎ステ.isウィッチ ){ return false; }
             
+            const int 必要MP = 基礎ステ.コスト[Lv+1] - 基礎ステ.コスト[Lv];
 
-            int 必要MP = 基礎ステ.コスト[Lv+1] - 基礎ステ.コスト[Lv];
+            if (WITCH::Main->MP < 必要MP ){ return false; }
 
-            強化時間 = int((Lv + 1) * (Lv + 1) * 60 * WITCH::Main->実ステ.強化速度);
-            強化or送還長さ = 強化時間;
+            WITCH::Main->MP -= 必要MP;
+
+            残り強化時間 = int((Lv + 1) * (Lv + 1) * 60 * WITCH::Main->実ステ.強化速度);
+            強化or送還長さ = 残り強化時間;
 
             return true;
         }
 
         bool 送還開始()
         {
-            if (強化時間 >0 || 送還時間 > 0) return false;
+            if (残り強化時間 >0 || 残り送還時間 > 0) return false;
 
-            送還時間 = int( (SStage->GetWave()->現在Wave+1) * 60 * WITCH::Main->実ステ.回収速度 );
-            強化or送還長さ = 送還時間;
+            残り送還時間 = int( (SStage->GetWave()->現在Wave+1) * 60 * WITCH::Main->実ステ.回収速度 );
+            強化or送還長さ = 残り送還時間;
             return true;
         }
 
         /**.*/
         void Act()
         {
-            --送還時間;
-            --強化時間;
+            --残り送還時間;
+            --残り強化時間;
             --待機時間;
-            if (強化時間 == 0)
+            if (残り強化時間 == 0)
             {
                 Lv++;
-                強化時間 = -1;
+                残り強化時間 = -1;
                 SetWait();
             }
 
-            if (待機時間 <= 0 && 送還時間 < 0 && 強化時間 < 0)
+            if (待機時間 <= 0 && 残り送還時間 < 0 && 残り強化時間 < 0)
             {
                 auto 一番近い敵 = SStage->GetNearEnemy(this);
 

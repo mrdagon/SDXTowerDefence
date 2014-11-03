@@ -13,6 +13,7 @@ namespace SDX_TD
 
         const Point P画像() { return {502,227}; };        
         const Point P名前() { return {530,221}; };
+        const Point P詠唱数() {return {510,220};};
 
         const Point P説明() { return {495,259}; };
         const Rect F説明() { return {486,249,140,48,0,0}; };
@@ -52,14 +53,11 @@ namespace SDX_TD
         const Point Pゲーム速度() { return {8,10}; };
         const Rect Fゲーム速度(int No) { return {234 + No*60,-6,60,42,0,0}; };
 
-        const Point Pウィッチ() { return {Fウィッチ().x+20,Fウィッチ().y+20}; };
-        const Rect Fウィッチ() { return {486,20,40,40,0,0}; };
-
-        const Point Pサブウィッチ() { return {536,32}; };
+        const Point Pウィッチ() { return {486,20}; };
+        const Point Pサブウィッチ() { return {516,20}; };
 
         const Point P体力() { return {486,61}; };
         const Point P魔力() { return {550,61}; };
-
         const Point P大魔法() { return {584,44}; };
         const Rect F大魔法() { return {530, 40, 100 ,20,0,0}; };
 

@@ -221,6 +221,7 @@ namespace SDX_TD
             for(int a=0; a<12 ; ++a)
             {
                 TDSystem::魔法リスト.emplace_back( new Unit(WITCH::Main->魔法タイプ[a] ) );
+                TDSystem::詠唱回数[WITCH::Main->魔法タイプ[a]] = 10;
             }
 
             for(auto& it:TDSystem::魔法リスト)
@@ -281,13 +282,28 @@ namespace SDX_TD
         {
             //発生処理
             int waveNo = wave.現在Wave % 100;
+            int enemyCount;
+            int lv;
+
+            if( TDSystem::isトライアル )
+            {
+                lv = int((wave.現在Wave + 1) * TrialDataS[TDSystem::難易度].レベル補正);
+
+                if( wave.isBoss[waveNo] ){  enemyCount = TrialDataS[TDSystem::難易度].ボス召喚数;}
+                else {                      enemyCount = TrialDataS[TDSystem::難易度].雑魚召喚数;}
+            }else{
+                lv = int((wave.現在Wave + 1) * PowerDataS[TDSystem::難易度].レベル補正);
+                
+                if( wave.isBoss[waveNo] ){  enemyCount = PowerDataS[TDSystem::難易度].ボス召喚数;}
+                else {                      enemyCount = PowerDataS[TDSystem::難易度].雑魚召喚数;}
+            }
 
             for (int a = 0; a < 16; ++a)
             {
                 int x = SLand->穴の位置[0] % Land::MapSize;
                 int y = SLand->穴の位置[0] / Land::MapSize;
 
-                Add(new Enemy(x, y, wave.敵種類[waveNo] , wave.isBoss[waveNo]), a * 16);
+                Add(new Enemy(x, y, wave.敵種類[waveNo] , lv , wave.isBoss[waveNo]), a * 16);
             }
 
             ++wave.現在Wave;
@@ -308,8 +324,8 @@ namespace SDX_TD
 
             if( Input::mouse.Whell > 0 ){ gamespeed *= 2; }            
             if( Input::mouse.Whell < 0 ){ gamespeed /= 2; }
-            gamespeed = std::max(gamespeed , 8);
-            gamespeed = std::min(gamespeed , 1);
+            gamespeed = std::min(gamespeed , 8);
+            gamespeed = std::max(gamespeed , 1);
 
             //敵を選択
             for(auto it : groundEnemyS.objectS)
@@ -428,6 +444,11 @@ namespace SDX_TD
             const int x = (Input::mouse.x - Land::ChipSize/2) / Land::ChipSize;
             const int y = (Input::mouse.y - Land::ChipSize/2) / Land::ChipSize;
 
+            if( WITCH::Main->GetReqMP(魔法種) > WITCH::Main->MP || TDSystem::詠唱回数[魔法種] <= 0)
+            {
+                return;
+            }
+
             if (SLand->SetUnit( x , y , 2))
             {
                  Add( new Unit(魔法種) );
@@ -493,7 +514,7 @@ namespace SDX_TD
                 const int SIZE = 2;
 
                 if(gamespeed != spd){ Screen::SetBright(Color::Gray);}              
-                MSystem::フレーム[8].Draw(UStage::Fゲーム速度(a));
+                MSystem::フレーム[3].Draw(UStage::Fゲーム速度(a));
                 if(gamespeed != spd){ Screen::SetBright(Color::White);}
 
                 MFont::BMP黒.DrawExtend({ x + 8, 10 }, SIZE , SIZE , Color::White, "x");
@@ -506,35 +527,37 @@ namespace SDX_TD
             MSystem::フレーム[5].Draw({ 476, 4, 160, 96 + 105 });
 
             //ウィッチの表示
-            MSystem::フレーム[8].Draw( UStage::Fウィッチ() );
-
-            MUnit::魔女[(UnitType)WITCH::Sub->種類][1]->DrawRotate(UStage::Pサブウィッチ(),1,0);
-            MFont::BMP黒.Draw({ UStage::Pサブウィッチ().x, UStage::Pサブウィッチ().y }, Color::White, "SUB");
+            MSystem::フレーム[3].Draw( UStage::F大魔法());
+            MUnit::魔女[(UnitType)WITCH::Sub->種類][1]->DrawRotate(UStage::Pサブウィッチ(),2,0);
+            //MFont::BMP黒.Draw({ UStage::Pサブウィッチ().x, UStage::Pサブウィッチ().y }, Color::White, "SUB");
             MUnit::魔女[(UnitType)WITCH::Main->種類][1]->DrawRotate(UStage::Pウィッチ(), 2, 0);
 
-            //MP,HP,SPの表示
-            int SP値 = int(WITCH::Main->SP*100 / WITCH::Main->最大SP);
+            //SPの表示
+            const int SP値 = std::min(int(WITCH::Main->SP*100 / WITCH::Main->最大SP) , 100);
+            //MSystem::フレーム[3].Draw( UStage::F大魔法() );//SP
+            MIcon::魔導具[WITCH::Main->種類].Draw( UStage::P大魔法() );
+            MFont::BMP白.DrawExtend( UStage::P大魔法() , 2, 2, { 120, 120, 255 }, SP値 );//大魔法チャージ量
 
-            MSystem::フレーム[5].Draw({ 530, 40, 100, 20 });//SP
-            MIcon::魔導具[WITCH::Main->種類].Draw({ 530 - 2, 40 });
-            MFont::BMP白.DrawExtend({ 584, 44 }, 2, 2, { 120, 120, 255 }, SP値 );//大魔法チャージ量
-
+            //HP
             MIcon::UI[IconType::ライフ].Draw(UStage::P体力());
-            MFont::BMP白.DrawExtend({ UStage::P体力().x + 24, UStage::P体力().y + 6 }, 2, 2, { 255, 60, 60 }, { std::setw(2), TDSystem::Hp });//HP
+            MFont::BMP白.DrawExtend({ UStage::P体力().x + 30, UStage::P体力().y + 6 }, 2, 2, { 255, 60, 60 }, { std::setw(2), TDSystem::Hp });//HP
 
+            //MP
             MIcon::UI[IconType::マナ].Draw(UStage::P魔力());
             MFont::BMP白.DrawExtend({ UStage::P魔力().x + 24, UStage::P体力().y + 6 }, 2, 2, { 255, 255, 0 }, { std::setw(4), WITCH::Main->MP });//MP
 
             //メニューボタン
-            MSystem::フレーム[8].Draw(UStage::Fメニュー());
+            MSystem::フレーム[3].Draw(UStage::Fメニュー());
 
             //魔法一覧の表示
             for(int a=0;a<12;++a)
             {
-                if( TDSystem::魔法リスト[a].get() == selected ) Screen::SetBright({255,120,120});
+                if( TDSystem::魔法リスト[a].get() == selected ){ Screen::SetBright({255,120,120}); }
+                if( TDSystem::詠唱回数[WITCH::Main->魔法タイプ[a]] <= 0 ){ Screen::SetBright(Color::Gray);}
                 MSystem::フレーム[3].Draw(UStage::F魔法一覧(a));
                 Screen::SetBright({255,255,255});
-                MUnit::魔女[WITCH::Main->魔法タイプ[a]][1]->DrawRotate({ UStage::F魔法一覧(a).x + 20, UStage::F魔法一覧(a).y + 20 }, 2, 0);
+                MUnit::魔女[WITCH::Main->魔法タイプ[a]][1]->DrawRotate({ UStage::F魔法一覧(a).x + 20, UStage::F魔法一覧(a).y + 18 }, 1, 0);
+                MFont::BMP黒.DrawExtend({ UStage::F魔法一覧(a).x + 22, UStage::F魔法一覧(a).y + 16 },2,2,Color::White,TDSystem::詠唱回数[WITCH::Main->魔法タイプ[a]]);
             }
 
             //情報の表示

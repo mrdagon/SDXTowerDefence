@@ -181,6 +181,7 @@ namespace SDX_TD
             this->HP補正 = HP補正;
             this->レベル補正 = レベル補正;
         }
+
     };
 
     struct ChipData

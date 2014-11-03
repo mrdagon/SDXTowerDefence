@@ -13,7 +13,7 @@ namespace SDX_TD
         bool isStop = true;//Wave進行停止
         int 現在Wave = 0;
         int 待ち時間 = 600;
-        int 最終Wave = 1000;
+        int 最終Wave = 25;
         int Wave間隔 = 600;
 
         EnemyType 敵種類[100];
@@ -89,7 +89,7 @@ namespace SDX_TD
                 y += 80;
                 ++no;
 
-                if( y > 480 || no > 最終Wave) break;
+                if( y > 480 || no >= 最終Wave) break;
             }
         }
 

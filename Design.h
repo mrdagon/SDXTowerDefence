@@ -14,6 +14,7 @@ namespace SDX_TD
 
         const Point P画像();            
         const Point P名前();
+        const Point P詠唱数();
 
         const Point P説明();
         const Rect F説明();
@@ -54,8 +55,6 @@ namespace SDX_TD
         const Rect Fゲーム速度(int a);
 
         const Point Pウィッチ();
-        const Rect Fウィッチ();
-
         const Point Pサブウィッチ();
 
         const Point P体力();

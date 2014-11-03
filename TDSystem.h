@@ -12,8 +12,8 @@ namespace SDX_TD
     {
         Difficulty 難易度;
         StageData* 現在ステージ;
-        bool isトライアル;
-        bool isシングル;
+        bool isトライアル;//notならパワー
+        bool isシングル;//notならカップル
 
         bool is魔法選択 = false;
         bool is一覧選択 = false;

@@ -33,16 +33,16 @@ namespace SDX_TD
 
         int     スコア;
 
-        IEnemy(IShape &図形, ISprite &描画方法, EnemyData& 基礎ステ, bool isBoss) :
+        IEnemy(IShape &図形, ISprite &描画方法, EnemyData& 基礎ステ, int Lv , bool isBoss) :
             IObject(図形, 描画方法, 基礎ステ.移動タイプ),
             isBoss(isBoss),
             基礎ステ(基礎ステ)
         {
+            レベル = Lv;
             スコア = int(基礎ステ.スコア * (1.0 + レベル/30 ));
             最大HP = 基礎ステ.最大HP * (1.0 + (レベル-1)* 0.2 + (レベル-1) * (レベル-1) * 0.06);
             防御力 = int(基礎ステ.防御力 * レベル);
-            レベル = Rand::Get(2)+1;
-
+ 
             if (isBoss)
             {
                 スコア *= 16;
@@ -461,8 +461,8 @@ namespace SDX_TD
         Rect shape;
         SpNull 描画方法;
 
-        Enemy(double X座標 , double Y座標 , EnemyType 敵種類 , bool isBoss):
-            IEnemy(shape,描画方法,EnemyDataS[敵種類],isBoss),
+        Enemy(double X座標 , double Y座標 , EnemyType 敵種類 , int Lv , bool isBoss):
+            IEnemy(shape,描画方法,EnemyDataS[敵種類] , Lv , isBoss ),
             shape( (X座標+0.5)*Land::ChipSize, (Y座標+0.5)*Land::ChipSize, 14, 14)
         {
             
