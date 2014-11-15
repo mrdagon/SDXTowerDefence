@@ -6,97 +6,96 @@
 
 namespace SDX_TD
 {
-    using namespace SDX;
-    class Wave
-    {
-    public:
-        bool isStop = true;//Wave進行停止
-        int 現在Wave = 0;
-        int 待ち時間 = 600;
-        int 最終Wave = 25;
-        int Wave間隔 = 600;
+	using namespace SDX;
+	class Wave
+	{
+	public:
+		bool isStop = true;//Wave進行停止
+		int 現在Wave = 0;
+		int 待ち時間 = 600;
+		int 最終Wave = 25;
+		int Wave間隔 = 600;
 
-        EnemyType 敵種類[100];
-        bool isBoss[100];
-        
-        bool Init()
-        {
-            File file("File/Map/enemy_001.csv", FileMode::Read, true);
-            auto data = file.GetCsvToInt();
+		EnemyType 敵種類[100];
+		bool isBoss[100];
 
-            for(int a=0; a<100;++a)
-            {
-                敵種類[a] = EnemyType(data[a]%20);
-                isBoss[a] = (data[a]>=20);
-            }
+		bool Init()
+		{
+			File file("File/Map/enemy_001.csv", FileMode::Read, true);
+			auto data = file.GetCsvToInt();
 
-            return true;
-        }
+			for (int a = 0; a < 100; ++a)
+			{
+				敵種類[a] = EnemyType(data[a] % 20);
+				isBoss[a] = (data[a] >= 20);
+			}
 
-        bool Check()
-        {
-            if( isStop || 最終Wave == 現在Wave) return false;
+			return true;
+		}
 
-            待ち時間--;
+		bool Check()
+		{
+			if (isStop || 最終Wave == 現在Wave) return false;
 
-            if (待ち時間 <= 0 )
-            {
-                待ち時間 = Wave間隔;
-                return true;
-            }
+			待ち時間--;
 
-            return false;
-        }
+			if (待ち時間 <= 0)
+			{
+				待ち時間 = Wave間隔;
+				return true;
+			}
 
-        /**次Waveに進める.*/
-        bool ToNext()
-        {
-            isStop = false;
+			return false;
+		}
 
-            if( 現在Wave == 最終Wave )
-            {
-                return false;
-            }
+		/**次Waveに進める.*/
+		bool ToNext()
+		{
+			isStop = false;
 
-            待ち時間 = Wave間隔;
-            return true;
-        }
+			if (現在Wave == 最終Wave)
+			{
+				return false;
+			}
 
-        void Draw()
-        {
-            int no = 現在Wave;
-            int x = -2;
-            int y = 待ち時間 * 80 / Wave間隔 - 80;
-            while(true)
-            {
-                if(isBoss[no%100] )
-                {
-                    MSystem::フレーム[0].Draw({ x, y, 40, 80 });
-                    MUnit::敵[敵種類[no%100]][1]->DrawRotate({ x + 20, y + 50 }, 2, 0);
-                }else{
-                    MSystem::フレーム[0].Draw({ x, y, 40, 80 });
+			待ち時間 = Wave間隔;
+			return true;
+		}
 
-                    MUnit::敵[敵種類[no%100]][1]->Draw({ x + 4, y + 36 });
-                    MUnit::敵[敵種類[no%100]][1]->Draw({ x + 4 + 16, y + 36 });
-                    MUnit::敵[敵種類[no%100]][1]->Draw({ x + 4 + 8, y + 36 + 8 });
-                }
-                //Wave数
-                int size = 2;
-                if( no >= 100 ){ size = 1 ;}
+		void Draw()
+		{
+			int no = 現在Wave;
+			int x = -2;
+			int y = 待ち時間 * 80 / Wave間隔 - 80;
+			while (true)
+			{
+				if (isBoss[no % 100])
+				{
+					MSystem::フレーム[4].Draw({ x, y, 40, 80 });
+					MUnit::敵[敵種類[no % 100]][1]->DrawRotate({ x + 20, y + 50 }, 2, 0);
+				}
+				else{
+					MSystem::フレーム[4].Draw({ x, y, 40, 80 });
 
-                MFont::BMP黒.DrawExtend({ x + 6, y + 4 }, size, size, Color::White, no + 1);
+					MUnit::敵[敵種類[no % 100]][1]->Draw({ x + 4, y + 36 });
+					MUnit::敵[敵種類[no % 100]][1]->Draw({ x + 4 + 16, y + 36 });
+					MUnit::敵[敵種類[no % 100]][1]->Draw({ x + 4 + 8, y + 36 + 8 });
+				}
+				//Wave数
+				int size = 2;
+				if (no >= 100){ size = 1; }
 
-                y += 80;
-                ++no;
+				MFont::BMP黒.DrawExtend({ x , y + 4 }, size, size, Color::White, { std::setw(3), no + 1 });
 
-                if( y > 480 || no >= 最終Wave) break;
-            }
-        }
+				y += 80;
+				++no;
 
-        void DrawInfo()
-        {
-            
-            
-        }
-    };
+				if (y > 480 || no >= 最終Wave) break;
+			}
+		}
+
+		void DrawInfo()
+		{
+		}
+	};
 }

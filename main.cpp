@@ -15,26 +15,26 @@
 
 int main(int argc, char* argv[])
 {
-    using namespace SDX;
-    using namespace SDX_TD;
-    
-    WITCH::Main.reset(new WITCH::バロゥ());
-    WITCH::Sub.reset(new WITCH::ディアネラ());
+	using namespace SDX;
+	using namespace SDX_TD;
 
-    System::Initialise("sample", 640, 480);//ライブラリの初期化
+	WITCH::Main.reset(new WITCH::バロゥ());
+	WITCH::Sub.reset(new WITCH::ディアネラ());
 
-    LoadUnitS();
-    LoadEnemyS();
-    LoadStageS();
-    LoadDifficultyS();
-    LoadChipS();
+	System::Initialise("sample", 640, 480);//ライブラリの初期化
 
-    LoadMaterial();
+	LoadUnitS();
+	LoadEnemyS();
+	LoadStageS();
+	LoadDifficultyS();
+	LoadChipS();
 
-    Director::AddScene( new Stage() );
-    Director::Run();
+	LoadMaterial();
 
-    System::End();//ライブラリの終了処理
+	Director::AddScene(new Stage());
+	Director::Run();
 
-    return 0;
+	System::End();//ライブラリの終了処理
+
+	return 0;
 }
