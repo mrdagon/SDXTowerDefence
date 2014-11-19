@@ -5,24 +5,24 @@
 
 namespace SDX_TD
 {
-    using namespace SDX;
-    class IObject;
+	using namespace SDX;
+	class IObject;
 
-    //メニュー項目を配置
-    class IMenu : public IScene
-    {
-    public:
-        //ボタンやエフェクトの追加
-        /**.*/
-        virtual void Add(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
+	/*! メニュー項目を配置.*/
+	class IMenu : public IScene
+	{
+	public:
+		//ボタンやエフェクトの追加
+		/*!.*/
+		virtual void Add(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
 
-        /**.*/
-        virtual void AddFront(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
+		/*!.*/
+		virtual void AddFront(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
 
-        /**.*/
-        virtual void AddBack(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
-    };
+		/*!.*/
+		virtual void AddBack(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
+	};
 
-    /**唯一のアクティブなMenu.*/
-    namespace{ IMenu* SMenu; }
+	/*!唯一のアクティブなMenu.*/
+	namespace{ IMenu* SMenu; }
 }

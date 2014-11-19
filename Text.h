@@ -4,6 +4,5 @@
 #pragma once
 namespace SDX_TD
 {
-    using namespace SDX;
-
+	using namespace SDX;
 }
