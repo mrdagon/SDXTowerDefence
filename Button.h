@@ -8,25 +8,26 @@
 
 namespace SDX_TD
 {
-	using namespace SDX;
+    using namespace SDX;
+    
+    /*
+    class Button : public Object
+    {
+        private:
+            std::function<void()> 押下時の処理 = nullptr;
+        public:
+            void PushCheck()
+            {
+                if ( Hit(&Point(Input::mouse.x, Input::mouse.y)) )
+                {
+                    SStage->selected = this;
+                    if (押下時の処理 != nullptr) 押下時の処理();
+                    Pushed();
+                }
+            }
 
-	/*
-	class Button : public Object
-	{
-	private:
-	std::function<void()> 押下時の処理 = nullptr;
-	public:
-	void PushCheck()
-	{
-	if ( Hit(&Point(Input::mouse.x, Input::mouse.y)) )
-	{
-	SStage->selected = this;
-	if (押下時の処理 != nullptr) 押下時の処理();
-	Pushed();
-	}
-	}
+             virtual void Pushed(){}
 
-	virtual void Pushed(){}
-	};
-	*/
+    };
+    */
 }
