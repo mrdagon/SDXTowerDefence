@@ -5,69 +5,55 @@
 
 namespace SDX_TD
 {
-    using namespace SDX;
+	using namespace SDX;
 
-    namespace UInfo
-    {
-        //名前枠と画像全体位置は共通
-        const Rect F名前();
+	namespace UInfo
+	{
+		//名前枠と画像全体位置は共通
+		const Rect F名前();
 
-        const Point P画像();            
-        const Point P名前();
+		const Point P画像();
+		const Point P名前();
+		const Point P詠唱数();
 
-        const Point P説明();
-        const Rect F説明();
+		const Point P説明();
+		const Rect F説明();
 
-        const Point P性能アイコン(int y = 0);
-        const Point P性能(int y = 0);
+		const Point P性能アイコン(int y = 0);
+		const Point P性能(int y = 0);
 
-        const Rect F性能(int y = 0);
-        const int ステ間();
-    }
+		const Rect F性能(int y = 0);
 
-    namespace UUnit
-    {
-        const Rect F強化();
-        const Point P強化();
+		const Rect F強化();
+		const Point P強化();
+		const Rect F回収();
+		const Point P回収();
+	}
 
-        //X以外は強化と同じ
-        const Rect F回収();
-        const Point P回収();
+	namespace UStage
+	{
+		const Point Pスコア();
+		const Rect Fスコア();
 
-        const Point Pレベル();
+		const Point P敵数();
+		const Rect F敵数();
 
-        const int 強化前ステX();
-        const int 強化後ステX();
-        const int サンプルステX();
-        const int 矢印X();
-    }
+		const Point Pゲーム速度();
+		const Rect Fゲーム速度(int a);
 
-    namespace UStage
-    {
-        const Point Pスコア();
-        const Rect Fスコア();
+		const Point Pウィッチ();
+		const Point Pサブウィッチ();
 
-        const Point P敵数();
-        const Rect F敵数();
+		const Point P体力();
+		const Point P魔力();
 
-        const Point Pゲーム速度();
-        const Rect Fゲーム速度(int a);
+		const Point P大魔法();
+		const Rect F大魔法();
 
-        const Point Pウィッチ();
-        const Rect Fウィッチ();
+		const Rect Fメニュー();
 
-        const Point Pサブウィッチ();
+		const Rect F魔法一覧(int a);
 
-        const Point P体力();
-        const Point P魔力();
-
-        const Point P大魔法();
-        const Rect F大魔法();
-
-        const Rect Fメニュー();
-        
-        const Rect F魔法一覧(int a );
-
-        const Rect F情報();
-    }
+		const Rect F情報();
+	}
 }
