@@ -108,11 +108,11 @@ namespace SDX_TD
 			}
 			else{
 				int 強化費 = 0;
-				int 回収費 = int( 基礎ステ.コスト[Lv] * WITCH::Main->実ステ.回収率 );
+				int 回収費 = int( 基礎ステ.コスト[Lv] * WITCH::Main->回収率 );
 
 				if (Lv != 5)
 				{
-					強化費 = int( (基礎ステ.コスト[Lv + 1] - 基礎ステ.コスト[Lv])*WITCH::Main->実ステ.MP消費 );
+					強化費 = int( (基礎ステ.コスト[Lv + 1] - 基礎ステ.コスト[Lv])*WITCH::Main->MP消費 );
 				}
 
 				//強化
@@ -227,7 +227,7 @@ namespace SDX_TD
 			if (残り送還時間 == 0)
 			{
 				isRemove = true;
-				WITCH::Main->MP += int( 基礎ステ.コスト[Lv] * WITCH::Main->実ステ.回収率 );
+				WITCH::Main->MP += int( 基礎ステ.コスト[Lv] * WITCH::Main->回収率 );
 			}
 
 			if (isRemove)
@@ -260,7 +260,7 @@ namespace SDX_TD
 
 			WITCH::Main->MP -= 必要MP;
 
-			残り強化時間 = int((Lv + 1) * (Lv + 1) * 60 * WITCH::Main->実ステ.強化速度);
+			残り強化時間 = int((Lv + 1) * (Lv + 1) * 60 * WITCH::Main->強化速度);
 			強化or送還長さ = 残り強化時間;
 
 			//開始前は即LVアップ
@@ -282,13 +282,13 @@ namespace SDX_TD
 				//開始前は即回収
 				isRemove = true;
 				TDSystem::詠唱回数[基礎ステ.魔法種] += Lv + 1;
-				WITCH::Main->MP += int( 基礎ステ.コスト[Lv] * WITCH::Main->実ステ.MP消費 );
+				WITCH::Main->MP += int( 基礎ステ.コスト[Lv] * WITCH::Main->MP消費 );
 				残り送還時間 = -1;
 			}
 			else
 			{
 				//通常時
-				残り送還時間 = int((SStage->GetWave()->現在Wave + 1) * 60 * WITCH::Main->実ステ.回収速度);
+				残り送還時間 = int((SStage->GetWave()->現在Wave + 1) * 60 * WITCH::Main->回収速度);
 				強化or送還長さ = 残り送還時間;
 			}
 

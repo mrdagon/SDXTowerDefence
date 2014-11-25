@@ -195,7 +195,7 @@ T-Blaz
 ・ナズナ
 属性:樹
 大魔法:さんくちゅあり
-発動時MPが増加、残りMPに応じて支援効果
+発動時MPが増加、残りMPに応じて攻撃上昇
 
 魔導器:プリティワンド
 低コスト、低攻撃力、初期MPが多い、支援強
@@ -235,7 +235,7 @@ T-Blaz
 ・ミルラ
 属性:無
 大魔法:リーダーオンロート
-時間停止、射程無限
+時間停止、射程100倍
 
 魔導器:フィソステギア
 射程＆支援+
@@ -252,3 +252,42 @@ T-Blaz
 スピリトーソ(補助)
 ペザンテ(補助)
 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+	enum class Command
+	{
+		//リプレイに残る
+		選択解除,
+		ユニット選択,
+		敵選択,
+		大魔法発動,
+		Wave送り,
+		強化,
+		売却,
+		発動,
+		新規配置,
+		null,
+	};
+
+			switch (操作)
+			{
+			case Command::選択解除:
+
+				break;
+			case Command::ユニット選択:
+				break;
+			case Command::敵選択:
+				break;
+			case Command::大魔法発動:
+				break;
+			case Command::Wave送り:
+				break;
+			case Command::強化:
+				break;
+			case Command::売却:
+				break;
+			case Command::発動:
+				break;
+			case Command::新規配置:
+				break;
+			}
+

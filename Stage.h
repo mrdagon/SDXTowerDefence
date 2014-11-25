@@ -11,13 +11,25 @@
 #include "Unit.h"
 #include "Shot.h"
 #include "Wave.h"
-#include "Button.h"
-
-#include "UnitCommon.h"
-#include "UnitWitch.h"
 
 namespace SDX_TD
 {
+	//ステージ中での操作一覧
+	enum class Command
+	{
+		//リプレイに残る
+		選択解除,
+		ユニット選択,
+		敵選択,
+		大魔法発動,
+		Wave送り,
+		強化,
+		売却,
+		発動,
+		新規配置,
+		null,
+	};
+
 	using namespace SDX;
 	/**.*/
 	class Stage : public IStage
@@ -299,12 +311,12 @@ namespace SDX_TD
 				else { enemyCount = PowerDataS[TDSystem::難易度].雑魚召喚数; }
 			}
 
-			if (wave.敵種類[waveNo] == EnemyType::ゴブリン )
+			if (wave.敵種類[waveNo] == EnemyType::ゴブリン)
 			{
 				enemyCount *= 2;
 			}
 
-			for (int a = 0; a < enemyCount ; ++a)
+			for (int a = 0; a < enemyCount; ++a)
 			{
 				int x = SLand->穴の位置[0] % Land::MapSize;
 				int y = SLand->穴の位置[0] / Land::MapSize;
@@ -320,23 +332,35 @@ namespace SDX_TD
 		{
 			Point マウス座標(Input::mouse.x, Input::mouse.y);
 
-			//右クリックで解除
-			if (Input::mouse.Right.on)
-			{
-				selected = nullptr;
-				selectEnemy = nullptr;
-				selectUnit = nullptr;
-			}
-
+			//速度変更
 			if (Input::mouse.Whell > 0){ gamespeed *= 2; }
 			if (Input::mouse.Whell < 0){ gamespeed /= 2; }
 			gamespeed = std::min(gamespeed, 8);
 			gamespeed = std::max(gamespeed, 1);
 
+			//ポーズ
+			if (UStage::Fメニュー().Hit(&マウス座標) && Input::mouse.Left.on)
+			{
+			}
+
+			//ショートカット
+
+			//右クリックで解除
+			if (Input::mouse.Right.on)
+			{
+				DoCommand(Command::選択解除);
+				selected = nullptr;
+				selectEnemy = nullptr;
+				selectUnit = nullptr;
+			}
+
+			//左クリック系操作
+			if (!Input::mouse.Left.on){ return; }
+
 			//敵を選択
 			for (auto it : groundEnemyS.objectS)
 			{
-				if (it->Hit(&マウス座標) && Input::mouse.Left.on)
+				if (it->Hit(&マウス座標))
 				{
 					SetSelect(it.get());
 					return;
@@ -344,7 +368,7 @@ namespace SDX_TD
 			}
 			for (auto it : seaEnemyS.objectS)
 			{
-				if (it->Hit(&マウス座標) && Input::mouse.Left.on)
+				if (it->Hit(&マウス座標))
 				{
 					SetSelect(it.get());
 					return;
@@ -352,26 +376,25 @@ namespace SDX_TD
 			}
 			for (auto it : skyEnemyS.objectS)
 			{
-				if (it->Hit(&マウス座標) && Input::mouse.Left.on)
+				if (it->Hit(&マウス座標))
 				{
 					SetSelect(it.get());
 					return;
 				}
 			}
 
-			//ポーズを選択
-			if (UStage::Fメニュー().Hit(&マウス座標) && Input::mouse.Left.on)
-			{
-			}
+			if (Input::key.B.on){ DoCommand(Command::大魔法発動); };
+			if (Input::key.N.on || Input::key.Space.hold){ DoCommand(Command::Wave送り); };
+
 
 			//大魔法を発動
-			if ((UStage::F大魔法().Hit(&マウス座標) && Input::mouse.Left.on) ||
-				Input::key.B.on)
+			if ( UStage::F大魔法().Hit(&マウス座標) )
 			{
+				DoCommand(Command::大魔法発動);
 			}
 
 			//Wave送り
-			if ((マウス座標.x < 38 && Input::mouse.Left.on) || Input::key.N.on || Input::key.Space.hold)
+			if ( マウス座標.x < 38 )
 			{
 				if (wave.ToNext())
 				{
@@ -426,6 +449,11 @@ namespace SDX_TD
 			{
 				SetCheck(selectUnit->基礎ステ.魔法種);
 			}
+		}
+
+		void DoCommand(Command 操作 , int 操作番号 = 0)
+		{
+			Point マウス座標(Input::mouse.x, Input::mouse.y);
 		}
 
 		void SetSelect(IEnemy* 選択した敵)
@@ -549,10 +577,10 @@ namespace SDX_TD
 
 			//設定ボタン
 			MSystem::フレーム[3].Draw(UStage::Fメニュー());
-			MFont::ゴシック中.DrawShadow({ UStage::Fメニュー().x + 8, UStage::Fメニュー().y + 8 }, Color::Black,Color::Gray, "ポーズ");
+			MFont::ゴシック中.DrawShadow({ UStage::Fメニュー().x + 8, UStage::Fメニュー().y + 8 }, Color::Black, Color::Gray, "ポーズ");
 
 			MSystem::フレーム[3].Draw(UStage::F大魔法());
-			MFont::ゴシック中.DrawShadow({ UStage::F大魔法().x+8, UStage::F大魔法().y+8 }, Color::Black,Color::Gray,"大魔法");
+			MFont::ゴシック中.DrawShadow({ UStage::F大魔法().x + 8, UStage::F大魔法().y + 8 }, Color::Black, Color::Gray, "大魔法");
 
 			//魔法一覧の表示
 			for (int a = 0; a < 12; ++a)
@@ -563,7 +591,7 @@ namespace SDX_TD
 				Screen::SetBright({ 255, 255, 255 });
 				MUnit::魔女[WITCH::Main->魔法タイプ[a]][1]->DrawRotate({ UStage::F魔法一覧(a).x + 20, UStage::F魔法一覧(a).y + 12 }, 1, 0);
 				MFont::英語[26]->Draw({ UStage::F魔法一覧(a).x + 2, UStage::F魔法一覧(a).y + 24 });
-				MFont::BMP黒.DrawExtend({ UStage::F魔法一覧(a).x + 12, UStage::F魔法一覧(a).y + 16 }, 2, 2, Color::White, { std::setw(2) ,TDSystem::詠唱回数[WITCH::Main->魔法タイプ[a]] });
+				MFont::BMP黒.DrawExtend({ UStage::F魔法一覧(a).x + 12, UStage::F魔法一覧(a).y + 16 }, 2, 2, Color::White, { std::setw(2), TDSystem::詠唱回数[WITCH::Main->魔法タイプ[a]] });
 			}
 
 			//情報の表示
