@@ -236,7 +236,7 @@ namespace SDX_TD
 				const int y = int(GetY() - Size * Land::ChipSize) / Land::ChipSize + 1;
 				SLand->RemoveUnit(x, y, Size);
 
-				SStage->選択解除(this);
+				SStage->ResetSelect(this);
 				Remove();
 			}
 
@@ -287,9 +287,18 @@ namespace SDX_TD
 			}
 			else
 			{
-				//通常時
-				残り送還時間 = int((SStage->GetWave()->現在Wave + 1) * 60 * WITCH::Main->回収速度);
-				強化or送還長さ = 残り送還時間;
+				if (基礎ステ.is使い捨て)
+				{
+					//使い捨て
+					Shoot(0);
+					isRemove = true;
+				}
+				else
+				{
+					//売却
+					残り送還時間 = int((SStage->GetWave()->現在Wave + 1) * 60 * WITCH::Main->回収速度);
+					強化or送還長さ = 残り送還時間;
+				}
 			}
 
 			return true;

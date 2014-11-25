@@ -23,9 +23,9 @@ namespace SDX_TD
 		IUnit* selectUnit = nullptr;//選択中の魔法
 
 		/**敵や魔法が消滅する前に呼び出す.*/
-		void 選択解除(IObject* 消滅するオブジェクト)
+		void ResetSelect(IObject* 消滅するオブジェクト)
 		{
-			if (selected == 消滅するオブジェクト)
+			if (selected == 消滅するオブジェクト )
 			{
 				selected = nullptr;
 				selectUnit = nullptr;

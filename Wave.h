@@ -33,6 +33,7 @@ namespace SDX_TD
 			return true;
 		}
 
+		/**Wave時間経過判定.*/
 		bool Check()
 		{
 			if (isStop || 最終Wave == 現在Wave) return false;
@@ -46,20 +47,6 @@ namespace SDX_TD
 			}
 
 			return false;
-		}
-
-		/**次Waveに進める.*/
-		bool ToNext()
-		{
-			isStop = false;
-
-			if (現在Wave == 最終Wave)
-			{
-				return false;
-			}
-
-			待ち時間 = Wave間隔;
-			return true;
 		}
 
 		void Draw()

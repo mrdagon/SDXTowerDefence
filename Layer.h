@@ -100,7 +100,7 @@ namespace SDX_TD
 		}
 
 		/**.*/
-		int GetCount()
+		inline int GetCount()
 		{
 			return (int)objectS.size();
 		}

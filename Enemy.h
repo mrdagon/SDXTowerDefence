@@ -62,7 +62,7 @@ namespace SDX_TD
 			WITCH::Main->MP += スコア;
 			WITCH::Main->SP += スコア;
 			TDSystem::スコア += スコア;
-			SStage->選択解除(this);
+			SStage->ResetSelect(this);
 
 			isRemove = true;
 			DeadSp();
@@ -360,7 +360,7 @@ namespace SDX_TD
 			{
 				WITCH::Main->Damage();
 				isRemove = true;
-				SStage->選択解除(this);
+				SStage->ResetSelect(this);
 			}
 
 			if (残りHP <= 0) Dead();

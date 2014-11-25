@@ -20,12 +20,14 @@ namespace SDX_TD
 		//リプレイに残る
 		選択解除,
 		ユニット選択,
-		敵選択,
+		地上敵選択,
+		空中敵選択,
 		大魔法発動,
 		Wave送り,
 		強化,
 		売却,
 		発動,
+		種別選択,
 		新規配置,
 		null,
 	};
@@ -40,11 +42,9 @@ namespace SDX_TD
 		Layer<IObject> frontEffectS;
 
 		Layer<IEnemy> skyEnemyS;
-		Layer<IEnemy> seaEnemyS;
 		Layer<IEnemy> groundEnemyS;
 
 		Layer<IShot> shotS;
-
 		Layer<IUnit> unitS;
 
 		Wave wave;
@@ -67,7 +67,6 @@ namespace SDX_TD
 
 			skyEnemyS.Clear();
 			groundEnemyS.Clear();
-			seaEnemyS.Clear();
 
 			shotS.Clear();
 			unitS.Clear();
@@ -167,7 +166,6 @@ namespace SDX_TD
 
 			AddChainList(groundEnemyS, 地上Top, 地上End);
 			AddChainList(skyEnemyS, 空中Top, 空中End);
-			AddChainList(seaEnemyS, 地上Top, 地上End);
 
 			//判定開始
 			for (auto && shot : shotS.objectS)
@@ -193,11 +191,6 @@ namespace SDX_TD
 			for (auto &&it : groundEnemyS.objectS)
 			{
 				SLand->Update陸の敵((int)it->GetX(), (int)it->GetY());
-			}
-
-			for (auto &&it : seaEnemyS.objectS)
-			{
-				SLand->Update水の敵((int)it->GetX(), (int)it->GetY());
 			}
 		}
 
@@ -248,11 +241,7 @@ namespace SDX_TD
 			++timer;
 			Director::IsDraw() = (timer % gamespeed == 0);
 
-			//Wave処理
-			if (wave.Check())
-			{
-				NextWave();
-			}
+			NextWave();
 
 			//レイヤー処理
 			backEffectS.Update();
@@ -261,7 +250,6 @@ namespace SDX_TD
 
 			skyEnemyS.Update();
 			groundEnemyS.Update();
-			seaEnemyS.Update();
 
 			shotS.Update();
 			unitS.Update();
@@ -277,7 +265,6 @@ namespace SDX_TD
 
 			skyEnemyS.ExeRemove();
 			groundEnemyS.ExeRemove();
-			seaEnemyS.ExeRemove();
 
 			shotS.ExeRemove();
 			unitS.ExeRemove();
@@ -285,12 +272,15 @@ namespace SDX_TD
 			//地形の更新
 			LandUpdate();
 
-			SelectCheck();
+			InputCheck();
 		}
 
 		/**Waveの進行と敵の発生.*/
 		void NextWave()
 		{
+			//一時停止解除判定
+			if (!wave.Check()){ return; }
+
 			//発生処理
 			int waveNo = wave.現在Wave % 100;
 			int enemyCount;
@@ -328,9 +318,11 @@ namespace SDX_TD
 		}
 
 		/**各種操作、クリックの選択処理.*/
-		void SelectCheck()
+		void InputCheck()
 		{
 			Point マウス座標(Input::mouse.x, Input::mouse.y);
+			Command comType = Command::null;
+			int comNo = 0;
 
 			//速度変更
 			if (Input::mouse.Whell > 0){ gamespeed *= 2; }
@@ -343,85 +335,92 @@ namespace SDX_TD
 			{
 			}
 
-			//ショートカット
-
 			//右クリックで解除
 			if (Input::mouse.Right.on)
 			{
-				DoCommand(Command::選択解除);
-				selected = nullptr;
-				selectEnemy = nullptr;
-				selectUnit = nullptr;
+				DoCommand(Command::選択解除, 0);
+				return;
 			}
 
 			//左クリック系操作
 			if (!Input::mouse.Left.on){ return; }
 
+			//新規配置
+			if (selectUnit && selectUnit->is配置リスト)
+			{
+				comType = Command::新規配置;
+			}
+
 			//敵を選択
-			for (auto it : groundEnemyS.objectS)
+			//Shift押しながらだと選択不可能
+			if (!Input::key.LShift.hold && !Input::key.RShift.hold)
 			{
-				if (it->Hit(&マウス座標))
+				if ( selectEnemy )
 				{
-					SetSelect(it.get());
-					return;
-				}
-			}
-			for (auto it : seaEnemyS.objectS)
-			{
-				if (it->Hit(&マウス座標))
-				{
-					SetSelect(it.get());
-					return;
-				}
-			}
-			for (auto it : skyEnemyS.objectS)
-			{
-				if (it->Hit(&マウス座標))
-				{
-					SetSelect(it.get());
-					return;
-				}
-			}
+					if ( selectEnemy->基礎ステ.移動タイプ == Belong::空 )
+					{
+						InputCheckSkyEnemy(&マウス座標, comType, comNo);
+						//開始値取得
 
-			if (Input::key.B.on){ DoCommand(Command::大魔法発動); };
-			if (Input::key.N.on || Input::key.Space.hold){ DoCommand(Command::Wave送り); };
+						//飛行チェック
 
+						//地上チェック
+
+						//飛行残りチェック
+
+					}
+					else
+					{
+						InputCheckGroundEnemy(&マウス座標, comType, comNo);
+						//開始値取得
+
+						//地上チェック
+
+						//飛行チェック
+
+						//地上残りチェック
+					}
+				}
+				else				
+				{
+					InputCheckEnemy(&マウス座標,comType, comNo);
+				}
+			}
 
 			//大魔法を発動
-			if ( UStage::F大魔法().Hit(&マウス座標) )
+			if (UStage::F大魔法().Hit(&マウス座標) || Input::key.B.on)
 			{
-				DoCommand(Command::大魔法発動);
+				comType = Command::大魔法発動;
 			}
 
 			//Wave送り
-			if ( マウス座標.x < 38 )
+			if (マウス座標.x < 38 || Input::key.N.on || Input::key.Space.hold )
 			{
-				if (wave.ToNext())
-				{
-					NextWave();
-					return;
-				}
+				comType = Command::Wave送り;
 			}
 
 			//配置された魔法を選択、一覧選択中は不可能
-			for (auto it : unitS.objectS)
+			if (!selectUnit || !selectUnit->is配置リスト)
 			{
-				if (selectUnit && selectUnit->is配置リスト) break;
-
-				if (it->Hit(&マウス座標) && Input::mouse.Left.on)
+				for (int a = 0; a < unitS.GetCount(); ++a)
 				{
-					SetSelect(it.get());
-					return;
+					if (unitS[a]->Hit(&マウス座標))
+					{
+						comType = Command::ユニット選択;
+						comNo = a;
+						break;
+					}
 				}
 			}
 
 			//一覧の魔法を選択
 			for (int a = 0; a < 12; ++a)
 			{
-				if (UStage::F魔法一覧(a).Hit(&マウス座標) && Input::mouse.Left.on)
+				if (UStage::F魔法一覧(a).Hit(&マウス座標))
 				{
-					SetSelect(TDSystem::魔法リスト[a].get());
-					return;
+					comType = Command::種別選択;
+					comNo = a;
+					break;
 				}
 			}
 
@@ -429,31 +428,100 @@ namespace SDX_TD
 			if (selectUnit && !selectUnit->is配置リスト)
 			{
 				//強化
-				if ((UInfo::F強化().Hit(&マウス座標) && Input::mouse.Left.on) ||
-					Input::key.U.on)
+				if (UInfo::F強化().Hit(&マウス座標) || Input::key.U.on )
 				{
-					selectUnit->強化開始();
-					return;
+					comType = Command::強化;
 				}
-				//回収or発動
-				if ((UInfo::F回収().Hit(&マウス座標) && Input::mouse.Left.on) ||
-					Input::key.S.on)
+				//売却or必殺
+				if (UInfo::F回収().Hit(&マウス座標) || Input::key.S.on )
 				{
-					selectUnit->送還開始();
-					return;
+					comType = Command::売却;
 				}
 			}
 
-			//新規配置
-			if (selectUnit && selectUnit->is配置リスト && Input::mouse.Left.on)
+			//コマンド実行
+			if (comType != Command::null)
 			{
-				SetCheck(selectUnit->基礎ステ.魔法種);
+				DoCommand(comType, comNo);
 			}
 		}
 
-		void DoCommand(Command 操作 , int 操作番号 = 0)
+		/**敵選択のチェック.*/
+		void InputCheckEnemy(Point *マウス座標,Command &comType , int &comNo)
 		{
-			Point マウス座標(Input::mouse.x, Input::mouse.y);
+			for (int a = 0; a < groundEnemyS.GetCount(); ++a)
+			{
+				if (groundEnemyS[a]->Hit(マウス座標))
+				{
+					comType = Command::地上敵選択;
+					comNo = a;
+					return;
+				}
+			}
+
+			for (int a = 0; a < skyEnemyS.GetCount(); ++a)
+			{
+				if (skyEnemyS[a]->Hit(マウス座標))
+				{
+					comType = Command::空中敵選択;
+					comNo = a;
+					return;
+				}
+			}
+		}
+
+		/**敵選択のチェック.*/
+		void InputCheckSkyEnemy(const Point *マウス座標, Command &comType, int &comNo)
+		{
+
+		}
+		/**敵選択のチェック.*/
+		void InputCheckGroundEnemy(const Point *マウス座標, Command &comType, int &comNo)
+		{
+
+		}
+
+
+
+		/**操作を実行.*/
+		void DoCommand(Command 操作, int param)
+		{
+			switch (操作)
+			{
+			case Command::選択解除:
+				selected = nullptr;
+				selectEnemy = nullptr;
+				selectUnit = nullptr;
+				break;
+			case Command::ユニット選択:
+				SetSelect(unitS[param]);
+				break;
+			case Command::地上敵選択:
+				SetSelect(groundEnemyS[param]);
+				break;
+			case Command::空中敵選択:
+				SetSelect(skyEnemyS[param]);
+				break;
+			case Command::大魔法発動:
+				WITCH::Main->大魔法発動();
+				break;
+			case Command::Wave送り:
+				wave.isStop = false;
+				wave.待ち時間 = 0;
+				break;
+			case Command::強化:
+				selectUnit->強化開始();
+				break;
+			case Command::売却://使い捨ても
+				selectUnit->送還開始();
+				break;
+			case Command::種別選択:
+				SetSelect(TDSystem::魔法リスト[param].get());
+				break;
+			case Command::新規配置:
+				SetCheck(selectUnit->基礎ステ.魔法種);
+				break;
+			}
 		}
 
 		void SetSelect(IEnemy* 選択した敵)
@@ -502,7 +570,6 @@ namespace SDX_TD
 			//敵等の表示
 			backEffectS.Draw();
 			unitS.Draw();
-			seaEnemyS.Draw();
 			groundEnemyS.Draw();
 
 			midEffectS.Draw();
@@ -532,7 +599,7 @@ namespace SDX_TD
 			MFont::BMP黒.Draw({ UStage::Pスコア().x + 10, UStage::Pスコア().y - 10 }, Color::White, "SCORE");
 			MFont::BMP白.DrawExtend(UStage::Pスコア(), 2, 2, Color::White, { std::setw(10), TDSystem::スコア });
 
-			int 敵数 = skyEnemyS.GetCount() + groundEnemyS.GetCount() + seaEnemyS.GetCount();
+			int 敵数 = skyEnemyS.GetCount() + groundEnemyS.GetCount();
 			MSystem::フレーム[5].Draw(UStage::F敵数());
 			MFont::BMP黒.Draw({ UStage::P敵数().x + 10, UStage::P敵数().y - 10 }, Color::White, "ENEMY");
 			MFont::BMP白.DrawExtend(UStage::P敵数(), 2, 2, Color::White, { std::setw(5), 敵数 });
@@ -613,10 +680,11 @@ namespace SDX_TD
 		{
 			switch (追加するオブジェクト->GetBelong())
 			{
-			case Belong::陸: groundEnemyS.Add(追加するオブジェクト, 待機時間); break;
-			case Belong::空: skyEnemyS.Add(追加するオブジェクト, 待機時間); break;
-			case Belong::水: seaEnemyS.Add(追加するオブジェクト, 待機時間); break;
+			case Belong::空:
+				skyEnemyS.Add(追加するオブジェクト, 待機時間);
+				break;
 			default:
+				groundEnemyS.Add(追加するオブジェクト, 待機時間);
 				break;
 			}
 		}
@@ -663,18 +731,6 @@ namespace SDX_TD
 				}
 			}
 			for (auto && it : skyEnemyS.objectS)
-			{
-				const double xd = it.get()->GetX() - 比較対象->GetX();
-				const double yd = it.get()->GetY() - 比較対象->GetY();
-				距離 = xd * xd + yd * yd;
-
-				if (距離 < 最短距離)
-				{
-					一番近いObject = it.get();
-					最短距離 = 距離;
-				}
-			}
-			for (auto && it : seaEnemyS.objectS)
 			{
 				const double xd = it.get()->GetX() - 比較対象->GetX();
 				const double yd = it.get()->GetY() - 比較対象->GetY();

@@ -268,10 +268,24 @@ T-Blaz
 		null,
 	};
 
+	U 強化
+	S 売却
+	B 大魔法
+	N 次Wave
+
+
+
+
+		void DoCommand(Command 操作 , int 操作番号 = 0)
+		{
+			Point マウス座標(Input::mouse.x, Input::mouse.y);
+
 			switch (操作)
 			{
-			case Command::選択解除:
-
+			case Command::選択解除:			
+				selected = nullptr;
+				selectEnemy = nullptr;
+				selectUnit = nullptr;
 				break;
 			case Command::ユニット選択:
 				break;
@@ -280,14 +294,22 @@ T-Blaz
 			case Command::大魔法発動:
 				break;
 			case Command::Wave送り:
+				wave.isStop = false;
+				wave.待ち時間 = 0;
 				break;
 			case Command::強化:
+				selectUnit->強化開始();
 				break;
 			case Command::売却:
+				selectUnit->送還開始();
 				break;
 			case Command::発動:
 				break;
+			case Command::種別選択:
+				SetSelect(TDSystem::魔法リスト[a].get());
+				break;
 			case Command::新規配置:
+				SetCheck(selectUnit->基礎ステ.魔法種);
 				break;
 			}
-
+		}
