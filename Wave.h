@@ -12,7 +12,7 @@ namespace SDX_TD
 	public:
 		bool isStop = true;//Wave進行停止
 		int 現在Wave = 0;
-		int 待ち時間 = 600;
+		int 待ち時間 = 0;
 		int 最終Wave = 25;
 		int Wave間隔 = 600;
 
@@ -51,9 +51,19 @@ namespace SDX_TD
 
 		void Draw()
 		{
-			int no = 現在Wave;
+			int no = 現在Wave - 1;
 			int x = -2;
-			int y = 待ち時間 * 80 / Wave間隔 - 80;
+			int y = 待ち時間 * 80 / Wave間隔;
+
+			if (no == -1)
+			{
+				no = 0;
+			}
+			else
+			{
+				y -= 80;
+			}
+
 			while (true)
 			{
 				if (isBoss[no % 100])
@@ -61,9 +71,9 @@ namespace SDX_TD
 					MSystem::フレーム[4].Draw({ x, y, 40, 80 });
 					MUnit::敵[敵種類[no % 100]][1]->DrawRotate({ x + 20, y + 50 }, 2, 0);
 				}
-				else{
+				else
+				{
 					MSystem::フレーム[4].Draw({ x, y, 40, 80 });
-
 					MUnit::敵[敵種類[no % 100]][1]->Draw({ x + 4, y + 36 });
 					MUnit::敵[敵種類[no % 100]][1]->Draw({ x + 4 + 16, y + 36 });
 					MUnit::敵[敵種類[no % 100]][1]->Draw({ x + 4 + 8, y + 36 + 8 });

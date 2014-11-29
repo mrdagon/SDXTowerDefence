@@ -213,7 +213,7 @@ namespace SDX_TD
 		Font ゴシック中;
 		BmpFont BMP黒;
 		BmpFont BMP黒影;
-		BmpFont BMP白;
+		MixFont BMP白;
 
 		ImagePack 英語;
 		ImagePack 英影;
@@ -241,7 +241,10 @@ namespace SDX_TD
 			BMP黒影.SetAlphabetLow(&英影);
 			BMP黒影.SetNumber(&黒影);
 
-			BMP白.SetNumber(&白数字);
+			BMP白.Load(SystemFont::Gothic, 12);
+			BMP白.SetFont("0", 白数字, 10);
+
+			//BMP白.SetNumber(&白数字);
 		}
 	}
 
