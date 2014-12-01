@@ -122,13 +122,15 @@ namespace SDX_TD
 				MFont::BMP黒.DrawExtend({ UInfo::P強化().x - 4, (int)UInfo::P強化().y + 20 }, 2, 2, { 255, 64, 64 }, { std::setw(4), 強化費 });
 
 				//売却or発動
+				MSystem::フレーム[3].Draw(UInfo::F回収());
 				if (基礎ステ.is使い捨て)
 				{
+					//発動
 					MFont::ゴシック中.DrawShadow(UInfo::P回収(), Color::Blue, Color::Gray, "発動");
 				}
 				else
 				{
-					MSystem::フレーム[3].Draw(UInfo::F回収());
+					//売却
 					MFont::ゴシック中.DrawShadow(UInfo::P回収(), Color::Blue, Color::Gray, "回収");
 					MFont::ゴシック中.DrawExtend({ UInfo::P回収().x - 12, UInfo::P回収().y + 22 }, 1, 1, { 128, 128, 255 }, "+");
 					MFont::BMP黒.DrawExtend({ UInfo::P回収().x - 4, UInfo::P回収().y + 20 }, 2, 2, { 128, 128, 255 }, { std::setw(4), 回収費 });
@@ -210,6 +212,8 @@ namespace SDX_TD
 		/*射程を表示する*/
 		void DrawRange()
 		{
+			if (is配置リスト){ return; }
+
 			//射程表示
 			Screen::SetBlendMode(BlendMode::Alpha, 128);
 			Drawing::Circle({ GetX(), GetY(), (double)基礎ステ.射程[Lv] }, Color::White, true);
@@ -245,6 +249,7 @@ namespace SDX_TD
 
 		bool 強化開始()
 		{
+			if (is配置リスト) return false;
 			if (Lv >= 5){ return false; }
 			if (残り強化時間 > 0 || 残り送還時間 > 0){ return false; }
 			if (!TDSystem::詠唱回数[基礎ステ.魔法種] && !基礎ステ.isウィッチ){ return false; }
@@ -275,13 +280,15 @@ namespace SDX_TD
 
 		bool 送還開始()
 		{
+			if (is配置リスト) return false;
 			if (残り強化時間 > 0 || 残り送還時間 > 0) return false;
 
 			if (SStage->GetWave()->現在Wave == 0)
 			{
 				//開始前は即回収
 				isRemove = true;
-				TDSystem::詠唱回数[基礎ステ.魔法種] += Lv + 1;
+				if (基礎ステ.isウィッチ){ TDSystem::詠唱回数[基礎ステ.魔法種]++; }
+				else{ TDSystem::詠唱回数[基礎ステ.魔法種] += Lv + 1; }
 				WITCH::Main->MP += int( 基礎ステ.コスト[Lv] * WITCH::Main->MP消費 );
 				残り送還時間 = -1;
 			}

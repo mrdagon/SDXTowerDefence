@@ -335,6 +335,8 @@ namespace SDX_TD
 			{
 			}
 
+			//↑はリプレイ時も共通
+			
 			//右クリックで解除
 			if (Input::mouse.Right.on)
 			{
@@ -342,59 +344,23 @@ namespace SDX_TD
 				return;
 			}
 
+			//ショートカットキーの入力チェック
+			if (InputShortCut()){ return; };
+
 			//左クリック系操作
 			if (!Input::mouse.Left.on){ return; }
 
-			//新規配置
-			if (selectUnit && selectUnit->is配置リスト)
-			{
-				comType = Command::新規配置;
-			}
+			//新規配置		
+			comType = Command::新規配置;
 
-			//敵を選択
-			//Shift押しながらだと選択不可能
-			if (!Input::key.LShift.hold && !Input::key.RShift.hold)
-			{
-				if ( selectEnemy )
-				{
-					if ( selectEnemy->基礎ステ.移動タイプ == Belong::空 )
-					{
-						InputCheckSkyEnemy(&マウス座標, comType, comNo);
-						//開始値取得
+			if (InputCheckEnemy(&マウス座標)){ return; }
 
-						//飛行チェック
-
-						//地上チェック
-
-						//飛行残りチェック
-
-					}
-					else
-					{
-						InputCheckGroundEnemy(&マウス座標, comType, comNo);
-						//開始値取得
-
-						//地上チェック
-
-						//飛行チェック
-
-						//地上残りチェック
-					}
-				}
-				else				
-				{
-					InputCheckEnemy(&マウス座標,comType, comNo);
-				}
-			}
-
-			//大魔法を発動
-			if (UStage::F大魔法().Hit(&マウス座標) || Input::key.B.on)
+			if (UStage::F大魔法().Hit(&マウス座標) )
 			{
 				comType = Command::大魔法発動;
 			}
 
-			//Wave送り
-			if (マウス座標.x < 38 || Input::key.N.on || Input::key.Space.hold )
+			if (マウス座標.x < 38 )
 			{
 				comType = Command::Wave送り;
 			}
@@ -424,19 +390,15 @@ namespace SDX_TD
 				}
 			}
 
-			//強化など
-			if (selectUnit && !selectUnit->is配置リスト)
+			//強化
+			if (UInfo::F強化().Hit(&マウス座標))
 			{
-				//強化
-				if (UInfo::F強化().Hit(&マウス座標) || Input::key.U.on )
-				{
-					comType = Command::強化;
-				}
-				//売却or必殺
-				if (UInfo::F回収().Hit(&マウス座標) || Input::key.S.on )
-				{
-					comType = Command::売却;
-				}
+				comType = Command::強化;
+			}
+			//売却or必殺
+			if (UInfo::F回収().Hit(&マウス座標))
+			{
+				comType = Command::売却;
 			}
 
 			//コマンド実行
@@ -446,42 +408,94 @@ namespace SDX_TD
 			}
 		}
 
-		/**敵選択のチェック.*/
-		void InputCheckEnemy(Point *マウス座標,Command &comType , int &comNo)
+		/**ショートカットキーのチェック.*/
+		bool InputShortCut()
 		{
-			for (int a = 0; a < groundEnemyS.GetCount(); ++a)
+			//各種ショートカット
+			if (Input::key.B.on)
 			{
-				if (groundEnemyS[a]->Hit(マウス座標))
+				DoCommand(Command::大魔法発動,0);
+				return true;
+			}
+			if (Input::key.N.on || Input::key.Space.hold)
+			{
+				DoCommand(Command::Wave送り, 0);
+				return true;
+			}
+			if (Input::key.U.on)
+			{
+				DoCommand(Command::強化, 0);
+				return true;
+			}
+			if (Input::key.S.on)
+			{
+				DoCommand(Command::売却, 0);
+				return true;
+			}
+			return false;
+		}
+
+		/**敵選択のチェック.*/
+		bool InputCheckEnemy(Point *マウス座標)
+		{
+			//敵を選択、Shift押しながらだと選択不可能
+			if (Input::key.LShift.hold || Input::key.RShift.hold)
+			{
+				return false;
+			}
+
+			if (selectEnemy)
+			{
+				if (selectEnemy->基礎ステ.移動タイプ == Belong::空)
 				{
-					comType = Command::地上敵選択;
-					comNo = a;
-					return;
+					if (InputCheckEnemyS(groundEnemyS,マウス座標, true)){ return true; }
+					if (InputCheckEnemyS(skyEnemyS,マウス座標, false)){ return true; }
+					if (InputCheckEnemyS(groundEnemyS, マウス座標, false)){ return true; }
+				}
+				else
+				{
+					if (InputCheckEnemyS(groundEnemyS, マウス座標, true)){ return true; }
+					if (InputCheckEnemyS(groundEnemyS, マウス座標, false)){ return true; }
+					if (InputCheckEnemyS(skyEnemyS, マウス座標, false)){ return true; }
+				}
+			}
+			else
+			{
+				if (InputCheckEnemyS(groundEnemyS, マウス座標, false)){ return true; }
+				if (InputCheckEnemyS(skyEnemyS, マウス座標, false)){ return true; }
+			}
+
+			return false;
+		}
+
+		/**敵選択のチェック.*/
+		bool InputCheckEnemyS(Layer<IEnemy> &enemyS,Point *マウス座標, bool 検査位置判定)
+		{
+			int index = 0;
+			if (検査位置判定)
+			{
+				for (int a = 0; a < enemyS.GetCount(); ++a)
+				{
+					if (a == enemyS.GetCount() - 1){ return false; }
+
+					if (enemyS[a] == SStage->selectEnemy )
+					{
+						index = a + 1;						
+						break;
+					}
 				}
 			}
 
-			for (int a = 0; a < skyEnemyS.GetCount(); ++a)
+			for (int a = index; a < enemyS.GetCount(); ++a)
 			{
-				if (skyEnemyS[a]->Hit(マウス座標))
+				if (enemyS[a]->Hit(マウス座標))
 				{
-					comType = Command::空中敵選択;
-					comNo = a;
-					return;
+					DoCommand(Command::地上敵選択, a);
+					return true;
 				}
 			}
+			return false;
 		}
-
-		/**敵選択のチェック.*/
-		void InputCheckSkyEnemy(const Point *マウス座標, Command &comType, int &comNo)
-		{
-
-		}
-		/**敵選択のチェック.*/
-		void InputCheckGroundEnemy(const Point *マウス座標, Command &comType, int &comNo)
-		{
-
-		}
-
-
 
 		/**操作を実行.*/
 		void DoCommand(Command 操作, int param)
@@ -510,15 +524,18 @@ namespace SDX_TD
 				wave.待ち時間 = 0;
 				break;
 			case Command::強化:
+				if (!selectUnit ){ break; }
 				selectUnit->強化開始();
 				break;
 			case Command::売却://使い捨ても
+				if (!selectUnit){ break; }
 				selectUnit->送還開始();
 				break;
 			case Command::種別選択:
 				SetSelect(TDSystem::魔法リスト[param].get());
 				break;
 			case Command::新規配置:
+				if (!selectUnit || !selectUnit->is配置リスト){ break; }
 				SetCheck(selectUnit->基礎ステ.魔法種);
 				break;
 			}
@@ -541,6 +558,8 @@ namespace SDX_TD
 		/**配置と強化処理.*/
 		void SetCheck(UnitType 魔法種)
 		{
+			if (!selectUnit || !selectUnit->is配置リスト){ return; }
+
 			const int x = (Input::mouse.x - Land::ChipSize / 2) / Land::ChipSize;
 			const int y = (Input::mouse.y - Land::ChipSize / 2) / Land::ChipSize;
 
@@ -562,10 +581,7 @@ namespace SDX_TD
 
 			SLand->Draw();
 
-			if (SStage->selectUnit && SStage->selectUnit->is配置リスト)
-			{
-				SLand->DrawSetPos();
-			}
+			if (selectUnit && selectUnit->is配置リスト){ SLand->DrawSetPos(); }
 
 			//敵等の表示
 			backEffectS.Draw();
@@ -580,7 +596,7 @@ namespace SDX_TD
 			DrawUI();
 
 			//射程の表示
-			if (selectUnit && !selectUnit->is配置リスト){ selectUnit->DrawRange(); }
+			if (selectUnit){ selectUnit->DrawRange(); }
 		}
 
 		/**UIの描画.*/

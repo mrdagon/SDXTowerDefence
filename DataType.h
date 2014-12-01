@@ -51,8 +51,6 @@ namespace SDX_TD
 		bool is対地 = true;//地上の敵に当たるかどうか
 		bool is使い捨て = false;
 
-		bool is貫通 = true;//命中時に消滅するかどうか
-
 		bool isウィッチ = false;//指揮官魔法、詠唱回数の管理が違う
 
 		int  Hit数[最大強化];
@@ -215,6 +213,8 @@ namespace SDX_TD
 		for (auto &it : UnitDataS)
 		{
 			it.魔法種 = UnitType(count);
+			if (it.魔法種 <= UnitType::ミルラ){ it.isウィッチ = true; }
+
 			++count;
 
 			UnitFile.Read(it.名前);
@@ -225,10 +225,9 @@ namespace SDX_TD
 
 			int param;
 			UnitFile.Read(param);
-			if (param % 3 == 1) it.is対空 = false;
-			if (param % 3 == 2) it.is対地 = false;
-			if (param % 3 >= 3) it.is貫通 = true;
-			if (param == 7) it.is使い捨て = true;
+			if (param == 1){it.is対空 = false;}
+			if (param == 2){it.is対地 = false;}
+			if (param == 3){it.is使い捨て = true;}
 
 			UnitFile.Read(it.基礎詠唱回数);
 			UnitFile.Read(it.デバフ種);
@@ -249,6 +248,10 @@ namespace SDX_TD
 			UnitFile.Read<int>(it.デバフ率, 6, 100);
 			UnitFile.Read(it.Hit数, 6);
 		}
+
+		UnitDataS[UnitType::給仕].is使い捨て = true;
+
+
 	}
 
 	void LoadEnemyS()

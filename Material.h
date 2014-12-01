@@ -209,10 +209,10 @@ namespace SDX_TD
 	/**フォント.*/
 	namespace MFont
 	{
-		Font ゴシック小;
-		Font ゴシック中;
-		BmpFont BMP黒;
-		BmpFont BMP黒影;
+		MixFont ゴシック小;
+		MixFont ゴシック中;
+		MixFont BMP黒;
+		MixFont BMP黒影;
 		MixFont BMP白;
 
 		ImagePack 英語;
@@ -225,26 +225,29 @@ namespace SDX_TD
 		{
 			ゴシック小.Load(SystemFont::Gothic, 12);
 			ゴシック中.Load(SystemFont::Gothic, 16);
+			BMP黒.Load("", 6);
+			BMP黒影.Load("", 7);
+			BMP白.Load("", 6);
 
-			英語.Load("File/System/font2.png", 30, 10, 3);
-			英影.Load("File/System/font.png", 30, 10, 3);
-			黒影.Load("File/System/font_num_black.png", 10, 10, 1);
-			黒数字.Load("File/System/font_num_black2.png", 10, 10, 1);
-			白数字.Load("File/System/font_num_white.png", 10, 10, 1);
+			英語.Load("File/Font/font2.png", 30, 10, 3);
+			英影.Load("File/Font/font.png", 30, 10, 3);
+			黒影.Load("File/Font/font_num_black.png", 10, 10, 1);
+			黒数字.Load("File/Font/font_num_black2.png", 10, 10, 1);
+			白数字.Load("File/Font/font_num_white.png", 10, 10, 1);
 
-			BMP黒.SetAlphabetCapital(&英語);
-			BMP黒.SetAlphabetLow(&英語);
-			BMP黒.SetNumber(&黒数字);
+			//フォント調整_____a__b__c__d__e__f__g__h__i__j__k__l__m__n__o__p__q__r__s__t__u__v__w__x__y__z
+			英語.AdjustWidth({ 1, 3, 2, 2, 3, 3, 1, 2, 4, 2, 3, 2, 0, 1, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 2, 2 });
+			英影.AdjustWidth({ 1, 3, 2, 2, 3, 3, 1, 2, 4, 2, 3, 2, 0, 1, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 2, 2 });
 
+			BMP黒.SetImageS("a", 英語, 26);
+			BMP黒.SetImageS("A", 英語, 26);
+			BMP黒.SetImageS("0", 黒数字, 10);
 
-			BMP黒影.SetAlphabetCapital(&英影);
-			BMP黒影.SetAlphabetLow(&英影);
-			BMP黒影.SetNumber(&黒影);
+			BMP黒影.SetImageS("a", 英語, 26);
+			BMP黒影.SetImageS("A", 英語, 26);
+			BMP黒影.SetImageS("0", 黒数字, 10);
 
-			BMP白.Load(SystemFont::Gothic, 12);
-			BMP白.SetFont("0", 白数字, 10);
-
-			//BMP白.SetNumber(&白数字);
+			BMP白.SetImageS("0", 白数字, 10);
 		}
 	}
 
