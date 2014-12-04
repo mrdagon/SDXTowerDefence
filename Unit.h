@@ -360,7 +360,7 @@ namespace SDX_TD
 			shape(((Input::mouse.x - Land::ChipSize / 2) / Land::ChipSize + 1) * Land::ChipSize, ((Input::mouse.y - Land::ChipSize / 2) / Land::ChipSize + 1) * Land::ChipSize, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2)
 		{}
 
-		using ShotType = Shot < Circle, SpImage, MOTION::ToFront<SPEED::Liner> > ;
+		using ShotType = Shot < Circle, SpImage, MOTION::ToFront<SPEED::Liner,IModel> > ;
 
 		void Shoot(double 角度)
 		{

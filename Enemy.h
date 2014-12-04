@@ -256,7 +256,7 @@ namespace SDX_TD
 		/**デバッグ用描画処理.*/
 		void Draw() const
 		{
-			int アニメ;
+			int アニメ = 0;
 			bool 反転 = false;
 
 			switch (方向)

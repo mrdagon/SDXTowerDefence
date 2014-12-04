@@ -209,11 +209,11 @@ namespace SDX_TD
 	/**フォント.*/
 	namespace MFont
 	{
-		MixFont ゴシック小;
-		MixFont ゴシック中;
-		MixFont BMP黒;
-		MixFont BMP黒影;
-		MixFont BMP白;
+		Font ゴシック小;
+		Font ゴシック中;
+		Font BMP黒;
+		Font BMP黒影;
+		Font BMP白;
 
 		ImagePack 英語;
 		ImagePack 英影;
@@ -223,11 +223,11 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			ゴシック小.Load(SystemFont::Gothic, 12);
-			ゴシック中.Load(SystemFont::Gothic, 16);
-			BMP黒.Load("", 6);
-			BMP黒影.Load("", 7);
-			BMP白.Load("", 6);
+			ゴシック小.Load(SystemFont::Gothic, 12,0);
+			ゴシック中.Load(SystemFont::Gothic, 16,0);
+			BMP黒.Load("", 6,0);
+			BMP黒影.Load("", 7, 0);
+			BMP白.Load("", 6, 0);
 
 			英語.Load("File/Font/font2.png", 30, 10, 3);
 			英影.Load("File/Font/font.png", 30, 10, 3);

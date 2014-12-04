@@ -24,7 +24,7 @@ namespace SDX_TD
 		std::unique_ptr<Camera> camera;
 
 		Menu() :
-			camera(new Camera(400, 300, 1))
+			camera(new Camera({ 400, 300 }, 1))
 		{
 			Init();
 		}
