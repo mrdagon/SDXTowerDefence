@@ -31,6 +31,14 @@ int main(int argc, char* argv[])
 
 	LoadMaterial();
 
+	while (1)
+	{
+		if (Loading::GetLoadingCount() == Loading::GetSuccesCount()) break;
+
+	}
+
+
+
 	Director::AddScene(new Stage());
 	Director::Run();
 

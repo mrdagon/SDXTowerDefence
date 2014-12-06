@@ -355,7 +355,7 @@ namespace SDX_TD
 						if (is陸の敵[a][b])              Drawing::Rect(位置, Color::Gray, true);
 						if (is水の敵[a][b])              Drawing::Rect(位置, Color::Purple, true);
 
-						チップ->DrawExtend({ a * ChipSize, b * ChipSize }, { (a + 1)*ChipSize, (b + 1)*ChipSize });
+						チップ->DrawExtend({ a * ChipSize, b * ChipSize  , ChipSize , ChipSize });
 					}
 			}
 

@@ -91,7 +91,6 @@ namespace SDX_TD
 		{
 			ターゲット.Load("File/System/target.png", 3, 3, 1);
 
-			//UI.Load("File/System/icon.png", 20 , 10 , 2);
 			UI[IconType::ライフ].Load("File/System/icon/000.png");
 			UI[IconType::マナ].Load("File/System/icon/001.png");
 			UI[IconType::レベル].Load("File/System/icon/002.png");
@@ -239,20 +238,21 @@ namespace SDX_TD
 			英語.AdjustWidth({ 1, 3, 2, 2, 3, 3, 1, 2, 4, 2, 3, 2, 0, 1, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 2, 2 });
 			英影.AdjustWidth({ 1, 3, 2, 2, 3, 3, 1, 2, 4, 2, 3, 2, 0, 1, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 2, 2 });
 
-			BMP黒.SetImageS("a", 英語, 26);
-			BMP黒.SetImageS("A", 英語, 26);
-			BMP黒.SetImageS("0", 黒数字, 10);
+			BMP黒.SetImageS("a", &英語, 26);
+			BMP黒.SetImageS("A", &英語, 26);
+			BMP黒.SetImageS("0", &黒数字, 10);
 
-			BMP黒影.SetImageS("a", 英語, 26);
-			BMP黒影.SetImageS("A", 英語, 26);
-			BMP黒影.SetImageS("0", 黒数字, 10);
+			BMP黒影.SetImageS("a", &英語, 26);
+			BMP黒影.SetImageS("A", &英語, 26);
+			BMP黒影.SetImageS("0", &黒数字, 10);
 
-			BMP白.SetImageS("0", 白数字, 10);
+			BMP白.SetImageS("0", &白数字, 10);
 		}
 	}
 
 	static void LoadMaterial()
 	{
+		Loading::Start();
 		MUnit::Load();
 		MUnit::Load();
 		MIcon::Load();
@@ -262,5 +262,7 @@ namespace SDX_TD
 		MMusic::Load();
 		MSound::Load();
 		MFont::Load();
+
+		Loading::End();
 	}
 }

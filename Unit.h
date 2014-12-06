@@ -216,12 +216,10 @@ namespace SDX_TD
 
 			//射程表示
 			Screen::SetBlendMode(BlendMode::Alpha, 128);
-			Drawing::Circle({ GetX(), GetY(), (double)基礎ステ.射程[Lv] }, Color::White, true);
-			Screen::SetBlendMode(BlendMode::NoBlend, 128);
+			Drawing::Circle({ GetX(), GetY(), (double)基礎ステ.射程[Lv] }, Color::White, 0);
+			Screen::SetBlendMode();
 
-			Screen::SetBright({ 255, 0, 0 });
-			Drawing::Circle({ GetX(), GetY(), (double)基礎ステ.射程[Lv] }, Color::Red, false);
-			Screen::SetBright({ 255, 255, 255 });
+			Drawing::Circle({ GetX(), GetY(), (double)基礎ステ.射程[Lv] }, Color::Red , 2);
 		}
 
 		/**.*/

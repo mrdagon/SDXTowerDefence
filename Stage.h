@@ -602,10 +602,10 @@ namespace SDX_TD
 		/**UIの描画.*/
 		void DrawUI()
 		{
-			MSystem::背景.DrawPart(0, 0, 0, 0, 480, 40);
-			MSystem::背景.DrawPart(0, 0, 0, 0, 40, 480);
-			MSystem::背景.DrawPart(0, 472, 0, 472, 480, 40);
-			MSystem::背景.DrawPart(472, 0, 472, 0, 168, 480);
+			MSystem::背景.DrawPart({ 0, 0 }, { 0, 0, 480, 40 });
+			MSystem::背景.DrawPart({ 0, 0 }, { 0, 0, 40, 480 });
+			MSystem::背景.DrawPart({ 0, 472 }, { 0, 472, 480, 40 });
+			MSystem::背景.DrawPart({ 472, 0 }, { 472, 0, 168, 480 });
 
 			//Wave一覧の表示
 			wave.Draw();
