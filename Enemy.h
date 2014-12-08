@@ -305,14 +305,16 @@ namespace SDX_TD
 		/**Stage右に表示する情報.*/
 		void DrawInfo() override
 		{
+			using namespace UnitDraw;
+
 			//画像&名前
-			MSystem::フレーム[5].Draw(UInfo::F名前());
-			MUnit::敵[基礎ステ.種族][1]->DrawRotate(UInfo::P画像(), 2, 0);
-			MFont::ゴシック中.DrawShadow(UInfo::P名前(), Color::White, Color::Gray, 基礎ステ.種族名);
+			MSystem::フレーム[5].Draw(F名前);
+			MUnit::敵[基礎ステ.種族][1]->DrawRotate(P画像, 2, 0);
+			MFont::ゴシック中.DrawShadow(P名前, Color::White, Color::Gray, 基礎ステ.種族名);
 
 			//説明文
-			MSystem::フレーム[5].Draw(UInfo::F説明());
-			MFont::ゴシック小.DrawShadow(UInfo::P説明(), Color::White, Color::Gray, 基礎ステ.説明文);
+			MSystem::フレーム[5].Draw(F説明);
+			MFont::ゴシック小.DrawShadow(P説明, Color::White, Color::Gray, 基礎ステ.説明文);
 
 			//性能
 
@@ -342,10 +344,10 @@ namespace SDX_TD
 				if (Num[a] <= 0 && a > 3) continue;//防御と回避は0なら表示しない
 
 				Screen::SetBright({ 128, 128, 255 });
-				MSystem::フレーム[5].Draw(UInfo::F性能(a));
+				MSystem::フレーム[5].Draw(F性能[a]);
 				Screen::SetBright({ 255, 255, 255 });
-				MIcon::UI[IconNo[a]].Draw(UInfo::P性能アイコン(a));
-				MFont::BMP白.DrawExtend(UInfo::P性能(a), 2, 2, Color::White, { std::setw(10), Num[a] });
+				MIcon::UI[IconNo[a]].Draw(P性能アイコン[a]);
+				MFont::BMP白.DrawExtend(P性能[a], 2, 2, Color::White, { std::setw(10), Num[a] });
 			}
 		}
 

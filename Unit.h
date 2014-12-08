@@ -91,22 +91,25 @@ namespace SDX_TD
 
 		void DrawInfo() override
 		{
+			using namespace UnitDraw;
+
 			//画像&名前
-			MSystem::フレーム[5].Draw(UInfo::F名前());
-			MUnit::魔女[基礎ステ.魔法種][1]->DrawRotate(UInfo::P画像(), 2, 0);
-			MFont::ゴシック中.DrawShadow(UInfo::P名前(), Color::White, Color::Gray, 基礎ステ.名前);
+			MSystem::フレーム[5].Draw(F名前);
+			MUnit::魔女[基礎ステ.魔法種][1]->DrawRotate(P画像, 2, 0);
+			MFont::ゴシック中.DrawShadow(P名前, Color::White, Color::Gray, 基礎ステ.名前);
 
 			//レベル
 			if (is配置リスト)
 			{
 				//説明文
-				MSystem::フレーム[5].Draw(UInfo::F説明());
-				MFont::ゴシック小.DrawShadow(UInfo::P説明(), Color::White, Color::Gray, 基礎ステ.説明文);
+				MSystem::フレーム[5].Draw(F説明);
+				MFont::ゴシック小.DrawShadow(P説明, Color::White, Color::Gray, 基礎ステ.説明文);
 
 				//LV1の性能
 				DrawInfoState(0, false);
 			}
-			else{
+			else
+			{
 				int 強化費 = 0;
 				int 回収費 = int( 基礎ステ.コスト[Lv] * WITCH::Main->回収率 );
 
@@ -116,24 +119,24 @@ namespace SDX_TD
 				}
 
 				//強化
-				MSystem::フレーム[3].Draw(UInfo::F強化());
-				MFont::ゴシック中.DrawShadow(UInfo::P強化(), { 255, 0, 0 }, Color::Gray, "強化");
-				MFont::ゴシック中.DrawExtend({ UInfo::P強化().x - 12, UInfo::P強化().y + 22 }, 1, 1, { 255, 128, 128 }, "－");
-				MFont::BMP黒.DrawExtend({ UInfo::P強化().x - 4, (int)UInfo::P強化().y + 20 }, 2, 2, { 255, 64, 64 }, { std::setw(4), 強化費 });
+				MSystem::フレーム[3].Draw(F強化);
+				MFont::ゴシック中.DrawShadow(P強化, { 255, 0, 0 }, Color::Gray, "強化");
+				MFont::ゴシック中.DrawExtend({ P強化.x - 12, P強化.y + 22 }, 1, 1, { 255, 128, 128 }, "－");
+				MFont::BMP黒.DrawExtend({ P強化.x - 4, P強化.y + 20 }, 2, 2, { 255, 64, 64 }, { std::setw(4), 強化費 });
 
 				//売却or発動
-				MSystem::フレーム[3].Draw(UInfo::F回収());
+				MSystem::フレーム[3].Draw(F回収);
 				if (基礎ステ.is使い捨て)
 				{
 					//発動
-					MFont::ゴシック中.DrawShadow(UInfo::P回収(), Color::Blue, Color::Gray, "発動");
+					MFont::ゴシック中.DrawShadow(P回収, Color::Blue, Color::Gray, "発動");
 				}
 				else
 				{
 					//売却
-					MFont::ゴシック中.DrawShadow(UInfo::P回収(), Color::Blue, Color::Gray, "回収");
-					MFont::ゴシック中.DrawExtend({ UInfo::P回収().x - 12, UInfo::P回収().y + 22 }, 1, 1, { 128, 128, 255 }, "+");
-					MFont::BMP黒.DrawExtend({ UInfo::P回収().x - 4, UInfo::P回収().y + 20 }, 2, 2, { 128, 128, 255 }, { std::setw(4), 回収費 });
+					MFont::ゴシック中.DrawShadow(P回収, Color::Blue, Color::Gray, "回収");
+					MFont::ゴシック中.DrawExtend({ P回収.x - 12, P回収.y + 22 }, 1, 1, { 128, 128, 255 }, "+");
+					MFont::BMP黒.DrawExtend({ P回収.x - 4, P回収.y + 20 }, 2, 2, { 128, 128, 255 }, { std::setw(4), 回収費 });
 				}
 
 				//強化前後の性能
@@ -143,6 +146,8 @@ namespace SDX_TD
 
 		void DrawInfoState(int 表示Lv, bool 変化量表示)
 		{
+			using namespace UnitDraw;
+
 			IconType アイコン[5] =
 			{
 				IconType::マナ,
@@ -187,22 +192,20 @@ namespace SDX_TD
 				if (a >= 3 && 性能[a] <= 0) continue;
 
 				Screen::SetBright({ 128, 128, 255 });
-				MSystem::フレーム[5].Draw(UInfo::F性能(num));
+				MSystem::フレーム[5].Draw(F性能[num]);
 				Screen::SetBright({ 255, 255, 255 });
 
 				//変化前
-				MIcon::UI[アイコン[a]].Draw(UInfo::P性能アイコン(num));
+				MIcon::UI[アイコン[a]].Draw(P性能アイコン[num]);
 				int 桁数 = 5;
 				if (!変化量表示) 桁数 = 10;
 
-				MFont::BMP白.DrawExtend(UInfo::P性能(num), 2, 2, Color::White, { std::setw(桁数), 性能[a] });
+				MFont::BMP白.DrawExtend(P性能[num], 2, 2, Color::White, { std::setw(桁数), 性能[a] });
 
 				if (変化量表示)
 				{
-					MFont::ゴシック中.Draw({ 565, UInfo::P性能アイコン(num).y + 8 }, Color::Yellow, "+");
-					//変化量
-					MIcon::UI[アイコン[a]].Draw(UInfo::P性能アイコン(num));
-					MFont::BMP白.DrawExtend(UInfo::P性能(num), 2, 2, Color::Yellow, { std::setw(10), 次性能[a] - 性能[a] });
+					MFont::ゴシック中.Draw({ 565, P性能アイコン[num].y + 8 }, Color::Yellow, "+");
+					MFont::BMP白.DrawExtend(P性能[num], 2, 2, Color::Yellow, { std::setw(10), 次性能[a] - 性能[a] });
 				}
 
 				++num;
