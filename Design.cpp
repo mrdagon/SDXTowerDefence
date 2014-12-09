@@ -3,7 +3,8 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 
-#include "Design2.h"
+#define EXT
+#include "Design.h"
 
 namespace SDX_TD
 {
