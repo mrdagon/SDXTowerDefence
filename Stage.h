@@ -603,10 +603,10 @@ namespace SDX_TD
 			skyEnemyS.Draw();
 			frontEffectS.Draw();
 
-			DrawUI();
-
 			//射程の表示
 			if (selectUnit){ selectUnit->DrawRange(); }
+
+			DrawUI();
 		}
 
 		/**UIの描画.*/

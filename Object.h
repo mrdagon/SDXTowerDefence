@@ -45,7 +45,8 @@ namespace SDX_TD
 		IObject(IShape &図形, ISprite &描画方法, Belong 所属 = Belong::その他) :
 			IModel(図形, 描画方法),
 			belong(所属)
-		{}
+		{
+		}
 
 		/**.*/
 		virtual ~IObject(){}

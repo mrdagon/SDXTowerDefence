@@ -41,9 +41,7 @@ int main(int argc, char* argv[])
 
 	}
 
-
-
-	Director::AddScene(new Stage());
+	Director::AddScene(std::make_shared<Stage>());
 	Director::Run();
 
 	System::End();//ライブラリの終了処理

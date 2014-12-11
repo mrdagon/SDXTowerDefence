@@ -312,17 +312,19 @@ namespace SDX_TD
 				基礎ステ.詠唱回数補正 = 1.0;
 
 				魔法タイプ[0] = UnitType::ディアネラ;
+
 				魔法タイプ[1] = UnitType::兵士;//A
 				魔法タイプ[2] = UnitType::技師;
 				魔法タイプ[3] = UnitType::斧士;
 				魔法タイプ[4] = UnitType::魔術師;
 				魔法タイプ[5] = UnitType::執事;
+
 				魔法タイプ[6] = UnitType::騎士;//B
 				魔法タイプ[7] = UnitType::闘士;
 				魔法タイプ[8] = UnitType::司祭;
 				魔法タイプ[9] = UnitType::くノ一;
 				魔法タイプ[10] = UnitType::将軍;
-				魔法タイプ[11] = UnitType::踊り子;//None
+				魔法タイプ[11] = UnitType::COUNT;//None
 			}
 
 			//獲得資金1.5倍
@@ -543,7 +545,7 @@ namespace SDX_TD
 				基礎ステ.初期MP = 50;
 
 				基礎ステ.詠唱回数補正 = 1.0;
-
+				
 				魔法タイプ[0] = UnitType::バロゥ;
 				魔法タイプ[1] = UnitType::足軽;//A
 				魔法タイプ[2] = UnitType::狩人;

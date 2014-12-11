@@ -32,8 +32,7 @@ namespace SDX_TD
 			IObject(図形, 描画方法, Belong::弾),
 			基礎ステ(基礎ステ),
 			isSmall(true)
-		{
-
+		{	
 			SetAngle(角度);
 			CulcPower(1.0 , レベル);
 		}
