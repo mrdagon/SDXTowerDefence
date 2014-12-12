@@ -33,7 +33,8 @@ namespace SDX_TD
 			基礎ステ(基礎ステ),
 			isSmall(true)
 		{	
-			SetAngle(角度);
+			図形.SetAngle(角度);
+			描画方法.SetAngle(角度);
 			CulcPower(1.0 , レベル);
 		}
 
@@ -104,7 +105,7 @@ namespace SDX_TD
 		void React() override
 		{
 			//範囲攻撃
-			if (this->炸裂範囲 > 0)
+			if (炸裂範囲 > 0)
 			{
 			}
 		}

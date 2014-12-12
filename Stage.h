@@ -108,17 +108,20 @@ namespace SDX_TD
 		}
 
 		/**貫通弾の判定.*/
-		void HitLine(IShot* 弾, IEnemy* 始点[Land::MapSize][Land::MapSize])
+		void HitArea(IShot* 弾, IEnemy* 始点[Land::MapSize][Land::MapSize])
 		{
-			for (int x = 0; x < Land::MapSize; ++x)
+			//大雑把な分割処理をしない
+			for (int x = 0; x < Land::MapSize; ++x){
 				for (int y = 0; y < Land::MapSize; ++y)
 				{
 					HitShotEnemy(弾, 始点[x][y]);
 				}
+			}
 		}
-		/**小型弾の判定.*/
-		void HitCircle(IShot* 弾, IEnemy* 始点[Land::MapSize][Land::MapSize])
+		/**通常弾の判定.*/
+		void HitSingle(IShot* 弾, IEnemy* 始点[Land::MapSize][Land::MapSize])
 		{
+			//大雑把に分割してから判定を行う
 			const int xa = (int)(弾->GetX() - Land::ChipSize / 2) / Land::ChipSize;
 			const int ya = (int)(弾->GetY() - Land::ChipSize / 2) / Land::ChipSize;
 			const int xb = (int)(弾->GetX() + Land::ChipSize / 2) / Land::ChipSize;
@@ -157,12 +160,13 @@ namespace SDX_TD
 		void Hit()
 		{
 			//空と地上の分割木を初期化
-			for (int a = 0; a < Land::MapSize; ++a)
+			for (int a = 0; a < Land::MapSize; ++a){
 				for (int b = 0; b < Land::MapSize; ++b)
 				{
 					地上Top[a][b] = nullptr;
 					空中Top[a][b] = nullptr;
 				}
+			}
 
 			AddChainList(groundEnemyS, 地上Top, 地上End);
 			AddChainList(skyEnemyS, 空中Top, 空中End);
@@ -172,13 +176,13 @@ namespace SDX_TD
 			{
 				if (shot->is貫通)
 				{
-					if (shot->基礎ステ.is対地){ HitLine(shot.get(), 地上Top); }
-					if (shot->基礎ステ.is対空){ HitLine(shot.get(), 空中Top); }
+					if (shot->基礎ステ.is対地){ HitArea(shot.get(), 地上Top); }
+					if (shot->基礎ステ.is対空){ HitArea(shot.get(), 空中Top); }
 				}
 				else
 				{
-					if (shot->基礎ステ.is対地){ HitCircle(shot.get(), 地上Top); }
-					if (shot->基礎ステ.is対空){ HitCircle(shot.get(), 空中Top); }
+					if (shot->基礎ステ.is対地){ HitSingle(shot.get(), 地上Top); }
+					if (shot->基礎ステ.is対空){ HitSingle(shot.get(), 空中Top); }
 				}
 			}
 		}
