@@ -22,8 +22,11 @@ int main(int argc, char* argv[])
 	StageDraw::Reset();
 	UnitDraw::Reset();
 
-	WITCH::Main.reset(new WITCH::バロゥ());
-	WITCH::Sub.reset(new WITCH::ディアネラ());
+	TDSystem::isシングル = true;
+	TDSystem::isトライアル = true;
+
+	WITCH::Main.reset(new WITCH::ライナ());
+	//WITCH::Sub.reset(new WITCH::ディアネラ());
 
 	System::Initialise("sample", 640, 480);//ライブラリの初期化
 
@@ -38,7 +41,6 @@ int main(int argc, char* argv[])
 	while (1)
 	{
 		if (Loading::GetLoadingCount() == Loading::GetSuccesCount()) break;
-
 	}
 
 	Director::AddScene(std::make_shared<Stage>());

@@ -15,25 +15,30 @@ namespace SDX_TD
 	namespace StageDraw
 	{
 		void Reset();
+		EXT Point P差分[8];
 
-		EXT Point Pスコア;
 		EXT Rect Fスコア;
+		EXT Point Pスコア;
 
-		EXT Point P敵数;
 		EXT Rect F敵数;
+		EXT Point P敵数;
+
+		EXT Rect F右全体;
 
 		EXT Point Pゲーム速度[4];
 		EXT Rect Fゲーム速度[4];
 
-		EXT Point Pウィッチ;
-		EXT Point Pサブウィッチ;
+		EXT Point Pシングルウィッチ;//シングル時
+		EXT Point Pカップルウィッチ[2];//カップル時
 
+		EXT Point Pモード名;
+		EXT Point P難易度名;
+
+		EXT Point PSP;
 		EXT Point P体力;
 		EXT Point P魔力;
 
-		EXT Point P大魔法;
 		EXT Rect F大魔法;
-
 		EXT Rect Fメニュー;
 
 		EXT Rect F魔法一覧[12];

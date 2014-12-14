@@ -141,18 +141,19 @@ namespace SDX_TD
 
 				基礎ステ.詠唱回数補正 = 1.0;
 
-				魔法タイプ[0] = UnitType::踊り子;
-				魔法タイプ[1] = UnitType::踊り子;
-				魔法タイプ[2] = UnitType::踊り子;
-				魔法タイプ[3] = UnitType::踊り子;
-				魔法タイプ[4] = UnitType::踊り子;
-				魔法タイプ[5] = UnitType::踊り子;
-				魔法タイプ[6] = UnitType::踊り子;
-				魔法タイプ[7] = UnitType::踊り子;
-				魔法タイプ[8] = UnitType::踊り子;
+				魔法タイプ[0] = UnitType::ライナ;
+
+				魔法タイプ[1] = UnitType::兵士;
+				魔法タイプ[2] = UnitType::技師;
+				魔法タイプ[3] = UnitType::剣士;
+				魔法タイプ[4] = UnitType::槍士;
+				魔法タイプ[5] = UnitType::斧士;
+				魔法タイプ[6] = UnitType::武闘家;
+				魔法タイプ[7] = UnitType::狩人;
+				魔法タイプ[8] = UnitType::術士;
 				魔法タイプ[9] = UnitType::踊り子;
-				魔法タイプ[10] = UnitType::踊り子;
-				魔法タイプ[11] = UnitType::踊り子;
+				魔法タイプ[10] = UnitType::執事;
+				魔法タイプ[11] = UnitType::盗賊;
 			}
 
 			void 大魔法発動() override
@@ -316,7 +317,7 @@ namespace SDX_TD
 				魔法タイプ[1] = UnitType::兵士;//A
 				魔法タイプ[2] = UnitType::技師;
 				魔法タイプ[3] = UnitType::斧士;
-				魔法タイプ[4] = UnitType::魔術師;
+				魔法タイプ[4] = UnitType::術士;
 				魔法タイプ[5] = UnitType::執事;
 
 				魔法タイプ[6] = UnitType::騎士;//B
@@ -548,16 +549,16 @@ namespace SDX_TD
 				
 				魔法タイプ[0] = UnitType::バロゥ;
 				魔法タイプ[1] = UnitType::足軽;//A
-				魔法タイプ[2] = UnitType::狩人;
+				魔法タイプ[2] = UnitType::技師;
 				魔法タイプ[3] = UnitType::剣士;
-				魔法タイプ[4] = UnitType::盗賊;
-				魔法タイプ[5] = UnitType::踊り子;
-				魔法タイプ[6] = UnitType::射手;//B
-				魔法タイプ[7] = UnitType::剣豪;
-				魔法タイプ[8] = UnitType::勇者;
-				魔法タイプ[9] = UnitType::賢者;
-				魔法タイプ[10] = UnitType::給仕;
-				魔法タイプ[11] = UnitType::料理人;
+				魔法タイプ[4] = UnitType::騎士;
+				魔法タイプ[5] = UnitType::師範;
+				魔法タイプ[6] = UnitType::狩人;//B
+				魔法タイプ[7] = UnitType::射手;
+				魔法タイプ[8] = UnitType::賢者;
+				魔法タイプ[9] = UnitType::将軍;
+				魔法タイプ[10] = UnitType::執事;
+				魔法タイプ[11] = UnitType::盗賊;
 			}
 
 			void 大魔法発動() override

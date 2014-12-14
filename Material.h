@@ -37,7 +37,7 @@ namespace SDX_TD
 			魔女[UnitType::技師].Load("File/Unit/Common/004.png", 9, 3, 3);
 			魔女[UnitType::くノ一].Load("File/Unit/Common/005.png", 9, 3, 3);
 			魔女[UnitType::師範].Load("File/Unit/Common/006.png", 9, 3, 3);
-			魔女[UnitType::魔術師].Load("File/Unit/Common/007.png", 9, 3, 3);
+			魔女[UnitType::術士].Load("File/Unit/Common/007.png", 9, 3, 3);
 			魔女[UnitType::賢者].Load("File/Unit/Common/008.png", 9, 3, 3);
 			魔女[UnitType::武闘家].Load("File/Unit/Common/009.png", 9, 3, 3);
 			魔女[UnitType::忍者].Load("File/Unit/Common/010.png", 9, 3, 3);
@@ -241,10 +241,19 @@ namespace SDX_TD
 			BMP黒.SetImageS("a", &英語, 26);
 			BMP黒.SetImageS("A", &英語, 26);
 			BMP黒.SetImageS("0", &黒数字, 10);
+			BMP黒.SetImage("×", 英語[26]);
+			BMP黒.SetImage("□", 英語[27]);
+			BMP黒.SetImage("○", 英語[28]);
+			BMP黒.SetImage("☆", 英語[29]);
 
-			BMP黒影.SetImageS("a", &英語, 26);
-			BMP黒影.SetImageS("A", &英語, 26);
-			BMP黒影.SetImageS("0", &黒数字, 10);
+			BMP黒影.SetImageS("a", &英影, 26);
+			BMP黒影.SetImageS("A", &英影, 26);
+			BMP黒影.SetImageS("0", &黒影, 10);
+			BMP黒影.SetImage("×", 英影[26]);
+			BMP黒影.SetImage("□", 英影[27]);
+			BMP黒影.SetImage("○", 英影[28]);
+			BMP黒影.SetImage("☆", 英影[29]);
+
 
 			BMP白.SetImageS("0", &白数字, 10);
 		}
@@ -252,7 +261,7 @@ namespace SDX_TD
 
 	static void LoadMaterial()
 	{
-		Loading::Start();
+		//Loading::Start();
 		MUnit::Load();
 		MUnit::Load();
 		MIcon::Load();
@@ -263,6 +272,6 @@ namespace SDX_TD
 		MSound::Load();
 		MFont::Load();
 
-		Loading::End();
+		//Loading::End();
 	}
 }

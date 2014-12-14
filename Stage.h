@@ -232,6 +232,18 @@ namespace SDX_TD
 				TDSystem::詠唱回数[WITCH::Main->魔法タイプ[a]] = 10;
 			}
 
+			for (int a = 0; a < (int)UnitType::COUNT; ++a)
+			{
+				if (a < 12)
+				{
+					TDSystem::詠唱回数[(UnitType)a] = 1;
+				}
+				else
+				{
+					TDSystem::詠唱回数[(UnitType)a] = 30;
+				}
+			}
+
 			for (auto& it : TDSystem::魔法リスト)
 			{
 				it->is配置リスト = true;
@@ -617,6 +629,7 @@ namespace SDX_TD
 		void DrawUI()
 		{
 			using namespace StageDraw;
+			Reset();
 
 			MSystem::背景.DrawPart({ 0, 0 }, { 0, 0, 480, 40 });
 			MSystem::背景.DrawPart({ 0, 0 }, { 0, 0, 40, 480 });
@@ -628,16 +641,16 @@ namespace SDX_TD
 
 			//スコアの表示
 			MSystem::フレーム[5].Draw(Fスコア);
-			MFont::BMP黒.Draw({ Pスコア.x + 10, Pスコア.y - 10 }, Color::White, "SCORE");
+			MFont::BMP黒.Draw(Pスコア + P差分[0], Color::White, "SCORE");
 			MFont::BMP白.DrawExtend(Pスコア, 2, 2, Color::White, { std::setw(10), TDSystem::スコア });
 
 			int 敵数 = skyEnemyS.GetCount() + groundEnemyS.GetCount();
 			MSystem::フレーム[5].Draw(F敵数);
-			MFont::BMP黒.Draw({ P敵数.x + 10, P敵数.y - 10 }, Color::White, "ENEMY");
+			MFont::BMP黒.Draw( P敵数+P差分[0], Color::White, "ENEMY");
 			MFont::BMP白.DrawExtend( P敵数, 2, 2, Color::White, { std::setw(5), 敵数 });
 
 			//ゲーム速度の表示
-			int spd = 1;
+			int spd = 4;
 			for (int a = 0; a < 4; ++a)
 			{
 				int x = (int)Fゲーム速度[a].x;
@@ -647,50 +660,48 @@ namespace SDX_TD
 				MSystem::フレーム[3].Draw(Fゲーム速度[a]);
 				if (gamespeed != spd){ Screen::SetBright(Color::White); }
 
-				MFont::BMP黒.DrawExtend({ x + 8, 10 }, SIZE, SIZE, Color::White, "x");
-				MFont::BMP黒.DrawExtend({ x + 36, 8 }, SIZE, SIZE, Color::White, spd);
+				MFont::BMP黒.Draw(Fゲーム速度[a].GetPoint() + P差分[7], Color::White, "x");
+				MFont::BMP黒.DrawExtend( Fゲーム速度[a].GetPoint() + P差分[6], SIZE, SIZE, Color::White, {std::setw(2) ,spd });
 
 				spd *= 2;
 			}
 
 			//全体枠
-			MSystem::フレーム[5].Draw({ 472, 0, 168, 100 + 105 + 27 });
+			MSystem::フレーム[5].Draw(F右全体);
 
 			//ウィッチの表示
-
 			if (TDSystem::isシングル)
 			{
-
-
+				MUnit::魔女[(UnitType)WITCH::Main->種類][1]->DrawRotate(Pシングルウィッチ, 2, 0);
 			}
 			else
 			{
-			
+				MUnit::魔女[(UnitType)WITCH::Main->種類][1]->DrawRotate(Pカップルウィッチ[0], 2, 0);			
+				MUnit::魔女[(UnitType)WITCH::Sub->種類][1]->DrawRotate(Pカップルウィッチ[1], 2, 0);
 			}
 
-			MUnit::魔女[(UnitType)WITCH::Sub->種類][1]->DrawRotate(Pサブウィッチ, 2, 0);
-			MUnit::魔女[(UnitType)WITCH::Main->種類][1]->DrawRotate(Pウィッチ, 2, 0);
-
 			//モードと難易度
-			MFont::BMP黒.DrawExtend({ 480, Pウィッチ.y + 40 }, 1, 1, Color::White, { "normal" });//大魔法チャージ量
+			MFont::BMP黒.DrawExtend(P難易度名, 1, 1, Color::White, { "normal" });
+			MFont::BMP黒.DrawExtend(Pモード名, 1, 1, Color::White, { "single" });
 
 			//SP,HP,MPの表示
 			const int SP値 = std::min(int(WITCH::Main->SP * 100 / WITCH::Main->最大SP), 100);
-			MIcon::UI[IconType::マナ].Draw(P大魔法);
-			MFont::BMP白.DrawExtend({ P大魔法.x + 20, P大魔法.y + 6 }, 2, 2, { 120, 120, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
+			MIcon::UI[IconType::マナ].Draw(PSP);
+
+			MFont::BMP白.DrawExtend( PSP + P差分[1], 2, 2, { 120, 120, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
 
 			MIcon::UI[IconType::ライフ].Draw(P体力);
-			MFont::BMP白.DrawExtend({ P体力.x + 20, P体力.y + 6 }, 2, 2, { 255, 60, 60 }, { std::setw(5), TDSystem::Hp });//HP
+			MFont::BMP白.DrawExtend( P体力 + P差分[1], 2, 2, { 255, 60, 60 }, { std::setw(5), TDSystem::Hp });//HP
 
 			MIcon::UI[IconType::レベル].Draw(P魔力);
-			MFont::BMP白.DrawExtend({ P魔力.x + 20, P魔力.y + 6 }, 2, 2, { 255, 255, 0 }, { std::setw(5), WITCH::Main->MP });//MP
+			MFont::BMP白.DrawExtend( P魔力 + P差分[1], 2, 2, { 255, 255, 0 }, { std::setw(5), WITCH::Main->MP });//MP
 
 			//設定ボタン
 			MSystem::フレーム[3].Draw(Fメニュー);
-			MFont::ゴシック中.DrawShadow({ Fメニュー.x + 8, Fメニュー.y + 8 }, Color::Black, Color::Gray, "ポーズ");
+			MFont::ゴシック中.DrawShadow( Fメニュー.GetPoint() + P差分[2], Color::Black, Color::Gray, "ポーズ");
 
 			MSystem::フレーム[3].Draw(F大魔法);
-			MFont::ゴシック中.DrawShadow({ F大魔法.x + 8, F大魔法.y + 8 }, Color::Black, Color::Gray, "大魔法");
+			MFont::ゴシック中.DrawShadow( F大魔法.GetPoint() + P差分[2], Color::Black, Color::Gray, "大魔法");
 
 			//魔法一覧の表示
 			for (int a = 0; a < 12; ++a)
@@ -699,9 +710,10 @@ namespace SDX_TD
 				if (TDSystem::詠唱回数[WITCH::Main->魔法タイプ[a]] <= 0){ Screen::SetBright(Color::Gray); }
 				MSystem::フレーム[3].Draw(F魔法一覧[a]);
 				Screen::SetBright({ 255, 255, 255 });
-				MUnit::魔女[WITCH::Main->魔法タイプ[a]][1]->DrawRotate({ F魔法一覧[a].x + 20, F魔法一覧[a].y + 12 }, 1, 0);
-				MFont::英語[26]->Draw({ F魔法一覧[a].x + 2, F魔法一覧[a].y + 24 });
-				MFont::BMP黒.DrawExtend({ F魔法一覧[a].x + 12, F魔法一覧[a].y + 20 }, 2, 2, Color::White, { std::setw(2), TDSystem::詠唱回数[WITCH::Main->魔法タイプ[a]] });
+				MUnit::魔女[WITCH::Main->魔法タイプ[a]][1]->DrawRotate( F魔法一覧[a].GetPoint() + P差分[3], 1, 0);
+				
+				MFont::BMP黒.DrawExtend(F魔法一覧[a].GetPoint() + P差分[4], 2, 2, Color::White, { std::setw(2), TDSystem::詠唱回数[WITCH::Main->魔法タイプ[a]] });
+				MFont::BMP黒.Draw(F魔法一覧[a].GetPoint() + P差分[5], Color::White, "×");
 			}
 
 			//情報の表示

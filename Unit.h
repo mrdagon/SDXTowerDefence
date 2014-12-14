@@ -433,7 +433,7 @@ namespace SDX_TD
 				break;
 			case UnitType::プリンセス://3-8方向攻撃
 				break;
-			case UnitType::魔術師://範囲A-加速弾、命中時範囲攻撃
+			case UnitType::術士://範囲A-加速弾、命中時範囲攻撃
 				break;
 			case UnitType::賢者://範囲B-ホーミング弾、命中時範囲攻撃
 				break;
