@@ -20,7 +20,7 @@ namespace SDX_TD
 		static const int Size = 2;//2x2角
 		static const int 速度値 = 6000;
 
-		UnitData &基礎ステ;//基礎ステータス
+		UnitData &st;//stータス
 
 		int    Lv = 0;
 		double 支援補正 = 1;
@@ -31,22 +31,26 @@ namespace SDX_TD
 		int    強化or送還長さ = 1;
 		bool   is配置リスト = false;
 
-		IUnit(IShape &図形, ISprite &描画方法, UnitType 魔法種) :
+		IUnit(IShape &図形, ISprite &描画方法, UnitType 魔法種 , bool isリスト) :
 			IObject(図形, 描画方法, Belong::砲台),
-			基礎ステ(UnitDataS[魔法種])
+			st(UnitDataS[魔法種]),
+			is配置リスト(isリスト)
 		{
-			WITCH::Main->MP -= WITCH::Main->GetReqMP(魔法種);
-			--TDSystem::詠唱回数[魔法種];
+			if ( !is配置リスト)
+			{
+				WITCH::Main->MP -= WITCH::Main->GetReqMP(魔法種);
+				--TDSystem::詠唱回数[魔法種];
 
-			SetWait();
+				SetWait();
+			}
 		}
 
 		/**.*/
 		void SetWait()
 		{
-			if (基礎ステ.連射[Lv] == 0) 基礎ステ.連射[Lv] = 1;
+			if (st.連射[Lv] == 0) st.連射[Lv] = 1;
 
-			待機時間 = int(速度値 / 基礎ステ.連射[Lv]);
+			待機時間 = int(速度値 / st.連射[Lv]);
 		}
 
 		/**.*/
@@ -79,7 +83,7 @@ namespace SDX_TD
 			}
 			else
 			{
-				MUnit::魔女[基礎ステ.魔法種][1]->DrawRotate({ GetX(), GetY() }, 1, 0);
+				MUnit::魔女[st.魔法種][1]->DrawRotate({ GetX(), GetY() }, 1, 0);
 			}
 
 			//レベル表示
@@ -95,15 +99,15 @@ namespace SDX_TD
 
 			//画像&名前
 			MSystem::フレーム[5].Draw(F名前);
-			MUnit::魔女[基礎ステ.魔法種][1]->DrawRotate(P画像, 2, 0);
-			MFont::ゴシック中.DrawShadow(P名前, Color::White, Color::Gray, 基礎ステ.名前);
+			MUnit::魔女[st.魔法種][1]->DrawRotate(P画像, 2, 0);
+			MFont::ゴシック中.DrawShadow(P名前, Color::White, Color::Gray, st.名前);
 
 			//レベル
 			if (is配置リスト)
 			{
 				//説明文
 				MSystem::フレーム[5].Draw(F説明);
-				MFont::ゴシック小.DrawShadow(P説明, Color::White, Color::Gray, 基礎ステ.説明文);
+				MFont::ゴシック小.DrawShadow(P説明, Color::White, Color::Gray, st.説明文);
 
 				//LV1の性能
 				DrawInfoState(0, false);
@@ -111,11 +115,11 @@ namespace SDX_TD
 			else
 			{
 				int 強化費 = 0;
-				int 回収費 = int( 基礎ステ.コスト[Lv] * WITCH::Main->回収率 );
+				int 回収費 = int( st.コスト[Lv] * WITCH::Main->回収率 );
 
 				if (Lv != 5)
 				{
-					強化費 = int( (基礎ステ.コスト[Lv + 1] - 基礎ステ.コスト[Lv])*WITCH::Main->MP消費 );
+					強化費 = int( (st.コスト[Lv + 1] - st.コスト[Lv])*WITCH::Main->MP消費 );
 				}
 
 				//強化
@@ -126,7 +130,7 @@ namespace SDX_TD
 
 				//売却or発動
 				MSystem::フレーム[3].Draw(F回収);
-				if (基礎ステ.is使い捨て)
+				if (st.is使い捨て)
 				{
 					//発動
 					MFont::ゴシック中.DrawShadow(P回収, Color::Blue, Color::Gray, "発動");
@@ -158,25 +162,25 @@ namespace SDX_TD
 			};
 			int 性能[5] =
 			{
-				基礎ステ.コスト[Lv],//上3つは確定、最大5つ
-				基礎ステ.攻撃力[Lv],
-				基礎ステ.連射[Lv],
-				(int)(基礎ステ.支援効果[Lv] * 100),
-				基礎ステ.デバフ効果[Lv]
+				st.コスト[Lv],//上3つは確定、最大5つ
+				st.攻撃力[Lv],
+				st.連射[Lv],
+				(int)(st.支援効果[Lv] * 100),
+				st.デバフ効果[Lv]
 			};
 
 			const int NextLv = (Lv + 1) % 5;
 
 			int 次性能[5] =
 			{
-				基礎ステ.コスト[NextLv],//上3つは確定、最大5つ
-				基礎ステ.攻撃力[NextLv],
-				基礎ステ.連射[NextLv],
-				(int)(基礎ステ.支援効果[NextLv] * 100),
-				基礎ステ.デバフ効果[NextLv]
+				st.コスト[NextLv],//上3つは確定、最大5つ
+				st.攻撃力[NextLv],
+				st.連射[NextLv],
+				(int)(st.支援効果[NextLv] * 100),
+				st.デバフ効果[NextLv]
 			};
 
-			switch (基礎ステ.デバフ種)
+			switch (st.デバフ種)
 			{
 			case DebuffType::鈍足:アイコン[4] = IconType::鈍足; break;
 			case DebuffType::麻痺:アイコン[4] = IconType::麻痺; break;
@@ -219,10 +223,10 @@ namespace SDX_TD
 
 			//射程表示
 			Screen::SetBlendMode(BlendMode::Alpha, 128);
-			Drawing::Circle({ GetX(), GetY(), (double)基礎ステ.射程[Lv] }, Color::White, 0);
+			Drawing::Circle({ GetX(), GetY(), (double)st.射程[Lv] }, Color::White, 0);
 			Screen::SetBlendMode();
 
-			Drawing::Circle({ GetX(), GetY(), (double)基礎ステ.射程[Lv] }, Color::Red , 2);
+			Drawing::Circle({ GetX(), GetY(), (double)st.射程[Lv] }, Color::Red , 2);
 		}
 
 		/**.*/
@@ -232,7 +236,7 @@ namespace SDX_TD
 			if (残り送還時間 == 0)
 			{
 				isRemove = true;
-				WITCH::Main->MP += int( 基礎ステ.コスト[Lv] * WITCH::Main->回収率 );
+				WITCH::Main->MP += int( st.コスト[Lv] * WITCH::Main->回収率 );
 			}
 
 			if (isRemove)
@@ -253,15 +257,15 @@ namespace SDX_TD
 			if (is配置リスト) return false;
 			if (Lv >= 5){ return false; }
 			if (残り強化時間 > 0 || 残り送還時間 > 0){ return false; }
-			if (!TDSystem::詠唱回数[基礎ステ.魔法種] && !基礎ステ.isウィッチ){ return false; }
+			if (!TDSystem::詠唱回数[st.魔法種] && !st.isウィッチ){ return false; }
 
-			const int 必要MP = 基礎ステ.コスト[Lv + 1] - 基礎ステ.コスト[Lv];
+			const int 必要MP = st.コスト[Lv + 1] - st.コスト[Lv];
 
 			if (WITCH::Main->MP < 必要MP){ return false; }
 
-			if (!基礎ステ.isウィッチ)
+			if (!st.isウィッチ)
 			{
-				--TDSystem::詠唱回数[基礎ステ.魔法種];
+				--TDSystem::詠唱回数[st.魔法種];
 			}
 
 			WITCH::Main->MP -= 必要MP;
@@ -288,14 +292,14 @@ namespace SDX_TD
 			{
 				//開始前は即回収
 				isRemove = true;
-				if (基礎ステ.isウィッチ){ TDSystem::詠唱回数[基礎ステ.魔法種]++; }
-				else{ TDSystem::詠唱回数[基礎ステ.魔法種] += Lv + 1; }
-				WITCH::Main->MP += int( 基礎ステ.コスト[Lv] * WITCH::Main->MP消費 );
+				if (st.isウィッチ){ TDSystem::詠唱回数[st.魔法種]++; }
+				else{ TDSystem::詠唱回数[st.魔法種] += Lv + 1; }
+				WITCH::Main->MP += int( st.コスト[Lv] * WITCH::Main->MP消費 );
 				残り送還時間 = -1;
 			}
 			else
 			{
-				if (基礎ステ.is使い捨て)
+				if (st.is使い捨て)
 				{
 					//使い捨て
 					Shoot(0);
@@ -333,7 +337,7 @@ namespace SDX_TD
 				{
 					double 距離 = GetDistance(一番近い敵);
 
-					if (距離 <= 基礎ステ.射程[Lv])
+					if (距離 <= st.射程[Lv])
 					{
 						Shoot(GetDirect(一番近い敵));
 						SetWait();
@@ -355,73 +359,84 @@ namespace SDX_TD
 		SpImage sprite;
 
 		//配置位置
-		Unit(UnitType 魔法種) :
-			IUnit(shape, sprite, 魔法種),
+		Unit(UnitType 魔法種 , int X座標,int Y座標, bool isリスト) :
+			IUnit(shape, sprite, 魔法種 , isリスト),
 			sprite(nullptr),
-			shape(((Input::mouse.x - Land::ChipSize / 2) / Land::ChipSize + 1) * Land::ChipSize, ((Input::mouse.y - Land::ChipSize / 2) / Land::ChipSize + 1) * Land::ChipSize, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2)
+			shape(X座標, Y座標, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2)
 		{}
 
 		using ShotType = Shot < Circle, SpImage, MOTION::ToFront<SPEED::Liner,IModel> > ;
 
 		void Shoot(double 角度)
 		{
-			//SStage->Add( new ShotType({GetX(),GetY(),10,10},nullptr,角度,基礎ステ,{1.0},{1.0}));
+			//SStage->Add( new ShotType({GetX(),GetY(),10,10},nullptr,角度,st,{1.0},{1.0}));
 
-			switch (基礎ステ.魔法種)
+			switch (st.魔法種)
 			{
-			case UnitType::ライナ://防御低下3-8方向、師範強化
+			case UnitType::ライナ://勇者強化
+				for (int a = 0; a < st.Hit数[Lv]; ++a)
+				{
+
+				}
 				break;
-			case UnitType::ナツメ://周囲範囲攻撃、僧兵強化
+			case UnitType::ナツメ://武闘家強化
 				break;
-			case UnitType::ルコウ://反射連射攻撃、騎士強化
+			case UnitType::ルコウ://騎士強化
 				break;
-			case UnitType::ディアネラ://チャージ攻撃、執事強化
-				SStage->Add(new ShotType({ GetX(), GetY(), 10 }, &MEffect::弾, { { 10 } }, 角度, 基礎ステ , Lv));
+			case UnitType::ディアネラ://プリンセス強化
+				SStage->Add(new ShotType({ GetX(), GetY(), 10 }, &MEffect::弾, { { 10 } }, 角度, st , Lv));
 				break;
-			case UnitType::ミナエ://角度乱射、剣豪強化
+			case UnitType::ミナエ://賢者強化
 				break;
-			case UnitType::トレニア://レーザー攻撃、司祭強化
+			case UnitType::トレニア://闘士強化
 				break;
-			case UnitType::ロチエ://長射程凍結、くの一強化
+			case UnitType::ロチエ://くの一強化
 				break;
-			case UnitType::バロゥ://ホーミング弾、勇者強化
-				SStage->Add(new ShotType({ GetX(), GetY(), 10 }, &MEffect::弾, { { 1 } }, 角度, 基礎ステ , Lv));
+			case UnitType::バロゥ://狩人強化
+				SStage->Add(new ShotType({ GetX(), GetY(), 10 }, &MEffect::弾, { { 1 } }, 角度, st , Lv));
 				break;
-			case UnitType::フィオナ://吹き飛び付きレーザー、司祭強化
+			case UnitType::フィオナ://司祭強化
 				break;
-			case UnitType::ナズナ://高支援ユニット、軍師強化
+			case UnitType::ナズナ://軍師強化
 				break;
-			case UnitType::委員長://確定麻痺ホーミング弾、賢者強化
+			case UnitType::委員長://僧侶強化
 				break;
-			case UnitType::ミルラ://高支援ユニット、将軍強化
+			case UnitType::ミルラ://将軍強化
 				break;
 			case UnitType::兵士://通路用A-単発直進
+				//実装する
 				break;
 			case UnitType::傭兵://通路用A-単発直進
 				break;
 			case UnitType::足軽://通路用A-単発直進
 				break;
 			case UnitType::技師://必中追尾A-単発型
+				//実装する
 				break;
 			case UnitType::勇者://必中追尾B-周囲展開型
 				break;
 			case UnitType::剣士://連射A-単発直進
+				//実装する
 				break;
 			case UnitType::剣豪://連射B-乱射直進
 				break;
 			case UnitType::槍士://反射A-3WAY直進
+				//実装する
 				break;
 			case UnitType::騎士://反射B-連射加速直進
 				break;
 			case UnitType::斧士://吹き飛びA-後ろ射出加速
+				//実装する
 				break;
 			case UnitType::闘士://吹き飛びB-周囲回転
 				break;
 			case UnitType::武闘家://防御破壊A-加速弾
+				//実装する
 				break;
 			case UnitType::師範://防御破壊B-炸裂弾
 				break;
 			case UnitType::狩人://対空専用A-長射程、3連射
+				//実装する
 				break;
 			case UnitType::射手://対空専用B-中射程、高連射
 				break;
@@ -434,22 +449,26 @@ namespace SDX_TD
 			case UnitType::プリンセス://3-8方向攻撃
 				break;
 			case UnitType::術士://範囲A-加速弾、命中時範囲攻撃
+				//実装する
 				break;
 			case UnitType::賢者://範囲B-ホーミング弾、命中時範囲攻撃
 				break;
 			case UnitType::踊り子://支援A-弱麻痺
+				//実装する
 				break;
 			case UnitType::軍師://支援B-弱吹飛
 				break;
 			case UnitType::将軍://支援B-弱防御低下
 				break;
 			case UnitType::執事://使い捨てA-円形使い捨て
+				//実装する
 				break;
 			case UnitType::給仕://使い捨てB-十字使い捨て
 				break;
 			case UnitType::料理人://使い捨てB-円形使い捨て
 				break;
 			case UnitType::盗賊://鈍足A-高連射、直進弾
+				//実装する
 				break;
 			case UnitType::忍者://鈍足A-3-8方向、直進弾
 				break;

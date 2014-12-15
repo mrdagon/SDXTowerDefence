@@ -176,13 +176,13 @@ namespace SDX_TD
 			{
 				if (shot->is貫通)
 				{
-					if (shot->基礎ステ.is対地){ HitArea(shot.get(), 地上Top); }
-					if (shot->基礎ステ.is対空){ HitArea(shot.get(), 空中Top); }
+					if (shot->st.is対地){ HitArea(shot.get(), 地上Top); }
+					if (shot->st.is対空){ HitArea(shot.get(), 空中Top); }
 				}
 				else
 				{
-					if (shot->基礎ステ.is対地){ HitSingle(shot.get(), 地上Top); }
-					if (shot->基礎ステ.is対空){ HitSingle(shot.get(), 空中Top); }
+					if (shot->st.is対地){ HitSingle(shot.get(), 地上Top); }
+					if (shot->st.is対空){ HitSingle(shot.get(), 空中Top); }
 				}
 			}
 		}
@@ -223,13 +223,15 @@ namespace SDX_TD
 			SLand->Init();
 
 			//ウィッチ初期化
+			WITCH::Main->Init();
 
 			//ウィッチリスト12種初期化
 			TDSystem::魔法リスト.clear();
+
+			WITCH::Main->MP = 1000;
 			for (int a = 0; a < 12; ++a)
 			{
-				TDSystem::魔法リスト.emplace_back(new Unit(WITCH::Main->魔法タイプ[a]));
-				TDSystem::詠唱回数[WITCH::Main->魔法タイプ[a]] = 10;
+				TDSystem::魔法リスト.emplace_back(new Unit(WITCH::Main->魔法タイプ[a],0,0,true));
 			}
 
 			for (int a = 0; a < (int)UnitType::COUNT; ++a)
@@ -242,11 +244,6 @@ namespace SDX_TD
 				{
 					TDSystem::詠唱回数[(UnitType)a] = 30;
 				}
-			}
-
-			for (auto& it : TDSystem::魔法リスト)
-			{
-				it->is配置リスト = true;
 			}
 		}
 
@@ -472,7 +469,7 @@ namespace SDX_TD
 
 			if (selectEnemy)
 			{
-				if (selectEnemy->基礎ステ.移動タイプ == Belong::空)
+				if (selectEnemy->st.移動タイプ == Belong::空)
 				{
 					if (InputCheckEnemyS(groundEnemyS,マウス座標, true)){ return true; }
 					if (InputCheckEnemyS(skyEnemyS,マウス座標, false)){ return true; }
@@ -562,7 +559,7 @@ namespace SDX_TD
 				break;
 			case Command::新規配置:
 				if (!selectUnit || !selectUnit->is配置リスト){ break; }
-				SetCheck(selectUnit->基礎ステ.魔法種);
+				SetCheck(selectUnit->st.魔法種);
 				break;
 			}
 		}
@@ -589,14 +586,16 @@ namespace SDX_TD
 			const int x = (Input::mouse.x - Land::ChipSize / 2) / Land::ChipSize;
 			const int y = (Input::mouse.y - Land::ChipSize / 2) / Land::ChipSize;
 
+			//資金不足
 			if (WITCH::Main->GetReqMP(魔法種) > WITCH::Main->MP || TDSystem::詠唱回数[魔法種] <= 0)
 			{
 				return;
 			}
 
+			//配置可能かチェック
 			if (SLand->SetUnit(x, y, 2))
 			{
-				Add(new Unit(魔法種));
+				Add(new Unit(魔法種,(x+1) * Land::ChipSize , (y+1) * Land::ChipSize , false));
 			}
 		}
 

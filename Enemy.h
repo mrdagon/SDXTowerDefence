@@ -15,7 +15,7 @@ namespace SDX_TD
 	public:
 		const static int 判定大きさ = 14;
 
-		EnemyData &基礎ステ;
+		EnemyData &st;
 		IEnemy*  next;//当たり判定チェイン用
 		int     レベル = 0;
 		int     方向 = 5;
@@ -33,15 +33,15 @@ namespace SDX_TD
 
 		int     スコア;
 
-		IEnemy(IShape &図形, ISprite &描画方法, EnemyData& 基礎ステ, int Lv, bool isBoss) :
-			IObject(図形, 描画方法, 基礎ステ.移動タイプ),
+		IEnemy(IShape &図形, ISprite &描画方法, EnemyData& st, int Lv, bool isBoss) :
+			IObject(図形, 描画方法, st.移動タイプ),
 			isBoss(isBoss),
-			基礎ステ(基礎ステ)
+			st(st)
 		{
 			レベル = Lv;
-			スコア = int(基礎ステ.スコア * (1.0 + レベル / 30));
-			最大HP = 基礎ステ.最大HP * (1.0 + (レベル - 1)* 0.2 + (レベル - 1) * (レベル - 1) * 0.06);
-			防御力 = int(基礎ステ.防御力 * レベル);
+			スコア = int(st.スコア * (1.0 + レベル / 30));
+			最大HP = st.最大HP * (1.0 + (レベル - 1)* 0.2 + (レベル - 1) * (レベル - 1) * 0.06);
+			防御力 = int(st.防御力 * レベル);
 
 			if (isBoss)
 			{
@@ -74,7 +74,7 @@ namespace SDX_TD
 			//方向を更新
 			方向更新();
 
-			double speed = 基礎ステ.移動速度;
+			double speed = st.移動速度;
 
 			if (isBoss) speed *= 0.66;
 
@@ -90,7 +90,7 @@ namespace SDX_TD
 				speed = speed * 鈍足率;
 			}
 
-			if (SLand->Get地形(GetX(), GetY()) == ChipType::沼 && 基礎ステ.移動タイプ != Belong::空)
+			if (SLand->Get地形(GetX(), GetY()) == ChipType::沼 && st.移動タイプ != Belong::空)
 			{
 				speed /= 2;
 			}
@@ -138,7 +138,7 @@ namespace SDX_TD
 		void 地形処理(double &移動量X, double &移動量Y)
 		{
 			//飛んでる敵は影響無し
-			if (基礎ステ.移動タイプ == Belong::空) return;
+			if (st.移動タイプ == Belong::空) return;
 
 			auto 地形種 = SLand->Get地形(GetX(), GetY());
 
@@ -180,19 +180,19 @@ namespace SDX_TD
 			bool 衝突[9] = {};
 
 			//平面にめりこみ
-			if (is↑)         衝突[1] = SLand->Check地形(GetX(), GetY() - 7, 基礎ステ.移動タイプ);
-			if (is←)         衝突[3] = SLand->Check地形(GetX() - 7, GetY(), 基礎ステ.移動タイプ);
-			if (is→)         衝突[5] = SLand->Check地形(GetX() + 7, GetY(), 基礎ステ.移動タイプ);
-			if (is↓)         衝突[6] = SLand->Check地形(GetX() - 7, GetY() + 7, 基礎ステ.移動タイプ);
+			if (is↑)         衝突[1] = SLand->Check地形(GetX(), GetY() - 7, st.移動タイプ);
+			if (is←)         衝突[3] = SLand->Check地形(GetX() - 7, GetY(), st.移動タイプ);
+			if (is→)         衝突[5] = SLand->Check地形(GetX() + 7, GetY(), st.移動タイプ);
+			if (is↓)         衝突[6] = SLand->Check地形(GetX() - 7, GetY() + 7, st.移動タイプ);
 
 			//角にめりこみ
-			if (is↑ && is←) 衝突[0] = SLand->Check地形(GetX() - 7, GetY() - 7, 基礎ステ.移動タイプ);
-			if (is↑ && is→) 衝突[2] = SLand->Check地形(GetX() + 7, GetY() - 7, 基礎ステ.移動タイプ);
-			if (is↓ && is←) 衝突[7] = SLand->Check地形(GetX(), GetY() + 7, 基礎ステ.移動タイプ);
-			if (is↓ && is→) 衝突[8] = SLand->Check地形(GetX() + 7, GetY() + 7, 基礎ステ.移動タイプ);
+			if (is↑ && is←) 衝突[0] = SLand->Check地形(GetX() - 7, GetY() - 7, st.移動タイプ);
+			if (is↑ && is→) 衝突[2] = SLand->Check地形(GetX() + 7, GetY() - 7, st.移動タイプ);
+			if (is↓ && is←) 衝突[7] = SLand->Check地形(GetX(), GetY() + 7, st.移動タイプ);
+			if (is↓ && is→) 衝突[8] = SLand->Check地形(GetX() + 7, GetY() + 7, st.移動タイプ);
 
 			//現在のマスが移動不可能
-			衝突[4] = SLand->Check地形(GetX(), GetY(), 基礎ステ.移動タイプ);
+			衝突[4] = SLand->Check地形(GetX(), GetY(), st.移動タイプ);
 
 			//斜め衝突
 			if (衝突[0] && 衝突[1] == 衝突[3])
@@ -293,7 +293,7 @@ namespace SDX_TD
 				break;
 			}
 
-			MUnit::敵[基礎ステ.種族][アニメ]->DrawRotate({ GetX(), GetY() }, 1 + isBoss, 0, 反転);
+			MUnit::敵[st.種族][アニメ]->DrawRotate({ GetX(), GetY() }, 1 + isBoss, 0, 反転);
 
 			//ターゲット
 			if (SStage->selected == this)
@@ -309,12 +309,12 @@ namespace SDX_TD
 
 			//画像&名前
 			MSystem::フレーム[5].Draw(F名前);
-			MUnit::敵[基礎ステ.種族][1]->DrawRotate(P画像, 2, 0);
-			MFont::ゴシック中.DrawShadow(P名前, Color::White, Color::Gray, 基礎ステ.種族名);
+			MUnit::敵[st.種族][1]->DrawRotate(P画像, 2, 0);
+			MFont::ゴシック中.DrawShadow(P名前, Color::White, Color::Gray, st.種族名);
 
 			//説明文
 			MSystem::フレーム[5].Draw(F説明);
-			MFont::ゴシック小.DrawShadow(P説明, Color::White, Color::Gray, 基礎ステ.説明文);
+			MFont::ゴシック小.DrawShadow(P説明, Color::White, Color::Gray, st.説明文);
 
 			//性能
 
@@ -332,7 +332,7 @@ namespace SDX_TD
 			{
 				レベル,
 				(int)残りHP,
-				(int)(基礎ステ.移動速度 * 10),
+				(int)(st.移動速度 * 10),
 				スコア,
 				防御力,
 				(int)回避力,
@@ -377,9 +377,9 @@ namespace SDX_TD
 			double ダメージ量 = 衝突相手->攻撃力;
 
 			//属性効果判定
-			if (衝突相手->デバフ効果 > 0 && !基礎ステ.特殊耐性[衝突相手->基礎ステ.デバフ種])
+			if (衝突相手->デバフ効果 > 0 && !st.特殊耐性[衝突相手->st.デバフ種])
 			{
-				switch (衝突相手->基礎ステ.デバフ種)
+				switch (衝突相手->st.デバフ種)
 				{
 				case DebuffType::鈍足: 鈍足付与(衝突相手); break;
 				case DebuffType::麻痺: 麻痺付与(衝突相手); break;
@@ -436,10 +436,10 @@ namespace SDX_TD
 		{
 			return
 				(
-				(衝突相手->基礎ステ.属性 == Element::炎 && 基礎ステ.属性 == Element::氷) ||
-				(衝突相手->基礎ステ.属性 == Element::氷 && 基礎ステ.属性 == Element::炎) ||
-				(衝突相手->基礎ステ.属性 == Element::樹 && 基礎ステ.属性 == Element::空) ||
-				(衝突相手->基礎ステ.属性 == Element::空 && 基礎ステ.属性 == Element::樹)
+				(衝突相手->st.属性 == Element::炎 && st.属性 == Element::氷) ||
+				(衝突相手->st.属性 == Element::氷 && st.属性 == Element::炎) ||
+				(衝突相手->st.属性 == Element::樹 && st.属性 == Element::空) ||
+				(衝突相手->st.属性 == Element::空 && st.属性 == Element::樹)
 				);
 		}
 

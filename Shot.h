@@ -13,7 +13,7 @@ namespace SDX_TD
 	class IShot : public IObject
 	{
 	public:
-		UnitData &基礎ステ;
+		UnitData &st;
 		int    強化回数 = 0;
 		double 攻撃力;
 
@@ -28,11 +28,11 @@ namespace SDX_TD
 		double 炸裂範囲 = 0;
 
 		/**円形弾.*/
-		IShot(IShape &図形, ISprite &描画方法, double 角度, UnitData &基礎ステ , int レベル) :
+		IShot(IShape &図形, ISprite &描画方法, double 角度, UnitData &st , int レベル) :
 			IObject(図形, 描画方法, Belong::弾),
-			基礎ステ(基礎ステ),
+			st(st),
 			isSmall(true)
-		{	
+		{
 			図形.SetAngle(角度);
 			描画方法.SetAngle(角度);
 			CulcPower(1.0 , レベル);
@@ -44,12 +44,12 @@ namespace SDX_TD
 		void CulcPower(double 支援補正 , int レベル)
 		{
 			//ウィッチによる補正
-			攻撃力 = 基礎ステ.攻撃力[レベル] * 支援補正 * WITCH::Main->攻撃補正;
+			攻撃力 = st.攻撃力[レベル] * 支援補正 * WITCH::Main->攻撃補正;
 
 			//属性効果
-			if (基礎ステ.デバフ種 != DebuffType::無)
+			if (st.デバフ種 != DebuffType::無)
 			{
-				デバフ効果 = int(基礎ステ.デバフ効果[レベル] * WITCH::Main->特殊補正[基礎ステ.デバフ種]);
+				デバフ効果 = int(st.デバフ効果[レベル] * WITCH::Main->特殊補正[st.デバフ種]);
 			}
 		}
 
@@ -90,8 +90,8 @@ namespace SDX_TD
 		TSprite sprite;
 		TMotion motion;
 
-		Shot(TShape &&図形, TSprite &&描画方法, TMotion &&移動方法, double 角度, UnitData &基礎ステ , int Lv) :
-			IShot(shape, sprite, 角度, 基礎ステ , Lv),
+		Shot(TShape &&図形, TSprite &&描画方法, TMotion &&移動方法, double 角度, UnitData &基礎性能 , int Lv) :
+			IShot(shape, sprite, 角度, 基礎性能 , Lv),
 			shape(図形),
 			sprite(描画方法),
 			motion(移動方法)

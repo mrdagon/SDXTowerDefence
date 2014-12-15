@@ -61,7 +61,7 @@ namespace SDX_TD
 	/**敵の基礎性能.*/
 	struct EnemyData
 	{
-		//基礎ステータス
+		//stータス
 		std::string 種族名;
 		std::string 説明文;
 		EnemyType 種族 = EnemyType::マーマン;
