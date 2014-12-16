@@ -18,7 +18,7 @@ Platinumを使う
 初期MP
 
 大魔法時間
-必要SP
+獲得SP
 
 MP消費倍率
 

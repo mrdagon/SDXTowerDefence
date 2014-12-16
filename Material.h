@@ -254,14 +254,15 @@ namespace SDX_TD
 			BMP黒影.SetImage("○", 英影[28]);
 			BMP黒影.SetImage("☆", 英影[29]);
 
-
 			BMP白.SetImageS("0", &白数字, 10);
 		}
 	}
 
 	static void LoadMaterial()
 	{
-		//Loading::Start();
+		MFont::Load();
+
+		Loading::Start();
 		MUnit::Load();
 		MUnit::Load();
 		MIcon::Load();
@@ -270,8 +271,6 @@ namespace SDX_TD
 
 		MMusic::Load();
 		MSound::Load();
-		MFont::Load();
-
-		//Loading::End();
+		Loading::End();
 	}
 }

@@ -45,6 +45,8 @@ namespace SDX_TD
 		int    デバフ効果[最大強化];
 		double デバフ率[最大強化];
 
+		int  Hit数[最大強化];
+
 		double 半径 = 10;//当たり判定の大きさ
 
 		bool is対空 = true;//空の敵に当たるかどうか
@@ -52,9 +54,6 @@ namespace SDX_TD
 		bool is使い捨て = false;
 
 		bool isウィッチ = false;//指揮官魔法、詠唱回数の管理が違う
-
-		int  Hit数[最大強化];
-
 		int  基礎詠唱回数;
 	};
 
@@ -132,7 +131,7 @@ namespace SDX_TD
 		EnumArray<double, DebuffType> 特殊補正;
 
 		int    大魔法時間 = 3000;
-		double 必要SP = 1.0;
+		double 獲得SP = 1.0;//溜まり易さ
 
 		double 逆境補正 = 0.01;//ライフ-1につき1%攻撃力が上がる
 

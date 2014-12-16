@@ -202,10 +202,7 @@ namespace SDX_TD
 		int timer = 0;
 		int gamespeed = 1;
 
-		std::unique_ptr<Camera> camera;
-
-		Stage() :
-			camera(new Camera({ 400, 300 }, 1))
+		Stage()
 		{
 			Init();
 		}
@@ -222,28 +219,26 @@ namespace SDX_TD
 			if (!SLand)SLand = new Land::Land();
 			SLand->Init();
 
+			TDSystem::スコア = 0;
+
+			//詠唱回数リセット
+			for (auto it : TDSystem::詠唱回数)
+			{
+				it = 0;
+			}
+
 			//ウィッチ初期化
 			WITCH::Main->Init();
+			if ( !TDSystem::isシングル)
+			{
+				WITCH::Sub->Init();
+			}
 
 			//ウィッチリスト12種初期化
 			TDSystem::魔法リスト.clear();
-
-			WITCH::Main->MP = 1000;
 			for (int a = 0; a < 12; ++a)
 			{
 				TDSystem::魔法リスト.emplace_back(new Unit(WITCH::Main->魔法タイプ[a],0,0,true));
-			}
-
-			for (int a = 0; a < (int)UnitType::COUNT; ++a)
-			{
-				if (a < 12)
-				{
-					TDSystem::詠唱回数[(UnitType)a] = 1;
-				}
-				else
-				{
-					TDSystem::詠唱回数[(UnitType)a] = 30;
-				}
 			}
 		}
 
@@ -256,6 +251,8 @@ namespace SDX_TD
 
 			NextWave();
 
+			WITCH::Main->Update();
+
 			//レイヤー処理
 			backEffectS.Update();
 			midEffectS.Update();
@@ -266,8 +263,6 @@ namespace SDX_TD
 
 			shotS.Update();
 			unitS.Update();
-
-			camera->Update();
 
 			Hit();
 
@@ -684,13 +679,21 @@ namespace SDX_TD
 			MFont::BMP黒.DrawExtend(Pモード名, 1, 1, Color::White, { "single" });
 
 			//SP,HP,MPの表示
-			const int SP値 = std::min(int(WITCH::Main->SP * 100 / WITCH::Main->最大SP), 100);
-			MIcon::UI[IconType::マナ].Draw(PSP);
-
-			MFont::BMP白.DrawExtend( PSP + P差分[1], 2, 2, { 120, 120, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
+			if (WITCH::Main->大魔法残り時間 > 0)
+			{
+				const int SP値 = int(WITCH::Main->大魔法残り時間 * 100 / WITCH::Main->大魔法時間);
+				MIcon::UI[IconType::マナ].Draw(PSP);
+				MFont::BMP白.DrawExtend(PSP + P差分[1], 2, 2, { 120, 120, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
+			}
+			else
+			{
+				const int SP値 = std::min(int(WITCH::Main->SP * 100 / WITCH::Main->最大SP), 100);
+				MIcon::UI[IconType::マナ].Draw(PSP);
+				MFont::BMP白.DrawExtend(PSP + P差分[1], 2, 2, { 120, 120, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
+			}
 
 			MIcon::UI[IconType::ライフ].Draw(P体力);
-			MFont::BMP白.DrawExtend( P体力 + P差分[1], 2, 2, { 255, 60, 60 }, { std::setw(5), TDSystem::Hp });//HP
+			MFont::BMP白.DrawExtend(P体力 + P差分[1], 2, 2, { 255, 60, 60 }, { std::setw(5), WITCH::Main->HP });//HP
 
 			MIcon::UI[IconType::レベル].Draw(P魔力);
 			MFont::BMP白.DrawExtend( P魔力 + P差分[1], 2, 2, { 255, 255, 0 }, { std::setw(5), WITCH::Main->MP });//MP

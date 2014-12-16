@@ -19,14 +19,9 @@ int main(int argc, char* argv[])
 	using namespace SDX;
 	using namespace SDX_TD;
 
+	//UIの位置をリセット
 	StageDraw::Reset();
 	UnitDraw::Reset();
-
-	TDSystem::isシングル = true;
-	TDSystem::isトライアル = true;
-
-	WITCH::Main.reset(new WITCH::ライナ());
-	//WITCH::Sub.reset(new WITCH::ディアネラ());
 
 	System::Initialise("sample", 640, 480);//ライブラリの初期化
 
@@ -42,6 +37,13 @@ int main(int argc, char* argv[])
 	{
 		if (Loading::GetLoadingCount() == Loading::GetSuccesCount()) break;
 	}
+
+	//ゲームモード設定等
+	TDSystem::isシングル = true;
+	TDSystem::isトライアル = true;
+
+	WITCH::Main.reset(new WITCH::ライナ());
+	WITCH::Sub.reset(new WITCH::ディアネラ());
 
 	Director::AddScene(std::make_shared<Stage>());
 	Director::Run();

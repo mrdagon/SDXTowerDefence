@@ -360,7 +360,8 @@ namespace SDX_TD
 			//ゴール判定
 			if (SLand->地形[x][y] == ChipType::畑)
 			{
-				WITCH::Main->Damage();
+				//ボスはダメージ5倍
+				WITCH::Main->Damage(1+isBoss*4);
 				isRemove = true;
 				SStage->ResetSelect(this);
 			}

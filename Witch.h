@@ -23,16 +23,30 @@ namespace SDX_TD
 			int    召喚数[12];
 
 			//変動パラメータ
-			int MP = 1000;
+			int HP = 20;
+			int MP = 50;//MoneyPoint
 			double SP = 0;
-			double 最大SP = 1000;
+			const double 最大SP = 1000;
 			int    レベル;
 			int    経験値;
-			int    大魔法残り時間;
-			int    被ダメージ;
+			int    大魔法残り時間 = 0;
+			int    被ダメージ = 0;
 
 			//戦闘開始時の初期化処理
-			void Init(){};
+			void Init()
+			{
+				補正計算();
+				HP = 初期HP;
+				MP = 初期MP;
+				SP = 0;
+				大魔法残り時間 = 0;
+				被ダメージ = 0;
+
+				for (int a = 0; a < 12; ++a)
+				{
+					TDSystem::詠唱回数[魔法タイプ[a]] += UnitDataS[魔法タイプ[a]].基礎詠唱回数 * 詠唱回数補正;
+				}
+			};
 
 			/**配置に必要なMPを取得.*/
 			int GetReqMP(UnitType 魔法種 , int Lv = 0)
@@ -41,14 +55,28 @@ namespace SDX_TD
 			}
 
 			/**被ダメージ処理.*/
-			void Damage()
+			void Damage(int ダメージ量)
 			{
+				//SPが増加し、逆境補正がかかる
 				SP += 最大SP / 20;
-				if (TDSystem::Hp > 0){ TDSystem::Hp--; }
+				被ダメージ += ダメージ量;
+				HP = std::max(0, HP - ダメージ量);
+				補正計算();
 			}
 
 			//大魔法発動時の性能計算、効果処理
-			virtual void 大魔法発動() = 0;
+			void 大魔法発動()
+			{
+				大魔法残り時間 = 大魔法時間;
+				補正計算();
+				大魔法効果();
+			}
+
+			//発動時の追加効果
+			virtual void 大魔法効果(){}
+
+			//発動中の能力補正効果
+			virtual void 大魔法補正(){}
 
 			/**通常時の性能計算.*/
 			/**MP等は初期化しない*/
@@ -76,9 +104,17 @@ namespace SDX_TD
 				特殊補正[DebuffType::鈍足] = st.特殊補正[DebuffType::鈍足];
 
 				大魔法時間 = st.大魔法時間;
-				必要SP = st.必要SP;
+				獲得SP = st.獲得SP;
 
 				逆境補正 = st.逆境補正;//ライフ-1につき1%攻撃力が上がる
+
+				初期HP = st.初期HP;
+				初期MP = st.初期MP;
+
+				if (大魔法残り時間 > 0)
+				{
+					大魔法補正();
+				}
 
 				//アイテムや成長補正
 				if (!TDSystem::isトライアル)
@@ -86,6 +122,9 @@ namespace SDX_TD
 					レベル補正();
 					アイテム補正();
 				}
+
+				//逆境補正
+				攻撃補正 *= 1 + (逆境補正 * 被ダメージ);
 			}
 
 			//レベルによる補正計算
@@ -96,7 +135,19 @@ namespace SDX_TD
 			{
 			
 			
-			};
+			}
+
+			/** 大魔法時間の更新等.*/
+			void Update() 
+			{
+				大魔法残り時間--;
+				if (大魔法残り時間 == 0)
+				{
+					SP = 0;
+					補正計算();//ステータスを元に戻す					
+				}
+			}
+
 		};
 
 		namespace
@@ -133,7 +184,7 @@ namespace SDX_TD
 				st.特殊補正[DebuffType::鈍足] = 1.0;
 
 				st.大魔法時間 = 3000;
-				st.必要SP = 1.0;
+				st.獲得SP = 1.0;
 				st.逆境補正 = 0.02;//通常の2倍
 
 				st.初期HP = 20;
@@ -156,8 +207,10 @@ namespace SDX_TD
 				魔法タイプ[11] = UnitType::盗賊;
 			}
 
-			void 大魔法発動() override
-			{}
+			void 大魔法効果() override
+			{
+
+			}
 
 			void レベル補正() override
 			{}
@@ -191,7 +244,7 @@ namespace SDX_TD
 				st.特殊補正[DebuffType::鈍足] = 1.0;
 
 				st.大魔法時間 = 3000;
-				st.必要SP = 1.0;
+				st.獲得SP = 1.0;
 				st.逆境補正 = 0.01;
 
 				st.初期HP = 20;
@@ -213,7 +266,7 @@ namespace SDX_TD
 				魔法タイプ[11] = UnitType::料理人;
 			}
 
-			void 大魔法発動() override
+			void 大魔法効果() override
 			{}
 
 			void レベル補正() override
@@ -247,7 +300,7 @@ namespace SDX_TD
 				st.特殊補正[DebuffType::鈍足] = 1.0;
 
 				st.大魔法時間 = 3000;
-				st.必要SP = 1.0;
+				st.獲得SP = 1.0;
 				st.逆境補正 = 0.01;
 
 				st.初期HP = 20;
@@ -269,7 +322,7 @@ namespace SDX_TD
 				魔法タイプ[11] = UnitType::料理人;
 			}
 
-			void 大魔法発動() override
+			void 大魔法効果() override
 			{}
 
 			void レベル補正() override
@@ -304,7 +357,7 @@ namespace SDX_TD
 				st.特殊補正[DebuffType::鈍足] = 1.0;
 
 				st.大魔法時間 = 3000;
-				st.必要SP = 1.0;
+				st.獲得SP = 1.0;
 				st.逆境補正 = 0.01;
 
 				st.初期HP = 20;
@@ -330,7 +383,7 @@ namespace SDX_TD
 
 			//獲得資金1.5倍
 			//殆どの能力が1.1倍
-			void 大魔法発動() override
+			void 大魔法効果() override
 			{
 				MP獲得 *= 1.5;
 				攻撃補正 *= 1.1;
@@ -370,7 +423,7 @@ namespace SDX_TD
 				st.特殊補正[DebuffType::鈍足] = 1.0;
 
 				st.大魔法時間 = 3000;
-				st.必要SP = 1.0;
+				st.獲得SP = 1.0;
 				st.逆境補正 = 0.01;
 
 				st.初期HP = 20;
@@ -392,8 +445,10 @@ namespace SDX_TD
 				魔法タイプ[11] = UnitType::料理人;
 			}
 
-			void 大魔法発動() override
-			{}
+			void 大魔法効果() override
+			{
+
+			}
 
 			void レベル補正() override
 			{}
@@ -426,7 +481,7 @@ namespace SDX_TD
 				st.特殊補正[DebuffType::鈍足] = 1.0;
 
 				st.大魔法時間 = 3000;
-				st.必要SP = 1.0;
+				st.獲得SP = 1.0;
 				st.逆境補正 = 0.01;
 
 				st.初期HP = 20;
@@ -448,7 +503,7 @@ namespace SDX_TD
 				魔法タイプ[11] = UnitType::料理人;
 			}
 
-			void 大魔法発動() override
+			void 大魔法効果() override
 			{}
 
 			void レベル補正() override
@@ -482,7 +537,7 @@ namespace SDX_TD
 				st.特殊補正[DebuffType::鈍足] = 1.0;
 
 				st.大魔法時間 = 3000;
-				st.必要SP = 1.0;
+				st.獲得SP = 1.0;
 				st.逆境補正 = 0.01;
 
 				st.初期HP = 20;
@@ -504,7 +559,7 @@ namespace SDX_TD
 				魔法タイプ[11] = UnitType::料理人;
 			}
 
-			void 大魔法発動() override
+			void 大魔法効果() override
 			{}
 
 			void レベル補正() override
@@ -539,7 +594,7 @@ namespace SDX_TD
 				st.特殊補正[DebuffType::鈍足] = 1.0;
 
 				st.大魔法時間 = 3000;
-				st.必要SP = 1.0;
+				st.獲得SP = 1.0;
 				st.逆境補正 = 0.01;
 
 				st.初期HP = 20;
@@ -561,7 +616,7 @@ namespace SDX_TD
 				魔法タイプ[11] = UnitType::盗賊;
 			}
 
-			void 大魔法発動() override
+			void 大魔法効果() override
 			{}
 
 			void レベル補正() override
@@ -596,7 +651,7 @@ namespace SDX_TD
 				st.特殊補正[DebuffType::鈍足] = 1.0;
 
 				st.大魔法時間 = 3000;
-				st.必要SP = 1.0;
+				st.獲得SP = 1.0;
 				st.逆境補正 = 0.01;
 
 				st.初期HP = 20;
@@ -618,7 +673,7 @@ namespace SDX_TD
 				魔法タイプ[11] = UnitType::料理人;
 			}
 
-			void 大魔法発動() override
+			void 大魔法効果() override
 			{}
 
 			void レベル補正() override
@@ -652,7 +707,7 @@ namespace SDX_TD
 				st.特殊補正[DebuffType::鈍足] = 1.0;
 
 				st.大魔法時間 = 3000;
-				st.必要SP = 1.0;
+				st.獲得SP = 1.0;
 				st.逆境補正 = 0.01;
 
 				st.初期HP = 20;
@@ -674,7 +729,7 @@ namespace SDX_TD
 				魔法タイプ[11] = UnitType::料理人;
 			}
 
-			void 大魔法発動() override
+			void 大魔法効果() override
 			{}
 
 			void レベル補正() override
@@ -708,7 +763,7 @@ namespace SDX_TD
 				st.特殊補正[DebuffType::鈍足] = 1.0;
 
 				st.大魔法時間 = 3000;
-				st.必要SP = 1.0;
+				st.獲得SP = 1.0;
 				st.逆境補正 = 0.01;
 
 				st.初期HP = 20;
@@ -730,7 +785,7 @@ namespace SDX_TD
 				魔法タイプ[11] = UnitType::料理人;
 			}
 
-			void 大魔法発動() override
+			void 大魔法効果() override
 			{}
 
 			void レベル補正() override
@@ -765,7 +820,7 @@ namespace SDX_TD
 				st.特殊補正[DebuffType::鈍足] = 1.0;
 
 				st.大魔法時間 = 3000;
-				st.必要SP = 1.0;
+				st.獲得SP = 1.0;
 				st.逆境補正 = 0.01;
 
 				st.初期HP = 20;
@@ -787,7 +842,7 @@ namespace SDX_TD
 				魔法タイプ[11] = UnitType::料理人;
 			}
 
-			void 大魔法発動() override
+			void 大魔法効果() override
 			{}
 
 			void レベル補正() override

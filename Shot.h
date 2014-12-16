@@ -14,20 +14,20 @@ namespace SDX_TD
 	{
 	public:
 		UnitData &st;
-		int    強化回数 = 0;
 		double 攻撃力;
-
-		bool   is貫通 = false;
-		bool   isSmall = true;//分割当たり判定用
-		bool   is必中 = false;
-
 		int    デバフ効果;
 		double デバフ率;
 
 		double 炸裂威力 = 0;
 		double 炸裂範囲 = 0;
 
-		/**円形弾.*/
+		bool   is貫通 = false;
+		bool   isSmall = true;//分割当たり判定用
+		bool   is必中 = false;
+
+		virtual ~IShot() = default;
+
+		/**弾の生成.*/
 		IShot(IShape &図形, ISprite &描画方法, double 角度, UnitData &st , int レベル) :
 			IObject(図形, 描画方法, Belong::弾),
 			st(st),
@@ -38,9 +38,8 @@ namespace SDX_TD
 			CulcPower(1.0 , レベル);
 		}
 
-		virtual ~IShot() = default;
-
-		/**攻撃力の計算.*/
+		/** 攻撃力の計算.*/
+		/** ダメージ等は発射時に決定する*/
 		void CulcPower(double 支援補正 , int レベル)
 		{
 			//ウィッチによる補正
@@ -59,8 +58,12 @@ namespace SDX_TD
 			const double x = GetX();
 			const double y = GetY();
 
-			if (x < -10 || x > Land::MapSize * Land::ChipSize + 10 || y < -10 || y > Land::MapSize * Land::ChipSize + 10) isRemove = true;
+			//反射系処理
 
+			if (x < -10 || x > Land::MapSize * Land::ChipSize + 10 || y < -10 || y > Land::MapSize * Land::ChipSize + 10)
+			{
+				isRemove = true;
+			}
 			return isRemove;
 		}
 
@@ -69,13 +72,14 @@ namespace SDX_TD
 		{
 			if (!is貫通)
 			{
-				this->isRemove = true;
+				isRemove = true;
 			}
-			React();
-		}
+			if (炸裂範囲 > 0)
+			{
+				//サイズが大きくなった後、次で消滅
 
-		/**衝突した時の特殊処理.*/
-		virtual void React() = 0;
+			}
+		}
 
 		/**毎フレームの処理.*/
 		virtual void Act() = 0;
@@ -90,7 +94,7 @@ namespace SDX_TD
 		TSprite sprite;
 		TMotion motion;
 
-		Shot(TShape &&図形, TSprite &&描画方法, TMotion &&移動方法, double 角度, UnitData &基礎性能 , int Lv) :
+		Shot( UnitData &基礎性能 , int Lv , double 角度,  TShape &&図形, TSprite &&描画方法, TMotion &&移動方法 ) :
 			IShot(shape, sprite, 角度, 基礎性能 , Lv),
 			shape(図形),
 			sprite(描画方法),
@@ -100,14 +104,6 @@ namespace SDX_TD
 		void Act() override
 		{
 			motion.Update(this);
-		}
-
-		void React() override
-		{
-			//範囲攻撃
-			if (炸裂範囲 > 0)
-			{
-			}
 		}
 	};
 }

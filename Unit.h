@@ -4,6 +4,7 @@
 #pragma once
 #include "Object.h"
 #include "Shot.h"
+#include "ShotMotion.h"
 #include "IStage.h"
 #include "Wave.h"
 #include "DataType.h"
@@ -365,18 +366,21 @@ namespace SDX_TD
 			shape(X座標, Y座標, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2)
 		{}
 
-		using ShotType = Shot < Circle, SpImage, MOTION::ToFront<SPEED::Liner,IModel> > ;
+		using Shotライナ = Shot < Circle, SpImage, MOTION::ライナ<IModel> > ;
+		using Shot直進 = Shot < Circle, SpImage, MOTION::ToFront<SPEED::Liner,IModel> > ;
 
 		void Shoot(double 角度)
 		{
-			//SStage->Add( new ShotType({GetX(),GetY(),10,10},nullptr,角度,st,{1.0},{1.0}));
+//入力省略
+#define ADD(a,b,c) SStage->Add(new a(st,Lv,角度,{ GetX(), GetY(), st.半径 },b,c))
 
 			switch (st.魔法種)
 			{
 			case UnitType::ライナ://勇者強化
 				for (int a = 0; a < st.Hit数[Lv]; ++a)
 				{
-
+					角度 = PAI * 2 * a / st.Hit数[Lv];
+					ADD(Shot直進, &MEffect::弾, { 10 });
 				}
 				break;
 			case UnitType::ナツメ://武闘家強化
@@ -384,7 +388,7 @@ namespace SDX_TD
 			case UnitType::ルコウ://騎士強化
 				break;
 			case UnitType::ディアネラ://プリンセス強化
-				SStage->Add(new ShotType({ GetX(), GetY(), 10 }, &MEffect::弾, { { 10 } }, 角度, st , Lv));
+				ADD(Shot直進, &MEffect::弾, { 10 });
 				break;
 			case UnitType::ミナエ://賢者強化
 				break;
@@ -393,7 +397,7 @@ namespace SDX_TD
 			case UnitType::ロチエ://くの一強化
 				break;
 			case UnitType::バロゥ://狩人強化
-				SStage->Add(new ShotType({ GetX(), GetY(), 10 }, &MEffect::弾, { { 1 } }, 角度, st , Lv));
+				ADD(Shot直進, &MEffect::弾, { 1 });
 				break;
 			case UnitType::フィオナ://司祭強化
 				break;
@@ -476,5 +480,7 @@ namespace SDX_TD
 				break;
 			}
 		}
+#undef ADD
 	};
+
 }
