@@ -44,7 +44,7 @@ namespace SDX_TD
 
 				for (int a = 0; a < 12; ++a)
 				{
-					TDSystem::詠唱回数[魔法タイプ[a]] += UnitDataS[魔法タイプ[a]].基礎詠唱回数 * 詠唱回数補正;
+					TDSystem::詠唱回数[魔法タイプ[a]] += int(UnitDataS[魔法タイプ[a]].基礎詠唱回数 * 詠唱回数補正);
 				}
 			};
 

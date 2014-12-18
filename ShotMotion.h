@@ -12,8 +12,7 @@ namespace SDX_TD
 		using namespace SDX::MOTION;
 
 		//ライナ:勇者強化
-		template <class TShape >
-		class ライナ : public IMotion<TShape>
+		class ライナ : public IMotion
 		{
 		private:
 			Point center;
@@ -25,12 +24,13 @@ namespace SDX_TD
 				radius(半径)
 			{}
 
-			void Update(TShape* 移動対象) override
+			bool Update(IShape* 移動対象) override
 			{
 				//一定時間まで広がり
 
 				//一番近い敵orターゲットに向かう
 
+				return true;
 			}
 		};
 

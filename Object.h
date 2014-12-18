@@ -60,9 +60,9 @@ namespace SDX_TD
 		/**毎フレームの更新処理.*/
 		virtual void Update()
 		{
-			this->timer++;
-			AnimeUpdate();
-			this->Act();
+			timer++;
+			iSprite.Update();
+			Act();
 		}
 
 		/**.*/

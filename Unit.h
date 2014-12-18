@@ -366,8 +366,8 @@ namespace SDX_TD
 			shape(X座標, Y座標, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2, Size * Land::ChipSize / 2)
 		{}
 
-		using Shotライナ = Shot < Circle, SpImage, MOTION::ライナ<IModel> > ;
-		using Shot直進 = Shot < Circle, SpImage, MOTION::ToFront<SPEED::Liner,IModel> > ;
+		using Shotライナ = Shot < Circle, SpImage, MOTION::ライナ > ;
+		using Shot直進 = Shot < Circle, SpImage, MOTION::ToFront<SPEED::Liner> > ;
 
 		void Shoot(double 角度)
 		{

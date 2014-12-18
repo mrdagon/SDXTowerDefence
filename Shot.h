@@ -103,7 +103,7 @@ namespace SDX_TD
 
 		void Act() override
 		{
-			motion.Update(this);
+			motion.Update(&shape);
 		}
 	};
 }

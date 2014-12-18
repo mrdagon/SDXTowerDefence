@@ -19,6 +19,10 @@ int main(int argc, char* argv[])
 	using namespace SDX;
 	using namespace SDX_TD;
 
+	SDX::SampleModel();
+
+	return 1;
+
 	//UIの位置をリセット
 	StageDraw::Reset();
 	UnitDraw::Reset();
