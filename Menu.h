@@ -45,8 +45,6 @@ namespace SDX_TD
 			midEffectS.Update();
 			frontEffectS.Update();
 
-			camera->Update();
-
 			//消滅処理
 			backEffectS.ExeRemove();
 			midEffectS.ExeRemove();

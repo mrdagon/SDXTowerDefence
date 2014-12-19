@@ -33,9 +33,9 @@ namespace SDX_TD
 			st(st),
 			isSmall(true)
 		{
-			図形.SetAngle(角度);
-			描画方法.SetAngle(角度);
-			CulcPower(1.0 , レベル);
+			//図形.SetAngle(角度);
+			//描画方法.SetAngle(角度);
+			//CulcPower(1.0 , レベル);
 		}
 
 		/** 攻撃力の計算.*/
@@ -103,7 +103,7 @@ namespace SDX_TD
 
 		void Act() override
 		{
-			motion.Update(&shape);
+			motion.Update( this );
 		}
 	};
 }

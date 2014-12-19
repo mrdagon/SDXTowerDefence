@@ -769,7 +769,7 @@ namespace SDX_TD
 		}
 
 		/**一番近いEnemyを返す.*/
-		IObject* GetNearEnemy(IObject* 比較対象) override
+		IObject* GetNearEnemy(IPosition* 比較対象) override
 		{
 			IObject* 一番近いObject = nullptr;
 			double  最短距離 = 9999999999;
@@ -804,14 +804,14 @@ namespace SDX_TD
 		}
 
 		/**一番近いEnemyの方向を返す.*/
-		/**Enemyがいない場合0を返す*/
-		double GetNearDirect(IObject* 比較対象) override
+		/**Enemyがいない場合-1を返す*/
+		double GetNearDirect(IPosition* 比較対象) override
 		{
 			IObject* 一番近いObject = GetNearEnemy(比較対象);
 
 			if (一番近いObject) return 比較対象->GetDirect(一番近いObject);
 
-			return 0;
+			return -1;
 		}
 
 		Wave* GetWave()

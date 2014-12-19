@@ -10,16 +10,26 @@ namespace SDX_TD
 {
 	using namespace SDX;
 	/**.*/
-	template <class T> class Layer;
 	class IObject : public IModel
 	{
-		template<class T> friend class Layer;
 	protected:
 		int timer = 0;///発生してから経過したフレーム数
 		int lifeTime = -1;///生存期間
 		Belong belong;///所属するレイヤー
+	public:
+		bool isSelect = false;
 
-		/**消滅判定を行う.*/
+		/**.*/
+		IObject(IShape &図形, ISprite &描画方法, Belong 所属 = Belong::その他) :
+			IModel(図形, 描画方法),
+			belong(所属)
+		{
+		}
+
+		/**.*/
+		virtual ~IObject(){}
+
+		/**消滅判定を行い、消滅している場合消滅処理を行う.*/
 		virtual bool RemoveCheck()
 		{
 			if (timer == lifeTime)
@@ -32,29 +42,16 @@ namespace SDX_TD
 			return isRemove;
 		}
 
-		/**経過フレームをセット.*/
-		void SetTimer(int フレーム数)
-		{
-			timer = フレーム数;
-		}
-
-	public:
-		bool    isSelect = false;
-
-		/**.*/
-		IObject(IShape &図形, ISprite &描画方法, Belong 所属 = Belong::その他) :
-			IModel(図形, 描画方法),
-			belong(所属)
-		{
-		}
-
-		/**.*/
-		virtual ~IObject(){}
-
 		/**経過フレームを取得.*/
 		int GetTimer()
 		{
 			return timer;
+		}
+
+		/**経過フレームをセット.*/
+		void SetTimer(int フレーム数)
+		{
+			timer = フレーム数;
 		}
 
 		/**毎フレームの更新処理.*/

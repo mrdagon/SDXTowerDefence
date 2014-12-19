@@ -45,10 +45,10 @@ namespace SDX_TD
 		virtual void AddBack(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
 
 		/**.*/
-		virtual IObject* GetNearEnemy(IObject* 比較対象) = 0;
+		virtual IObject* GetNearEnemy(IPosition* 比較対象) = 0;
 
 		/**.*/
-		virtual double GetNearDirect(IObject* 比較対象) = 0;
+		virtual double GetNearDirect(IPosition* 比較対象) = 0;
 
 		virtual Wave* GetWave() = 0;
 	};
