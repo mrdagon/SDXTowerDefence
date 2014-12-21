@@ -4,7 +4,7 @@
 #pragma once
 #include "Object.h"
 #include "Shot.h"
-#include "DataType.h"
+#include "DataS.h"
 #include "Design.h"
 
 namespace SDX_TD

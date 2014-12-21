@@ -22,10 +22,10 @@ namespace SDX
 			double speed;
 			double radius;
 		public:
-			勇者(const Point &初期座標, double 半径, double 角度 , double 角速度 = 0) :
+			勇者(const Point &初期座標, double 半径, double 角度 , double 角速度 ) :
 				center(初期座標),
 				angle(角度),
-				radius( 半径 ),
+				radius(半径),
 				speed(角速度)
 			{}
 
@@ -35,8 +35,8 @@ namespace SDX
 				count++;
 				if (count < 120)
 				{
-					double X = center.x + std::sin(radius * count / 120);
-					double Y = center.y + std::cos(radius * count / 120);
+					double X = center.x + std::sin(angle) * radius * count / 120;
+					double Y = center.y + std::cos(angle) * radius * count / 120;
 
 					angle += speed;
 
@@ -47,20 +47,20 @@ namespace SDX
 					if (count == 120)
 					{
 						//一番近い敵orターゲットに向かう
-						double angle;
+						IObject* enemy = nullptr;
 
 						if (SStage->selectEnemy)
 						{
-							angle = 移動対象->GetDirect(SStage->selectEnemy);
+							enemy = SStage->selectEnemy;
 						}
 						else
 						{
-							angle = SStage->GetNearDirect(&center);
+							enemy = SStage->GetNearEnemy(&center);
 						}
 
-						if (angle != -1)
+						if ( enemy )
 						{
-							移動対象->SetAngle(angle);
+							移動対象->SetAngle(移動対象->GetDirect(enemy));
 						}
 					}
 					
@@ -165,10 +165,16 @@ namespace SDX
 		//ミルラ:単純な範囲攻撃
 
 		//技師:追尾
+		/** 最大追尾可能な角度を指定.*/
 		class 追尾 : public IMotion
 		{
 		private:
+			double homing;
 		public:
+			追尾(double 一F辺りの追尾角度 = 0.0 ):
+				homing(一F辺りの追尾角度)
+			{}
+
 			bool Update(IPosition* 移動対象) override
 			{
 				if (SStage->selectEnemy)
@@ -196,7 +202,7 @@ namespace SDX
 		};
 
 		//狩人:曲射
-		class カーブ : public IMotion
+		class 曲射 : public IMotion
 		{
 		private:
 		public:
@@ -205,31 +211,6 @@ namespace SDX
 
 			}
 		};
-
-		//弱ホーミング
-		class ホーミング : public IMotion
-		{
-		private:
-		public:
-			bool Update(IPosition* 移動対象) override
-			{
-				double angle = 移動対象->GetAngle();
-
-				if (SStage->selectEnemy)
-				{
-					//選択した敵に向かう
-					angle = 移動対象->GetDirect(SStage->selectEnemy);
-				}
-				else
-				{
-					//一番近い敵に向かう
-					angle = SStage->GetNearDirect(移動対象);
-				}
-
-				移動対象->MoveA( 10 , 移動対象->GetAngle() );
-			}
-		};
-
 	}
 
 }

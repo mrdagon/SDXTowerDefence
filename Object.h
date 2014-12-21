@@ -14,9 +14,9 @@ namespace SDX_TD
 	{
 	protected:
 		int timer = 0;///発生してから経過したフレーム数
-		int lifeTime = -1;///生存期間
 		Belong belong;///所属するレイヤー
 	public:
+		int lifeTime = -1;///生存期間
 		bool isSelect = false;
 
 		/**.*/

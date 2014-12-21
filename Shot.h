@@ -3,7 +3,7 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include "Object.h"
-#include "DataType.h"
+#include "DataS.h"
 #include "Witch.h"
 
 namespace SDX_TD
@@ -28,14 +28,12 @@ namespace SDX_TD
 		virtual ~IShot() = default;
 
 		/**弾の生成.*/
-		IShot(IShape &図形, ISprite &描画方法, double 角度, UnitData &st , int レベル) :
+		IShot(IShape &図形, ISprite &描画方法, double 角度, UnitData &st, int レベル) :
 			IObject(図形, 描画方法, Belong::弾),
 			st(st),
 			isSmall(true)
 		{
-			//図形.SetAngle(角度);
-			//描画方法.SetAngle(角度);
-			//CulcPower(1.0 , レベル);
+			CulcPower(1.0 , レベル);
 		}
 
 		/** 攻撃力の計算.*/
@@ -94,12 +92,14 @@ namespace SDX_TD
 		TSprite sprite;
 		TMotion motion;
 
-		Shot( UnitData &基礎性能 , int Lv , double 角度,  TShape &&図形, TSprite &&描画方法, TMotion &&移動方法 ) :
+		Shot(TSprite &&描画方法, TMotion &&移動方法 , TShape &&図形, UnitData &基礎性能, int Lv, double 角度) :
 			IShot(shape, sprite, 角度, 基礎性能 , Lv),
 			shape(図形),
 			sprite(描画方法),
 			motion(移動方法)
-		{}
+		{
+			SetAngle(角度);
+		}
 
 		void Act() override
 		{

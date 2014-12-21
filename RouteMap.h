@@ -3,7 +3,7 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include <SDXFramework.h>
-#include "DataType.h"
+#include "DataS.h"
 #include "Material.h"
 
 namespace SDX_TD
