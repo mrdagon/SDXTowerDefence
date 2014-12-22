@@ -3,7 +3,7 @@
 #pragma once
 #include <SDXFramework.h>
 #include <Framework/IScene.h>
-#include "RouteMap.h"
+#include "Land.h"
 #include "Layer.h"
 #include "IStage.h"
 
@@ -49,10 +49,10 @@ namespace SDX_TD
 
 		Wave wave;
 
-		IEnemy* 地上Top[Land::MapSize][Land::MapSize];
-		IEnemy* 地上End[Land::MapSize][Land::MapSize];
-		IEnemy* 空中Top[Land::MapSize][Land::MapSize];
-		IEnemy* 空中End[Land::MapSize][Land::MapSize];
+		IEnemy* 地上Top[MapSize][MapSize];
+		IEnemy* 地上End[MapSize][MapSize];
+		IEnemy* 空中Top[MapSize][MapSize];
+		IEnemy* 空中End[MapSize][MapSize];
 
 		/**レイヤー等を初期化.*/
 		void Clear()
@@ -72,12 +72,12 @@ namespace SDX_TD
 			unitS.Clear();
 		}
 
-		void AddChainList(Layer<IEnemy> &処理するレイヤ, IEnemy* 始点[Land::MapSize][Land::MapSize], IEnemy* 終点[Land::MapSize][Land::MapSize])
+		void AddChainList(Layer<IEnemy> &処理するレイヤ, IEnemy* 始点[MapSize][MapSize], IEnemy* 終点[MapSize][MapSize])
 		{
 			for (auto &&it : 処理するレイヤ.objectS)
 			{
-				const int x = (int)it->GetX() / Land::ChipSize;
-				const int y = (int)it->GetY() / Land::ChipSize;
+				const int x = (int)it->GetX() / ChipSize;
+				const int y = (int)it->GetY() / ChipSize;
 				if (始点[x][y] == nullptr)
 				{
 					始点[x][y] = it.get();
@@ -108,33 +108,33 @@ namespace SDX_TD
 		}
 
 		/**貫通弾の判定.*/
-		void HitArea(IShot* 弾, IEnemy* 始点[Land::MapSize][Land::MapSize])
+		void HitArea(IShot* 弾, IEnemy* 始点[MapSize][MapSize])
 		{
 			//大雑把な分割処理をしない
-			for (int x = 0; x < Land::MapSize; ++x){
-				for (int y = 0; y < Land::MapSize; ++y)
+			for (int x = 0; x < MapSize; ++x){
+				for (int y = 0; y < MapSize; ++y)
 				{
 					HitShotEnemy(弾, 始点[x][y]);
 				}
 			}
 		}
 		/**通常弾の判定.*/
-		void HitSingle(IShot* 弾, IEnemy* 始点[Land::MapSize][Land::MapSize])
+		void HitSingle(IShot* 弾, IEnemy* 始点[MapSize][MapSize])
 		{
 			//大雑把に分割してから判定を行う
-			const int xa = (int)(弾->GetX() - Land::ChipSize / 2) / Land::ChipSize;
-			const int ya = (int)(弾->GetY() - Land::ChipSize / 2) / Land::ChipSize;
-			const int xb = (int)(弾->GetX() + Land::ChipSize / 2) / Land::ChipSize;
-			const int yb = (int)(弾->GetY() + Land::ChipSize / 2) / Land::ChipSize;
+			const int xa = (int)(弾->GetX() - ChipSize / 2) / ChipSize;
+			const int ya = (int)(弾->GetY() - ChipSize / 2) / ChipSize;
+			const int xb = (int)(弾->GetX() + ChipSize / 2) / ChipSize;
+			const int yb = (int)(弾->GetY() + ChipSize / 2) / ChipSize;
 
-			if (xa >= 0 && xa < Land::MapSize)
+			if (xa >= 0 && xa < MapSize)
 			{
-				if (ya >= 0 && ya < Land::MapSize)
+				if (ya >= 0 && ya < MapSize)
 				{
 					if (HitShotEnemy(弾, 始点[xa][ya])){ return; }
 				}
 
-				if (yb >= 0 && yb < Land::MapSize && ya != yb)
+				if (yb >= 0 && yb < MapSize && ya != yb)
 				{
 					if (HitShotEnemy(弾, 始点[xa][yb])){ return; }
 				}
@@ -142,14 +142,14 @@ namespace SDX_TD
 
 			if (xa == xb) return;//X座標同じなら以降処理しない
 
-			if (xb >= 0 && xb < Land::MapSize)
+			if (xb >= 0 && xb < MapSize)
 			{
-				if (ya >= 0 && ya < Land::MapSize)
+				if (ya >= 0 && ya < MapSize)
 				{
 					if (HitShotEnemy(弾, 始点[xb][ya])){ return; }
 				}
 
-				if (yb >= 0 && yb < Land::MapSize && ya != yb)
+				if (yb >= 0 && yb < MapSize && ya != yb)
 				{
 					if (HitShotEnemy(弾, 始点[xb][yb])){ return; }
 				}
@@ -160,8 +160,8 @@ namespace SDX_TD
 		void Hit()
 		{
 			//空と地上の分割木を初期化
-			for (int a = 0; a < Land::MapSize; ++a){
-				for (int b = 0; b < Land::MapSize; ++b)
+			for (int a = 0; a < MapSize; ++a){
+				for (int b = 0; b < MapSize; ++b)
 				{
 					地上Top[a][b] = nullptr;
 					空中Top[a][b] = nullptr;
@@ -190,11 +190,11 @@ namespace SDX_TD
 		/**地形の敵配置状態を更新.*/
 		void LandUpdate()
 		{
-			SLand->InitEnemyPos();
+			SStage->land.InitEnemyPos();
 
 			for (auto &&it : groundEnemyS.objectS)
 			{
-				SLand->Update陸の敵((int)it->GetX(), (int)it->GetY());
+				SStage->land.UpdateEnemy((int)it->GetX(), (int)it->GetY(), it->st.移動タイプ);
 			}
 		}
 
@@ -214,10 +214,9 @@ namespace SDX_TD
 		{
 			Clear();
 
-			SStage = this;
 			//地形データ初期化
-			if (!SLand)SLand = new Land::Land();
-			SLand->Init();
+			SStage = this;
+			land.Init();
 
 			TDSystem::スコア = 0;
 
@@ -238,7 +237,7 @@ namespace SDX_TD
 			TDSystem::魔法リスト.clear();
 			for (int a = 0; a < 12; ++a)
 			{
-				TDSystem::魔法リスト.emplace_back(new Unit(WITCH::Main->魔法タイプ[a],0,0,true));
+				TDSystem::魔法リスト.emplace_back(new Unit(WITCH::Main->ユニット種[a],0,0,true));
 			}
 		}
 
@@ -277,9 +276,6 @@ namespace SDX_TD
 			shotS.ExeRemove();
 			unitS.ExeRemove();
 
-			//地形の更新
-			LandUpdate();
-
 			InputCheck();
 		}
 
@@ -316,8 +312,8 @@ namespace SDX_TD
 
 			for (int a = 0; a < enemyCount; ++a)
 			{
-				int x = SLand->穴の位置[0] % Land::MapSize;
-				int y = SLand->穴の位置[0] / Land::MapSize;
+				int x = SStage->land.穴の位置[0] % MapSize;
+				int y = SStage->land.穴の位置[0] / MapSize;
 
 				Add(new Enemy(x, y, wave.敵種類[waveNo], lv, wave.isBoss[waveNo]), a * 16);
 			}
@@ -566,31 +562,35 @@ namespace SDX_TD
 			selectUnit = nullptr;
 		}
 
-		void SetSelect(IUnit* 選択した魔法)
+		void SetSelect(IUnit* 選択したユニット)
 		{
-			selected = 選択した魔法;
+			selected = 選択したユニット;
 			selectEnemy = nullptr;
-			selectUnit = 選択した魔法;
+			selectUnit = 選択したユニット;
 		}
 
 		/**配置と強化処理.*/
 		void SetCheck(UnitType 魔法種)
 		{
+
 			if (!selectUnit || !selectUnit->is配置リスト){ return; }
 
-			const int x = (Input::mouse.x - Land::ChipSize / 2) / Land::ChipSize;
-			const int y = (Input::mouse.y - Land::ChipSize / 2) / Land::ChipSize;
+			const int x = (Input::mouse.x - ChipSize / 2) / ChipSize;
+			const int y = (Input::mouse.y - ChipSize / 2) / ChipSize;
 
 			//資金不足
-			if (WITCH::Main->GetReqMP(魔法種) > WITCH::Main->MP || TDSystem::詠唱回数[魔法種] <= 0)
+			if (selectUnit->st.コスト[0] > WITCH::Main->MP || TDSystem::詠唱回数[魔法種] <= 0)
 			{
 				return;
 			}
 
+			//敵の位置を更新
+			LandUpdate();
+
 			//配置可能かチェック
-			if (SLand->SetUnit(x, y, 2))
+			if (SStage->land.SetUnit(x, y, 2))
 			{
-				Add(new Unit(魔法種,(x+1) * Land::ChipSize , (y+1) * Land::ChipSize , false));
+				Add(new Unit(魔法種,(x+1) * ChipSize , (y+1) * ChipSize , false));
 			}
 		}
 
@@ -599,9 +599,9 @@ namespace SDX_TD
 		{
 			SStage = this;
 
-			SLand->Draw();
+			SStage->land.Draw();
 
-			if (selectUnit && selectUnit->is配置リスト){ SLand->DrawSetPos(); }
+			if (selectUnit && selectUnit->is配置リスト){ SStage->land.DrawSetPos(); }
 
 			//敵等の表示
 			backEffectS.Draw();
@@ -709,12 +709,12 @@ namespace SDX_TD
 			for (int a = 0; a < 12; ++a)
 			{
 				if (TDSystem::魔法リスト[a].get() == selected){ Screen::SetBright({ 255, 120, 120 }); }
-				if (TDSystem::詠唱回数[WITCH::Main->魔法タイプ[a]] <= 0){ Screen::SetBright(Color::Gray); }
+				if (TDSystem::詠唱回数[WITCH::Main->ユニット種[a]] <= 0){ Screen::SetBright(Color::Gray); }
 				MSystem::フレーム[3].Draw(F魔法一覧[a]);
 				Screen::SetBright({ 255, 255, 255 });
-				MUnit::魔女[WITCH::Main->魔法タイプ[a]][1]->DrawRotate( F魔法一覧[a].GetPoint() + P差分[3], 1, 0);
+				MUnit::魔女[WITCH::Main->ユニット種[a]][1]->DrawRotate( F魔法一覧[a].GetPoint() + P差分[3], 1, 0);
 				
-				MFont::BMP黒.DrawExtend(F魔法一覧[a].GetPoint() + P差分[4], 2, 2, Color::White, { std::setw(2), TDSystem::詠唱回数[WITCH::Main->魔法タイプ[a]] });
+				MFont::BMP黒.DrawExtend(F魔法一覧[a].GetPoint() + P差分[4], 2, 2, Color::White, { std::setw(2), TDSystem::詠唱回数[WITCH::Main->ユニット種[a]] });
 				MFont::BMP黒.Draw(F魔法一覧[a].GetPoint() + P差分[5], Color::White, "×");
 			}
 
@@ -769,7 +769,7 @@ namespace SDX_TD
 		}
 
 		/**一番近いEnemyを返す.*/
-		IObject* GetNearEnemy(IPosition* 比較対象) override
+		IObject* GetNearEnemy(const IPosition* 比較対象) override
 		{
 			IObject* 一番近いObject = nullptr;
 			double  最短距離 = 9999999999;
@@ -805,7 +805,7 @@ namespace SDX_TD
 
 		/**一番近いEnemyの方向を返す.*/
 		/**Enemyがいない場合-1を返す*/
-		double GetNearDirect(IPosition* 比較対象) override
+		double GetNearDirect(const IPosition* 比較対象) override
 		{
 			IObject* 一番近いObject = GetNearEnemy(比較対象);
 

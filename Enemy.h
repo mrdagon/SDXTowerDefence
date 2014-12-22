@@ -16,20 +16,20 @@ namespace SDX_TD
 		const static int 判定大きさ = 14;
 
 		EnemyData &st;
-		IEnemy*  next;//当たり判定チェイン用
-		int     レベル = 0;
-		int     方向 = 5;
-		double  最大HP = 1000;
-		double  残りHP = 1000;
-		int     防御力 = 0;
-		double  回避力 = 0;
-		double  鈍足率 = 1.0;
-		double  再生力 = 0;
-		int     鈍足時間 = 0;
-		int     麻痺時間 = 0;
-		double  吹き飛びX = 0;
-		double  吹き飛びY = 0;
-		bool    isBoss = false;
+		IEnemy* next;//当たり判定チェイン用
+		int		レベル = 0;
+		int		方向 = 5;
+		double	最大HP = 1000;
+		double	残りHP = 1000;
+		int		防御力 = 0;
+		double	回避力 = 0;
+		double	鈍足率 = 1.0;
+		double	再生力 = 0;
+		int		鈍足時間 = 0;
+		int		麻痺時間 = 0;
+		double	吹き飛びX = 0;
+		double	吹き飛びY = 0;
+		bool	isBoss = false;
 
 		int     スコア;
 
@@ -55,7 +55,7 @@ namespace SDX_TD
 
 		virtual ~IEnemy(){}
 
-		/**デフォルト死亡.*/
+		/**死亡時、基本処理.*/
 		void Dead()
 		{
 			//MP&SP&スコア増
@@ -90,7 +90,10 @@ namespace SDX_TD
 				speed = speed * 鈍足率;
 			}
 
-			if (SLand->Get地形(GetX(), GetY()) == ChipType::沼 && st.移動タイプ != Belong::空)
+			const int x = (int)(GetX() / ChipSize);
+			const int y = (int)(GetY() / ChipSize);
+
+			if (SStage->land.地形[x][y] == ChipType::沼 && st.移動タイプ != Belong::空)
 			{
 				speed /= 2;
 			}
@@ -123,24 +126,26 @@ namespace SDX_TD
 			switch (belong)
 			{
 			case Belong::空:
-				方向 = SLand->空路.方向計算(方向, (int)GetX(), (int)GetY());
+				方向 = SStage->land.空路.方向計算(方向, (int)GetX(), (int)GetY());
 				break;
 			case Belong::陸:
-				方向 = SLand->陸路.方向計算(方向, (int)GetX(), (int)GetY());
+				方向 = SStage->land.陸路.方向計算(方向, (int)GetX(), (int)GetY());
 				break;
 			case Belong::水:
-				方向 = SLand->水路.方向計算(方向, (int)GetX(), (int)GetY());
+				方向 = SStage->land.水路.方向計算(方向, (int)GetX(), (int)GetY());
 				break;
 			}
 		}
 
 		/**特殊地形の処理.*/
-		void 地形処理(double &移動量X, double &移動量Y)
+		void 地形処理(double 移動量X, double 移動量Y)
 		{
 			//飛んでる敵は影響無し
 			if (st.移動タイプ == Belong::空) return;
 
-			auto 地形種 = SLand->Get地形(GetX(), GetY());
+			int x = (int)(GetX() / ChipSize);
+			int y = (int)(GetY() / ChipSize);
+			auto 地形種 = SStage->land.地形[x][y];
 
 			switch (地形種)
 			{
@@ -149,16 +154,16 @@ namespace SDX_TD
 				移動量Y /= 2;
 				break;
 			case SDX_TD::ChipType::↑:
-				移動量Y -= Land::自動床速度;
+				移動量Y -= 自動床速度;
 				break;
 			case SDX_TD::ChipType::↓:
-				移動量Y += Land::自動床速度;
+				移動量Y += 自動床速度;
 				break;
 			case SDX_TD::ChipType::←:
-				移動量X -= Land::自動床速度;
+				移動量X -= 自動床速度;
 				break;
 			case SDX_TD::ChipType::→:
-				移動量X += Land::自動床速度;
+				移動量X += 自動床速度;
 				break;
 			default:
 				break;
@@ -166,10 +171,10 @@ namespace SDX_TD
 		}
 
 		/**地形との衝突.*/
-		void 地形衝突(double &移動量X, double &移動量Y)
+		void 地形衝突(double 移動量X, double 移動量Y)
 		{
-			const int X差 = (int)GetX() % Land::ChipSize;
-			const int Y差 = (int)GetY() % Land::ChipSize;
+			const int X差 = (int)GetX() % ChipSize;
+			const int Y差 = (int)GetY() % ChipSize;
 
 			//各方向にはみ出ているか
 			const bool is↑ = Y差 < 7;
@@ -180,19 +185,19 @@ namespace SDX_TD
 			bool 衝突[9] = {};
 
 			//平面にめりこみ
-			if (is↑)         衝突[1] = SLand->Check地形(GetX(), GetY() - 7, st.移動タイプ);
-			if (is←)         衝突[3] = SLand->Check地形(GetX() - 7, GetY(), st.移動タイプ);
-			if (is→)         衝突[5] = SLand->Check地形(GetX() + 7, GetY(), st.移動タイプ);
-			if (is↓)         衝突[6] = SLand->Check地形(GetX() - 7, GetY() + 7, st.移動タイプ);
+			if (is↑)         衝突[1] = SStage->land.Check地形(GetX(), GetY() - 7, st.移動タイプ);
+			if (is←)         衝突[3] = SStage->land.Check地形(GetX() - 7, GetY(), st.移動タイプ);
+			if (is→)         衝突[5] = SStage->land.Check地形(GetX() + 7, GetY(), st.移動タイプ);
+			if (is↓)         衝突[6] = SStage->land.Check地形(GetX() - 7, GetY() + 7, st.移動タイプ);
 
 			//角にめりこみ
-			if (is↑ && is←) 衝突[0] = SLand->Check地形(GetX() - 7, GetY() - 7, st.移動タイプ);
-			if (is↑ && is→) 衝突[2] = SLand->Check地形(GetX() + 7, GetY() - 7, st.移動タイプ);
-			if (is↓ && is←) 衝突[7] = SLand->Check地形(GetX(), GetY() + 7, st.移動タイプ);
-			if (is↓ && is→) 衝突[8] = SLand->Check地形(GetX() + 7, GetY() + 7, st.移動タイプ);
+			if (is↑ && is←) 衝突[0] = SStage->land.Check地形(GetX() - 7, GetY() - 7, st.移動タイプ);
+			if (is↑ && is→) 衝突[2] = SStage->land.Check地形(GetX() + 7, GetY() - 7, st.移動タイプ);
+			if (is↓ && is←) 衝突[7] = SStage->land.Check地形(GetX(), GetY() + 7, st.移動タイプ);
+			if (is↓ && is→) 衝突[8] = SStage->land.Check地形(GetX() + 7, GetY() + 7, st.移動タイプ);
 
 			//現在のマスが移動不可能
-			衝突[4] = SLand->Check地形(GetX(), GetY(), st.移動タイプ);
+			衝突[4] = SStage->land.Check地形(GetX(), GetY(), st.移動タイプ);
 
 			//斜め衝突
 			if (衝突[0] && 衝突[1] == 衝突[3])
@@ -354,11 +359,19 @@ namespace SDX_TD
 		/**消滅判定.*/
 		bool RemoveCheck() override
 		{
-			const int x = (int)GetX() / Land::ChipSize;
-			const int y = (int)GetY() / Land::ChipSize;
+			const int x = (int)GetX() / ChipSize;
+			const int y = (int)GetY() / ChipSize;
+
+			//飛行能力発動
+			if (st.is離陸 && 残りHP > 0 && 残りHP < 最大HP / 2 && belong != Belong::空)
+			{
+				belong = Belong::空;
+				SStage->Add(this);
+				return true;
+			}
 
 			//ゴール判定
-			if (SLand->地形[x][y] == ChipType::畑)
+			if (SStage->land.地形[x][y] == ChipType::畑)
 			{
 				//ボスはダメージ5倍
 				WITCH::Main->Damage(1+isBoss*4);
@@ -462,7 +475,7 @@ namespace SDX_TD
 
 		Enemy(double X座標, double Y座標, EnemyType 敵種類, int Lv, bool isBoss) :
 			IEnemy(shape, 描画方法, EnemyDataS[敵種類], Lv, isBoss),
-			shape((X座標 + 0.5)*Land::ChipSize, (Y座標 + 0.5)*Land::ChipSize, 14, 14)
+			shape((X座標 + 0.5)*ChipSize, (Y座標 + 0.5)*ChipSize, 14, 14)
 		{
 		}
 	};

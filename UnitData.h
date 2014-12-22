@@ -3,7 +3,6 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include "EnumType.h"
-#include "Material.h"
 
 namespace SDX_TD
 {
@@ -30,13 +29,15 @@ namespace SDX_TD
 		double 支援効果[最大強化];
 
 		int 炸裂範囲[最大強化];
-		double 炸裂威力[最大強化];
 
 		DebuffType デバフ種;
 		EnemyType 特攻種族;
 		int    デバフ効果[最大強化];
 		double デバフ率[最大強化];
 
+		int  基礎詠唱回数;
+
+		//以下はウィッチ補正が無い
 		int  Hit数[最大強化];
 
 		double 半径 = 10;//当たり判定の大きさ
@@ -46,14 +47,12 @@ namespace SDX_TD
 		bool is使い捨て = false;
 
 		bool isウィッチ = false;//指揮官魔法、詠唱回数の管理が違う
-		int  基礎詠唱回数;
-
-		//static EnumArray<UnitData, UnitType> data;
 	};
 
 	namespace
 	{
-		EnumArray<UnitData, UnitType> UnitDataS;
+		EnumArray<UnitData, UnitType> UnitDataS;//ウィッチ補正後性能
+		EnumArray<UnitData, UnitType> DefUnitDataS;//基礎ユニット性能
 	}
 
 	void LoadUnitS()
@@ -61,7 +60,7 @@ namespace SDX_TD
 		File UnitFile("File/Data/unit_data.dat", FileMode::Read, true);
 		int count = 0;
 
-		for (auto &it : UnitDataS)
+		for (auto &it : DefUnitDataS)
 		{
 			it.魔法種 = UnitType(count);
 			if (it.魔法種 <= UnitType::ミルラ){ it.isウィッチ = true; }
@@ -92,7 +91,7 @@ namespace SDX_TD
 
 			UnitFile.Read<int>(it.支援効果, 6, 100);
 			UnitFile.Read<int>(it.支援効果, 6, 100);
-			UnitFile.Read<int>(it.炸裂威力, 6, 100);
+			//UnitFile.Read<int>(it.炸裂威力, 6, 100);
 			UnitFile.Read(it.炸裂範囲, 6);
 
 			UnitFile.Read(it.デバフ効果, 6);
@@ -101,8 +100,6 @@ namespace SDX_TD
 		}
 
 		UnitDataS[UnitType::給仕].is使い捨て = true;
-
-
 	}
 
 }

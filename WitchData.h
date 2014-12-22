@@ -11,13 +11,9 @@ namespace SDX_TD
 	/**ウィッチの基礎性能.*/
 	struct WitchData
 	{
-		WitchData()
-		{
-			特殊補正[DebuffType::吹飛] = 1.0;
-			特殊補正[DebuffType::防壊] = 1.0;
-			特殊補正[DebuffType::麻痺] = 1.0;
-			特殊補正[DebuffType::鈍足] = 1.0;
-		}
+		WitchType 種類;
+		Element 属性;
+
 		std::string 名前;
 		std::string 魔導具名;
 		std::string 説明文;
@@ -26,6 +22,7 @@ namespace SDX_TD
 		double 連射補正 = 1.0;
 		double 射程補正 = 1.0;
 		double 範囲補正 = 1.0;
+		double 炸裂補正 = 1.0;
 		double 支援補正 = 1.0;
 		double 弾速補正 = 1.0;
 
@@ -49,9 +46,20 @@ namespace SDX_TD
 		int    初期MP = 50;
 
 		double 詠唱回数補正 = 1.0;
+
+		UnitType ユニット種[12];
+
+		WitchData()
+		{
+			特殊補正[DebuffType::吹飛] = 1.0;
+			特殊補正[DebuffType::防壊] = 1.0;
+			特殊補正[DebuffType::麻痺] = 1.0;
+			特殊補正[DebuffType::鈍足] = 1.0;
+		}
 	};
 
-	EnumArray<WitchData, WitchType> WitchDataS;
+	EnumArray<WitchData, WitchType> WitchDataS;//基本性能
+	EnumArray<WitchData, WitchType> GrowWitchDataS;//成長率
 
 	void LoadWitchS()
 	{

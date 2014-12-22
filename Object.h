@@ -3,7 +3,7 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include <SDXFramework.h>
-#include "RouteMap.h"
+#include "Land.h"
 #include "EnumType.h"
 
 namespace SDX_TD

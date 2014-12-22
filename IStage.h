@@ -13,6 +13,7 @@ namespace SDX_TD
 	class IUnit;
 	class IShot;
 	class Wave;
+	class Land;
 
 	/**.*/
 	class IStage : public IScene
@@ -21,6 +22,7 @@ namespace SDX_TD
 		IObject* selected = nullptr;//選択中のオブジェクト
 		IEnemy* selectEnemy = nullptr;//選択中の敵
 		IUnit* selectUnit = nullptr;//選択中の魔法
+		Land land;//
 
 		/**敵や魔法が消滅する前に呼び出す.*/
 		void ResetSelect(IObject* 消滅するオブジェクト)
@@ -45,23 +47,17 @@ namespace SDX_TD
 		virtual void AddBack(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
 
 		/**.*/
-		virtual IObject* GetNearEnemy(IPosition* 比較対象) = 0;
+		virtual IObject* GetNearEnemy(const IPosition* 比較対象) = 0;
 
 		/**.*/
-		virtual double GetNearDirect(IPosition* 比較対象) = 0;
+		virtual double GetNearDirect(const IPosition* 比較対象) = 0;
 
 		virtual Wave* GetWave() = 0;
 	};
 
-	/**唯一のアクティブなStage.*/
+	/**アクティブなStage.*/
 	namespace
 	{
 		IStage* SStage;
-
-		template<class T>
-		void SStageAdd(T &&追加オブジェクト)
-		{
-			SStage->Add(std::make_shared<T>(追加オブジェクト));
-		}
 	}
 }

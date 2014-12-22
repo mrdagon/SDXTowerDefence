@@ -28,26 +28,17 @@ namespace SDX_TD
 		virtual ~IShot() = default;
 
 		/**弾の生成.*/
-		IShot(IShape &図形, ISprite &描画方法, double 角度, UnitData &st, int レベル) :
+		IShot(IShape &図形, ISprite &描画方法, double 角度, UnitData &st, int レベル , double 支援補正) :
 			IObject(図形, 描画方法, Belong::弾),
 			st(st),
 			isSmall(true)
 		{
-			CulcPower(1.0 , レベル);
-		}
+			//支援補正
+			攻撃力 = st.攻撃力[レベル] * 支援補正;
 
-		/** 攻撃力の計算.*/
-		/** ダメージ等は発射時に決定する*/
-		void CulcPower(double 支援補正 , int レベル)
-		{
-			//ウィッチによる補正
-			攻撃力 = st.攻撃力[レベル] * 支援補正 * WITCH::Main->攻撃補正;
-
-			//属性効果
-			if (st.デバフ種 != DebuffType::無)
-			{
-				デバフ効果 = int(st.デバフ効果[レベル] * WITCH::Main->特殊補正[st.デバフ種]);
-			}
+			//属性効果			
+			デバフ効果 = st.デバフ効果[レベル];
+			デバフ率 = st.デバフ率[レベル];
 		}
 
 		/**消滅判定.*/
@@ -58,7 +49,7 @@ namespace SDX_TD
 
 			//反射系処理
 
-			if (x < -10 || x > Land::MapSize * Land::ChipSize + 10 || y < -10 || y > Land::MapSize * Land::ChipSize + 10)
+			if (x < -10 || x > MapSize * ChipSize + 10 || y < -10 || y > MapSize * ChipSize + 10)
 			{
 				isRemove = true;
 			}
@@ -92,8 +83,8 @@ namespace SDX_TD
 		TSprite sprite;
 		TMotion motion;
 
-		Shot(TSprite &&描画方法, TMotion &&移動方法 , TShape &&図形, UnitData &基礎性能, int Lv, double 角度) :
-			IShot(shape, sprite, 角度, 基礎性能 , Lv),
+		Shot(TSprite &&描画方法, TMotion &&移動方法 , TShape &&図形, UnitData &基礎性能, int Lv, double 角度 , double 支援補正) :
+			IShot(shape, sprite, 角度, 基礎性能 , Lv , 支援補正),
 			shape(図形),
 			sprite(描画方法),
 			motion(移動方法)

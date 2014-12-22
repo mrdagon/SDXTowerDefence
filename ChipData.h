@@ -7,26 +7,20 @@
 namespace SDX_TD
 {
 	using namespace SDX;
-
-	namespace Land
-	{
-		static const int MapSize = 32;
-		static const int ChipSize = 16;
-		static const int 到達不可 = 99999999;
-		static const double 自動床速度 = 0.5;
-	}
+	
 
 	struct ChipData
 	{
 		bool is配置可能;
 		bool is陸移動;
-		bool is水上移動;
+		bool is水移動;
+		//空不可は高山のみ
 
-		void Set(bool is配置可能, bool is陸移動, bool is水上移動)
+		void Set(bool is配置可能, bool is陸移動, bool is水移動)
 		{
 			this->is配置可能 = is配置可能;
 			this->is陸移動 = is陸移動;
-			this->is水上移動 = is水上移動;
+			this->is水移動 = is水移動;
 		}
 	};
 

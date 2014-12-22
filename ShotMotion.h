@@ -20,9 +20,9 @@ namespace SDX
 			int count = 0;
 			double angle;
 			double speed;
-			double radius;
+			int radius;
 		public:
-			勇者(const Point &初期座標, double 半径, double 角度 , double 角速度 ) :
+			勇者(const Point &初期座標, int 半径, double 角度 , double 角速度 ) :
 				center(初期座標),
 				angle(角度),
 				radius(半径),
@@ -187,6 +187,8 @@ namespace SDX
 					//一番近い敵に向かう
 					移動対象->SetAngle( SStage->GetNearDirect(移動対象) );
 				}
+
+				return true;
 			}
 		};
 
@@ -208,7 +210,7 @@ namespace SDX
 		public:
 			bool Update(IPosition* 移動対象) override
 			{
-
+				return true;
 			}
 		};
 	}

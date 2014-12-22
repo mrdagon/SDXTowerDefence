@@ -14,8 +14,8 @@ namespace SDX_TD
 		//stータス
 		std::string 種族名;
 		std::string 説明文;
-		EnemyType 種族 = EnemyType::マーマン;
-		Belong 移動タイプ = Belong::陸;
+		EnemyType 種族;
+		Belong 移動タイプ;
 		Element 属性;
 
 		int スコア = 50;
@@ -24,8 +24,7 @@ namespace SDX_TD
 		double 防御力 = 0;
 		double 回避力 = 0;
 		double 再生力 = 0;
-		bool   is離陸 = false;//HPが減ると空をとぶフラグ
-		bool   isステルス = false;//
+		bool is離陸 = false;//HPが減ると空をとぶフラグ
 
 		//無効 or 有効
 		EnumArray<bool, DebuffType> 特殊耐性;
@@ -37,16 +36,16 @@ namespace SDX_TD
 			this->スコア = スコア;
 			this->最大HP = 最大HP;
 			this->移動速度 = double(移動速度) / 100;
-			this->特殊耐性[DebuffType::鈍足] = false;
-			this->特殊耐性[DebuffType::麻痺] = false;
-			this->特殊耐性[DebuffType::吹飛] = false;
-			this->特殊耐性[DebuffType::防壊] = false;
+			特殊耐性[DebuffType::鈍足] = false;
+			特殊耐性[DebuffType::麻痺] = false;
+			特殊耐性[DebuffType::吹飛] = false;
+			特殊耐性[DebuffType::防壊] = false;
 		}
 
 		void SetInfo(const char* 種族名, const char* 説明文)
 		{
-			this->種族名 = 種族名;
-			this->説明文 = 説明文;
+			種族名 = 種族名;
+			説明文 = 説明文;
 		}
 
 	};

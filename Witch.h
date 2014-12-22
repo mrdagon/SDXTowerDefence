@@ -3,6 +3,7 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include "TDSystem.h"
+#include "DataS.h"
 
 namespace SDX_TD
 {
@@ -14,23 +15,18 @@ namespace SDX_TD
 		class Witch : public WitchData
 		{
 		public:
-			WitchType 種類;
-			WitchData st;//レベル上昇や大魔法発動補正前のステータス
-			
 			//固定パラメータ
-			Element 属性;
-			UnitType 魔法タイプ[12];
-			int    召喚数[12];
-
+			WitchData &st;//レベル上昇や大魔法発動補正前のステータス
+			
 			//変動パラメータ
 			int HP = 20;
 			int MP = 50;//MoneyPoint
 			double SP = 0;
 			const double 最大SP = 1000;
-			int    レベル;
-			int    経験値;
-			int    大魔法残り時間 = 0;
-			int    被ダメージ = 0;
+			int レベル;
+			int 経験値;
+			int 大魔法残り時間 = 0;
+			int 被ダメージ = 0;
 
 			//戦闘開始時の初期化処理
 			void Init()
@@ -44,15 +40,9 @@ namespace SDX_TD
 
 				for (int a = 0; a < 12; ++a)
 				{
-					TDSystem::詠唱回数[魔法タイプ[a]] += int(UnitDataS[魔法タイプ[a]].基礎詠唱回数 * 詠唱回数補正);
+					TDSystem::詠唱回数[ユニット種[a]] += int(UnitDataS[ユニット種[a]].基礎詠唱回数 * 詠唱回数補正);
 				}
 			};
-
-			/**配置に必要なMPを取得.*/
-			int GetReqMP(UnitType 魔法種 , int Lv = 0)
-			{
-				return int(UnitDataS[魔法種].コスト[Lv] * MP消費);
-			}
 
 			/**被ダメージ処理.*/
 			void Damage(int ダメージ量)
@@ -73,10 +63,36 @@ namespace SDX_TD
 			}
 
 			//発動時の追加効果
+			//HP半減等はこっちで計算
 			virtual void 大魔法効果(){}
 
 			//発動中の能力補正効果
+			//補正率アップ等はこっちで計算
 			virtual void 大魔法補正(){}
+
+			//ユニット性能補正
+			void ユニット補正()
+			{
+				for (int a = 0; a < (int)UnitType::COUNT; ++a)
+				{
+					UnitType no = UnitType(a);
+
+					for (int b = 0; b < UnitData::最大強化; ++b)
+					{
+						UnitDataS[no].コスト[b] = int(DefUnitDataS[no].コスト[b] * MP消費);
+						UnitDataS[no].攻撃力[b] = int(DefUnitDataS[no].攻撃力[b] * 攻撃補正);
+						UnitDataS[no].連射[b] = int(DefUnitDataS[no].連射[b] * 連射補正);
+						UnitDataS[no].射程[b] = int(DefUnitDataS[no].射程[b] * 射程補正);
+						UnitDataS[no].弾速[b] = DefUnitDataS[no].弾速[b] * 弾速補正;
+
+						UnitDataS[no].支援効果[b] = DefUnitDataS[no].支援効果[b] * 支援補正;
+
+						UnitDataS[no].炸裂範囲[b] = int(DefUnitDataS[no].炸裂範囲[b] * 炸裂補正);
+
+						UnitDataS[no].デバフ効果[b] = int(DefUnitDataS[no].デバフ効果[b] * 特殊補正[UnitDataS[no].デバフ種]);
+					}
+				}
+			}
 
 			/**通常時の性能計算.*/
 			/**MP等は初期化しない*/
@@ -116,7 +132,7 @@ namespace SDX_TD
 					大魔法補正();
 				}
 
-				//アイテムや成長補正
+				//アイテムや成長補正の有無
 				if (!TDSystem::isトライアル)
 				{
 					レベル補正();
@@ -125,6 +141,8 @@ namespace SDX_TD
 
 				//逆境補正
 				攻撃補正 *= 1 + (逆境補正 * 被ダメージ);
+
+				ユニット補正();
 			}
 
 			//レベルによる補正計算
@@ -148,6 +166,10 @@ namespace SDX_TD
 				}
 			}
 
+			Witch( WitchType ウィッチ種):
+				st(WitchDataS[ウィッチ種])
+			{}
+
 		};
 
 		namespace
@@ -159,7 +181,8 @@ namespace SDX_TD
 		class ライナ : public Witch
 		{
 		public:
-			ライナ()
+			ライナ():
+				Witch(WitchType::ライナ)
 			{
 				種類 = WitchType::ライナ;
 				属性 = Element::炎;
@@ -191,9 +214,8 @@ namespace SDX_TD
 				st.初期MP = 50;
 
 				st.詠唱回数補正 = 1.0;
-
+				/*
 				魔法タイプ[0] = UnitType::ライナ;
-
 				魔法タイプ[1] = UnitType::兵士;
 				魔法タイプ[2] = UnitType::技師;
 				魔法タイプ[3] = UnitType::剣士;
@@ -205,6 +227,7 @@ namespace SDX_TD
 				魔法タイプ[9] = UnitType::踊り子;
 				魔法タイプ[10] = UnitType::執事;
 				魔法タイプ[11] = UnitType::盗賊;
+				*/
 			}
 
 			void 大魔法効果() override
@@ -213,58 +236,17 @@ namespace SDX_TD
 			}
 
 			void レベル補正() override
-			{}
+			{
+			
+			}
 		};
 
 		class ナツメ : public Witch
 		{
 		public:
-			ナツメ()
-			{
-				種類 = WitchType::ナツメ;
-				属性 = Element::空;
-
-				st.攻撃補正 = 0.7;//低い
-				st.連射補正 = 1.5;//早い
-				st.範囲補正 = 1.0;
-				st.射程補正 = 1.0;
-				st.支援補正 = 1.0;
-				st.弾速補正 = 1.0;
-
-				st.MP消費 = 1.0;
-				st.MP獲得 = 1.0;
-				st.回収率 = 0.7;
-				st.回収速度 = 1.0;
-				st.強化速度 = 1.0;
-
-				st.弱点補正 = 1.1;
-				st.特殊補正[DebuffType::吹飛] = 1.0;
-				st.特殊補正[DebuffType::防壊] = 1.0;
-				st.特殊補正[DebuffType::麻痺] = 1.0;
-				st.特殊補正[DebuffType::鈍足] = 1.0;
-
-				st.大魔法時間 = 3000;
-				st.獲得SP = 1.0;
-				st.逆境補正 = 0.01;
-
-				st.初期HP = 20;
-				st.初期MP = 50;
-
-				st.詠唱回数補正 = 1.0;
-
-				魔法タイプ[0] = UnitType::ルコウ;
-				魔法タイプ[1] = UnitType::足軽;//A
-				魔法タイプ[2] = UnitType::狩人;
-				魔法タイプ[3] = UnitType::剣士;
-				魔法タイプ[4] = UnitType::盗賊;
-				魔法タイプ[5] = UnitType::踊り子;
-				魔法タイプ[6] = UnitType::射手;//B
-				魔法タイプ[7] = UnitType::剣豪;
-				魔法タイプ[8] = UnitType::勇者;
-				魔法タイプ[9] = UnitType::賢者;
-				魔法タイプ[10] = UnitType::給仕;
-				魔法タイプ[11] = UnitType::料理人;
-			}
+			ナツメ():
+				Witch(WitchType::ナツメ)
+			{}
 
 			void 大魔法効果() override
 			{}
@@ -275,52 +257,9 @@ namespace SDX_TD
 		class ルコウ : public Witch
 		{
 		public:
-			ルコウ()
-			{
-				種類 = WitchType::ルコウ;
-				属性 = Element::空;
-
-				st.攻撃補正 = 0.7;//低い
-				st.連射補正 = 1.5;//早い
-				st.範囲補正 = 1.0;
-				st.射程補正 = 1.0;
-				st.支援補正 = 1.0;
-				st.弾速補正 = 1.0;
-
-				st.MP消費 = 1.0;
-				st.MP獲得 = 1.0;
-				st.回収率 = 0.7;
-				st.回収速度 = 1.0;
-				st.強化速度 = 1.0;
-
-				st.弱点補正 = 1.1;
-				st.特殊補正[DebuffType::吹飛] = 1.0;
-				st.特殊補正[DebuffType::防壊] = 1.0;
-				st.特殊補正[DebuffType::麻痺] = 1.0;
-				st.特殊補正[DebuffType::鈍足] = 1.0;
-
-				st.大魔法時間 = 3000;
-				st.獲得SP = 1.0;
-				st.逆境補正 = 0.01;
-
-				st.初期HP = 20;
-				st.初期MP = 50;
-
-				st.詠唱回数補正 = 1.0;
-
-				魔法タイプ[0] = UnitType::ルコウ;
-				魔法タイプ[1] = UnitType::足軽;//A
-				魔法タイプ[2] = UnitType::狩人;
-				魔法タイプ[3] = UnitType::剣士;
-				魔法タイプ[4] = UnitType::盗賊;
-				魔法タイプ[5] = UnitType::踊り子;
-				魔法タイプ[6] = UnitType::射手;//B
-				魔法タイプ[7] = UnitType::剣豪;
-				魔法タイプ[8] = UnitType::勇者;
-				魔法タイプ[9] = UnitType::賢者;
-				魔法タイプ[10] = UnitType::給仕;
-				魔法タイプ[11] = UnitType::料理人;
-			}
+			ルコウ() :
+				Witch(WitchType::ルコウ)
+			{}
 
 			void 大魔法効果() override
 			{}
@@ -332,54 +271,9 @@ namespace SDX_TD
 		class ディアネラ : public Witch
 		{
 		public:
-			ディアネラ()
-			{
-				種類 = WitchType::ディアネラ;
-				属性 = Element::空;
-
-				st.攻撃補正 = 1.0;//普通
-				st.連射補正 = 1.0;
-				st.範囲補正 = 1.0;
-				st.射程補正 = 1.0;
-				st.支援補正 = 1.0;
-				st.弾速補正 = 1.0;
-
-				st.MP消費 = 0.9;//10%OFF
-				st.MP獲得 = 1.0;
-				st.回収率 = 0.7;
-				st.回収速度 = 1.0;
-				st.強化速度 = 1.0;
-
-				st.弱点補正 = 1.1;
-				st.特殊補正[DebuffType::吹飛] = 1.0;
-				st.特殊補正[DebuffType::防壊] = 1.0;
-				st.特殊補正[DebuffType::麻痺] = 1.0;
-				st.特殊補正[DebuffType::鈍足] = 1.0;
-
-				st.大魔法時間 = 3000;
-				st.獲得SP = 1.0;
-				st.逆境補正 = 0.01;
-
-				st.初期HP = 20;
-				st.初期MP = 50;
-
-				st.詠唱回数補正 = 1.0;
-
-				魔法タイプ[0] = UnitType::ディアネラ;
-
-				魔法タイプ[1] = UnitType::兵士;//A
-				魔法タイプ[2] = UnitType::技師;
-				魔法タイプ[3] = UnitType::斧士;
-				魔法タイプ[4] = UnitType::術士;
-				魔法タイプ[5] = UnitType::執事;
-
-				魔法タイプ[6] = UnitType::騎士;//B
-				魔法タイプ[7] = UnitType::闘士;
-				魔法タイプ[8] = UnitType::司祭;
-				魔法タイプ[9] = UnitType::くノ一;
-				魔法タイプ[10] = UnitType::将軍;
-				魔法タイプ[11] = UnitType::COUNT;//None
-			}
+			ディアネラ() :
+				Witch(WitchType::ディアネラ)
+			{}
 
 			//獲得資金1.5倍
 			//殆どの能力が1.1倍
@@ -398,52 +292,9 @@ namespace SDX_TD
 		class ミナエ : public Witch
 		{
 		public:
-			ミナエ()
-			{
-				種類 = WitchType::ミナエ;
-				属性 = Element::空;
-
-				st.攻撃補正 = 0.7;//低い
-				st.連射補正 = 1.5;//早い
-				st.範囲補正 = 1.0;
-				st.射程補正 = 1.0;
-				st.支援補正 = 1.0;
-				st.弾速補正 = 1.0;
-
-				st.MP消費 = 1.0;
-				st.MP獲得 = 1.0;
-				st.回収率 = 0.7;
-				st.回収速度 = 1.0;
-				st.強化速度 = 1.0;
-
-				st.弱点補正 = 1.1;
-				st.特殊補正[DebuffType::吹飛] = 1.0;
-				st.特殊補正[DebuffType::防壊] = 1.0;
-				st.特殊補正[DebuffType::麻痺] = 1.0;
-				st.特殊補正[DebuffType::鈍足] = 1.0;
-
-				st.大魔法時間 = 3000;
-				st.獲得SP = 1.0;
-				st.逆境補正 = 0.01;
-
-				st.初期HP = 20;
-				st.初期MP = 50;
-
-				st.詠唱回数補正 = 1.0;
-
-				魔法タイプ[0] = UnitType::ミナエ;
-				魔法タイプ[1] = UnitType::足軽;//A
-				魔法タイプ[2] = UnitType::狩人;
-				魔法タイプ[3] = UnitType::剣士;
-				魔法タイプ[4] = UnitType::盗賊;
-				魔法タイプ[5] = UnitType::踊り子;
-				魔法タイプ[6] = UnitType::射手;//B
-				魔法タイプ[7] = UnitType::剣豪;
-				魔法タイプ[8] = UnitType::勇者;
-				魔法タイプ[9] = UnitType::賢者;
-				魔法タイプ[10] = UnitType::給仕;
-				魔法タイプ[11] = UnitType::料理人;
-			}
+			ミナエ() :
+				Witch(WitchType::ミナエ)
+			{}
 
 			void 大魔法効果() override
 			{
@@ -456,52 +307,9 @@ namespace SDX_TD
 		class トレニア : public Witch
 		{
 		public:
-			トレニア()
-			{
-				種類 = WitchType::トレニア;
-				属性 = Element::空;
-
-				st.攻撃補正 = 0.7;//低い
-				st.連射補正 = 1.5;//早い
-				st.範囲補正 = 1.0;
-				st.射程補正 = 1.0;
-				st.支援補正 = 1.0;
-				st.弾速補正 = 1.0;
-
-				st.MP消費 = 1.0;
-				st.MP獲得 = 1.0;
-				st.回収率 = 0.7;
-				st.回収速度 = 1.0;
-				st.強化速度 = 1.0;
-
-				st.弱点補正 = 1.1;
-				st.特殊補正[DebuffType::吹飛] = 1.0;
-				st.特殊補正[DebuffType::防壊] = 1.0;
-				st.特殊補正[DebuffType::麻痺] = 1.0;
-				st.特殊補正[DebuffType::鈍足] = 1.0;
-
-				st.大魔法時間 = 3000;
-				st.獲得SP = 1.0;
-				st.逆境補正 = 0.01;
-
-				st.初期HP = 20;
-				st.初期MP = 50;
-
-				st.詠唱回数補正 = 1.0;
-
-				魔法タイプ[0] = UnitType::トレニア;
-				魔法タイプ[1] = UnitType::足軽;//A
-				魔法タイプ[2] = UnitType::狩人;
-				魔法タイプ[3] = UnitType::剣士;
-				魔法タイプ[4] = UnitType::盗賊;
-				魔法タイプ[5] = UnitType::踊り子;
-				魔法タイプ[6] = UnitType::射手;//B
-				魔法タイプ[7] = UnitType::剣豪;
-				魔法タイプ[8] = UnitType::勇者;
-				魔法タイプ[9] = UnitType::賢者;
-				魔法タイプ[10] = UnitType::給仕;
-				魔法タイプ[11] = UnitType::料理人;
-			}
+			トレニア() :
+				Witch(WitchType::トレニア)
+			{}
 
 			void 大魔法効果() override
 			{}
@@ -512,52 +320,9 @@ namespace SDX_TD
 		class ロチエ : public Witch
 		{
 		public:
-			ロチエ()
-			{
-				種類 = WitchType::ロチエ;
-				属性 = Element::空;
-
-				st.攻撃補正 = 0.7;//低い
-				st.連射補正 = 1.5;//早い
-				st.範囲補正 = 1.0;
-				st.射程補正 = 1.0;
-				st.支援補正 = 1.0;
-				st.弾速補正 = 1.0;
-
-				st.MP消費 = 1.0;
-				st.MP獲得 = 1.0;
-				st.回収率 = 0.7;
-				st.回収速度 = 1.0;
-				st.強化速度 = 1.0;
-
-				st.弱点補正 = 1.1;
-				st.特殊補正[DebuffType::吹飛] = 1.0;
-				st.特殊補正[DebuffType::防壊] = 1.0;
-				st.特殊補正[DebuffType::麻痺] = 1.0;
-				st.特殊補正[DebuffType::鈍足] = 1.0;
-
-				st.大魔法時間 = 3000;
-				st.獲得SP = 1.0;
-				st.逆境補正 = 0.01;
-
-				st.初期HP = 20;
-				st.初期MP = 50;
-
-				st.詠唱回数補正 = 1.0;
-
-				魔法タイプ[0] = UnitType::ロチエ;
-				魔法タイプ[1] = UnitType::足軽;//A
-				魔法タイプ[2] = UnitType::狩人;
-				魔法タイプ[3] = UnitType::剣士;
-				魔法タイプ[4] = UnitType::盗賊;
-				魔法タイプ[5] = UnitType::踊り子;
-				魔法タイプ[6] = UnitType::射手;//B
-				魔法タイプ[7] = UnitType::剣豪;
-				魔法タイプ[8] = UnitType::勇者;
-				魔法タイプ[9] = UnitType::賢者;
-				魔法タイプ[10] = UnitType::給仕;
-				魔法タイプ[11] = UnitType::料理人;
-			}
+			ロチエ() :
+				Witch(WitchType::ロチエ)
+			{}
 
 			void 大魔法効果() override
 			{}
@@ -569,52 +334,9 @@ namespace SDX_TD
 		class バロゥ : public Witch
 		{
 		public:
-			バロゥ()
-			{
-				種類 = WitchType::バロゥ;
-				属性 = Element::空;
-
-				st.攻撃補正 = 0.7;//低い
-				st.連射補正 = 1.5;//早い
-				st.範囲補正 = 1.0;
-				st.射程補正 = 1.0;
-				st.支援補正 = 1.0;
-				st.弾速補正 = 1.0;
-
-				st.MP消費 = 1.0;
-				st.MP獲得 = 1.0;
-				st.回収率 = 0.7;
-				st.回収速度 = 1.0;
-				st.強化速度 = 1.0;
-
-				st.弱点補正 = 1.1;
-				st.特殊補正[DebuffType::吹飛] = 1.0;
-				st.特殊補正[DebuffType::防壊] = 1.0;
-				st.特殊補正[DebuffType::麻痺] = 1.0;
-				st.特殊補正[DebuffType::鈍足] = 1.0;
-
-				st.大魔法時間 = 3000;
-				st.獲得SP = 1.0;
-				st.逆境補正 = 0.01;
-
-				st.初期HP = 20;
-				st.初期MP = 50;
-
-				st.詠唱回数補正 = 1.0;
-				
-				魔法タイプ[0] = UnitType::バロゥ;
-				魔法タイプ[1] = UnitType::足軽;//A
-				魔法タイプ[2] = UnitType::技師;
-				魔法タイプ[3] = UnitType::剣士;
-				魔法タイプ[4] = UnitType::騎士;
-				魔法タイプ[5] = UnitType::師範;
-				魔法タイプ[6] = UnitType::狩人;//B
-				魔法タイプ[7] = UnitType::射手;
-				魔法タイプ[8] = UnitType::賢者;
-				魔法タイプ[9] = UnitType::将軍;
-				魔法タイプ[10] = UnitType::執事;
-				魔法タイプ[11] = UnitType::盗賊;
-			}
+			バロゥ() :
+				Witch(WitchType::バロゥ)
+			{}
 
 			void 大魔法効果() override
 			{}
@@ -626,52 +348,9 @@ namespace SDX_TD
 		class フィオナ : public Witch
 		{
 		public:
-			フィオナ()
-			{
-				種類 = WitchType::フィオナ;
-				属性 = Element::空;
-
-				st.攻撃補正 = 0.7;//低い
-				st.連射補正 = 1.5;//早い
-				st.範囲補正 = 1.0;
-				st.射程補正 = 1.0;
-				st.支援補正 = 1.0;
-				st.弾速補正 = 1.0;
-
-				st.MP消費 = 1.0;
-				st.MP獲得 = 1.0;
-				st.回収率 = 0.7;
-				st.回収速度 = 1.0;
-				st.強化速度 = 1.0;
-
-				st.弱点補正 = 1.1;
-				st.特殊補正[DebuffType::吹飛] = 1.0;
-				st.特殊補正[DebuffType::防壊] = 1.0;
-				st.特殊補正[DebuffType::麻痺] = 1.0;
-				st.特殊補正[DebuffType::鈍足] = 1.0;
-
-				st.大魔法時間 = 3000;
-				st.獲得SP = 1.0;
-				st.逆境補正 = 0.01;
-
-				st.初期HP = 20;
-				st.初期MP = 50;
-
-				st.詠唱回数補正 = 1.0;
-
-				魔法タイプ[0] = UnitType::フィオナ;
-				魔法タイプ[1] = UnitType::足軽;//A
-				魔法タイプ[2] = UnitType::狩人;
-				魔法タイプ[3] = UnitType::剣士;
-				魔法タイプ[4] = UnitType::盗賊;
-				魔法タイプ[5] = UnitType::踊り子;
-				魔法タイプ[6] = UnitType::射手;//B
-				魔法タイプ[7] = UnitType::剣豪;
-				魔法タイプ[8] = UnitType::勇者;
-				魔法タイプ[9] = UnitType::賢者;
-				魔法タイプ[10] = UnitType::給仕;
-				魔法タイプ[11] = UnitType::料理人;
-			}
+			フィオナ() :
+				Witch(WitchType::フィオナ)
+			{}
 
 			void 大魔法効果() override
 			{}
@@ -682,52 +361,9 @@ namespace SDX_TD
 		class ナズナ : public Witch
 		{
 		public:
-			ナズナ()
-			{
-				種類 = WitchType::ナズナ;
-				属性 = Element::空;
-
-				st.攻撃補正 = 0.7;//低い
-				st.連射補正 = 1.5;//早い
-				st.範囲補正 = 1.0;
-				st.射程補正 = 1.0;
-				st.支援補正 = 1.0;
-				st.弾速補正 = 1.0;
-
-				st.MP消費 = 1.0;
-				st.MP獲得 = 1.0;
-				st.回収率 = 0.7;
-				st.回収速度 = 1.0;
-				st.強化速度 = 1.0;
-
-				st.弱点補正 = 1.1;
-				st.特殊補正[DebuffType::吹飛] = 1.0;
-				st.特殊補正[DebuffType::防壊] = 1.0;
-				st.特殊補正[DebuffType::麻痺] = 1.0;
-				st.特殊補正[DebuffType::鈍足] = 1.0;
-
-				st.大魔法時間 = 3000;
-				st.獲得SP = 1.0;
-				st.逆境補正 = 0.01;
-
-				st.初期HP = 20;
-				st.初期MP = 50;
-
-				st.詠唱回数補正 = 1.0;
-
-				魔法タイプ[0] = UnitType::ナズナ;
-				魔法タイプ[1] = UnitType::足軽;//A
-				魔法タイプ[2] = UnitType::狩人;
-				魔法タイプ[3] = UnitType::剣士;
-				魔法タイプ[4] = UnitType::盗賊;
-				魔法タイプ[5] = UnitType::踊り子;
-				魔法タイプ[6] = UnitType::射手;//B
-				魔法タイプ[7] = UnitType::剣豪;
-				魔法タイプ[8] = UnitType::勇者;
-				魔法タイプ[9] = UnitType::賢者;
-				魔法タイプ[10] = UnitType::給仕;
-				魔法タイプ[11] = UnitType::料理人;
-			}
+			ナズナ() :
+				Witch(WitchType::ナズナ)
+			{}
 
 			void 大魔法効果() override
 			{}
@@ -738,52 +374,9 @@ namespace SDX_TD
 		class 委員長 : public Witch
 		{
 		public:
-			委員長()
-			{
-				種類 = WitchType::委員長;
-				属性 = Element::空;
-
-				st.攻撃補正 = 0.7;//低い
-				st.連射補正 = 1.5;//早い
-				st.範囲補正 = 1.0;
-				st.射程補正 = 1.0;
-				st.支援補正 = 1.0;
-				st.弾速補正 = 1.0;
-
-				st.MP消費 = 1.0;
-				st.MP獲得 = 1.0;
-				st.回収率 = 0.7;
-				st.回収速度 = 1.0;
-				st.強化速度 = 1.0;
-
-				st.弱点補正 = 1.1;
-				st.特殊補正[DebuffType::吹飛] = 1.0;
-				st.特殊補正[DebuffType::防壊] = 1.0;
-				st.特殊補正[DebuffType::麻痺] = 1.0;
-				st.特殊補正[DebuffType::鈍足] = 1.0;
-
-				st.大魔法時間 = 3000;
-				st.獲得SP = 1.0;
-				st.逆境補正 = 0.01;
-
-				st.初期HP = 20;
-				st.初期MP = 50;
-
-				st.詠唱回数補正 = 1.0;
-
-				魔法タイプ[0] = UnitType::委員長;
-				魔法タイプ[1] = UnitType::足軽;//A
-				魔法タイプ[2] = UnitType::狩人;
-				魔法タイプ[3] = UnitType::剣士;
-				魔法タイプ[4] = UnitType::盗賊;
-				魔法タイプ[5] = UnitType::踊り子;
-				魔法タイプ[6] = UnitType::射手;//B
-				魔法タイプ[7] = UnitType::剣豪;
-				魔法タイプ[8] = UnitType::勇者;
-				魔法タイプ[9] = UnitType::賢者;
-				魔法タイプ[10] = UnitType::給仕;
-				魔法タイプ[11] = UnitType::料理人;
-			}
+			委員長() :
+				Witch(WitchType::委員長)
+			{}
 
 			void 大魔法効果() override
 			{}
@@ -795,52 +388,9 @@ namespace SDX_TD
 		class ミルラ : public Witch
 		{
 		public:
-			ミルラ()
-			{
-				種類 = WitchType::ミルラ;
-				属性 = Element::空;
-
-				st.攻撃補正 = 0.7;//低い
-				st.連射補正 = 1.5;//早い
-				st.範囲補正 = 1.0;
-				st.射程補正 = 1.0;
-				st.支援補正 = 1.0;
-				st.弾速補正 = 1.0;
-
-				st.MP消費 = 1.0;
-				st.MP獲得 = 1.0;
-				st.回収率 = 0.7;
-				st.回収速度 = 1.0;
-				st.強化速度 = 1.0;
-
-				st.弱点補正 = 1.1;
-				st.特殊補正[DebuffType::吹飛] = 1.0;
-				st.特殊補正[DebuffType::防壊] = 1.0;
-				st.特殊補正[DebuffType::麻痺] = 1.0;
-				st.特殊補正[DebuffType::鈍足] = 1.0;
-
-				st.大魔法時間 = 3000;
-				st.獲得SP = 1.0;
-				st.逆境補正 = 0.01;
-
-				st.初期HP = 20;
-				st.初期MP = 50;
-
-				st.詠唱回数補正 = 1.0;
-
-				魔法タイプ[0] = UnitType::委員長;
-				魔法タイプ[1] = UnitType::足軽;//A
-				魔法タイプ[2] = UnitType::狩人;
-				魔法タイプ[3] = UnitType::剣士;
-				魔法タイプ[4] = UnitType::盗賊;
-				魔法タイプ[5] = UnitType::踊り子;
-				魔法タイプ[6] = UnitType::射手;//B
-				魔法タイプ[7] = UnitType::剣豪;
-				魔法タイプ[8] = UnitType::勇者;
-				魔法タイプ[9] = UnitType::賢者;
-				魔法タイプ[10] = UnitType::給仕;
-				魔法タイプ[11] = UnitType::料理人;
-			}
+			ミルラ() :
+				Witch(WitchType::ミルラ)
+			{}
 
 			void 大魔法効果() override
 			{}
