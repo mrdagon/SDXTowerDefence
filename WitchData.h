@@ -18,6 +18,9 @@ namespace SDX_TD
 		std::string 魔導具名;
 		std::string 説明文;
 
+		int レベル;
+		int 経験値;
+
 		double 攻撃補正 = 1.0;
 		double 連射補正 = 1.0;
 		double 射程補正 = 1.0;
@@ -34,7 +37,7 @@ namespace SDX_TD
 
 		double 弱点補正 = 1.1;
 
-		EnumArray<double, DebuffType> 特殊補正;
+		EnumArray<double, DebuffType> 特殊補正;//基本は1.0
 
 		int    大魔法時間 = 3000;
 		double 獲得SP = 1.0;//溜まり易さ
@@ -42,12 +45,12 @@ namespace SDX_TD
 		double 逆境補正 = 0.01;//ライフ-1につき1%攻撃力が上がる
 
 		//ステージ開始時しか参照しないパラメータ
-		int    初期HP = 20;
-		int    初期MP = 50;
+		int    追加Hp = 0;
+		int    初期Mp = 50;
 
 		double 詠唱回数補正 = 1.0;
 
-		UnitType ユニット種[12];
+		UnitType 職種[12];
 
 		WitchData()
 		{
@@ -63,7 +66,25 @@ namespace SDX_TD
 
 	void LoadWitchS()
 	{
+		//α版は暫定的にライナのみ実装
+		WitchDataS[WitchType::ライナ].名前 = "ライナ";
+		WitchDataS[WitchType::ライナ].属性 = Element::炎;
+		WitchDataS[WitchType::ライナ].攻撃補正 = 1.05;
+		WitchDataS[WitchType::ライナ].連射補正 = 1.05;
+		WitchDataS[WitchType::ライナ].逆境補正 = 0.02;
 
+		WitchDataS[WitchType::ライナ].職種[0] = UnitType::ライナ;
+		WitchDataS[WitchType::ライナ].職種[1] = UnitType::兵士;
+		WitchDataS[WitchType::ライナ].職種[2] = UnitType::技師;
+		WitchDataS[WitchType::ライナ].職種[3] = UnitType::剣士;
+		WitchDataS[WitchType::ライナ].職種[4] = UnitType::槍士;
+		WitchDataS[WitchType::ライナ].職種[5] = UnitType::斧士;
+		WitchDataS[WitchType::ライナ].職種[6] = UnitType::武闘家;
+		WitchDataS[WitchType::ライナ].職種[7] = UnitType::狩人;
+		WitchDataS[WitchType::ライナ].職種[8] = UnitType::術士;
+		WitchDataS[WitchType::ライナ].職種[9] = UnitType::盗賊;
+		WitchDataS[WitchType::ライナ].職種[10] = UnitType::踊り子;
+		WitchDataS[WitchType::ライナ].職種[11] = UnitType::執事;
 	}
 
 }

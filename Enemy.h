@@ -15,7 +15,7 @@ namespace SDX_TD
 	public:
 		const static int 判定大きさ = 14;
 
-		EnemyData &st;
+		const EnemyData *st;
 		IEnemy* next;//当たり判定チェイン用
 		int		レベル = 0;
 		int		方向 = 5;
@@ -33,15 +33,15 @@ namespace SDX_TD
 
 		int     スコア;
 
-		IEnemy(IShape &図形, ISprite &描画方法, EnemyData& st, int Lv, bool isBoss) :
-			IObject(図形, 描画方法, st.移動タイプ),
+		IEnemy(IShape &図形, ISprite &描画方法, EnemyData* st, int Lv, bool isBoss) :
+			IObject(図形, 描画方法, st->移動タイプ),
 			isBoss(isBoss),
 			st(st)
 		{
 			レベル = Lv;
-			スコア = int(st.スコア * (1.0 + レベル / 30));
-			最大HP = st.最大HP * (1.0 + (レベル - 1)* 0.2 + (レベル - 1) * (レベル - 1) * 0.06);
-			防御力 = int(st.防御力 * レベル);
+			スコア = int(st->スコア * (1.0 + レベル / 30));
+			最大HP = st->最大HP * (1.0 + (レベル - 1)* 0.2 + (レベル - 1) * (レベル - 1) * 0.06);
+			防御力 = int(st->防御力 * レベル);
 
 			if (isBoss)
 			{
@@ -56,11 +56,12 @@ namespace SDX_TD
 		virtual ~IEnemy(){}
 
 		/**死亡時、基本処理.*/
+		/**@todo タッグ時の処理*/
 		void Dead()
 		{
 			//MP&SP&スコア増
-			WITCH::Main->MP += スコア;
-			WITCH::Main->SP += スコア;
+			Witch::Main->Mp += スコア;
+			Witch::Main->Sp += スコア;
 			TDSystem::スコア += スコア;
 			SStage->ResetSelect(this);
 
@@ -74,7 +75,7 @@ namespace SDX_TD
 			//方向を更新
 			方向更新();
 
-			double speed = st.移動速度;
+			double speed = st->移動速度;
 
 			if (isBoss) speed *= 0.66;
 
@@ -93,7 +94,7 @@ namespace SDX_TD
 			const int x = (int)(GetX() / ChipSize);
 			const int y = (int)(GetY() / ChipSize);
 
-			if (SStage->land.地形[x][y] == ChipType::沼 && st.移動タイプ != Belong::空)
+			if (SStage->land.地形[x][y] == ChipType::沼 && st->移動タイプ != Belong::空)
 			{
 				speed /= 2;
 			}
@@ -141,7 +142,7 @@ namespace SDX_TD
 		void 地形処理(double 移動量X, double 移動量Y)
 		{
 			//飛んでる敵は影響無し
-			if (st.移動タイプ == Belong::空) return;
+			if (st->移動タイプ == Belong::空) return;
 
 			int x = (int)(GetX() / ChipSize);
 			int y = (int)(GetY() / ChipSize);
@@ -185,19 +186,19 @@ namespace SDX_TD
 			bool 衝突[9] = {};
 
 			//平面にめりこみ
-			if (is↑)         衝突[1] = SStage->land.Check地形(GetX(), GetY() - 7, st.移動タイプ);
-			if (is←)         衝突[3] = SStage->land.Check地形(GetX() - 7, GetY(), st.移動タイプ);
-			if (is→)         衝突[5] = SStage->land.Check地形(GetX() + 7, GetY(), st.移動タイプ);
-			if (is↓)         衝突[6] = SStage->land.Check地形(GetX() - 7, GetY() + 7, st.移動タイプ);
+			if (is↑)         衝突[1] = SStage->land.Check地形(GetX(), GetY() - 7, st->移動タイプ);
+			if (is←)         衝突[3] = SStage->land.Check地形(GetX() - 7, GetY(), st->移動タイプ);
+			if (is→)         衝突[5] = SStage->land.Check地形(GetX() + 7, GetY(), st->移動タイプ);
+			if (is↓)         衝突[6] = SStage->land.Check地形(GetX() - 7, GetY() + 7, st->移動タイプ);
 
 			//角にめりこみ
-			if (is↑ && is←) 衝突[0] = SStage->land.Check地形(GetX() - 7, GetY() - 7, st.移動タイプ);
-			if (is↑ && is→) 衝突[2] = SStage->land.Check地形(GetX() + 7, GetY() - 7, st.移動タイプ);
-			if (is↓ && is←) 衝突[7] = SStage->land.Check地形(GetX(), GetY() + 7, st.移動タイプ);
-			if (is↓ && is→) 衝突[8] = SStage->land.Check地形(GetX() + 7, GetY() + 7, st.移動タイプ);
+			if (is↑ && is←) 衝突[0] = SStage->land.Check地形(GetX() - 7, GetY() - 7, st->移動タイプ);
+			if (is↑ && is→) 衝突[2] = SStage->land.Check地形(GetX() + 7, GetY() - 7, st->移動タイプ);
+			if (is↓ && is←) 衝突[7] = SStage->land.Check地形(GetX(), GetY() + 7, st->移動タイプ);
+			if (is↓ && is→) 衝突[8] = SStage->land.Check地形(GetX() + 7, GetY() + 7, st->移動タイプ);
 
 			//現在のマスが移動不可能
-			衝突[4] = SStage->land.Check地形(GetX(), GetY(), st.移動タイプ);
+			衝突[4] = SStage->land.Check地形(GetX(), GetY(), st->移動タイプ);
 
 			//斜め衝突
 			if (衝突[0] && 衝突[1] == 衝突[3])
@@ -298,7 +299,7 @@ namespace SDX_TD
 				break;
 			}
 
-			MUnit::敵[st.種族][アニメ]->DrawRotate({ GetX(), GetY() }, 1 + isBoss, 0, 反転);
+			MUnit::敵[st->種族][アニメ]->DrawRotate({ GetX(), GetY() }, 1 + isBoss, 0, 反転);
 
 			//ターゲット
 			if (SStage->selected == this)
@@ -314,12 +315,12 @@ namespace SDX_TD
 
 			//画像&名前
 			MSystem::フレーム[5].Draw(F名前);
-			MUnit::敵[st.種族][1]->DrawRotate(P画像, 2, 0);
-			MFont::ゴシック中.DrawShadow(P名前, Color::White, Color::Gray, st.種族名);
+			MUnit::敵[st->種族][1]->DrawRotate(P画像, 2, 0);
+			MFont::ゴシック中.DrawShadow(P名前, Color::White, Color::Gray, st->種族名);
 
 			//説明文
 			MSystem::フレーム[5].Draw(F説明);
-			MFont::ゴシック小.DrawShadow(P説明, Color::White, Color::Gray, st.説明文);
+			MFont::ゴシック小.DrawShadow(P説明, Color::White, Color::Gray, st->説明文);
 
 			//性能
 
@@ -337,7 +338,7 @@ namespace SDX_TD
 			{
 				レベル,
 				(int)残りHP,
-				(int)(st.移動速度 * 10),
+				(int)(st->移動速度 * 10),
 				スコア,
 				防御力,
 				(int)回避力,
@@ -363,18 +364,18 @@ namespace SDX_TD
 			const int y = (int)GetY() / ChipSize;
 
 			//飛行能力発動
-			if (st.is離陸 && 残りHP > 0 && 残りHP < 最大HP / 2 && belong != Belong::空)
+			if (st->is離陸 && 残りHP > 0 && 残りHP < 最大HP / 2 && belong != Belong::空)
 			{
 				belong = Belong::空;
-				SStage->Add(this);
-				return true;
+				SStage->Add(this);//飛行敵リストに追加
+				return true;//現在のリストからは削除
 			}
 
 			//ゴール判定
 			if (SStage->land.地形[x][y] == ChipType::畑)
 			{
 				//ボスはダメージ5倍
-				WITCH::Main->Damage(1+isBoss*4);
+				Witch::Main->Damage(1+isBoss*4);
 				isRemove = true;
 				SStage->ResetSelect(this);
 			}
@@ -391,9 +392,9 @@ namespace SDX_TD
 			double ダメージ量 = 衝突相手->攻撃力;
 
 			//属性効果判定
-			if (衝突相手->デバフ効果 > 0 && !st.特殊耐性[衝突相手->st.デバフ種])
+			if (衝突相手->デバフ効果 > 0 && !st->特殊耐性[衝突相手->st->デバフ種])
 			{
-				switch (衝突相手->st.デバフ種)
+				switch (衝突相手->st->デバフ種)
 				{
 				case DebuffType::鈍足: 鈍足付与(衝突相手); break;
 				case DebuffType::麻痺: 麻痺付与(衝突相手); break;
@@ -406,7 +407,7 @@ namespace SDX_TD
 			//弱点補正
 			if (弱点判定(衝突相手))
 			{
-				ダメージ量 *= WITCH::Main->弱点補正;
+				ダメージ量 *= Witch::Main->弱点補正;
 			}
 
 			//防御補正
@@ -450,31 +451,37 @@ namespace SDX_TD
 		{
 			return
 				(
-				(衝突相手->st.属性 == Element::炎 && st.属性 == Element::氷) ||
-				(衝突相手->st.属性 == Element::氷 && st.属性 == Element::炎) ||
-				(衝突相手->st.属性 == Element::樹 && st.属性 == Element::空) ||
-				(衝突相手->st.属性 == Element::空 && st.属性 == Element::樹)
+				(衝突相手->st->属性 == Element::炎 && st->属性 == Element::氷) ||
+				(衝突相手->st->属性 == Element::氷 && st->属性 == Element::炎) ||
+				(衝突相手->st->属性 == Element::樹 && st->属性 == Element::空) ||
+				(衝突相手->st->属性 == Element::空 && st->属性 == Element::樹)
 				);
 		}
 
 		/**ダメージを受けた時の特殊処理.*/
-		virtual void React(double ダメージ量){}
+		void React(double ダメージ量)
+		{
+		}
 
 		/**死亡時の特殊処理.*/
-		virtual void DeadSp(){}
+		void DeadSp()
+		{
+		}
 
 		/**敵別の特殊処理.*/
-		virtual void ActSp(){}
+		void ActSp()
+		{
+		}
 	};
 
 	class Enemy : public IEnemy
 	{
 	public:
 		Rect shape;
-		SpNull 描画方法;
+		SpNull sprite;
 
 		Enemy(double X座標, double Y座標, EnemyType 敵種類, int Lv, bool isBoss) :
-			IEnemy(shape, 描画方法, EnemyDataS[敵種類], Lv, isBoss),
+			IEnemy(shape, sprite, &EnemyDataS[敵種類], Lv, isBoss),
 			shape((X座標 + 0.5)*ChipSize, (Y座標 + 0.5)*ChipSize, 14, 14)
 		{
 		}

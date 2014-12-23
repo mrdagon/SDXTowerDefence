@@ -7,7 +7,6 @@
 namespace SDX_TD
 {
 	using namespace SDX;
-	
 
 	struct ChipData
 	{
@@ -15,7 +14,6 @@ namespace SDX_TD
 		bool is陸移動;
 		bool is水移動;
 		//空不可は高山のみ
-
 		void Set(bool is配置可能, bool is陸移動, bool is水移動)
 		{
 			this->is配置可能 = is配置可能;
@@ -24,10 +22,7 @@ namespace SDX_TD
 		}
 	};
 
-	namespace
-	{
-		EnumArray<ChipData, ChipType> ChipDataS;
-	}
+	EnumArray<ChipData, ChipType> ChipDataS;
 
 	void LoadChipS()
 	{

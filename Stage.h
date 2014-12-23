@@ -12,6 +12,8 @@
 #include "Shot.h"
 #include "Wave.h"
 
+#include "JobUnit.h"
+
 namespace SDX_TD
 {
 	//ステージ中での操作一覧
@@ -37,6 +39,8 @@ namespace SDX_TD
 	class Stage : public IStage
 	{
 	private:
+		JobUnit jobS[12];
+
 		Layer<IObject> backEffectS;
 		Layer<IObject> midEffectS;
 		Layer<IObject> frontEffectS;
@@ -176,13 +180,13 @@ namespace SDX_TD
 			{
 				if (shot->is貫通)
 				{
-					if (shot->st.is対地){ HitArea(shot.get(), 地上Top); }
-					if (shot->st.is対空){ HitArea(shot.get(), 空中Top); }
+					if (shot->st->is対地){ HitArea(shot.get(), 地上Top); }
+					if (shot->st->is対空){ HitArea(shot.get(), 空中Top); }
 				}
 				else
 				{
-					if (shot->st.is対地){ HitSingle(shot.get(), 地上Top); }
-					if (shot->st.is対空){ HitSingle(shot.get(), 空中Top); }
+					if (shot->st->is対地){ HitSingle(shot.get(), 地上Top); }
+					if (shot->st->is対空){ HitSingle(shot.get(), 空中Top); }
 				}
 			}
 		}
@@ -194,7 +198,7 @@ namespace SDX_TD
 
 			for (auto &&it : groundEnemyS.objectS)
 			{
-				SStage->land.UpdateEnemy((int)it->GetX(), (int)it->GetY(), it->st.移動タイプ);
+				SStage->land.UpdateEnemy((int)it->GetX(), (int)it->GetY(), it->st->移動タイプ);
 			}
 		}
 
@@ -227,17 +231,17 @@ namespace SDX_TD
 			}
 
 			//ウィッチ初期化
-			WITCH::Main->Init();
-			if ( !TDSystem::isシングル)
-			{
-				WITCH::Sub->Init();
-			}
+			Witch::InitAll();
+		}
 
+		/**Unit一覧を更新.*/
+		void ResetJobList() override
+		{
 			//ウィッチリスト12種初期化
-			TDSystem::魔法リスト.clear();
 			for (int a = 0; a < 12; ++a)
 			{
-				TDSystem::魔法リスト.emplace_back(new Unit(WITCH::Main->ユニット種[a],0,0,true));
+				jobS[a].SetType(Witch::Main->職種[a]);
+				jobS[a].shape = StageDraw::F魔法一覧[a];
 			}
 		}
 
@@ -250,7 +254,7 @@ namespace SDX_TD
 
 			NextWave();
 
-			WITCH::Main->Update();
+			Witch::Main->Update();
 
 			//レイヤー処理
 			backEffectS.Update();
@@ -380,7 +384,7 @@ namespace SDX_TD
 			}
 
 			//配置された魔法を選択、一覧選択中は不可能
-			if (!selectUnit || !selectUnit->is配置リスト)
+			if (!selectUnit || !selectUnit->isジョブリスト)
 			{
 				for (int a = 0; a < unitS.GetCount(); ++a)
 				{
@@ -460,7 +464,7 @@ namespace SDX_TD
 
 			if (selectEnemy)
 			{
-				if (selectEnemy->st.移動タイプ == Belong::空)
+				if (selectEnemy->st->移動タイプ == Belong::空)
 				{
 					if (InputCheckEnemyS(groundEnemyS,マウス座標, true)){ return true; }
 					if (InputCheckEnemyS(skyEnemyS,マウス座標, false)){ return true; }
@@ -531,7 +535,7 @@ namespace SDX_TD
 				SetSelect(skyEnemyS[param]);
 				break;
 			case Command::大魔法発動:
-				WITCH::Main->大魔法発動();
+				Witch::Main->大魔法発動();
 				break;
 			case Command::Wave送り:
 				wave.isStop = false;
@@ -546,11 +550,11 @@ namespace SDX_TD
 				selectUnit->送還開始();
 				break;
 			case Command::種別選択:
-				SetSelect(TDSystem::魔法リスト[param].get());
+				SetSelect(&jobS[param]);
 				break;
 			case Command::新規配置:
-				if (!selectUnit || !selectUnit->is配置リスト){ break; }
-				SetCheck(selectUnit->st.魔法種);
+				if (!selectUnit || !selectUnit->isジョブリスト){ break; }
+				SetCheck(selectUnit->st->職種);
 				break;
 			}
 		}
@@ -569,20 +573,19 @@ namespace SDX_TD
 			selectUnit = 選択したユニット;
 		}
 
-		/**配置と強化処理.*/
-		void SetCheck(UnitType 魔法種)
+		/**配置処理.*/
+		void SetCheck(UnitType 職種)
 		{
-
-			if (!selectUnit || !selectUnit->is配置リスト){ return; }
-
-			const int x = (Input::mouse.x - ChipSize / 2) / ChipSize;
-			const int y = (Input::mouse.y - ChipSize / 2) / ChipSize;
+			if (!selectUnit || !selectUnit->isジョブリスト){ return; }
 
 			//資金不足
-			if (selectUnit->st.コスト[0] > WITCH::Main->MP || TDSystem::詠唱回数[魔法種] <= 0)
+			if (selectUnit->st->コスト[0] > Witch::Main->Mp || TDSystem::詠唱回数[職種] <= 0)
 			{
 				return;
 			}
+
+			const int x = (Input::mouse.x - ChipSize / 2) / ChipSize;
+			const int y = (Input::mouse.y - ChipSize / 2) / ChipSize;
 
 			//敵の位置を更新
 			LandUpdate();
@@ -590,7 +593,7 @@ namespace SDX_TD
 			//配置可能かチェック
 			if (SStage->land.SetUnit(x, y, 2))
 			{
-				Add(new Unit(魔法種,(x+1) * ChipSize , (y+1) * ChipSize , false));
+				Add(new Unit(職種,(x+1) * ChipSize , (y+1) * ChipSize ));
 			}
 		}
 
@@ -601,7 +604,7 @@ namespace SDX_TD
 
 			SStage->land.Draw();
 
-			if (selectUnit && selectUnit->is配置リスト){ SStage->land.DrawSetPos(); }
+			if (selectUnit && selectUnit->isジョブリスト){ SStage->land.DrawSetPos(); }
 
 			//敵等の表示
 			backEffectS.Draw();
@@ -623,7 +626,6 @@ namespace SDX_TD
 		void DrawUI()
 		{
 			using namespace StageDraw;
-			Reset();
 
 			MSystem::背景.DrawPart({ 0, 0 }, { 0, 0, 480, 40 });
 			MSystem::背景.DrawPart({ 0, 0 }, { 0, 0, 40, 480 });
@@ -666,12 +668,12 @@ namespace SDX_TD
 			//ウィッチの表示
 			if (TDSystem::isシングル)
 			{
-				MUnit::魔女[(UnitType)WITCH::Main->種類][1]->DrawRotate(Pシングルウィッチ, 2, 0);
+				MUnit::魔女[(UnitType)Witch::Main->種類][1]->DrawRotate(Pシングルウィッチ, 2, 0);
 			}
 			else
 			{
-				MUnit::魔女[(UnitType)WITCH::Main->種類][1]->DrawRotate(Pカップルウィッチ[0], 2, 0);			
-				MUnit::魔女[(UnitType)WITCH::Sub->種類][1]->DrawRotate(Pカップルウィッチ[1], 2, 0);
+				MUnit::魔女[(UnitType)Witch::Main->種類][1]->DrawRotate(Pカップルウィッチ[0], 2, 0);			
+				MUnit::魔女[(UnitType)Witch::Sub->種類][1]->DrawRotate(Pカップルウィッチ[1], 2, 0);
 			}
 
 			//モードと難易度
@@ -679,24 +681,24 @@ namespace SDX_TD
 			MFont::BMP黒.DrawExtend(Pモード名, 1, 1, Color::White, { "single" });
 
 			//SP,HP,MPの表示
-			if (WITCH::Main->大魔法残り時間 > 0)
+			if (Witch::Main->大魔法残り時間 > 0)
 			{
-				const int SP値 = int(WITCH::Main->大魔法残り時間 * 100 / WITCH::Main->大魔法時間);
+				const int SP値 = int(Witch::Main->大魔法残り時間 * 100 / Witch::Main->大魔法時間);
 				MIcon::UI[IconType::マナ].Draw(PSP);
 				MFont::BMP白.DrawExtend(PSP + P差分[1], 2, 2, { 120, 120, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
 			}
 			else
 			{
-				const int SP値 = std::min(int(WITCH::Main->SP * 100 / WITCH::Main->最大SP), 100);
+				const int SP値 = std::min(int(Witch::Main->Sp * 100 / Witch::Main->最大Sp), 100);
 				MIcon::UI[IconType::マナ].Draw(PSP);
 				MFont::BMP白.DrawExtend(PSP + P差分[1], 2, 2, { 120, 120, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
 			}
 
 			MIcon::UI[IconType::ライフ].Draw(P体力);
-			MFont::BMP白.DrawExtend(P体力 + P差分[1], 2, 2, { 255, 60, 60 }, { std::setw(5), WITCH::Main->HP });//HP
+			MFont::BMP白.DrawExtend(P体力 + P差分[1], 2, 2, { 255, 60, 60 }, { std::setw(5), Witch::Main->Hp });//HP
 
 			MIcon::UI[IconType::レベル].Draw(P魔力);
-			MFont::BMP白.DrawExtend( P魔力 + P差分[1], 2, 2, { 255, 255, 0 }, { std::setw(5), WITCH::Main->MP });//MP
+			MFont::BMP白.DrawExtend( P魔力 + P差分[1], 2, 2, { 255, 255, 0 }, { std::setw(5), Witch::Main->Mp });//MP
 
 			//設定ボタン
 			MSystem::フレーム[3].Draw(Fメニュー);
@@ -706,16 +708,9 @@ namespace SDX_TD
 			MFont::ゴシック中.DrawShadow( F大魔法.GetPoint() + P差分[2], Color::Black, Color::Gray, "大魔法");
 
 			//魔法一覧の表示
-			for (int a = 0; a < 12; ++a)
+			for (auto &&it : jobS)
 			{
-				if (TDSystem::魔法リスト[a].get() == selected){ Screen::SetBright({ 255, 120, 120 }); }
-				if (TDSystem::詠唱回数[WITCH::Main->ユニット種[a]] <= 0){ Screen::SetBright(Color::Gray); }
-				MSystem::フレーム[3].Draw(F魔法一覧[a]);
-				Screen::SetBright({ 255, 255, 255 });
-				MUnit::魔女[WITCH::Main->ユニット種[a]][1]->DrawRotate( F魔法一覧[a].GetPoint() + P差分[3], 1, 0);
-				
-				MFont::BMP黒.DrawExtend(F魔法一覧[a].GetPoint() + P差分[4], 2, 2, Color::White, { std::setw(2), TDSystem::詠唱回数[WITCH::Main->ユニット種[a]] });
-				MFont::BMP黒.Draw(F魔法一覧[a].GetPoint() + P差分[5], Color::White, "×");
+				it.Draw();
 			}
 
 			//情報の表示

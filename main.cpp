@@ -42,8 +42,7 @@ int main(int argc, char* argv[])
 	TDSystem::isシングル = true;
 	TDSystem::isトライアル = true;
 
-	WITCH::Main.reset(new WITCH::ライナ());
-	WITCH::Sub.reset(new WITCH::ディアネラ());
+	Witch::SetMain(WitchType::ライナ);
 
 	Director::AddScene(std::make_shared<Stage>());
 	Director::Run();

@@ -2,14 +2,10 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
-#include "Object.h"
+#include "IUnit.h"
+#include "Design.h"
 #include "Shot.h"
 #include "ShotMotion.h"
-#include "IStage.h"
-#include "Wave.h"
-#include "DataS.h"
-#include "Design.h"
-#include "IUnit.h"
 
 namespace SDX_TD
 {
@@ -21,34 +17,37 @@ namespace SDX_TD
 	{
 	public:
 		Rect shape;
-		SpImage sprite;
+		SpNull sprite;
 
 		//配置位置
-		Unit(UnitType 魔法種 , int X座標,int Y座標, bool isリスト) :
-			IUnit(shape, sprite, 魔法種 , isリスト),
-			sprite(nullptr),
+		Unit(UnitType 職種 , int X座標,int Y座標) :
+			IUnit(shape, sprite, 職種, false),
 			shape(X座標, Y座標, Size * ChipSize / 2, Size * ChipSize / 2, Size * ChipSize / 2, Size * ChipSize / 2)
-		{}
+		{
+			Witch::Main->Mp -= st->コスト[0];
+			--TDSystem::詠唱回数[職種];
+
+			SetWait();
+		}
 
 		using S勇者 = Shot < Circle, SpImage, MOTION::勇者 >;
 		using S追尾 = Shot < Circle, SpImage, MOTION::追尾 >;
 		using S曲射 = Shot < Circle, SpImage, MOTION::曲射 >;
-		//using S直進 = Shot < Circle, SpImage, MOTION::ToFront<SPEED::Liner> >;
 		template <class TSpeed = SPEED::Liner>
 		using S直進 = Shot < Circle, SpImage, MOTION::ToFront<TSpeed> >;
 
 		void Shoot(double 角度)
 		{
 //入力省略,描画方法,移動方法
-#define DEF { GetX(), GetY(), st.半径 },st,Lv,角度,支援補正
+#define DEF { GetX(), GetY(), st->半径 },st,Lv,角度,支援補正
 
-			switch (st.魔法種)
+			switch (st->職種)
 			{
 			case UnitType::ライナ://勇者強化
-				for (int a = 0; a < st.Hit数[Lv]; ++a)
+				for (int a = 0; a < st->Hit数[Lv]; ++a)
 				{
-					角度 = PAI * 2 * a / st.Hit数[Lv];
-					SStage->Add	( new S勇者(&MEffect::弾, { { GetX(), GetY() }, st.射程[Lv], 角度, 0.1 }, DEF) );
+					角度 = PAI * 2 * a / st->Hit数[Lv];
+					SStage->Add	( new S勇者(&MEffect::弾, { { GetX(), GetY() }, st->射程[Lv], 角度, 0.1 }, DEF) );
 				}
 				break;
 			case UnitType::ナツメ://武闘家強化
@@ -96,8 +95,8 @@ namespace SDX_TD
 				break;
 			case UnitType::槍士://反射A-3WAY直進
 				//実装する
-				角度 -= (st.Hit数[Lv] - 1) * 5 * DEG;
-				for (int a = 0; a < st.Hit数[Lv]; ++a)
+				角度 -= (st->Hit数[Lv] - 1) * 5 * DEG;
+				for (int a = 0; a < st->Hit数[Lv]; ++a)
 				{
 					角度 += 10*DEG;//10℃刻み
 					SStage->Add(new S直進<>(&MEffect::弾, { 10 }, DEF));
@@ -113,7 +112,7 @@ namespace SDX_TD
 				break;
 			case UnitType::武闘家://防御破壊A-加速弾-8WAY
 				//実装する
-				for (int a = 0; a < st.Hit数[Lv]; ++a)
+				for (int a = 0; a < st->Hit数[Lv]; ++a)
 				{
 					角度 += PAI / 8;
 					IShot* shot = new S直進<SPEED::AccelLimit>(&MEffect::弾, { { 10 , 1 , -1 } }, DEF);

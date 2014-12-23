@@ -16,7 +16,7 @@ namespace SDX_TD
 		std::string 名前;
 		std::string 説明文;
 
-		UnitType 魔法種;
+		UnitType 職種;
 		RangeType 射程種;
 		Element 属性;
 
@@ -29,6 +29,7 @@ namespace SDX_TD
 		double 支援効果[最大強化];
 
 		int 炸裂範囲[最大強化];
+		int 炸裂威力[最大強化];//廃止予定
 
 		DebuffType デバフ種;
 		EnemyType 特攻種族;
@@ -62,8 +63,8 @@ namespace SDX_TD
 
 		for (auto &it : DefUnitDataS)
 		{
-			it.魔法種 = UnitType(count);
-			if (it.魔法種 <= UnitType::ミルラ){ it.isウィッチ = true; }
+			it.職種 = UnitType(count);
+			if (it.職種 <= UnitType::ミルラ){ it.isウィッチ = true; }
 
 			++count;
 
@@ -91,7 +92,7 @@ namespace SDX_TD
 
 			UnitFile.Read<int>(it.支援効果, 6, 100);
 			UnitFile.Read<int>(it.支援効果, 6, 100);
-			//UnitFile.Read<int>(it.炸裂威力, 6, 100);
+			UnitFile.Read<int>(it.炸裂威力, 6, 100);
 			UnitFile.Read(it.炸裂範囲, 6);
 
 			UnitFile.Read(it.デバフ効果, 6);

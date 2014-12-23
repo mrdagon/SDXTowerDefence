@@ -15,7 +15,7 @@ namespace SDX_TD
 		bool isトライアル = true;//notならパワー
 		bool isシングル = true;//notならカップル
 
-		std::vector<std::unique_ptr<IUnit>> 魔法リスト;
+		//std::vector<std::unique_ptr<IUnit>> 魔法リスト;
 		EnumArray<int, UnitType> 詠唱回数;
 
 		int スコア;

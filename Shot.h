@@ -13,7 +13,7 @@ namespace SDX_TD
 	class IShot : public IObject
 	{
 	public:
-		UnitData &st;
+		UnitData *st;
 		double 攻撃力;
 		int    デバフ効果;
 		double デバフ率;
@@ -28,17 +28,17 @@ namespace SDX_TD
 		virtual ~IShot() = default;
 
 		/**弾の生成.*/
-		IShot(IShape &図形, ISprite &描画方法, double 角度, UnitData &st, int レベル , double 支援補正) :
+		IShot(IShape &図形, ISprite &描画方法, double 角度, UnitData *st, int レベル , double 支援補正) :
 			IObject(図形, 描画方法, Belong::弾),
 			st(st),
 			isSmall(true)
 		{
 			//支援補正
-			攻撃力 = st.攻撃力[レベル] * 支援補正;
+			攻撃力 = st->攻撃力[レベル] * 支援補正;
 
 			//属性効果			
-			デバフ効果 = st.デバフ効果[レベル];
-			デバフ率 = st.デバフ率[レベル];
+			デバフ効果 = st->デバフ効果[レベル];
+			デバフ率 = st->デバフ率[レベル];
 		}
 
 		/**消滅判定.*/
@@ -83,7 +83,7 @@ namespace SDX_TD
 		TSprite sprite;
 		TMotion motion;
 
-		Shot(TSprite &&描画方法, TMotion &&移動方法 , TShape &&図形, UnitData &基礎性能, int Lv, double 角度 , double 支援補正) :
+		Shot(TSprite &&描画方法, TMotion &&移動方法 , TShape &&図形, UnitData *基礎性能, int Lv, double 角度 , double 支援補正) :
 			IShot(shape, sprite, 角度, 基礎性能 , Lv , 支援補正),
 			shape(図形),
 			sprite(描画方法),

@@ -23,19 +23,15 @@ namespace SDX_TD
 		class Route
 		{
 		public:
-			bool isUse;//falseなら計算しない
-
 			int  距離[MapSize][MapSize];
 			int  経路[MapSize][MapSize];
 			bool is通行[MapSize][MapSize];
 			Belong 移動種;
+			std::vector<int> 計算リスト;
 
-			Route(Belong 移動種, bool is使用フラグ) :
-				isUse(is使用フラグ),
+			Route(Belong 移動種) :
 				移動種(移動種)
 			{}
-
-			std::vector<int> 計算リスト;
 
 			bool Check通行(ChipType 地形種)
 			{
@@ -57,8 +53,6 @@ namespace SDX_TD
 			/**.*/
 			void Init(const Land& 土地)
 			{
-				if (!isUse) return;
-
 				for (int a = 0; a < MapSize; ++a){
 					for (int b = 0; b < MapSize; ++b)
 					{
@@ -168,7 +162,6 @@ namespace SDX_TD
 		};
 
 		ChipType 地形[MapSize][MapSize];
-		int 地形画像[MapSize][MapSize];
 
 		bool is魔法[MapSize][MapSize];//魔法が配置済みかどうか
 
@@ -184,9 +177,9 @@ namespace SDX_TD
 		Route 水路;
 
 		Land():
-			陸路(Belong::陸, true),
-			空路(Belong::空, true),
-			水路(Belong::水, true)
+			陸路(Belong::陸),
+			空路(Belong::空),
+			水路(Belong::水)
 		{}
 
 		/**初期化を行う.*/
@@ -281,8 +274,6 @@ namespace SDX_TD
 			}
 
 			//ルートを塞がないかチェック、空はルート固定なので確認しない
-			bool isOK = true;
-
 			陸路.Init(*this);
 
 			//到達不可の位置に囲われた敵がいるかチェック
@@ -291,41 +282,37 @@ namespace SDX_TD
 				{
 					if (陸路.距離[a][b] == 到達不可 && (is陸敵[a][b] == true || 地形[a][b] == ChipType::穴))
 					{
-						isOK = false;
-						break;
-					}
-				}
-			}
-
-			//陸で失敗しているならチェックしない
-			if (isOK && 水路.isUse)
-			{
-				水路.Init(*this);
-				for (int a = 0; a < MapSize; ++a)
-					for (int b = 0; b < MapSize; ++b)
-					{
-						if (水路.距離[a][b] == 到達不可 && is水敵[a][b] == true)
-						{
-							isOK = false;
-							break;
+						for (int a = 0; a < 大きさ; ++a){
+							for (int b = 0; b < 大きさ; ++b)
+							{
+								is魔法[X座標 + a][Y座標 + b] = false;
+							}
 						}
+						陸路.Init(*this);
+						return false;
 					}
-			}
-
-			if (isOK) { return true; }
-
-			//失敗したら仮配置を戻す
-			for (int a = 0; a < 大きさ; ++a){
-				for (int b = 0; b < 大きさ; ++b)
-				{
-					is魔法[X座標 + a][Y座標 + b] = false;
 				}
 			}
 
-			陸路.Init(*this);
 			水路.Init(*this);
+			for (int a = 0; a < MapSize; ++a){
+				for (int b = 0; b < MapSize; ++b)
+				{
+					if (水路.距離[a][b] == 到達不可 && is水敵[a][b] == true)
+					{
+						for (int a = 0; a < 大きさ; ++a){
+							for (int b = 0; b < 大きさ; ++b)
+							{
+								is魔法[X座標 + a][Y座標 + b] = false;
+							}
+						}
+						水路.Init(*this);
+						return false;
+					}
+				}
+			}
 
-			return false;
+			return true;
 		}
 
 		/**ユニットをどかして経路を再計算する.*/

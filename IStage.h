@@ -35,6 +35,8 @@ namespace SDX_TD
 			}
 		}
 
+		virtual void ResetJobList() = 0;
+
 		virtual void Add(IObject *追加するオブジェクト, int 待機時間 = 0) = 0;
 		virtual void Add(IUnit *追加するオブジェクト, int 待機時間 = 0) = 0;
 		virtual void Add(IEnemy *追加するオブジェクト, int 待機時間 = 0) = 0;
