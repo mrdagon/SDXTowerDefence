@@ -26,10 +26,10 @@ namespace SDX_TD
 			int  距離[MapSize][MapSize];
 			int  経路[MapSize][MapSize];
 			bool is通行[MapSize][MapSize];
-			Belong 移動種;
+			MoveType 移動種;
 			std::vector<int> 計算リスト;
 
-			Route(Belong 移動種) :
+			Route(MoveType 移動種) :
 				移動種(移動種)
 			{}
 
@@ -37,13 +37,13 @@ namespace SDX_TD
 			{
 				switch (移動種)
 				{
-				case Belong::空:
+				case MoveType::空:
 					return 地形種 != ChipType::高山;
 					break;
-				case Belong::陸:
+				case MoveType::陸:
 					return ChipDataS[地形種].is陸移動;
 					break;
-				case Belong::水:
+				case MoveType::水:
 					return ChipDataS[地形種].is水移動;
 				default:
 					return false;
@@ -57,7 +57,7 @@ namespace SDX_TD
 					for (int b = 0; b < MapSize; ++b)
 					{
 						//魔法が配置されていて、飛行していない場合、通行不可能
-						if (移動種 != Belong::空 && 土地.is魔法[a][b] == true)
+						if (移動種 != MoveType::空 && 土地.is魔法[a][b] == true)
 						{
 							is通行[a][b] = false;
 							continue;
@@ -177,9 +177,9 @@ namespace SDX_TD
 		Route 水路;
 
 		Land():
-			陸路(Belong::陸),
-			空路(Belong::空),
-			水路(Belong::水)
+			陸路(MoveType::陸),
+			空路(MoveType::空),
+			水路(MoveType::水)
 		{}
 
 		/**初期化を行う.*/
@@ -206,7 +206,7 @@ namespace SDX_TD
 		}
 
 		/**is陸の敵を追加更新.*/
-		void UpdateEnemy(int X座標, int Y座標, Belong 移動種)
+		void UpdateEnemy(int X座標, int Y座標, MoveType 移動種)
 		{
 			const int xa = (X座標 - 6) / ChipSize;
 			const int xb = (X座標 + 6) / ChipSize;
@@ -218,7 +218,7 @@ namespace SDX_TD
 			if (ChipDataS[地形[xb][ya]].is陸移動) is陸敵[xb][ya] = true;
 			if (ChipDataS[地形[xb][yb]].is陸移動) is陸敵[xb][yb] = true;
 
-			if (移動種 == Belong::水)
+			if (移動種 == MoveType::水)
 			{
 				if (ChipDataS[地形[xa][ya]].is水移動) is水敵[xa][ya] = true;
 				if (ChipDataS[地形[xa][yb]].is水移動) is陸敵[xa][yb] = true;
@@ -378,7 +378,7 @@ namespace SDX_TD
 		}
 
 		/**敵が地形と衝突しているかチェック.*/
-		bool Check地形(double X座標, double Y座標, Belong 移動種)
+		bool Check地形(double X座標, double Y座標, MoveType 移動種)
 		{
 			int x = (int)X座標 / ChipSize;
 			int y = (int)Y座標 / ChipSize;
@@ -388,13 +388,13 @@ namespace SDX_TD
 			//trueなら通行不可
 			switch (移動種)
 			{
-			case SDX_TD::Belong::空:
+			case SDX_TD::MoveType::空:
 				return !空路.is通行[x][y];
 				break;
-			case SDX_TD::Belong::陸:
+			case SDX_TD::MoveType::陸:
 				return !陸路.is通行[x][y];
 				break;
-			case SDX_TD::Belong::水:
+			case SDX_TD::MoveType::水:
 				return !水路.is通行[x][y];
 				break;
 			default:

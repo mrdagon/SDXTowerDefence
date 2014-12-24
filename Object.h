@@ -14,17 +14,14 @@ namespace SDX_TD
 	{
 	protected:
 		int timer = 0;///発生してから経過したフレーム数
-		Belong belong;///所属するレイヤー
 	public:
 		int lifeTime = -1;///生存期間
 		bool isSelect = false;
 
 		/**.*/
-		IObject(IShape &図形, ISprite &描画方法, Belong 所属 = Belong::その他) :
-			IModel(図形, 描画方法),
-			belong(所属)
-		{
-		}
+		IObject(IShape &図形, ISprite &描画方法) :
+			IModel(図形, 描画方法)
+		{}
 
 		/**.*/
 		virtual ~IObject(){}
@@ -62,12 +59,6 @@ namespace SDX_TD
 			Act();
 		}
 
-		/**.*/
-		Belong GetBelong()
-		{
-			return belong;
-		}
-
 		/**Stage右枠のの説明を表示.*/
 		virtual void DrawInfo(){}
 
@@ -88,7 +79,7 @@ namespace SDX_TD
 		TShape shape;
 		TSprite sprite;
 
-		Object(TShape &&図形と位置, TSprite &&描画方法, Belong 所属) :
+		Object(TShape &&図形と位置, TSprite &&描画方法) :
 			IObject(shape, sprite, 所属),
 			shape(図形と位置),
 			sprite(描画方法)

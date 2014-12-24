@@ -16,11 +16,12 @@ namespace SDX_TD
 		const static int 判定大きさ = 14;
 
 		const EnemyData *st;
+		MoveType 移動種;
 		IEnemy* next;//当たり判定チェイン用
 		int		レベル = 0;
 		int		方向 = 5;
-		double	最大HP = 1000;
-		double	残りHP = 1000;
+		double	最大HP = 0;
+		double	残りHP = 0;
 		int		防御力 = 0;
 		double	回避力 = 0;
 		double	鈍足率 = 1.0;
@@ -34,13 +35,14 @@ namespace SDX_TD
 		int     スコア;
 
 		IEnemy(IShape &図形, ISprite &描画方法, EnemyData* st, int Lv, bool isBoss) :
-			IObject(図形, 描画方法, st->移動タイプ),
+			IObject(図形, 描画方法),
 			isBoss(isBoss),
-			st(st)
+			st(st),
+			レベル(Lv),
+			移動種(st->移動種)
 		{
-			レベル = Lv;
-			スコア = int(st->スコア * (1.0 + レベル / 30));
-			最大HP = st->最大HP * (1.0 + (レベル - 1)* 0.2 + (レベル - 1) * (レベル - 1) * 0.06);
+			スコア = int(st->スコア * (1.0 + (double)レベル / 30 ));
+			最大HP = st->最大HP * (1.0 + (レベル)* 0.2 + (レベル) * (レベル) * 0.06);
 			防御力 = int(st->防御力 * レベル);
 
 			if (isBoss)
@@ -61,12 +63,11 @@ namespace SDX_TD
 		{
 			//MP&SP&スコア増
 			Witch::Main->Mp += スコア;
-			Witch::Main->Sp += スコア;
-			TDSystem::スコア += スコア;
-			SStage->ResetSelect(this);
+			Witch::Main->Sp += st->スコア;
 
+			TDSystem::スコア += スコア;
 			isRemove = true;
-			DeadSp();
+			DeadSub();
 		}
 
 		/**.*/
@@ -94,7 +95,7 @@ namespace SDX_TD
 			const int x = (int)(GetX() / ChipSize);
 			const int y = (int)(GetY() / ChipSize);
 
-			if (SStage->land.地形[x][y] == ChipType::沼 && st->移動タイプ != Belong::空)
+			if (SStage->land.地形[x][y] == ChipType::沼 && 移動種 == MoveType::陸)
 			{
 				speed /= 2;
 			}
@@ -119,20 +120,20 @@ namespace SDX_TD
 			Move(mx, my);
 
 			//敵毎の特殊処理
-			ActSp();
+			ActSub();
 		}
 
 		void 方向更新()
 		{
-			switch (belong)
+			switch (移動種)
 			{
-			case Belong::空:
+			case MoveType::空:
 				方向 = SStage->land.空路.方向計算(方向, (int)GetX(), (int)GetY());
 				break;
-			case Belong::陸:
+			case MoveType::陸:
 				方向 = SStage->land.陸路.方向計算(方向, (int)GetX(), (int)GetY());
 				break;
-			case Belong::水:
+			case MoveType::水:
 				方向 = SStage->land.水路.方向計算(方向, (int)GetX(), (int)GetY());
 				break;
 			}
@@ -142,7 +143,7 @@ namespace SDX_TD
 		void 地形処理(double 移動量X, double 移動量Y)
 		{
 			//飛んでる敵は影響無し
-			if (st->移動タイプ == Belong::空) return;
+			if (移動種 == MoveType::空) return;
 
 			int x = (int)(GetX() / ChipSize);
 			int y = (int)(GetY() / ChipSize);
@@ -186,19 +187,19 @@ namespace SDX_TD
 			bool 衝突[9] = {};
 
 			//平面にめりこみ
-			if (is↑)         衝突[1] = SStage->land.Check地形(GetX(), GetY() - 7, st->移動タイプ);
-			if (is←)         衝突[3] = SStage->land.Check地形(GetX() - 7, GetY(), st->移動タイプ);
-			if (is→)         衝突[5] = SStage->land.Check地形(GetX() + 7, GetY(), st->移動タイプ);
-			if (is↓)         衝突[6] = SStage->land.Check地形(GetX() - 7, GetY() + 7, st->移動タイプ);
+			if (is↑)         衝突[1] = SStage->land.Check地形(GetX(), GetY() - 7, 移動種);
+			if (is←)         衝突[3] = SStage->land.Check地形(GetX() - 7, GetY(), 移動種);
+			if (is→)         衝突[5] = SStage->land.Check地形(GetX() + 7, GetY(), 移動種);
+			if (is↓)         衝突[6] = SStage->land.Check地形(GetX() - 7, GetY() + 7, 移動種);
 
 			//角にめりこみ
-			if (is↑ && is←) 衝突[0] = SStage->land.Check地形(GetX() - 7, GetY() - 7, st->移動タイプ);
-			if (is↑ && is→) 衝突[2] = SStage->land.Check地形(GetX() + 7, GetY() - 7, st->移動タイプ);
-			if (is↓ && is←) 衝突[7] = SStage->land.Check地形(GetX(), GetY() + 7, st->移動タイプ);
-			if (is↓ && is→) 衝突[8] = SStage->land.Check地形(GetX() + 7, GetY() + 7, st->移動タイプ);
+			if (is↑ && is←) 衝突[0] = SStage->land.Check地形(GetX() - 7, GetY() - 7, 移動種);
+			if (is↑ && is→) 衝突[2] = SStage->land.Check地形(GetX() + 7, GetY() - 7, 移動種);
+			if (is↓ && is←) 衝突[7] = SStage->land.Check地形(GetX(), GetY() + 7, 移動種);
+			if (is↓ && is→) 衝突[8] = SStage->land.Check地形(GetX() + 7, GetY() + 7, 移動種);
 
 			//現在のマスが移動不可能
-			衝突[4] = SStage->land.Check地形(GetX(), GetY(), st->移動タイプ);
+			衝突[4] = SStage->land.Check地形(GetX(), GetY(), 移動種);
 
 			//斜め衝突
 			if (衝突[0] && 衝突[1] == 衝突[3])
@@ -364,9 +365,9 @@ namespace SDX_TD
 			const int y = (int)GetY() / ChipSize;
 
 			//飛行能力発動
-			if (st->is離陸 && 残りHP > 0 && 残りHP < 最大HP / 2 && belong != Belong::空)
+			if (st->is離陸 && 残りHP > 0 && 残りHP < 最大HP / 2 && 移動種 != MoveType::空)
 			{
-				belong = Belong::空;
+				移動種 = MoveType::空;
 				SStage->Add(this);//飛行敵リストに追加
 				return true;//現在のリストからは削除
 			}
@@ -377,11 +378,14 @@ namespace SDX_TD
 				//ボスはダメージ5倍
 				Witch::Main->Damage(1+isBoss*4);
 				isRemove = true;
-				SStage->ResetSelect(this);
 			}
 
 			if (残りHP <= 0) Dead();
-			if (isRemove)  Remove();
+			if (isRemove)
+			{
+				SStage->ResetSelect(this);
+				Remove();
+			}
 
 			return isRemove;
 		}
@@ -464,12 +468,12 @@ namespace SDX_TD
 		}
 
 		/**死亡時の特殊処理.*/
-		void DeadSp()
+		void DeadSub()
 		{
 		}
 
 		/**敵別の特殊処理.*/
-		void ActSp()
+		void ActSub()
 		{
 		}
 	};

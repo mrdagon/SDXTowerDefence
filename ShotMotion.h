@@ -12,7 +12,8 @@ namespace SDX
 
 	namespace MOTION
 	{
-		//ライナ/勇者:勇者強化
+		/**ライナ/勇者:勇者強化.*/
+		/**@todo 対地or対空を区別せず追尾する*/
 		class 勇者 : public IMotion
 		{
 		private:
@@ -55,7 +56,7 @@ namespace SDX
 						}
 						else
 						{
-							enemy = SStage->GetNearEnemy(&center);
+							enemy = SStage->GetNearEnemy(&center,true,true);
 						}
 
 						if ( enemy )
@@ -164,29 +165,49 @@ namespace SDX
 		//委員長:単純な範囲攻撃
 		//ミルラ:単純な範囲攻撃
 
-		//技師:追尾
-		/** 最大追尾可能な角度を指定.*/
+		/** 一番近い敵orターゲットを追尾する.*/
+		/**@todo 対地or対空限定の実装が途中*/
+		template <class TSpeed>
 		class 追尾 : public IMotion
 		{
 		private:
+			TSpeed speed;
 			double homing;
 		public:
-			追尾(double 一F辺りの追尾角度 = 0.0 ):
-				homing(一F辺りの追尾角度)
+			追尾( const TSpeed &速度 , double 毎フレームの追尾角度 ):
+				speed(速度),
+				homing(毎フレームの追尾角度)
 			{}
 
 			bool Update(IPosition* 移動対象) override
 			{
-				if (SStage->selectEnemy)
+				double angle;
+				auto 対象 = SStage->selectEnemy;
+				//敵を選択していないなら一番近い敵
+				if (対象 == nullptr)
 				{
-					//選択した敵に向かう
-					移動対象->SetAngle( 移動対象->GetDirect(SStage->selectEnemy) );
+					対象 = SStage->GetNearEnemy(移動対象,true,true);
 				}
-				else
+
+				if ( 対象 )
 				{
-					//一番近い敵に向かう
-					移動対象->SetAngle( SStage->GetNearDirect(移動対象) );
+					//角度の差を取得
+					angle = ( 移動対象->GetAngle() , 移動対象->GetDirect(対象));
+					if (std::abs(angle) < homing)
+					{
+						移動対象->SetAngle(homing);
+					}
+					else if (angle > 0)
+					{
+						移動対象->Rotate( -homing );
+					}
+					else
+					{
+						移動対象->Rotate( homing );
+					}
 				}
+
+				移動対象->MoveF(speed.Update());
 
 				return true;
 			}
@@ -203,16 +224,6 @@ namespace SDX
 			}
 		};
 
-		//狩人:曲射
-		class 曲射 : public IMotion
-		{
-		private:
-		public:
-			bool Update(IPosition* 移動対象) override
-			{
-				return true;
-			}
-		};
 	}
 
 }

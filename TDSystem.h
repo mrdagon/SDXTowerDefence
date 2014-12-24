@@ -13,7 +13,7 @@ namespace SDX_TD
 		Difficulty 難易度;
 		StageData* 現在ステージ;
 		bool isトライアル = true;//notならパワー
-		bool isシングル = true;//notならカップル
+		bool isカップル = true;//notならシングル
 
 		//std::vector<std::unique_ptr<IUnit>> 魔法リスト;
 		EnumArray<int, UnitType> 詠唱回数;

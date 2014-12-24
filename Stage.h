@@ -198,7 +198,7 @@ namespace SDX_TD
 
 			for (auto &&it : groundEnemyS.objectS)
 			{
-				SStage->land.UpdateEnemy((int)it->GetX(), (int)it->GetY(), it->st->移動タイプ);
+				SStage->land.UpdateEnemy((int)it->GetX(), (int)it->GetY(), it->移動種);
 			}
 		}
 
@@ -464,7 +464,7 @@ namespace SDX_TD
 
 			if (selectEnemy)
 			{
-				if (selectEnemy->st->移動タイプ == Belong::空)
+				if (selectEnemy->移動種 == MoveType::空)
 				{
 					if (InputCheckEnemyS(groundEnemyS,マウス座標, true)){ return true; }
 					if (InputCheckEnemyS(skyEnemyS,マウス座標, false)){ return true; }
@@ -666,14 +666,14 @@ namespace SDX_TD
 			MSystem::フレーム[5].Draw(F右全体);
 
 			//ウィッチの表示
-			if (TDSystem::isシングル)
-			{
-				MUnit::魔女[(UnitType)Witch::Main->種類][1]->DrawRotate(Pシングルウィッチ, 2, 0);
-			}
-			else
+			if (TDSystem::isカップル)
 			{
 				MUnit::魔女[(UnitType)Witch::Main->種類][1]->DrawRotate(Pカップルウィッチ[0], 2, 0);			
 				MUnit::魔女[(UnitType)Witch::Sub->種類][1]->DrawRotate(Pカップルウィッチ[1], 2, 0);
+			}
+			else
+			{
+				MUnit::魔女[(UnitType)Witch::Main->種類][1]->DrawRotate(Pシングルウィッチ, 2, 0);
 			}
 
 			//モードと難易度
@@ -730,9 +730,9 @@ namespace SDX_TD
 		/**敵を追加.*/
 		void Add(IEnemy* 追加するオブジェクト, int 待機時間 = 0) override
 		{
-			switch (追加するオブジェクト->GetBelong())
+			switch (追加するオブジェクト->移動種)
 			{
-			case Belong::空:
+			case MoveType::空:
 				skyEnemyS.Add(追加するオブジェクト, 待機時間);
 				break;
 			default:
@@ -764,50 +764,55 @@ namespace SDX_TD
 		}
 
 		/**一番近いEnemyを返す.*/
-		IObject* GetNearEnemy(const IPosition* 比較対象) override
+		IEnemy* GetNearEnemy(const IPosition* 比較対象 , bool is地上 , bool is空中) override
 		{
-			IObject* 一番近いObject = nullptr;
-			double  最短距離 = 9999999999;
+			IEnemy* 一番近い敵 = nullptr;
+			double  最短距離 = 9999999999;//適当に大きな値
 			double  距離;
 
-			for (auto && it : groundEnemyS.objectS)
+			if (is地上)
 			{
-				const double xd = it.get()->GetX() - 比較対象->GetX();
-				const double yd = it.get()->GetY() - 比較対象->GetY();
-				距離 = xd * xd + yd * yd;
-
-				if (距離 < 最短距離)
+				for (auto && it : groundEnemyS.objectS)
 				{
-					一番近いObject = it.get();
-					最短距離 = 距離;
+					const double xd = it.get()->GetX() - 比較対象->GetX();
+					const double yd = it.get()->GetY() - 比較対象->GetY();
+					距離 = xd * xd + yd * yd;
+
+					if (距離 < 最短距離)
+					{
+						一番近い敵 = it.get();
+						最短距離 = 距離;
+					}
 				}
 			}
-			for (auto && it : skyEnemyS.objectS)
+			if (is空中)
 			{
-				const double xd = it.get()->GetX() - 比較対象->GetX();
-				const double yd = it.get()->GetY() - 比較対象->GetY();
-				距離 = xd * xd + yd * yd;
-
-				if (距離 < 最短距離)
+				for (auto && it : skyEnemyS.objectS)
 				{
-					一番近いObject = it.get();
-					最短距離 = 距離;
+					const double xd = it.get()->GetX() - 比較対象->GetX();
+					const double yd = it.get()->GetY() - 比較対象->GetY();
+					距離 = xd * xd + yd * yd;
+
+					if (距離 < 最短距離)
+					{
+						一番近い敵 = it.get();
+						最短距離 = 距離;
+					}
 				}
 			}
 
-			return 一番近いObject;
+			return 一番近い敵;
 		}
-
 		/**一番近いEnemyの方向を返す.*/
 		/**Enemyがいない場合-1を返す*/
-		double GetNearDirect(const IPosition* 比較対象) override
-		{
-			IObject* 一番近いObject = GetNearEnemy(比較対象);
-
-			if (一番近いObject) return 比較対象->GetDirect(一番近いObject);
-
-			return -1;
-		}
+		//double GetNearDirect(const IPosition* 比較対象) override
+		//{
+		//	IObject* 一番近いObject = GetNearEnemy(比較対象);
+		//
+		//	if (一番近いObject) return 比較対象->GetDirect(一番近いObject);
+		//
+		//	return -1;
+		//}
 
 		Wave* GetWave()
 		{

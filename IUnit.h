@@ -4,6 +4,7 @@
 #pragma once
 #include "Object.h"
 #include "IStage.h"
+#include "Enemy.h"
 #include "Wave.h"
 #include "DataS.h"
 #include "Design.h"
@@ -21,16 +22,16 @@ namespace SDX_TD
 
 		UnitData *st;//ステータス
 		int    Lv = 0;
-		double 支援補正 = 1;
+		double 支援補正 = 1.0;
 
-		int    待機時間 = -1;
+		int    待機時間 = -1;//攻撃の待機
 		int    残り送還時間 = -1;
 		int    残り強化時間 = -1;
 		int    強化or送還長さ = 1;
 		bool   isジョブリスト = false;//画面左のジョブリスト用
 
 		IUnit(IShape &図形, ISprite &描画方法, UnitType 職種 , bool isリスト) :
-			IObject(図形, 描画方法, Belong::砲台),
+			IObject(図形, 描画方法),
 			st(&UnitDataS[職種]),
 			isジョブリスト(isリスト)
 		{}
@@ -38,9 +39,10 @@ namespace SDX_TD
 		/**.*/
 		void SetWait()
 		{
-			if (st->連射[Lv] == 0) st->連射[Lv] = 1;
-
-			待機時間 = int(速度値 / st->連射[Lv]);
+			if (st->連射[Lv] > 0)
+			{
+				待機時間 = int(速度値 / st->連射[Lv]);				
+			}
 		}
 
 		/**配置時の描画処理.*/
@@ -133,15 +135,15 @@ namespace SDX_TD
 			}
 
 			//強化前後の性能
-			DrawInfoState(Lv);
+			DrawInfoState();
 		}
 
-		void DrawInfoState(int 表示Lv)
+		void DrawInfoState()
 		{
 			using namespace UnitDraw;
 
 			bool 変化量表示 = isジョブリスト;
-			if (表示Lv == 5){ isジョブリスト = false; }
+			if (Lv == 5){ isジョブリスト = false; }
 
 			IconType アイコン[5] =
 			{
@@ -216,7 +218,6 @@ namespace SDX_TD
 			Screen::SetBlendMode(BlendMode::Alpha, 128);
 			Drawing::Circle({ GetX(), GetY(), (double)st->射程[Lv] }, Color::White, 0);
 			Screen::SetBlendMode();
-
 			Drawing::Circle({ GetX(), GetY(), (double)st->射程[Lv] }, Color::Red , 2);
 		}
 
@@ -327,19 +328,35 @@ namespace SDX_TD
 				SetWait();
 			}
 
-			if (待機時間 <= 0 && 残り送還時間 < 0 && 残り強化時間 < 0)
+			if (待機時間 <= 0 && 残り送還時間 < 0 && 残り強化時間 < 0 && !st->is使い捨て )
 			{
-				auto 一番近い敵 = SStage->GetNearEnemy(this);
-
-				if (一番近い敵)
+				IObject* 対象 = nullptr;
+				//敵を選択中
+				if ( SStage->selectEnemy )
 				{
-					double 距離 = GetDistance(一番近い敵);
+					const bool 地形対応 = (SStage->selectEnemy->st->移動種 == MoveType::空 && st->is対空) || (SStage->selectEnemy->st->移動種 != MoveType::空 && st->is対地);
 
-					if (距離 <= st->射程[Lv])
+					if ( 地形対応 && GetDistance(SStage->selectEnemy) <= st->射程[Lv])
 					{
-						Shoot(GetDirect(一番近い敵));
-						SetWait();
+						対象 = SStage->selectEnemy;
 					}
+				}
+
+				//選択した敵が範囲外 or 敵を未選択
+				if ( 対象 == nullptr)
+				{
+					対象 = SStage->GetNearEnemy(this , st->is対地 , st->is対空);
+					if ( !対象 || GetDistance(対象) <= st->射程[Lv])
+					{
+						対象 = nullptr;
+					}
+				}
+
+				if ( 対象 )
+				{
+					//射程内に敵がいるなら攻撃					
+					Shoot(GetDirect(対象));
+					SetWait();
 				}
 			}
 		}

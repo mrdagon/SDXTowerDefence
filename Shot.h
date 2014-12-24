@@ -29,7 +29,7 @@ namespace SDX_TD
 
 		/**弾の生成.*/
 		IShot(IShape &図形, ISprite &描画方法, double 角度, UnitData *st, int レベル , double 支援補正) :
-			IObject(図形, 描画方法, Belong::弾),
+			IObject(図形, 描画方法),
 			st(st),
 			isSmall(true)
 		{

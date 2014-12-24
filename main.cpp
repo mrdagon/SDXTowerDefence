@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 	}
 
 	//ゲームモード設定等
-	TDSystem::isシングル = true;
+	TDSystem::isカップル = false;
 	TDSystem::isトライアル = true;
 
 	Witch::SetMain(WitchType::ライナ);

@@ -15,7 +15,7 @@ namespace SDX_TD
 		std::string 種族名;
 		std::string 説明文;
 		EnemyType 種族;
-		Belong 移動タイプ;
+		MoveType 移動種;
 		Element 属性;
 
 		int スコア = 50;
@@ -29,9 +29,9 @@ namespace SDX_TD
 		//無効 or 有効
 		EnumArray<bool, DebuffType> 特殊耐性;
 
-		void Set(Belong 移動タイプ, Element 属性, int 最大HP, int スコア, int 移動速度)
+		void Set(MoveType 移動タイプ, Element 属性, int 最大HP, int スコア, int 移動速度)
 		{
-			this->移動タイプ = 移動タイプ;
+			this->移動種 = 移動タイプ;
 			this->属性 = 属性;
 			this->スコア = スコア;
 			this->最大HP = 最大HP;
@@ -60,21 +60,21 @@ namespace SDX_TD
 		}
 
 		//HP スコア 移動速度,防御,回避
-		EnemyDataS[EnemyType::ゼリー].Set(Belong::陸, Element::氷, 50, 15, 40);
-		EnemyDataS[EnemyType::ゴブリン].Set(Belong::陸, Element::樹, 80, 10, 50);
-		EnemyDataS[EnemyType::オーガ].Set(Belong::陸, Element::炎, 130, 20, 15);
-		EnemyDataS[EnemyType::コボルド].Set(Belong::陸, Element::樹, 40, 15, 70);
-		EnemyDataS[EnemyType::ケットシー].Set(Belong::陸, Element::空, 30, 15, 120);
-		EnemyDataS[EnemyType::シャーマン].Set(Belong::陸, Element::炎, 50, 20, 50);
-		EnemyDataS[EnemyType::スケルトン].Set(Belong::陸, Element::氷, 40, 15, 70);
-		EnemyDataS[EnemyType::インプ].Set(Belong::空, Element::空, 40, 15, 35);
-		EnemyDataS[EnemyType::グリフィン].Set(Belong::陸, Element::空, 90, 20, 25);
-		EnemyDataS[EnemyType::ケルベロス].Set(Belong::陸, Element::炎, 60, 20, 60);
-		EnemyDataS[EnemyType::ゴーレム].Set(Belong::陸, Element::樹, 60, 20, 20);
-		EnemyDataS[EnemyType::ドラゴン].Set(Belong::陸, Element::炎, 80, 25, 40);
-		EnemyDataS[EnemyType::ゼリー王].Set(Belong::陸, Element::氷, 30, 20, 40);
-		EnemyDataS[EnemyType::マーマン].Set(Belong::水, Element::氷, 60, 15, 50);
-		EnemyDataS[EnemyType::ロボット].Set(Belong::空, Element::氷, 60, 20, 15);
+		EnemyDataS[EnemyType::ゼリー].Set(MoveType::陸, Element::氷, 50, 15, 40);
+		EnemyDataS[EnemyType::ゴブリン].Set(MoveType::陸, Element::樹, 80, 10, 50);
+		EnemyDataS[EnemyType::オーガ].Set(MoveType::陸, Element::炎, 130, 20, 15);
+		EnemyDataS[EnemyType::コボルド].Set(MoveType::陸, Element::樹, 40, 15, 70);
+		EnemyDataS[EnemyType::ケットシー].Set(MoveType::陸, Element::空, 30, 15, 120);
+		EnemyDataS[EnemyType::シャーマン].Set(MoveType::陸, Element::炎, 50, 20, 50);
+		EnemyDataS[EnemyType::スケルトン].Set(MoveType::陸, Element::氷, 40, 15, 70);
+		EnemyDataS[EnemyType::インプ].Set(MoveType::空, Element::空, 40, 15, 35);
+		EnemyDataS[EnemyType::グリフィン].Set(MoveType::陸, Element::空, 90, 20, 25);
+		EnemyDataS[EnemyType::ケルベロス].Set(MoveType::陸, Element::炎, 60, 20, 60);
+		EnemyDataS[EnemyType::ゴーレム].Set(MoveType::陸, Element::樹, 60, 20, 20);
+		EnemyDataS[EnemyType::ドラゴン].Set(MoveType::陸, Element::炎, 80, 25, 40);
+		EnemyDataS[EnemyType::ゼリー王].Set(MoveType::陸, Element::氷, 30, 20, 40);
+		EnemyDataS[EnemyType::マーマン].Set(MoveType::水, Element::氷, 60, 15, 50);
+		EnemyDataS[EnemyType::ロボット].Set(MoveType::空, Element::氷, 60, 20, 15);
 
 		EnemyDataS[EnemyType::コボルド].回避力 = 1;
 

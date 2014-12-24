@@ -31,8 +31,7 @@ namespace SDX_TD
 		}
 
 		using S勇者 = Shot < Circle, SpImage, MOTION::勇者 >;
-		using S追尾 = Shot < Circle, SpImage, MOTION::追尾 >;
-		using S曲射 = Shot < Circle, SpImage, MOTION::曲射 >;
+		using S追尾 = Shot < Circle, SpImage, MOTION::追尾<SPEED::Liner> >;
 		template <class TSpeed = SPEED::Liner>
 		using S直進 = Shot < Circle, SpImage, MOTION::ToFront<TSpeed> >;
 
@@ -83,7 +82,7 @@ namespace SDX_TD
 				break;
 			case UnitType::技師://必中追尾A-単発型
 				//実装する
-				SStage->Add(new S追尾(&MEffect::弾, { 10 }, DEF));
+				SStage->Add(new S追尾(&MEffect::弾, { 10 , DEG }, DEF));
 				break;
 			case UnitType::勇者://必中追尾B-周囲展開型
 				break;
@@ -100,7 +99,7 @@ namespace SDX_TD
 				{
 					角度 += 10*DEG;//10℃刻み
 					SStage->Add(new S直進<>(&MEffect::弾, { 10 }, DEF));
-				}				
+				}
 				break;
 			case UnitType::騎士://反射B-連射加速直進
 				break;
@@ -124,7 +123,7 @@ namespace SDX_TD
 				break;
 			case UnitType::狩人://対空専用A-長射程、3連射
 				//実装する
-				SStage->Add(new S曲射(&MEffect::弾, {} , DEF));
+				SStage->Add(new S直進<>(&MEffect::弾, { 10 }, DEF));
 				break;
 			case UnitType::射手://対空専用B-中射程、高連射
 				break;
@@ -169,5 +168,4 @@ namespace SDX_TD
 		}
 #undef ADD
 	};
-
 }

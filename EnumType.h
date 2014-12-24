@@ -6,15 +6,12 @@ namespace SDX_TD
 {
 	using namespace SDX;
 
-	/**所属するレイヤーの識別子.*/
-	enum class Belong
+	/**敵の移動タイプ.*/
+	enum class MoveType
 	{
 		空,
 		陸,
 		水,
-		弾,
-		砲台,
-		その他,
 		COUNT
 	};
 

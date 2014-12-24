@@ -183,7 +183,7 @@ namespace SDX_TD
 			被ダメージ = 0;
 
 			Main->Init();
-			if ( !TDSystem::isシングル )
+			if ( TDSystem::isカップル )
 			{
 				Sub->Init();
 			}
@@ -251,7 +251,7 @@ namespace SDX_TD
 				Sp = 0;
 				補正計算();//ステータスを元に戻す
 
-				if (!TDSystem::isシングル)
+				if (TDSystem::isカップル)
 				{
 					std::swap(Main, Sub);
 					SStage->ResetJobList();
@@ -268,7 +268,7 @@ namespace SDX_TD
 			Hp = std::max(0, Hp - ダメージ量);
 			補正計算();
 
-			if (!TDSystem::isシングル)
+			if (TDSystem::isカップル)
 			{
 				Sub->Sp += 最大Sp / 20;
 				Sub->補正計算();
