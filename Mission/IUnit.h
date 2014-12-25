@@ -330,7 +330,7 @@ namespace SDX_TD
 
 			if (待機時間 <= 0 && 残り送還時間 < 0 && 残り強化時間 < 0 && !st->is使い捨て )
 			{
-				IObject* 対象 = nullptr;
+				IEnemy* 対象 = nullptr;
 				//敵を選択中
 				if ( SStage->selectEnemy )
 				{
@@ -355,14 +355,14 @@ namespace SDX_TD
 				if ( 対象 )
 				{
 					//射程内に敵がいるなら攻撃					
-					Shoot(GetDirect(対象));
+					Shoot(対象);
 					SetWait();
 				}
 			}
 		}
 
 		/**攻撃処理.*/
-		virtual void Shoot(double 角度){};
+		virtual void Shoot(IEnemy* 対象){};
 	};
 
 }

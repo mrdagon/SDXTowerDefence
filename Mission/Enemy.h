@@ -17,7 +17,7 @@ namespace SDX_TD
 
 		const EnemyData *st;
 		MoveType 移動種;
-		IEnemy* next;//当たり判定チェイン用
+		IEnemy*		next;//当たり判定チェイン用
 		int		レベル = 0;
 		int		方向 = 5;
 		double	最大HP = 0;
@@ -58,11 +58,18 @@ namespace SDX_TD
 		virtual ~IEnemy(){}
 
 		/**死亡時、基本処理.*/
-		/**@todo タッグ時の処理*/
 		void Dead()
 		{
 			//MP&SP&スコア増
-			Witch::Main->Mp += スコア;
+			if (TDSystem::isカップル)
+			{
+				Witch::Main->Mp += スコア - int(スコア*0.3);
+				Witch::Sub->Mp += int(スコア*0.3);
+			}
+			else
+			{
+				Witch::Main->Mp += スコア;
+			}
 			Witch::Main->Sp += st->スコア;
 
 			TDSystem::スコア += スコア;
@@ -73,12 +80,14 @@ namespace SDX_TD
 		/**.*/
 		void Act()
 		{
+			double speed = st->移動速度;
+			const int x = (int)(GetX() / ChipSize);
+			const int y = (int)(GetY() / ChipSize);
+
 			//方向を更新
 			方向更新();
 
-			double speed = st->移動速度;
-
-			if (isBoss) speed *= 0.66;
+			if (isBoss){ speed *= 0.66; }
 
 			//異常補正
 			if (麻痺時間 > 0)
@@ -92,14 +101,6 @@ namespace SDX_TD
 				speed = speed * 鈍足率;
 			}
 
-			const int x = (int)(GetX() / ChipSize);
-			const int y = (int)(GetY() / ChipSize);
-
-			if (SStage->land.地形[x][y] == ChipType::沼 && 移動種 == MoveType::陸)
-			{
-				speed /= 2;
-			}
-
 			//斜め移動補正
 			if (方向 % 2 == 0) speed *= 0.7;
 
@@ -108,16 +109,13 @@ namespace SDX_TD
 
 			//吹き飛び処理
 			mx += 吹き飛びX / 8;
-			吹き飛びX *= 7.0 / 8;
-
+			吹き飛びX -= 吹き飛びX / 8;
 			my += 吹き飛びY / 8;
-			吹き飛びY *= 7.0 / 8;
+			吹き飛びY -= 吹き飛びY / 8;
 
 			地形処理(mx, my);
-
-			地形衝突(mx, my);
-
 			Move(mx, my);
+			地形衝突();
 
 			//敵毎の特殊処理
 			ActSub();
@@ -139,8 +137,8 @@ namespace SDX_TD
 			}
 		}
 
-		/**特殊地形の処理.*/
-		void 地形処理(double 移動量X, double 移動量Y)
+		/**特殊地形による移動量補正.*/
+		void 地形処理(double &移動量X, double &移動量Y)
 		{
 			//飛んでる敵は影響無し
 			if (移動種 == MoveType::空) return;
@@ -152,6 +150,7 @@ namespace SDX_TD
 			switch (地形種)
 			{
 			case SDX_TD::ChipType::沼:
+				if (移動種 == MoveType::水){ break; }
 				移動量X /= 2;
 				移動量Y /= 2;
 				break;
@@ -172,92 +171,53 @@ namespace SDX_TD
 			}
 		}
 
-		/**地形との衝突.*/
-		void 地形衝突(double 移動量X, double 移動量Y)
+		/**移動不可マスへのめり込み回避.*/
+		void 地形衝突()
 		{
-			const int X差 = (int)GetX() % ChipSize;
-			const int Y差 = (int)GetY() % ChipSize;
+			//はみ出ている量
+			const int X差 = (int)GetX() % ChipSize - 判定大きさ/2;
+			const int Y差 = (int)GetY() % ChipSize - 判定大きさ / 2;
 
 			//各方向にはみ出ているか
-			const bool is↑ = Y差 < 7;
-			const bool is↓ = Y差 > 8;
-			const bool is← = X差 < 7;
-			const bool is→ = X差 > 8;
+			const bool is↑ = Y差 < 0;
+			const bool is↓ = Y差 > 0;
+			const bool is← = X差 < 0;
+			const bool is→ = X差 > 0;
 
 			bool 衝突[9] = {};
 
 			//平面にめりこみ
-			if (is↑)         衝突[1] = SStage->land.Check地形(GetX(), GetY() - 7, 移動種);
-			if (is←)         衝突[3] = SStage->land.Check地形(GetX() - 7, GetY(), 移動種);
-			if (is→)         衝突[5] = SStage->land.Check地形(GetX() + 7, GetY(), 移動種);
-			if (is↓)         衝突[6] = SStage->land.Check地形(GetX() - 7, GetY() + 7, 移動種);
+			if (is↑) { 衝突[1] = SStage->land.Check地形(GetX(), GetY() - 7, 移動種); }
+			if (is←) { 衝突[3] = SStage->land.Check地形(GetX() - 7, GetY(), 移動種); }
+			if (is→) { 衝突[5] = SStage->land.Check地形(GetX() + 7, GetY(), 移動種); }
+			if (is↓) { 衝突[7] = SStage->land.Check地形(GetX() - 7, GetY() + 7, 移動種); }
 
 			//角にめりこみ
-			if (is↑ && is←) 衝突[0] = SStage->land.Check地形(GetX() - 7, GetY() - 7, 移動種);
-			if (is↑ && is→) 衝突[2] = SStage->land.Check地形(GetX() + 7, GetY() - 7, 移動種);
-			if (is↓ && is←) 衝突[7] = SStage->land.Check地形(GetX(), GetY() + 7, 移動種);
-			if (is↓ && is→) 衝突[8] = SStage->land.Check地形(GetX() + 7, GetY() + 7, 移動種);
+			if (is↑ && is←){ 衝突[0] = SStage->land.Check地形(GetX() - 7, GetY() - 7, 移動種); }
+			if (is↑ && is→){ 衝突[2] = SStage->land.Check地形(GetX() + 7, GetY() - 7, 移動種); }
+			if (is↓ && is←){ 衝突[6] = SStage->land.Check地形(GetX() - 7, GetY() + 7, 移動種); }
+			if (is↓ && is→){ 衝突[8] = SStage->land.Check地形(GetX() + 7, GetY() + 7, 移動種); }
 
 			//現在のマスが移動不可能
-			衝突[4] = SStage->land.Check地形(GetX(), GetY(), 移動種);
+			if (SStage->land.Check地形(GetX(), GetY(), 移動種))
+			{
+				Move(Rand::Get(-1, 1), Rand::Get(-1, 1));
+				return;
+			}
+
+			double x = 0, y = 0;
 
 			//斜め衝突
-			if (衝突[0] && 衝突[1] == 衝突[3])
-			{
-				移動量X += 7 - X差;
-				移動量Y += 7 - Y差;
-				//移動量X += 2;
-				//移動量Y += 2;
-				return;
-			}
+			if (衝突[0] && 衝突[1] == 衝突[3]){ x = 1; y = 1; }
+			if (衝突[2] && 衝突[1] == 衝突[5]){ x = -1;y = 1; }
+			if (衝突[6] && 衝突[3] == 衝突[7]){ x = 1; y = -1; }
+			if (衝突[8] && 衝突[5] == 衝突[7]){ x = -1;y= -1; }
+			if (衝突[1]){ y = 1; }
+			if (衝突[3]){ x = 1; }
+			if (衝突[5]){ x = -1; }
+			if (衝突[7]){ y = -1; }
 
-			if (衝突[2] && 衝突[1] == 衝突[5])
-			{
-				移動量X += 7 - X差;
-				移動量Y += 7 - Y差;
-				//移動量X -= 2;
-				//移動量Y += 2;
-				return;
-			}
-
-			if (衝突[6] && 衝突[3] == 衝突[7])
-			{
-				移動量X += 7 - X差;
-				移動量Y += 7 - Y差;
-				//移動量X += 2;
-				//移動量Y -= 2;
-				return;
-			}
-
-			if (衝突[8] && 衝突[5] == 衝突[7])
-			{
-				移動量X += 7 - X差;
-				移動量Y += 7 - Y差;
-				//移動量X -= 2;
-				//移動量Y -= 2;
-				return;
-			}
-
-			if (衝突[3])
-			{
-				移動量X += 7 - X差;
-				//移動量X += 2;
-			}
-			if (衝突[5])
-			{
-				移動量X += 7 - X差;
-				//移動量X -= 2;
-			}
-			if (衝突[1])
-			{
-				移動量Y += 7 - Y差;
-				//移動量Y += 2;
-			}
-			if (衝突[7])
-			{
-				移動量Y += 7 - Y差;
-				//移動量Y -= 2;
-			}
+			Move(x, y);
 		}
 
 		/**デバッグ用描画処理.*/
@@ -486,7 +446,7 @@ namespace SDX_TD
 
 		Enemy(double X座標, double Y座標, EnemyType 敵種類, int Lv, bool isBoss) :
 			IEnemy(shape, sprite, &EnemyDataS[敵種類], Lv, isBoss),
-			shape((X座標 + 0.5)*ChipSize, (Y座標 + 0.5)*ChipSize, 14, 14)
+			shape((X座標 + 0.5)*ChipSize, (Y座標 + 0.5)*ChipSize, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2)
 		{
 		}
 	};

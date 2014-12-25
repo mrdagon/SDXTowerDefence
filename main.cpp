@@ -3,16 +3,12 @@
 
 #include "stdafx.h"
 
-#include "Object.h"
-#include "Shot.h"
-#include "Unit.h"
-#include "Enemy.h"
+#include "Mission/Object.h"
+#include "Mission/Shot.h"
+#include "Mission/Unit.h"
+#include "Mission/Enemy.h"
 
-#include "Stage.h"
-#include "Menu.h"
-
-#include "TitleMenu.h"
-#include "Sample/Sample.h"
+#include "Mission/Stage.h"
 
 int main(int argc, char* argv[])
 {

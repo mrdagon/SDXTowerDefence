@@ -32,14 +32,16 @@ namespace SDX_TD
 
 		using S勇者 = Shot < Circle, SpImage, MOTION::勇者 >;
 		using S追尾 = Shot < Circle, SpImage, MOTION::追尾<SPEED::Liner> >;
+
 		template <class TSpeed = SPEED::Liner>
 		using S直進 = Shot < Circle, SpImage, MOTION::ToFront<TSpeed> >;
 
-		void Shoot(double 角度)
+		void Shoot(IEnemy *対象)
 		{
+			double 角度 = this->GetDirect(対象);
+
 //入力省略,描画方法,移動方法
 #define DEF { GetX(), GetY(), st->半径 },st,Lv,角度,支援補正
-
 			switch (st->職種)
 			{
 			case UnitType::ライナ://勇者強化
@@ -62,7 +64,6 @@ namespace SDX_TD
 			case UnitType::ロチエ://くの一強化
 				break;
 			case UnitType::バロゥ://狩人強化
-				//ADD(Shot直進, &MEffect::弾, { 1 });
 				break;
 			case UnitType::フィオナ://司祭強化
 				break;
@@ -165,7 +166,7 @@ namespace SDX_TD
 			case UnitType::くノ一://鈍足B-低連射、炸裂効果
 				break;
 			}
+#undef DEF
 		}
-#undef ADD
 	};
 }
