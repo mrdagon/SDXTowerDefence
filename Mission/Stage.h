@@ -6,6 +6,8 @@
 #include "Land.h"
 #include "Layer.h"
 #include "IStage.h"
+#include "Pause.h"
+#include "Result.h"
 
 #include "Enemy.h"
 #include "Unit.h"
@@ -53,10 +55,10 @@ namespace SDX_TD
 
 		Wave wave;
 
-		IEnemy* 地上Top[MapSize][MapSize];
-		IEnemy* 地上End[MapSize][MapSize];
-		IEnemy* 空中Top[MapSize][MapSize];
-		IEnemy* 空中End[MapSize][MapSize];
+		IEnemy* 地上Top[MAP_SIZE][MAP_SIZE];
+		IEnemy* 地上End[MAP_SIZE][MAP_SIZE];
+		IEnemy* 空中Top[MAP_SIZE][MAP_SIZE];
+		IEnemy* 空中End[MAP_SIZE][MAP_SIZE];
 
 		/**レイヤー等を初期化.*/
 		void Clear()
@@ -76,12 +78,12 @@ namespace SDX_TD
 			unitS.Clear();
 		}
 
-		void AddChainList(Layer<IEnemy> &処理するレイヤ, IEnemy* 始点[MapSize][MapSize], IEnemy* 終点[MapSize][MapSize])
+		void AddChainList(Layer<IEnemy> &処理するレイヤ, IEnemy* 始点[MAP_SIZE][MAP_SIZE], IEnemy* 終点[MAP_SIZE][MAP_SIZE])
 		{
 			for (auto &&it : 処理するレイヤ.objectS)
 			{
-				const int x = (int)it->GetX() / ChipSize;
-				const int y = (int)it->GetY() / ChipSize;
+				const int x = (int)it->GetX() / CHIP_SIZE;
+				const int y = (int)it->GetY() / CHIP_SIZE;
 				if (始点[x][y] == nullptr)
 				{
 					始点[x][y] = it.get();
@@ -112,33 +114,33 @@ namespace SDX_TD
 		}
 
 		/**貫通弾の判定.*/
-		void HitArea(IShot* 弾, IEnemy* 始点[MapSize][MapSize])
+		void HitArea(IShot* 弾, IEnemy* 始点[MAP_SIZE][MAP_SIZE])
 		{
 			//大雑把な分割処理をしない
-			for (int x = 0; x < MapSize; ++x){
-				for (int y = 0; y < MapSize; ++y)
+			for (int x = 0; x < MAP_SIZE; ++x){
+				for (int y = 0; y < MAP_SIZE; ++y)
 				{
 					HitShotEnemy(弾, 始点[x][y]);
 				}
 			}
 		}
 		/**通常弾の判定.*/
-		void HitSingle(IShot* 弾, IEnemy* 始点[MapSize][MapSize])
+		void HitSingle(IShot* 弾, IEnemy* 始点[MAP_SIZE][MAP_SIZE])
 		{
 			//大雑把に分割してから判定を行う
-			const int xa = (int)(弾->GetX() - ChipSize / 2) / ChipSize;
-			const int ya = (int)(弾->GetY() - ChipSize / 2) / ChipSize;
-			const int xb = (int)(弾->GetX() + ChipSize / 2) / ChipSize;
-			const int yb = (int)(弾->GetY() + ChipSize / 2) / ChipSize;
+			const int xa = (int)(弾->GetX() - CHIP_SIZE / 2) / CHIP_SIZE;
+			const int ya = (int)(弾->GetY() - CHIP_SIZE / 2) / CHIP_SIZE;
+			const int xb = (int)(弾->GetX() + CHIP_SIZE / 2) / CHIP_SIZE;
+			const int yb = (int)(弾->GetY() + CHIP_SIZE / 2) / CHIP_SIZE;
 
-			if (xa >= 0 && xa < MapSize)
+			if (xa >= 0 && xa < MAP_SIZE)
 			{
-				if (ya >= 0 && ya < MapSize)
+				if (ya >= 0 && ya < MAP_SIZE)
 				{
 					if (HitShotEnemy(弾, 始点[xa][ya])){ return; }
 				}
 
-				if (yb >= 0 && yb < MapSize && ya != yb)
+				if (yb >= 0 && yb < MAP_SIZE && ya != yb)
 				{
 					if (HitShotEnemy(弾, 始点[xa][yb])){ return; }
 				}
@@ -146,14 +148,14 @@ namespace SDX_TD
 
 			if (xa == xb) return;//X座標同じなら以降処理しない
 
-			if (xb >= 0 && xb < MapSize)
+			if (xb >= 0 && xb < MAP_SIZE)
 			{
-				if (ya >= 0 && ya < MapSize)
+				if (ya >= 0 && ya < MAP_SIZE)
 				{
 					if (HitShotEnemy(弾, 始点[xb][ya])){ return; }
 				}
 
-				if (yb >= 0 && yb < MapSize && ya != yb)
+				if (yb >= 0 && yb < MAP_SIZE && ya != yb)
 				{
 					if (HitShotEnemy(弾, 始点[xb][yb])){ return; }
 				}
@@ -164,8 +166,8 @@ namespace SDX_TD
 		void Hit()
 		{
 			//空と地上の分割木を初期化
-			for (int a = 0; a < MapSize; ++a){
-				for (int b = 0; b < MapSize; ++b)
+			for (int a = 0; a < MAP_SIZE; ++a){
+				for (int b = 0; b < MAP_SIZE; ++b)
 				{
 					地上Top[a][b] = nullptr;
 					空中Top[a][b] = nullptr;
@@ -202,87 +204,6 @@ namespace SDX_TD
 			}
 		}
 
-	public:
-		int timer = 0;
-		int gamespeed = 1;
-
-		Stage()
-		{
-			Init();
-		}
-
-		virtual ~Stage(){}
-
-		/**Stageを初期化する.*/
-		void Init()
-		{
-			Clear();
-
-			//地形データ初期化
-			SStage = this;
-			land.Init();
-
-			TDSystem::スコア = 0;
-
-			//詠唱回数リセット
-			for (auto it : TDSystem::詠唱回数)
-			{
-				it = 0;
-			}
-
-			//ウィッチ初期化
-			Witch::InitAll();
-		}
-
-		/**Unit一覧を更新.*/
-		void ResetJobList() override
-		{
-			//ウィッチリスト12種初期化
-			for (int a = 0; a < 12; ++a)
-			{
-				jobS[a].SetType(Witch::Main->職種[a]);
-				jobS[a].shape = StageDraw::F魔法一覧[a];
-			}
-		}
-
-		/**毎フレーム実行される更新処理.*/
-		void Update() override
-		{
-			SStage = this;
-			++timer;
-			Director::IsDraw() = (timer % gamespeed == 0);
-
-			NextWave();
-
-			Witch::Main->Update();
-
-			//レイヤー処理
-			backEffectS.Update();
-			midEffectS.Update();
-			frontEffectS.Update();
-
-			skyEnemyS.Update();
-			groundEnemyS.Update();
-
-			shotS.Update();
-			unitS.Update();
-
-			Hit();
-
-			//消滅処理
-			backEffectS.ExeRemove();
-			midEffectS.ExeRemove();
-			frontEffectS.ExeRemove();
-
-			skyEnemyS.ExeRemove();
-			groundEnemyS.ExeRemove();
-
-			shotS.ExeRemove();
-			unitS.ExeRemove();
-
-			InputCheck();
-		}
-
 		/**Waveの進行と敵の発生.*/
 		void NextWave()
 		{
@@ -303,10 +224,10 @@ namespace SDX_TD
 			}
 			else
 			{
-				lv = int((wave.現在Wave + 1) * PowerDataS[TDSystem::難易度].レベル補正);
+				lv = int((wave.現在Wave + 1) * LimitlessDataS[TDSystem::難易度].レベル補正);
 
-				if (wave.isBoss[waveNo]){ enemyCount = PowerDataS[TDSystem::難易度].ボス召喚数; }
-				else { enemyCount = PowerDataS[TDSystem::難易度].雑魚召喚数; }
+				if (wave.isBoss[waveNo]){ enemyCount = LimitlessDataS[TDSystem::難易度].ボス召喚数; }
+				else { enemyCount = LimitlessDataS[TDSystem::難易度].雑魚召喚数; }
 			}
 
 			if (wave.敵種類[waveNo] == EnemyType::ゴブリン)
@@ -316,8 +237,8 @@ namespace SDX_TD
 
 			for (int a = 0; a < enemyCount; ++a)
 			{
-				int x = SStage->land.穴の位置[0] % MapSize;
-				int y = SStage->land.穴の位置[0] / MapSize;
+				int x = SStage->land.穴の位置[0] % MAP_SIZE;
+				int y = SStage->land.穴の位置[0] / MAP_SIZE;
 
 				Add(new Enemy(x, y, wave.敵種類[waveNo], lv, wave.isBoss[waveNo]), a * 16);
 			}
@@ -328,18 +249,11 @@ namespace SDX_TD
 		/**各種操作、クリックの選択処理.*/
 		void InputCheck()
 		{
-			using namespace StageDraw;
+			namespace UI = UI_Stage;
 
 			Point マウス座標(Input::mouse.x, Input::mouse.y);
 			Command comType = Command::null;
 			int comNo = 0;
-
-			//UI位置の更新
-			if (Input::key._1.on)
-			{
-				UnitDraw::Reset();
-				StageDraw::Reset();
-			}
 
 			//速度変更
 			if (Input::mouse.Whell > 0){ gamespeed *= 2; }
@@ -348,9 +262,9 @@ namespace SDX_TD
 			gamespeed = std::max(gamespeed, 1);
 
 			//ポーズ
-			if (Fメニュー.Hit(&マウス座標) && Input::mouse.Left.on)
+			if (UI::Rメニュー.Hit(&マウス座標) && Input::mouse.Left.on)
 			{
-
+				Director::AddScene(std::make_shared<Pause>());
 			}
 
 			//↑はリプレイ時も共通
@@ -373,7 +287,7 @@ namespace SDX_TD
 
 			if (InputCheckEnemy(&マウス座標)){ return; }
 
-			if (F大魔法.Hit(&マウス座標) )
+			if (UI::R大魔法.Hit(&マウス座標))
 			{
 				comType = Command::大魔法発動;
 			}
@@ -400,7 +314,7 @@ namespace SDX_TD
 			//一覧の魔法を選択
 			for (int a = 0; a < 12; ++a)
 			{
-				if (F魔法一覧[a].Hit(&マウス座標))
+				if (UI::R魔法一覧[a].Hit(&マウス座標))
 				{
 					comType = Command::種別選択;
 					comNo = a;
@@ -409,12 +323,12 @@ namespace SDX_TD
 			}
 
 			//強化
-			if (UnitDraw::F強化.Hit(&マウス座標))
+			if (UI_Unit::R強化.Hit(&マウス座標))
 			{
 				comType = Command::強化;
 			}
 			//売却or必殺
-			if (UnitDraw::F回収.Hit(&マウス座標))
+			if (UI_Unit::R回収.Hit(&マウス座標))
 			{
 				comType = Command::売却;
 			}
@@ -559,20 +473,6 @@ namespace SDX_TD
 			}
 		}
 
-		void SetSelect(IEnemy* 選択した敵)
-		{
-			selected = 選択した敵;
-			selectEnemy = 選択した敵;
-			selectUnit = nullptr;
-		}
-
-		void SetSelect(IUnit* 選択したユニット)
-		{
-			selected = 選択したユニット;
-			selectEnemy = nullptr;
-			selectUnit = 選択したユニット;
-		}
-
 		/**配置処理.*/
 		void SetCheck(UnitType 職種)
 		{
@@ -584,8 +484,8 @@ namespace SDX_TD
 				return;
 			}
 
-			const int x = (Input::mouse.x - ChipSize / 2) / ChipSize;
-			const int y = (Input::mouse.y - ChipSize / 2) / ChipSize;
+			const int x = (Input::mouse.x - CHIP_SIZE / 2) / CHIP_SIZE;
+			const int y = (Input::mouse.y - CHIP_SIZE / 2) / CHIP_SIZE;
 
 			//敵の位置を更新
 			LandUpdate();
@@ -593,8 +493,177 @@ namespace SDX_TD
 			//配置可能かチェック
 			if (SStage->land.SetUnit(x, y, 2))
 			{
-				Add(new Unit(職種,(x+1) * ChipSize , (y+1) * ChipSize ));
+				Add(new Unit(職種,(x+1) * CHIP_SIZE , (y+1) * CHIP_SIZE ));
 			}
+		}
+
+		/**UIの描画.*/
+		void DrawUI()
+		{
+			namespace UI = UI_Stage;
+
+			MSystem::背景.DrawPart({ 0, 0 }, { 0, 0, 480, 40 });
+			MSystem::背景.DrawPart({ 0, 0 }, { 0, 0, 40, 480 });
+			MSystem::背景.DrawPart({ 0, 472 }, { 0, 472, 480, 40 });
+			MSystem::背景.DrawPart({ 472, 0 }, { 472, 0, 168, 480 });
+
+			//Wave一覧の表示
+			wave.Draw();
+
+			//スコアの表示
+			MSystem::フレーム[5].Draw(UI::Rスコア);
+			MFont::BMP黒.Draw(UI::Pスコア + UI::P差分[0], Color::White, "SCORE");
+			MFont::BMP白.DrawExtend(UI::Pスコア, 2, 2, Color::White, { std::setw(10), TDSystem::スコア });
+
+			int 敵数 = skyEnemyS.GetCount() + groundEnemyS.GetCount();
+			MSystem::フレーム[5].Draw(UI::R敵数);
+			MFont::BMP黒.Draw(UI::P敵数 + UI::P差分[0], Color::White, "ENEMY");
+			MFont::BMP白.DrawExtend(UI::P敵数, 2, 2, Color::White, { std::setw(5), 敵数 });
+
+			//ゲーム速度の表示
+			int spd = 4;
+			for (int a = 0; a < 4; ++a)
+			{
+				int x = (int)UI::Rゲーム速度[a].x;
+				const int SIZE = 2;
+
+				MSystem::フレーム[3].Draw(UI::Rゲーム速度[a], Color::Gray);
+
+				MFont::BMP黒.Draw(UI::Rゲーム速度[a].GetPoint() + UI::P差分[7], Color::White, "x");
+				MFont::BMP黒.DrawExtend(UI::Rゲーム速度[a].GetPoint() + UI::P差分[6], SIZE, SIZE, Color::White, { std::setw(2), spd });
+
+				spd *= 2;
+			}
+
+			//全体枠
+			MSystem::フレーム[5].Draw(UI::R右全体);
+
+			//ウィッチの表示
+			if (TDSystem::isカップル)
+			{
+				MUnit::魔女[(UnitType)Witch::Main->種類][1]->DrawRotate(UI::Pカップルウィッチ[0], 2, 0);
+				MUnit::魔女[(UnitType)Witch::Sub->種類][1]->DrawRotate(UI::Pカップルウィッチ[1], 2, 0);
+			}
+			else
+			{
+				MUnit::魔女[(UnitType)Witch::Main->種類][1]->DrawRotate(UI::Pシングルウィッチ, 2, 0);
+			}
+
+			//モードと難易度
+			MFont::BMP黒.DrawExtend(UI::P難易度名, 1, 1, Color::White, { "normal" });
+			MFont::BMP黒.DrawExtend(UI::Pモード名, 1, 1, Color::White, { "single" });
+
+			//SP,HP,MPの表示
+			if (Witch::Main->大魔法残り時間 > 0)
+			{
+				const int SP値 = int(Witch::Main->大魔法残り時間 * 100 / Witch::Main->大魔法時間);
+				MIcon::UI[IconType::マナ].Draw(UI::PＳＰ);
+				MFont::BMP白.DrawExtend(UI::PＳＰ + UI::P差分[1], 2, 2, { 120, 120, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
+			}
+			else
+			{
+				const int SP値 = std::min(int(Witch::Main->Sp * 100 / Witch::Main->最大Sp), 100);
+				MIcon::UI[IconType::マナ].Draw(UI::PＳＰ);
+				MFont::BMP白.DrawExtend(UI::PＳＰ + UI::P差分[1], 2, 2, { 120, 120, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
+			}
+
+			MIcon::UI[IconType::ライフ].Draw(UI::P体力);
+			MFont::BMP白.DrawExtend(UI::P体力 + UI::P差分[1], 2, 2, { 255, 60, 60 }, { std::setw(5), Witch::Main->Hp });//HP
+
+			MIcon::UI[IconType::レベル].Draw(UI::P魔力);
+			MFont::BMP白.DrawExtend(UI::P魔力 + UI::P差分[1], 2, 2, { 255, 255, 0 }, { std::setw(5), Witch::Main->Mp });//MP
+
+			//設定ボタン
+			MSystem::フレーム[3].Draw(UI::Rメニュー);
+			MFont::ゴシック中.DrawShadow(UI::Rメニュー.GetPoint() + UI::P差分[2], Color::Black, Color::Gray, "ポーズ");
+
+			MSystem::フレーム[3].Draw(UI::R大魔法);
+			MFont::ゴシック中.DrawShadow(UI::R大魔法.GetPoint() + UI::P差分[2], Color::Black, Color::Gray, "大魔法");
+
+			//魔法一覧の表示
+			for (auto &&it : jobS)
+			{
+				it.Draw();
+			}
+
+			//情報の表示
+			MSystem::フレーム[5].Draw(UI::R情報);
+
+			if (selected)
+			{
+				selected->DrawInfo();
+			}
+		}
+
+	public:
+		int timer = 0;
+		int gamespeed = 1;
+
+		Stage()
+		{
+			Init();
+		}
+
+		virtual ~Stage(){}
+
+		/**Stageを初期化する.*/
+		void Init()
+		{
+			Clear();
+
+			//地形データ初期化
+			SStage = this;
+			land.Init();
+
+			TDSystem::スコア = 0;
+
+			//詠唱回数リセット
+			for (auto it : TDSystem::詠唱回数)
+			{
+				it = 0;
+			}
+
+			//ウィッチ初期化
+			Witch::InitAll();
+		}
+
+		/**毎フレーム実行される更新処理.*/
+		void Update() override
+		{
+			SStage = this;
+
+			++timer;
+			Director::IsDraw() = (timer % gamespeed == 0);
+
+			NextWave();
+
+			Witch::Main->Update();
+
+			//レイヤー処理
+			backEffectS.Update();
+			midEffectS.Update();
+			frontEffectS.Update();
+
+			skyEnemyS.Update();
+			groundEnemyS.Update();
+
+			shotS.Update();
+			unitS.Update();
+
+			Hit();
+
+			//消滅処理
+			backEffectS.ExeRemove();
+			midEffectS.ExeRemove();
+			frontEffectS.ExeRemove();
+
+			skyEnemyS.ExeRemove();
+			groundEnemyS.ExeRemove();
+
+			shotS.ExeRemove();
+			unitS.ExeRemove();
+
+			InputCheck();
 		}
 
 		/**画面の描画.*/
@@ -622,103 +691,28 @@ namespace SDX_TD
 			DrawUI();
 		}
 
-		/**UIの描画.*/
-		void DrawUI()
+		void SetSelect(IEnemy* 選択した敵)
 		{
-			using namespace StageDraw;
+			selected = 選択した敵;
+			selectEnemy = 選択した敵;
+			selectUnit = nullptr;
+		}
 
-			MSystem::背景.DrawPart({ 0, 0 }, { 0, 0, 480, 40 });
-			MSystem::背景.DrawPart({ 0, 0 }, { 0, 0, 40, 480 });
-			MSystem::背景.DrawPart({ 0, 472 }, { 0, 472, 480, 40 });
-			MSystem::背景.DrawPart({ 472, 0 }, { 472, 0, 168, 480 });
+		void SetSelect(IUnit* 選択したユニット)
+		{
+			selected = 選択したユニット;
+			selectEnemy = nullptr;
+			selectUnit = 選択したユニット;
+		}
 
-			//Wave一覧の表示
-			wave.Draw();
-
-			//スコアの表示
-			MSystem::フレーム[5].Draw(Fスコア);
-			MFont::BMP黒.Draw(Pスコア + P差分[0], Color::White, "SCORE");
-			MFont::BMP白.DrawExtend(Pスコア, 2, 2, Color::White, { std::setw(10), TDSystem::スコア });
-
-			int 敵数 = skyEnemyS.GetCount() + groundEnemyS.GetCount();
-			MSystem::フレーム[5].Draw(F敵数);
-			MFont::BMP黒.Draw( P敵数+P差分[0], Color::White, "ENEMY");
-			MFont::BMP白.DrawExtend( P敵数, 2, 2, Color::White, { std::setw(5), 敵数 });
-
-			//ゲーム速度の表示
-			int spd = 4;
-			for (int a = 0; a < 4; ++a)
+		/**Unit一覧を更新.*/
+		void ResetJobList() override
+		{
+			//ウィッチリスト12種初期化
+			for (int a = 0; a < 12; ++a)
 			{
-				int x = (int)Fゲーム速度[a].x;
-				const int SIZE = 2;
-
-				if (gamespeed != spd){ Screen::SetBright(Color::Gray); }
-				MSystem::フレーム[3].Draw(Fゲーム速度[a]);
-				if (gamespeed != spd){ Screen::SetBright(Color::White); }
-
-				MFont::BMP黒.Draw(Fゲーム速度[a].GetPoint() + P差分[7], Color::White, "x");
-				MFont::BMP黒.DrawExtend( Fゲーム速度[a].GetPoint() + P差分[6], SIZE, SIZE, Color::White, {std::setw(2) ,spd });
-
-				spd *= 2;
-			}
-
-			//全体枠
-			MSystem::フレーム[5].Draw(F右全体);
-
-			//ウィッチの表示
-			if (TDSystem::isカップル)
-			{
-				MUnit::魔女[(UnitType)Witch::Main->種類][1]->DrawRotate(Pカップルウィッチ[0], 2, 0);			
-				MUnit::魔女[(UnitType)Witch::Sub->種類][1]->DrawRotate(Pカップルウィッチ[1], 2, 0);
-			}
-			else
-			{
-				MUnit::魔女[(UnitType)Witch::Main->種類][1]->DrawRotate(Pシングルウィッチ, 2, 0);
-			}
-
-			//モードと難易度
-			MFont::BMP黒.DrawExtend(P難易度名, 1, 1, Color::White, { "normal" });
-			MFont::BMP黒.DrawExtend(Pモード名, 1, 1, Color::White, { "single" });
-
-			//SP,HP,MPの表示
-			if (Witch::Main->大魔法残り時間 > 0)
-			{
-				const int SP値 = int(Witch::Main->大魔法残り時間 * 100 / Witch::Main->大魔法時間);
-				MIcon::UI[IconType::マナ].Draw(PSP);
-				MFont::BMP白.DrawExtend(PSP + P差分[1], 2, 2, { 120, 120, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
-			}
-			else
-			{
-				const int SP値 = std::min(int(Witch::Main->Sp * 100 / Witch::Main->最大Sp), 100);
-				MIcon::UI[IconType::マナ].Draw(PSP);
-				MFont::BMP白.DrawExtend(PSP + P差分[1], 2, 2, { 120, 120, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
-			}
-
-			MIcon::UI[IconType::ライフ].Draw(P体力);
-			MFont::BMP白.DrawExtend(P体力 + P差分[1], 2, 2, { 255, 60, 60 }, { std::setw(5), Witch::Main->Hp });//HP
-
-			MIcon::UI[IconType::レベル].Draw(P魔力);
-			MFont::BMP白.DrawExtend( P魔力 + P差分[1], 2, 2, { 255, 255, 0 }, { std::setw(5), Witch::Main->Mp });//MP
-
-			//設定ボタン
-			MSystem::フレーム[3].Draw(Fメニュー);
-			MFont::ゴシック中.DrawShadow( Fメニュー.GetPoint() + P差分[2], Color::Black, Color::Gray, "ポーズ");
-
-			MSystem::フレーム[3].Draw(F大魔法);
-			MFont::ゴシック中.DrawShadow( F大魔法.GetPoint() + P差分[2], Color::Black, Color::Gray, "大魔法");
-
-			//魔法一覧の表示
-			for (auto &&it : jobS)
-			{
-				it.Draw();
-			}
-
-			//情報の表示
-			MSystem::フレーム[5].Draw(F情報);
-
-			if (selected)
-			{
-				selected->DrawInfo();
+				jobS[a].SetType(Witch::Main->職種[a]);
+				jobS[a].shape = UI_Stage::R魔法一覧[a];
 			}
 		}
 
@@ -803,20 +797,10 @@ namespace SDX_TD
 
 			return 一番近い敵;
 		}
-		/**一番近いEnemyの方向を返す.*/
-		/**Enemyがいない場合-1を返す*/
-		//double GetNearDirect(const IPosition* 比較対象) override
-		//{
-		//	IObject* 一番近いObject = GetNearEnemy(比較対象);
-		//
-		//	if (一番近いObject) return 比較対象->GetDirect(一番近いObject);
-		//
-		//	return -1;
-		//}
-
-		Wave* GetWave()
+		
+		int GetWave()
 		{
-			return &wave;
+			return wave.現在Wave;
 		}
 	};
 }

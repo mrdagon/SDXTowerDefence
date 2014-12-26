@@ -9,10 +9,10 @@ namespace SDX_TD
 	using namespace SDX;
 
 	//メニュー項目を配置
-	class ReplaySelect : public Menu
+	class Help : public Menu
 	{
 	public:
-		ReplaySelect()
+		Help()
 		{
 		}
 	};

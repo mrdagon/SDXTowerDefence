@@ -6,6 +6,12 @@ namespace SDX_TD
 {
 	using namespace SDX;
 
+	static const int MAP_SIZE = 32;//マップの縦横タイル数
+	static const int CHIP_SIZE = 16;//マップチップのドット数
+	static const int 到達不可 = 99999999;
+	static const double 自動床速度 = 0.5;
+	static const int MAX_WAVE = 100;
+
 	/**敵の移動タイプ.*/
 	enum class MoveType
 	{

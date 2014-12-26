@@ -3,12 +3,8 @@
 
 #include "stdafx.h"
 
-#include "Mission/Object.h"
-#include "Mission/Shot.h"
-#include "Mission/Unit.h"
-#include "Mission/Enemy.h"
-
 #include "Mission/Stage.h"
+#include "Camp/Title.h"
 
 int main(int argc, char* argv[])
 {
@@ -16,8 +12,7 @@ int main(int argc, char* argv[])
 	using namespace SDX_TD;
 
 	//UIの位置をリセット
-	StageDraw::Reset();
-	UnitDraw::Reset();
+	UI_Reset();
 
 	System::Initialise("sample", 640, 480);//ライブラリの初期化
 

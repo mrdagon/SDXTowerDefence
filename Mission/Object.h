@@ -80,7 +80,7 @@ namespace SDX_TD
 		TSprite sprite;
 
 		Object(TShape &&図形と位置, TSprite &&描画方法) :
-			IObject(shape, sprite, 所属),
+			IObject(shape, sprite),
 			shape(図形と位置),
 			sprite(描画方法)
 		{}

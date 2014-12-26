@@ -2,9 +2,9 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
-#include "Layer.h"
+#include "Mission/Layer.h"
+#include "Mission/Object.h"
 #include "IMenu.h"
-#include "Object.h"
 
 namespace SDX_TD
 {
@@ -21,10 +21,10 @@ namespace SDX_TD
 
 		int timer = 0;
 
-		std::unique_ptr<Camera> camera;
+		Camera camera;
 
 		Menu() :
-			camera(new Camera({ 400, 300 }, 1))
+			camera({ 400, 300 }, 1)
 		{
 			Init();
 		}

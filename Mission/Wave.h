@@ -9,28 +9,41 @@ namespace SDX_TD
 	using namespace SDX;
 	class Wave
 	{
+	private:
+
 	public:
 		bool isStop = true;//Wave進行停止
-		int 現在Wave = 0;
-		int 待ち時間 = 0;
-		int 最終Wave = 25;
-		int Wave間隔 = 600;
+		int 現在Wave;
+		int 待ち時間;
+		int 最終Wave;
+		int Wave間隔;
 
-		EnemyType 敵種類[100];
-		bool isBoss[100];
+		EnemyType 敵種類[MAX_WAVE];
+		bool isBoss[MAX_WAVE];
 
-		bool Init()
+		void Init()
 		{
-			File file("File/Map/enemy_001.csv", FileMode::Read, true);
-			auto data = file.GetCsvToInt();
+			isStop = true;
 
-			for (int a = 0; a < 100; ++a)
+			現在Wave = 0;
+			待ち時間 = 0;
+			Wave間隔 = StageDataS[TDSystem::選択ステージ].Wave間隔;
+
+			if (TDSystem::isトライアル)
 			{
-				敵種類[a] = EnemyType(data[a] % 20);
-				isBoss[a] = (data[a] >= 20);
+				最終Wave = TrialDataS[TDSystem::難易度].Wave数;
+			}
+			else
+			{
+				最終Wave = LimitlessDataS[TDSystem::難易度].Wave数;
 			}
 
-			return true;
+			for (int a = 0; a < MAX_WAVE; ++a)
+			{
+				敵種類[a] = StageDataS[TDSystem::選択ステージ].敵種類[a];
+				isBoss[a] = StageDataS[TDSystem::選択ステージ].isBoss[a];
+			}
+
 		}
 
 		/**Wave時間経過判定.*/

@@ -49,7 +49,7 @@ namespace SDX_TD
 
 			//反射系処理
 
-			if (x < -10 || x > MapSize * ChipSize + 10 || y < -10 || y > MapSize * ChipSize + 10)
+			if (x < -10 || x > MAP_SIZE * CHIP_SIZE + 10 || y < -10 || y > MAP_SIZE * CHIP_SIZE + 10)
 			{
 				isRemove = true;
 			}

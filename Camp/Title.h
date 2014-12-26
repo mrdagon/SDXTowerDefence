@@ -3,6 +3,7 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include "Menu.h"
+#include "MainMenu.h"
 
 namespace SDX_TD
 {

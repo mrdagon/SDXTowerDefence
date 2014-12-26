@@ -28,14 +28,13 @@ namespace SDX_TD
 		}
 	};
 
-	namespace
-	{
-		EnumArray<DifficultyData, Difficulty> TrialDataS;
-		EnumArray<DifficultyData, Difficulty> PowerDataS;
-	}
+	EnumArray<DifficultyData, Difficulty> TrialDataS;
+	EnumArray<DifficultyData, Difficulty> LimitlessDataS;
 
 	void LoadDifficultyS()
 	{
+		//外部テキスト化する意味は薄め
+
 		//Wave数,雑魚数,ボス数,HP補正,Lv補正
 		TrialDataS[Difficulty::Easy].Set(20, 16, 2, 1.00, 1.00);
 		TrialDataS[Difficulty::Normal].Set(30, 20, 2, 1.25, 1.10);
@@ -44,11 +43,11 @@ namespace SDX_TD
 		TrialDataS[Difficulty::Hell].Set(80, 32, 2, 2.00, 1.40);
 		TrialDataS[Difficulty::DeathMarch].Set(100, 44, 2, 2.50, 1.50);
 
-		PowerDataS[Difficulty::Easy].Set(25, 24, 3, 1.00, 1.00);
-		PowerDataS[Difficulty::Normal].Set(50, 24, 3, 1.30, 1.20);
-		PowerDataS[Difficulty::Hard].Set(75, 24, 3, 1.60, 1.40);
-		PowerDataS[Difficulty::Maniac].Set(100, 32, 4, 2.00, 1.60);
-		PowerDataS[Difficulty::Hell].Set(300, 32, 4, 3.00, 1.80);
-		PowerDataS[Difficulty::DeathMarch].Set(1000, 40, 5, 5.00, 2.00);
+		LimitlessDataS[Difficulty::Easy].Set(25, 24, 3, 1.00, 1.00);
+		LimitlessDataS[Difficulty::Normal].Set(50, 24, 3, 1.30, 1.20);
+		LimitlessDataS[Difficulty::Hard].Set(75, 24, 3, 1.60, 1.40);
+		LimitlessDataS[Difficulty::Maniac].Set(100, 32, 4, 2.00, 1.60);
+		LimitlessDataS[Difficulty::Hell].Set(300, 32, 4, 3.00, 1.80);
+		LimitlessDataS[Difficulty::DeathMarch].Set(1000, 40, 5, 5.00, 2.00);
 	}
 }

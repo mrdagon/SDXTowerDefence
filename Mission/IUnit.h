@@ -51,16 +51,12 @@ namespace SDX_TD
 			//選択中
 			if (SStage->selectUnit == this)
 			{
-				Screen::SetBlendMode(BlendMode::Alpha, 128);
-				Drawing::Rect({ GetX() - ChipSize, GetY() - ChipSize, ChipSize * 2, ChipSize * 2 }, Color::Red, true);
-				Screen::SetBlendMode(BlendMode::NoBlend, 255);
-				Screen::SetBright({ 255, 128, 128 });
-				MSystem::フレーム[1].Draw({ GetX() - ChipSize, GetY() - ChipSize, ChipSize * 2, ChipSize * 2 });
-				Screen::SetBright(Color::White);
+				Drawing::Rect({ GetX() - CHIP_SIZE, GetY() - CHIP_SIZE, CHIP_SIZE * 2, CHIP_SIZE * 2 }, {255,0,0,128}, true);
+				MSystem::フレーム[1].Draw({ GetX() - CHIP_SIZE, GetY() - CHIP_SIZE, CHIP_SIZE * 2, CHIP_SIZE * 2 }, {255,128,128});
 			}
 			else
 			{
-				MSystem::フレーム[1].Draw({ GetX() - ChipSize, GetY() - ChipSize, ChipSize * 2, ChipSize * 2 });
+				MSystem::フレーム[1].Draw({ GetX() - CHIP_SIZE, GetY() - CHIP_SIZE, CHIP_SIZE * 2, CHIP_SIZE * 2 });
 			}
 
 			//強化中or送還中
@@ -88,19 +84,19 @@ namespace SDX_TD
 
 		void DrawInfo() override
 		{
-			using namespace UnitDraw;
+			namespace UI = UI_Unit;
 
 			//画像&名前
-			MSystem::フレーム[5].Draw(F名前);
-			MUnit::魔女[st->職種][1]->DrawRotate(P画像, 2, 0);
-			MFont::ゴシック中.DrawShadow(P名前, Color::White, Color::Gray, st->名前);
+			MSystem::フレーム[5].Draw(UI::R名前);
+			MUnit::魔女[st->職種][1]->DrawRotate(UI::P画像, 2, 0);
+			MFont::ゴシック中.DrawShadow(UI::P名前, Color::White, Color::Gray, st->名前);
 
 			//レベル
 			if (isジョブリスト)
 			{
 				//説明文
-				MSystem::フレーム[5].Draw(F説明);
-				MFont::ゴシック小.DrawShadow(P説明, Color::White, Color::Gray, st->説明文);
+				MSystem::フレーム[5].Draw(UI::R説明);
+				MFont::ゴシック小.DrawShadow(UI::P説明, Color::White, Color::Gray, st->説明文);
 			}
 			else
 			{
@@ -113,24 +109,24 @@ namespace SDX_TD
 				}
 
 				//強化
-				MSystem::フレーム[3].Draw(F強化);
-				MFont::ゴシック中.DrawShadow(P強化, { 255, 0, 0 }, Color::Gray, "強化");
-				MFont::ゴシック中.DrawExtend({ P強化.x - 12, P強化.y + 22 }, 1, 1, { 255, 128, 128 }, "－");
-				MFont::BMP黒.DrawExtend({ P強化.x - 4, P強化.y + 20 }, 2, 2, { 255, 64, 64 }, { std::setw(4), 強化費 });
+				MSystem::フレーム[3].Draw(UI::R強化);
+				MFont::ゴシック中.DrawShadow(UI::P強化, { 255, 0, 0 }, Color::Gray, "強化");
+				MFont::ゴシック中.DrawExtend({ UI::P強化.x - 12, UI::P強化.y + 22 }, 1, 1, { 255, 128, 128 }, "－");
+				MFont::BMP黒.DrawExtend({ UI::P強化.x - 4, UI::P強化.y + 20 }, 2, 2, { 255, 64, 64 }, { std::setw(4), 強化費 });
 
 				//売却or発動
-				MSystem::フレーム[3].Draw(F回収);
+				MSystem::フレーム[3].Draw(UI::R回収);
 				if (st->is使い捨て)
 				{
 					//発動
-					MFont::ゴシック中.DrawShadow(P回収, Color::Blue, Color::Gray, "発動");
+					MFont::ゴシック中.DrawShadow(UI::P回収, Color::Blue, Color::Gray, "発動");
 				}
 				else
 				{
 					//売却
-					MFont::ゴシック中.DrawShadow(P回収, Color::Blue, Color::Gray, "回収");
-					MFont::ゴシック中.DrawExtend({ P回収.x - 12, P回収.y + 22 }, 1, 1, { 128, 128, 255 }, "+");
-					MFont::BMP黒.DrawExtend({ P回収.x - 4, P回収.y + 20 }, 2, 2, { 128, 128, 255 }, { std::setw(4), 回収費 });
+					MFont::ゴシック中.DrawShadow(UI::P回収, Color::Blue, Color::Gray, "回収");
+					MFont::ゴシック中.DrawExtend({ UI::P回収.x - 12, UI::P回収.y + 22 }, 1, 1, { 128, 128, 255 }, "+");
+					MFont::BMP黒.DrawExtend({ UI::P回収.x - 4, UI::P回収.y + 20 }, 2, 2, { 128, 128, 255 }, { std::setw(4), 回収費 });
 				}
 			}
 
@@ -140,7 +136,7 @@ namespace SDX_TD
 
 		void DrawInfoState()
 		{
-			using namespace UnitDraw;
+			namespace UI = UI_Unit;
 
 			bool 変化量表示 = isジョブリスト;
 			if (Lv == 5){ isジョブリスト = false; }
@@ -188,21 +184,19 @@ namespace SDX_TD
 			{
 				if (a >= 3 && 性能[a] <= 0) continue;
 
-				Screen::SetBright({ 128, 128, 255 });
-				MSystem::フレーム[5].Draw(F性能[num]);
-				Screen::SetBright({ 255, 255, 255 });
+				MSystem::フレーム[5].Draw(UI::R性能[num], { 128, 128, 255 });
 
 				//変化前
-				MIcon::UI[アイコン[a]].Draw(P性能アイコン[num]);
+				MIcon::UI[アイコン[a]].Draw(UI::P性能アイコン[num]);
 				int 桁数 = 5;
 				if (!変化量表示) 桁数 = 10;
 
-				MFont::BMP白.DrawExtend(P性能[num], 2, 2, Color::White, { std::setw(桁数), 性能[a] });
+				MFont::BMP白.DrawExtend(UI::P性能[num], 2, 2, Color::White, { std::setw(桁数), 性能[a] });
 
 				if (変化量表示)
 				{
-					MFont::ゴシック中.Draw({ 565, P性能アイコン[num].y + 8 }, Color::Yellow, "+");
-					MFont::BMP白.DrawExtend(P性能[num], 2, 2, Color::Yellow, { std::setw(10), 次性能[a] - 性能[a] });
+					MFont::ゴシック中.Draw({ 565, UI::P性能アイコン[num].y + 8 }, Color::Yellow, "+");
+					MFont::BMP白.DrawExtend(UI::P性能[num], 2, 2, Color::Yellow, { std::setw(10), 次性能[a] - 性能[a] });
 				}
 
 				++num;
@@ -215,9 +209,7 @@ namespace SDX_TD
 			if (isジョブリスト){ return; }
 
 			//射程表示
-			Screen::SetBlendMode(BlendMode::Alpha, 128);
-			Drawing::Circle({ GetX(), GetY(), (double)st->射程[Lv] }, Color::White, 0);
-			Screen::SetBlendMode();
+			Drawing::Circle({ GetX(), GetY(), (double)st->射程[Lv] }, {255,255,255,128}, 0);
 			Drawing::Circle({ GetX(), GetY(), (double)st->射程[Lv] }, Color::Red , 2);
 		}
 
@@ -233,8 +225,8 @@ namespace SDX_TD
 
 			if (isRemove)
 			{
-				const int x = int(GetX() - Size * ChipSize) / ChipSize + 1;
-				const int y = int(GetY() - Size * ChipSize) / ChipSize + 1;
+				const int x = int(GetX() - Size * CHIP_SIZE) / CHIP_SIZE + 1;
+				const int y = int(GetY() - Size * CHIP_SIZE) / CHIP_SIZE + 1;
 				SStage->land.RemoveUnit(x, y, Size);
 
 				SStage->ResetSelect(this);
@@ -273,7 +265,7 @@ namespace SDX_TD
 			強化or送還長さ = 残り強化時間;
 
 			//開始前は即LVアップ
-			if (SStage->GetWave()->現在Wave == 0)
+			if (SStage->GetWave() == 0)
 			{
 				++Lv;
 				残り強化時間 = -1;
@@ -287,7 +279,7 @@ namespace SDX_TD
 			if (isジョブリスト) return false;
 			if (残り強化時間 > 0 || 残り送還時間 > 0) return false;
 
-			if (SStage->GetWave()->現在Wave == 0)
+			if (SStage->GetWave() == 0)
 			{
 				//開始前は即回収
 				isRemove = true;
@@ -307,7 +299,7 @@ namespace SDX_TD
 				else
 				{
 					//売却
-					残り送還時間 = int((SStage->GetWave()->現在Wave + 1) * 60 * Witch::Main->回収速度);
+					残り送還時間 = int((SStage->GetWave() + 1) * 60 * Witch::Main->回収速度);
 					強化or送還長さ = 残り送還時間;
 				}
 			}

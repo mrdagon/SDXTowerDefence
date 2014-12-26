@@ -22,7 +22,7 @@ namespace SDX_TD
 		//配置位置
 		Unit(UnitType 職種 , int X座標,int Y座標) :
 			IUnit(shape, sprite, 職種, false),
-			shape(X座標, Y座標, Size * ChipSize / 2, Size * ChipSize / 2, Size * ChipSize / 2, Size * ChipSize / 2)
+			shape(X座標, Y座標, Size * CHIP_SIZE / 2, Size * CHIP_SIZE / 2, Size * CHIP_SIZE / 2, Size * CHIP_SIZE / 2)
 		{
 			Witch::Main->Mp -= st->コスト[0];
 			--TDSystem::詠唱回数[職種];

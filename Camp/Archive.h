@@ -8,11 +8,11 @@ namespace SDX_TD
 {
 	using namespace SDX;
 
-	//メニュー項目を配置
-	class Title : public Menu
+	//実績一覧
+	class Archive : public Menu
 	{
 	public:
-		Title()
+		Archive()
 		{
 		}
 	};

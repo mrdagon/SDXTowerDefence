@@ -3,16 +3,24 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include "Menu.h"
+#include "Archive.h"
+#include "Config.h"
+#include "Help.h"
+#include "Labo.h"
+#include "ReplaySelect.h"
+#include "StageSelect.h"
+#include "Tutorial.h"
+
 
 namespace SDX_TD
 {
 	using namespace SDX;
 
-	//メニュー項目を配置
-	class Title : public Menu
+	/**メインメニュー.*/
+	class MainMenu : public Menu
 	{
 	public:
-		Title()
+		MainMenu()
 		{
 		}
 	};

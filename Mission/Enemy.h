@@ -81,8 +81,8 @@ namespace SDX_TD
 		void Act()
 		{
 			double speed = st->移動速度;
-			const int x = (int)(GetX() / ChipSize);
-			const int y = (int)(GetY() / ChipSize);
+			const int x = (int)(GetX() / CHIP_SIZE);
+			const int y = (int)(GetY() / CHIP_SIZE);
 
 			//方向を更新
 			方向更新();
@@ -143,8 +143,8 @@ namespace SDX_TD
 			//飛んでる敵は影響無し
 			if (移動種 == MoveType::空) return;
 
-			int x = (int)(GetX() / ChipSize);
-			int y = (int)(GetY() / ChipSize);
+			int x = (int)(GetX() / CHIP_SIZE);
+			int y = (int)(GetY() / CHIP_SIZE);
 			auto 地形種 = SStage->land.地形[x][y];
 
 			switch (地形種)
@@ -175,8 +175,8 @@ namespace SDX_TD
 		void 地形衝突()
 		{
 			//はみ出ている量
-			const int X差 = (int)GetX() % ChipSize - 判定大きさ/2;
-			const int Y差 = (int)GetY() % ChipSize - 判定大きさ / 2;
+			const int X差 = (int)GetX() % CHIP_SIZE - 判定大きさ/2;
+			const int Y差 = (int)GetY() % CHIP_SIZE - 判定大きさ / 2;
 
 			//各方向にはみ出ているか
 			const bool is↑ = Y差 < 0;
@@ -272,16 +272,16 @@ namespace SDX_TD
 		/**Stage右に表示する情報.*/
 		void DrawInfo() override
 		{
-			using namespace UnitDraw;
+			namespace UI = UI_Unit;
 
 			//画像&名前
-			MSystem::フレーム[5].Draw(F名前);
-			MUnit::敵[st->種族][1]->DrawRotate(P画像, 2, 0);
-			MFont::ゴシック中.DrawShadow(P名前, Color::White, Color::Gray, st->種族名);
+			MSystem::フレーム[5].Draw(UI::R名前);
+			MUnit::敵[st->種族][1]->DrawRotate(UI::P画像, 2, 0);
+			MFont::ゴシック中.DrawShadow(UI::P名前, Color::White, Color::Gray, st->種族名);
 
 			//説明文
-			MSystem::フレーム[5].Draw(F説明);
-			MFont::ゴシック小.DrawShadow(P説明, Color::White, Color::Gray, st->説明文);
+			MSystem::フレーム[5].Draw(UI::R説明);
+			MFont::ゴシック小.DrawShadow(UI::P説明, Color::White, Color::Gray, st->説明文);
 
 			//性能
 
@@ -310,19 +310,17 @@ namespace SDX_TD
 			{
 				if (Num[a] <= 0 && a > 3) continue;//防御と回避は0なら表示しない
 
-				Screen::SetBright({ 128, 128, 255 });
-				MSystem::フレーム[5].Draw(F性能[a]);
-				Screen::SetBright({ 255, 255, 255 });
-				MIcon::UI[IconNo[a]].Draw(P性能アイコン[a]);
-				MFont::BMP白.DrawExtend(P性能[a], 2, 2, Color::White, { std::setw(10), Num[a] });
+				MSystem::フレーム[5].Draw(UI::R性能[a], { 128, 128, 255 });
+				MIcon::UI[IconNo[a]].Draw(UI::P性能アイコン[a]);
+				MFont::BMP白.DrawExtend(UI::P性能[a], 2, 2, Color::White, { std::setw(10), Num[a] });
 			}
 		}
 
 		/**消滅判定.*/
 		bool RemoveCheck() override
 		{
-			const int x = (int)GetX() / ChipSize;
-			const int y = (int)GetY() / ChipSize;
+			const int x = (int)GetX() / CHIP_SIZE;
+			const int y = (int)GetY() / CHIP_SIZE;
 
 			//飛行能力発動
 			if (st->is離陸 && 残りHP > 0 && 残りHP < 最大HP / 2 && 移動種 != MoveType::空)
@@ -446,7 +444,7 @@ namespace SDX_TD
 
 		Enemy(double X座標, double Y座標, EnemyType 敵種類, int Lv, bool isBoss) :
 			IEnemy(shape, sprite, &EnemyDataS[敵種類], Lv, isBoss),
-			shape((X座標 + 0.5)*ChipSize, (Y座標 + 0.5)*ChipSize, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2)
+			shape((X座標 + 0.5)*CHIP_SIZE, (Y座標 + 0.5)*CHIP_SIZE, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2)
 		{
 		}
 	};

@@ -13,30 +13,50 @@ namespace SDX_TD
 		std::string 名前;
 		std::string 説明;
 
-		int シングルのハイスコア[(int)WitchType::COUNT];
+		struct Score
+		{
+			EnumArray<int, WitchType> シングル;
+			int カップル[3];
+			std::tuple<WitchType, WitchType> カップリング[3];
+			Difficulty シングル達成度[(int)WitchType::COUNT];
+			Difficulty カップル達成度[3];
+		};
 
-		int タッグのハイスコア[3];
-		std::tuple<WitchType, WitchType> タッグの組み合わせ[3];
+		Score トライアル;//レベル制限あり
+		Score リミットレス;//レベル制限無し
 
-		Difficulty シングルの達成難易度[(int)WitchType::COUNT];
-		Difficulty タッグの達成難易度[3];
+		int Wave間隔;
 
-		double Wave速度;
-
-		EnemyType 敵発生リスト[100];
-		ChipType  地形情報[30][30];
+		EnemyType 敵種類[MAX_WAVE];
+		bool	  isBoss[MAX_WAVE];
+		ChipType  地形情報[MAP_SIZE][MAP_SIZE];
 	};
 
-	namespace
-	{
-		EnumArray<StageData, StageType> StageDataS;
-	}
+	EnumArray<StageData, StageType> StageDataS;
 
 	void LoadStageS()
 	{
+		//とりあえず暫定的に
 		StageDataS[StageType::一面].名前 = "チュートリアル";
-		StageDataS[StageType::一面].Wave速度 = 4000;//基準
+		StageDataS[StageType::一面].Wave間隔 = 600;
 		StageDataS[StageType::一面].説明 = "テスト";
+
+		for (StageData &it : StageDataS)
+		{
+			File enemyS("File/Map/enemy_001.csv", FileMode::Read, true);
+			auto data = enemyS.GetCsvToInt();
+
+			for (int a = 0; a < MAX_WAVE; ++a)
+			{
+				it.敵種類[a] = EnemyType(data[a] % 20);
+				it.isBoss[a] = (data[a] >= 20);
+			}
+		}
+	}
+
+	void SaveOrLoadScore(FileMode 保存or読込)
+	{
+
 	}
 
 }

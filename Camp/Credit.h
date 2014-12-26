@@ -9,10 +9,10 @@ namespace SDX_TD
 	using namespace SDX;
 
 	//メニュー項目を配置
-	class Title : public Menu
+	class Credit : public Menu
 	{
 	public:
-		Title()
+		Credit()
 		{
 		}
 	};
