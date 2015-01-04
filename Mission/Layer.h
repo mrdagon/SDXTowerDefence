@@ -62,15 +62,6 @@ namespace SDX_TD
 		}
 
 		/**.*/
-		void DrawShadow(double X座標ずれ, double Y座標ずれ) const
-		{
-			for (auto it : objectS)
-			{
-				it->DrawShadow(X座標ずれ, Y座標ずれ);
-			}
-		}
-
-		/**.*/
 		void ExeRemove()
 		{
 			for (auto && it : objectS)

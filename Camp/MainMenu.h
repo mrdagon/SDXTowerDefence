@@ -8,7 +8,6 @@
 #include "Help.h"
 #include "Labo.h"
 #include "ReplaySelect.h"
-#include "StageSelect.h"
 #include "Tutorial.h"
 
 

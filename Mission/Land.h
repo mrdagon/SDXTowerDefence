@@ -5,6 +5,7 @@
 #include <SDXFramework.h>
 #include "DataS.h"
 #include "Material.h"
+#include "TDSystem.h"
 
 namespace SDX_TD
 {
@@ -76,27 +77,29 @@ namespace SDX_TD
 
 				int direct = 経路[X座標 / CHIP_SIZE][Y座標 / CHIP_SIZE];//現在のマスの向き
 
+				const int def = 7;
+
 				switch (direct)
 				{
 				case 1://↑
-					if (現在の方向 == 0 && X座標 % CHIP_SIZE > 11) break;
-					if (現在の方向 == 2 && X座標 % CHIP_SIZE < 4) break;
-					if (is通行[(X座標 - 4) / CHIP_SIZE][Y座標 / CHIP_SIZE - 1] && is通行[(X座標 + 4) / CHIP_SIZE][Y座標 / CHIP_SIZE - 1]) return direct;
+					if (現在の方向 == 0 && X座標 % CHIP_SIZE > def ) break;
+					if (現在の方向 == 2 && X座標 % CHIP_SIZE < def) break;
+					if (is通行[(X座標 - def) / CHIP_SIZE][Y座標 / CHIP_SIZE - 1] && is通行[(X座標 + def) / CHIP_SIZE][Y座標 / CHIP_SIZE - 1]) return direct;
 					break;
 				case 3://←
-					if (現在の方向 == 0 && Y座標 % CHIP_SIZE > 11) break;
-					if (現在の方向 == 4 && Y座標 % CHIP_SIZE < 4) break;
-					if (is通行[X座標 / CHIP_SIZE - 1][(Y座標 - 4) / CHIP_SIZE] && is通行[X座標 / CHIP_SIZE - 1][(Y座標 + 4) / CHIP_SIZE]) return direct;
+					if (現在の方向 == 0 && Y座標 % CHIP_SIZE > def) break;
+					if (現在の方向 == def && Y座標 % CHIP_SIZE < def ) break;
+					if (is通行[X座標 / CHIP_SIZE - 1][(Y座標 - def ) / CHIP_SIZE] && is通行[X座標 / CHIP_SIZE - 1][(Y座標 + def) / CHIP_SIZE]) return direct;
 					break;
 				case 5://→
-					if (現在の方向 == 2 && Y座標 % CHIP_SIZE > 11) break;
-					if (現在の方向 == 8 && Y座標 % CHIP_SIZE < 4) break;
-					if (is通行[X座標 / CHIP_SIZE + 1][(Y座標 - 4) / CHIP_SIZE] && is通行[X座標 / CHIP_SIZE + 1][(Y座標 + 4) / CHIP_SIZE]) return direct;
+					if (現在の方向 == 2 && Y座標 % CHIP_SIZE > def ) break;
+					if (現在の方向 == 8 && Y座標 % CHIP_SIZE < def ) break;
+					if (is通行[X座標 / CHIP_SIZE + 1][(Y座標 - def ) / CHIP_SIZE] && is通行[X座標 / CHIP_SIZE + 1][(Y座標 + def) / CHIP_SIZE]) return direct;
 					break;
 				case 7://↓
-					if (現在の方向 == 6 && X座標 % CHIP_SIZE > 11) break;
-					if (現在の方向 == 8 && X座標 % CHIP_SIZE < 4) break;
-					if (is通行[(X座標 - 4) / CHIP_SIZE][Y座標 / CHIP_SIZE + 1] && is通行[(X座標 + 4) / CHIP_SIZE][Y座標 / CHIP_SIZE + 1]) return direct;
+					if (現在の方向 == 6 && X座標 % CHIP_SIZE > def ) break;
+					if (現在の方向 == 8 && X座標 % CHIP_SIZE < def ) break;
+					if (is通行[(X座標 - def) / CHIP_SIZE][Y座標 / CHIP_SIZE + 1] && is通行[(X座標 + def ) / CHIP_SIZE][Y座標 / CHIP_SIZE + 1]) return direct;
 					break;
 				default:
 					return direct;
@@ -183,20 +186,19 @@ namespace SDX_TD
 		/**初期化を行う.*/
 		void Init()
 		{
+			穴の位置.clear();
+			//暫定地形
 			for (int a = 0; a < MAP_SIZE; ++a){
 				for (int b = 0; b < MAP_SIZE; ++b)
 				{
-					地形[a][b] = ChipType::草;
-
-					if (a <= 2 || b <= 2 || a >= MAP_SIZE - 3 || b >= MAP_SIZE - 3) 地形[a][b] = ChipType::山;
+					is魔法[a][b] = false;
+					地形[a][b] = StageDataS[TDSystem::選択ステージ].地形[a][b];
+					if (地形[a][b] == ChipType::穴)
+					{
+						穴の位置.push_back(a + b * MAP_SIZE);
+					}
 				}
 			}
-
-			地形[3][3] = ChipType::穴;
-			地形[25][25] = ChipType::畑;
-
-			穴の位置.clear();
-			穴の位置.push_back(3 + 3 * MAP_SIZE);
 
 			陸路.Init(*this);
 			空路.Init(*this);
@@ -206,15 +208,15 @@ namespace SDX_TD
 		/**is陸の敵を追加更新.*/
 		void UpdateEnemy(int X座標, int Y座標, MoveType 移動種)
 		{
-			const int xa = (X座標 - 7) / CHIP_SIZE;
-			const int xb = (X座標 + 7) / CHIP_SIZE;
-			const int ya = (Y座標 - 7) / CHIP_SIZE;
-			const int yb = (Y座標 + 7) / CHIP_SIZE;
+			const int xa = (X座標 - 6) / CHIP_SIZE;
+			const int xb = (X座標 + 6) / CHIP_SIZE;
+			const int ya = (Y座標 - 6) / CHIP_SIZE;
+			const int yb = (Y座標 + 6) / CHIP_SIZE;
 
-			if (ChipDataS[地形[xa][ya]].is陸移動) is陸敵[xa][ya] = true;
-			if (ChipDataS[地形[xa][yb]].is陸移動) is陸敵[xa][yb] = true;
-			if (ChipDataS[地形[xb][ya]].is陸移動) is陸敵[xb][ya] = true;
-			if (ChipDataS[地形[xb][yb]].is陸移動) is陸敵[xb][yb] = true;
+			if ( ChipDataS[地形[xa][ya]].is陸移動) is陸敵[xa][ya] = true;
+			if ( ChipDataS[地形[xa][yb]].is陸移動) is陸敵[xa][yb] = true;
+			if ( ChipDataS[地形[xb][ya]].is陸移動) is陸敵[xb][ya] = true;
+			if ( ChipDataS[地形[xb][yb]].is陸移動) is陸敵[xb][yb] = true;
 
 			if (移動種 == MoveType::水)
 			{
@@ -341,10 +343,8 @@ namespace SDX_TD
 			for (int a = 0; a < MAP_SIZE; ++a){
 				for (int b = 0; b < MAP_SIZE; ++b)
 				{
-					Image* チップ = MSystem::マップチップ[2];
 					Rect 位置(a * CHIP_SIZE + CHIP_SIZE / 2, b * CHIP_SIZE + CHIP_SIZE / 2, CHIP_SIZE, CHIP_SIZE);
-
-					if (地形[a][b] == ChipType::草)  チップ = MSystem::マップチップ[0];
+					MSystem::マップチップ[(int)地形[a][b]]->DrawExtend({ a * CHIP_SIZE, b * CHIP_SIZE, CHIP_SIZE, CHIP_SIZE });
 
 					//デバッグ用
 					//if (地形[a][b] != ChipType::草)  Drawing::Rect(位置, Color::Blue, true);
@@ -352,8 +352,6 @@ namespace SDX_TD
 					//if (is魔法[a][b])                Drawing::Rect(位置, Color::Yellow, true);
 					//if (is陸敵[a][b])              Drawing::Rect(位置, Color::Gray, true);
 					//if (is水敵[a][b])              Drawing::Rect(位置, Color::Purple, true);
-
-					チップ->DrawExtend({ a * CHIP_SIZE, b * CHIP_SIZE, CHIP_SIZE, CHIP_SIZE });
 				}
 			}
 		}
@@ -361,8 +359,8 @@ namespace SDX_TD
 		//配置先の表示
 		void DrawSetPos()
 		{
-			const double x = (Input::mouse.x - CHIP_SIZE / 2) / CHIP_SIZE;
-			const double y = (Input::mouse.y - CHIP_SIZE / 2) / CHIP_SIZE;
+			const int x = int((Input::mouse.x - CHIP_SIZE / 2) / CHIP_SIZE);
+			const int y = int((Input::mouse.y - CHIP_SIZE / 2) / CHIP_SIZE);
 
 			if (SetCheck((int)x, (int)y, 2))
 			{

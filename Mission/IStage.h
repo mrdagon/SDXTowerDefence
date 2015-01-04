@@ -23,6 +23,8 @@ namespace SDX_TD
 		IEnemy* selectEnemy = nullptr;//選択中の敵
 		IUnit* selectUnit = nullptr;//選択中の魔法
 		Land land;//
+		int score;
+
 
 		/**敵や魔法が消滅する前に呼び出す.*/
 		void ResetSelect(IObject* 消滅するオブジェクト)
@@ -44,6 +46,7 @@ namespace SDX_TD
 		virtual void AddBack(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
 		virtual IEnemy* GetNearEnemy(const IPosition* 比較対象, bool is地上, bool is空中) = 0;
 
+		virtual void Support() = 0;
 		virtual int GetWave() = 0;
 	};
 

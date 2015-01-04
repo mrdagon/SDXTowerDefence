@@ -29,7 +29,7 @@ namespace SDX_TD
 
 		EnemyType 敵種類[MAX_WAVE];
 		bool	  isBoss[MAX_WAVE];
-		ChipType  地形情報[MAP_SIZE][MAP_SIZE];
+		ChipType  地形[MAP_SIZE][MAP_SIZE];
 	};
 
 	EnumArray<StageData, StageType> StageDataS;
@@ -38,7 +38,7 @@ namespace SDX_TD
 	{
 		//とりあえず暫定的に
 		StageDataS[StageType::一面].名前 = "チュートリアル";
-		StageDataS[StageType::一面].Wave間隔 = 600;
+		StageDataS[StageType::一面].Wave間隔 = 1000;
 		StageDataS[StageType::一面].説明 = "テスト";
 
 		for (StageData &it : StageDataS)
@@ -46,10 +46,20 @@ namespace SDX_TD
 			File enemyS("File/Map/enemy_001.csv", FileMode::Read, true);
 			auto data = enemyS.GetCsvToInt();
 
+			//敵情報読み込み
 			for (int a = 0; a < MAX_WAVE; ++a)
 			{
 				it.敵種類[a] = EnemyType(data[a] % 20);
 				it.isBoss[a] = (data[a] >= 20);
+			}
+
+			File landS("File/Map/map_001.csv", FileMode::Read, true);
+
+			auto landData = landS.GetCsvToInt();
+
+			for (int a = 0; a < MAP_SIZE * MAP_SIZE;++a)
+			{
+				it.地形[a % MAP_SIZE][a / MAP_SIZE] = ChipType(landData[a]);
 			}
 		}
 	}

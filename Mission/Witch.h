@@ -9,7 +9,7 @@
 namespace SDX_TD
 {
 	using namespace SDX;
-	
+
 	/**魔女.*/
 	class Witch : public WitchData
 	{
@@ -20,12 +20,13 @@ namespace SDX_TD
 		WitchData *st;//レベル上昇や大魔法発動補正前のステータス
 
 		/**発動時の追加効果.*/
-		/**HP半減等はこっちで計算*/
+		/**敵 HP半減等はこっちで計算*/
 		void 大魔法効果()
 		{
 			switch (st->種類)
 			{
 			case WitchType::ライナ:
+
 				break;
 			default:
 				break;
@@ -39,6 +40,10 @@ namespace SDX_TD
 			switch (st->種類)
 			{
 			case WitchType::ライナ:
+				射程補正 *= 1.0 + double(被ダメージ) / 20;
+				連射補正 *= 1.0 + double(被ダメージ) / 20;
+				攻撃補正 *= 1.2;
+				逆境補正 *= 2.0;
 				break;
 			default:
 				break;
@@ -57,8 +62,27 @@ namespace SDX_TD
 		/**.*/
 		void ユニット補正(UnitType type)
 		{
-			//メインのみサブのみ、両方OKで計算を変える
+			if (!TDSystem::isカップル)
+			{
+				if (!is使用可能[type]){ return; }
 
+				for (int a = 0; a < UnitData::最大強化; ++a)
+				{
+					//メインのみ使える
+					UnitDataS[type].コスト[a] = int(DefUnitDataS[type].コスト[a] * MP消費);
+					UnitDataS[type].攻撃力[a] = int(DefUnitDataS[type].攻撃力[a] * 攻撃補正);
+					UnitDataS[type].連射[a] = int(DefUnitDataS[type].連射[a] * 連射補正);
+					UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * 射程補正);
+					UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * 弾速補正;
+					UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * 支援補正;
+					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正);
+					UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[UnitDataS[type].デバフ種]);
+				}
+
+				return;
+			}
+
+			//メインのみサブのみ、両方OKで計算を変える
 			//両方使えない
 			if (!is使用可能[type] && !Sub->is使用可能[type])
 			{
@@ -69,17 +93,19 @@ namespace SDX_TD
 			{
 				if (is使用可能[type] && Sub->is使用可能[type])
 				{
-					UnitDataS[type].コスト[a] = int(DefUnitDataS[type].コスト[a] * MP消費);
-					UnitDataS[type].攻撃力[a] = int(DefUnitDataS[type].攻撃力[a] * 攻撃補正);
-					UnitDataS[type].連射[a] = int(DefUnitDataS[type].連射[a] * 連射補正);
-					UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * 射程補正);
-					UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * 弾速補正;
-					UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * 支援補正;
-					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正);
-					UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[UnitDataS[type].デバフ種]);
+					//両方使える
+					UnitDataS[type].コスト[a] = int(DefUnitDataS[type].コスト[a] * MP消費 * Sub->MP消費);
+					UnitDataS[type].攻撃力[a] = int(DefUnitDataS[type].攻撃力[a] * 攻撃補正 * Sub->攻撃補正);
+					UnitDataS[type].連射[a] = int(DefUnitDataS[type].連射[a] * 連射補正 * Sub->連射補正);
+					UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * 射程補正 * Sub->射程補正);
+					UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * 弾速補正 * Sub->弾速補正;
+					UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * 支援補正 * 支援補正;
+					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正 * Sub->炸裂補正);
+					UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[UnitDataS[type].デバフ種] * Sub->特殊補正[UnitDataS[type].デバフ種]);
 				}
 				else if (is使用可能[type])
 				{
+					//メインのみ使える
 					UnitDataS[type].コスト[a] = int(DefUnitDataS[type].コスト[a] * MP消費);
 					UnitDataS[type].攻撃力[a] = int(DefUnitDataS[type].攻撃力[a] * 攻撃補正);
 					UnitDataS[type].連射[a] = int(DefUnitDataS[type].連射[a] * 連射補正);
@@ -91,16 +117,16 @@ namespace SDX_TD
 				}
 				else
 				{
-					UnitDataS[type].コスト[a] = int(DefUnitDataS[type].コスト[a] * MP消費);
-					UnitDataS[type].攻撃力[a] = int(DefUnitDataS[type].攻撃力[a] * 攻撃補正);
-					UnitDataS[type].連射[a] = int(DefUnitDataS[type].連射[a] * 連射補正);
-					UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * 射程補正);
-					UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * 弾速補正;
-					UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * 支援補正;
-					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正);
-					UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[UnitDataS[type].デバフ種]);
+					//サブのみ使える
+					UnitDataS[type].コスト[a] = int(DefUnitDataS[type].コスト[a] * Sub->MP消費);
+					UnitDataS[type].攻撃力[a] = int(DefUnitDataS[type].攻撃力[a] * Sub->攻撃補正);
+					UnitDataS[type].連射[a] = int(DefUnitDataS[type].連射[a] * Sub->連射補正);
+					UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * Sub->射程補正);
+					UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * Sub->弾速補正;
+					UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * Sub->支援補正;
+					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * Sub->炸裂補正);
+					UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * Sub->特殊補正[UnitDataS[type].デバフ種]);
 				}
-
 			}
 		}
 
@@ -170,20 +196,27 @@ namespace SDX_TD
 		//変動パラメータ
 		static int Hp;//共通
 		static int 被ダメージ;
-		int Mp = 50;
+		static	EnumArray<int, UnitType> 詠唱回数;
+
+		double Mp = 50;
 		double Sp = 0;
-		const double 最大Sp = 100;
+		const double 最大Sp = 1000;
 		int 大魔法残り時間 = 0;
 		EnumArray<bool, UnitType> is使用可能;
-		
+
 		/**メインとサブ両方を初期化.*/
 		static void InitAll()
 		{
 			Hp = 20;
 			被ダメージ = 0;
 
+			for (auto & it : 詠唱回数)
+			{
+				it = 0;
+			}
+
 			Main->Init();
-			if ( TDSystem::isカップル )
+			if (TDSystem::isカップル)
 			{
 				Sub->Init();
 			}
@@ -197,6 +230,10 @@ namespace SDX_TD
 
 			Main->st = &WitchDataS[ウィッチ種];
 
+			for (int a = 0; a < 12; ++a)
+			{
+				Main->職種[a] = WitchDataS[ウィッチ種].職種[a];
+			}
 			for (auto &it : Main->is使用可能)
 			{
 				it = false;
@@ -237,7 +274,7 @@ namespace SDX_TD
 
 			for (int a = 0; a < 12; ++a)
 			{
-				TDSystem::詠唱回数[職種[a]] += int(UnitDataS[職種[a]].基礎詠唱回数 * 詠唱回数補正);
+				詠唱回数[職種[a]] += int(UnitDataS[職種[a]].基礎詠唱回数 * 詠唱回数補正);
 			}
 		};
 
@@ -278,6 +315,21 @@ namespace SDX_TD
 		/**大魔法発動時の性能計算、効果処理.*/
 		void 大魔法発動()
 		{
+			if (Sp < 最大Sp || 大魔法残り時間 > 0)
+			{
+				return;
+			}
+			//演出
+			for (int a = 0; a < 250; ++a)
+			{
+				Screen::SetBright(Color::Gray);
+				SStage->Draw();
+				Screen::SetBright(Color::White);
+				//@todo 演出は仮
+				MFont::ゴシック中.DrawRotate({ 800 - a * 6, 300 }, 5, 0, Color::White, false, "大魔法 フォルドアーカレイト");
+				System::Update();
+			}
+
 			大魔法残り時間 = 大魔法時間;
 			補正計算();
 			大魔法効果();
@@ -287,6 +339,8 @@ namespace SDX_TD
 	Witch Witch::witchS[2];
 	Witch* Witch::Main;
 	Witch* Witch::Sub;
+
+	EnumArray<int, UnitType> Witch::詠唱回数;
 	int	  Witch::Hp;
 	int   Witch::被ダメージ;
 }

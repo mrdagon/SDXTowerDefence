@@ -29,21 +29,13 @@ namespace SDX_TD
 			待ち時間 = 0;
 			Wave間隔 = StageDataS[TDSystem::選択ステージ].Wave間隔;
 
-			if (TDSystem::isトライアル)
-			{
-				最終Wave = TrialDataS[TDSystem::難易度].Wave数;
-			}
-			else
-			{
-				最終Wave = LimitlessDataS[TDSystem::難易度].Wave数;
-			}
+			最終Wave = DifficultyDataS[TDSystem::難易度].Wave数[TDSystem::isトライアル];
 
 			for (int a = 0; a < MAX_WAVE; ++a)
 			{
 				敵種類[a] = StageDataS[TDSystem::選択ステージ].敵種類[a];
 				isBoss[a] = StageDataS[TDSystem::選択ステージ].isBoss[a];
 			}
-
 		}
 
 		/**Wave時間経過判定.*/
@@ -79,18 +71,35 @@ namespace SDX_TD
 
 			while (true)
 			{
+				const auto image = MUnit::敵[敵種類[no % 100]][1];
+
 				if (isBoss[no % 100])
 				{
+					if (no < 現在Wave)
+					{ 
+						MSystem::枠画像[4].SetColor({128,64,64});
+					}
+					else
+					{
+						MSystem::枠画像[4].SetColor({ 255, 128, 128 });					
+					}
 					MSystem::フレーム[4].Draw({ x, y, 40, 80 });
-					MUnit::敵[敵種類[no % 100]][1]->DrawRotate({ x + 20, y + 50 }, 2, 0);
+					image->DrawRotate({ x + 20, y + 50 }, 2, 0);
 				}
 				else
 				{
+					if (no < 現在Wave)
+					{
+						MSystem::枠画像[4].SetColor({ 128, 128, 128 });
+					}
 					MSystem::フレーム[4].Draw({ x, y, 40, 80 });
-					MUnit::敵[敵種類[no % 100]][1]->Draw({ x + 4, y + 36 });
-					MUnit::敵[敵種類[no % 100]][1]->Draw({ x + 4 + 16, y + 36 });
-					MUnit::敵[敵種類[no % 100]][1]->Draw({ x + 4 + 8, y + 36 + 8 });
+					image->Draw({ x + 4, y + 36 });
+					image->Draw({ x + 4 + 16, y + 36 });
+					image->Draw({ x + 4 + 8, y + 36 + 8 });
 				}
+
+				MSystem::枠画像[4].SetColor(Color::White);
+
 				//Wave数
 				int size = 2;
 				if (no >= 100){ size = 1; }

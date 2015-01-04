@@ -14,11 +14,12 @@ int main(int argc, char* argv[])
 	//UIの位置をリセット
 	UI_Reset();
 
-	System::Initialise("sample", 640, 480);//ライブラリの初期化
+	System::Initialise("GTD", 640, 480);//ライブラリの初期化
 
 	LoadUnitS();
 	LoadEnemyS();
 	LoadStageS();
+	LoadWitchS();
 	LoadDifficultyS();
 	LoadChipS();
 
@@ -36,6 +37,7 @@ int main(int argc, char* argv[])
 	Witch::SetMain(WitchType::ライナ);
 
 	Director::AddScene(std::make_shared<Stage>());
+	Director::AddScene(std::make_shared<StageSelect>());
 	Director::Run();
 
 	System::End();//ライブラリの終了処理

@@ -41,7 +41,7 @@ namespace SDX_TD
 		//以下はウィッチ補正が無い
 		int  Hit数[最大強化];
 
-		double 半径 = 10;//当たり判定の大きさ
+		double 半径 = 5;//当たり判定の大きさ
 
 		bool is対空 = true;//空の敵に当たるかどうか
 		bool is対地 = true;//地上の敵に当たるかどうか
@@ -50,12 +50,9 @@ namespace SDX_TD
 		bool isウィッチ = false;//指揮官魔法、詠唱回数の管理が違う
 	};
 
-	namespace
-	{
-		EnumArray<UnitData, UnitType> UnitDataS;//ウィッチ補正後性能
-		EnumArray<UnitData, UnitType> DefUnitDataS;//基礎ユニット性能
-	}
-
+	EnumArray<UnitData, UnitType> UnitDataS;//ウィッチ補正後性能
+	EnumArray<UnitData, UnitType> DefUnitDataS;//基礎ユニット性能
+	
 	void LoadUnitS()
 	{
 		File UnitFile("File/Data/unit_data.dat", FileMode::Read, true);
@@ -66,7 +63,6 @@ namespace SDX_TD
 			it.職種 = UnitType(count);
 			if (it.職種 <= UnitType::ミルラ){ it.isウィッチ = true; }
 
-			++count;
 
 			UnitFile.Read(it.名前);
 			UnitFile.Read(it.説明文);
@@ -90,14 +86,17 @@ namespace SDX_TD
 			UnitFile.Read(it.連射, 6);
 			UnitFile.Read<int>(it.弾速, 6, 100);
 
-			UnitFile.Read<int>(it.支援効果, 6, 100);
-			UnitFile.Read<int>(it.支援効果, 6, 100);
+			UnitFile.Read<int>(it.支援効果, 6, 100);//支援A
+			UnitFile.Read<int>(it.炸裂威力, 6, 100);//支援B-無視
 			UnitFile.Read<int>(it.炸裂威力, 6, 100);
 			UnitFile.Read(it.炸裂範囲, 6);
 
 			UnitFile.Read(it.デバフ効果, 6);
 			UnitFile.Read<int>(it.デバフ率, 6, 100);
 			UnitFile.Read(it.Hit数, 6);
+
+			UnitDataS[UnitType(count)] = it;
+			++count;
 		}
 
 		UnitDataS[UnitType::給仕].is使い捨て = true;

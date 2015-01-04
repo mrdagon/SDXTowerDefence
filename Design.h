@@ -79,6 +79,23 @@ namespace SDX_TD
 		EXT Rect Rあきらめる;
 	}
 
+	namespace UI_Result
+	{
+		void Reset();
+
+		EXT Rect R終了;
+		EXT Rect Rリトライ;
+	}
+
+	namespace UI_StageSelect
+	{
+		void Reset();
+
+		EXT Rect R難易度[6];
+	}
+
+#undef EXT
+
 	void UI_Reset();
 
 }

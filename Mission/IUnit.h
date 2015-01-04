@@ -39,10 +39,8 @@ namespace SDX_TD
 		/**.*/
 		void SetWait()
 		{
-			if (st->連射[Lv] > 0)
-			{
-				待機時間 = int(速度値 / st->連射[Lv]);				
-			}
+			if (st->連射[Lv] <= 0){ return; }
+			待機時間 = int(速度値 / st->連射[Lv]);				
 		}
 
 		/**配置時の描画処理.*/
@@ -51,7 +49,7 @@ namespace SDX_TD
 			//選択中
 			if (SStage->selectUnit == this)
 			{
-				Drawing::Rect({ GetX() - CHIP_SIZE, GetY() - CHIP_SIZE, CHIP_SIZE * 2, CHIP_SIZE * 2 }, {255,0,0,128}, true);
+				//Drawing::Rect({ GetX() - CHIP_SIZE, GetY() - CHIP_SIZE, CHIP_SIZE * 2, CHIP_SIZE * 2 }, {255,0,0,128}, true);
 				MSystem::フレーム[1].Draw({ GetX() - CHIP_SIZE, GetY() - CHIP_SIZE, CHIP_SIZE * 2, CHIP_SIZE * 2 }, {255,128,128});
 			}
 			else
@@ -63,12 +61,12 @@ namespace SDX_TD
 			if (残り強化時間 > 0)
 			{
 				int Num = 99 - 残り強化時間 * 99 / 強化or送還長さ;
-				MFont::BMP黒.DrawExtend({ GetX() - 12, GetY() - 12 }, 2, 2, { 255, 120, 120 }, { std::setw(2), Num });
+				MFont::BMP黒.DrawExtend({ GetX() - 12, GetY() - 10 }, 2, 2, { 255, 120, 120 }, { std::setw(2), Num });
 			}
 			else if (残り送還時間 > 0)
 			{
 				int Num = 残り送還時間 * 99 / 強化or送還長さ;
-				MFont::BMP黒.DrawExtend({ GetX() - 12, GetY() - 12 }, 2, 2, { 120, 120, 255 }, { std::setw(2), Num });
+				MFont::BMP黒.DrawExtend({ GetX() - 12, GetY() - 10 }, 2, 2, { 120, 120, 255 }, { std::setw(2), Num });
 			}
 			else
 			{
@@ -112,7 +110,7 @@ namespace SDX_TD
 				MSystem::フレーム[3].Draw(UI::R強化);
 				MFont::ゴシック中.DrawShadow(UI::P強化, { 255, 0, 0 }, Color::Gray, "強化");
 				MFont::ゴシック中.DrawExtend({ UI::P強化.x - 12, UI::P強化.y + 22 }, 1, 1, { 255, 128, 128 }, "－");
-				MFont::BMP黒.DrawExtend({ UI::P強化.x - 4, UI::P強化.y + 20 }, 2, 2, { 255, 64, 64 }, { std::setw(4), 強化費 });
+				MFont::BMP黒.DrawExtend({ UI::P強化.x - 4, UI::P強化.y + 22 }, 2, 2, Color::White , { std::setw(4), 強化費 });
 
 				//売却or発動
 				MSystem::フレーム[3].Draw(UI::R回収);
@@ -126,7 +124,7 @@ namespace SDX_TD
 					//売却
 					MFont::ゴシック中.DrawShadow(UI::P回収, Color::Blue, Color::Gray, "回収");
 					MFont::ゴシック中.DrawExtend({ UI::P回収.x - 12, UI::P回収.y + 22 }, 1, 1, { 128, 128, 255 }, "+");
-					MFont::BMP黒.DrawExtend({ UI::P回収.x - 4, UI::P回収.y + 20 }, 2, 2, { 128, 128, 255 }, { std::setw(4), 回収費 });
+					MFont::BMP黒.DrawExtend({ UI::P回収.x - 4, UI::P回収.y + 22 }, 2, 2, Color::White, { std::setw(4), 回収費 });
 				}
 			}
 
@@ -143,7 +141,7 @@ namespace SDX_TD
 
 			IconType アイコン[5] =
 			{
-				IconType::マナ,
+				IconType::レベル,
 				IconType::攻撃,
 				IconType::連射,
 				IconType::支援,
@@ -152,7 +150,7 @@ namespace SDX_TD
 			int 性能[5] =
 			{
 				st->コスト[Lv],//上3つは確定、最大5つ
-				st->攻撃力[Lv],
+				(int)(st->攻撃力[Lv] * 支援補正),
 				st->連射[Lv],
 				(int)(st->支援効果[Lv] * 100),
 				st->デバフ効果[Lv]
@@ -163,7 +161,7 @@ namespace SDX_TD
 			int 次性能[5] =
 			{
 				st->コスト[NextLv],//上3つは確定、最大5つ
-				st->攻撃力[NextLv],
+				(int)(st->攻撃力[NextLv] * 支援補正),
 				st->連射[NextLv],
 				(int)(st->支援効果[NextLv] * 100),
 				st->デバフ効果[NextLv]
@@ -220,7 +218,7 @@ namespace SDX_TD
 			if (残り送還時間 == 0)
 			{
 				isRemove = true;
-				Witch::Main->Mp += int( st->コスト[Lv] * Witch::Main->回収率 );
+				Witch::Main->Mp += st->コスト[Lv] * Witch::Main->回収率;
 			}
 
 			if (isRemove)
@@ -244,7 +242,7 @@ namespace SDX_TD
 				残り強化時間 > 0 ||
 				残り送還時間 > 0 ||
 				!Witch::Main->is使用可能[st->職種] ||
-				(!TDSystem::詠唱回数[st->職種] && !st->isウィッチ)
+				(!Witch::詠唱回数[st->職種] && !st->isウィッチ)
 				)
 			{ 
 				return false; 
@@ -256,7 +254,7 @@ namespace SDX_TD
 
 			if (!st->isウィッチ)
 			{
-				--TDSystem::詠唱回数[st->職種];
+				--Witch::詠唱回数[st->職種];
 			}
 
 			Witch::Main->Mp -= 必要MP;
@@ -274,6 +272,7 @@ namespace SDX_TD
 			return true;
 		}
 
+		/** 売却処理or発動処理.*/
 		bool 送還開始()
 		{
 			if (isジョブリスト) return false;
@@ -283,8 +282,8 @@ namespace SDX_TD
 			{
 				//開始前は即回収
 				isRemove = true;
-				if (st->isウィッチ){ TDSystem::詠唱回数[st->職種]++; }
-				else{ TDSystem::詠唱回数[st->職種] += Lv + 1; }
+				if (st->isウィッチ){ Witch::詠唱回数[st->職種]++; }
+				else{ Witch::詠唱回数[st->職種] += Lv + 1; }
 				Witch::Main->Mp += st->コスト[Lv];
 				残り送還時間 = -1;
 			}
@@ -293,7 +292,7 @@ namespace SDX_TD
 				if (st->is使い捨て)
 				{
 					//使い捨て
-					Shoot(0);
+					Shoot(nullptr);
 					isRemove = true;
 				}
 				else
@@ -338,7 +337,7 @@ namespace SDX_TD
 				if ( 対象 == nullptr)
 				{
 					対象 = SStage->GetNearEnemy(this , st->is対地 , st->is対空);
-					if ( !対象 || GetDistance(対象) <= st->射程[Lv])
+					if ( !対象 || GetDistance(対象) > st->射程[Lv])
 					{
 						対象 = nullptr;
 					}

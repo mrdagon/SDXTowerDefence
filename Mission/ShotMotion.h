@@ -65,7 +65,7 @@ namespace SDX
 						}
 					}
 					
-					移動対象->MoveF( 10 );
+					移動対象->MoveF( speed * 30 );
 				}
 
 				return true;

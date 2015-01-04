@@ -47,7 +47,6 @@ namespace SDX_TD
 			種族名 = 種族名;
 			説明文 = 説明文;
 		}
-
 	};
 
 	EnumArray<EnemyData, EnemyType> EnemyDataS;

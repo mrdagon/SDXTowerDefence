@@ -1,6 +1,8 @@
 ﻿//Copyright © 2014 (´･@･)
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://tacoika.blog87.fc2.com/
+#pragma once
+
 #include "DataS.h"
 
 namespace SDX_TD
@@ -11,14 +13,10 @@ namespace SDX_TD
 	namespace TDSystem
 	{
 		Difficulty 難易度;
-		StageType 選択ステージ;
+		StageType 選択ステージ = StageType::一面;
 		bool isトライアル = true;//notならパワー
 		bool isカップル = true;//notならシングル
 		bool isリプレイ = false;
-
-		EnumArray<int, UnitType> 詠唱回数;
-
-		int スコア;
 
 		//アイテム関連
 		int 素材数[4];

@@ -42,7 +42,7 @@ namespace SDX_TD
 			移動種(st->移動種)
 		{
 			スコア = int(st->スコア * (1.0 + (double)レベル / 30 ));
-			最大HP = st->最大HP * (1.0 + (レベル)* 0.2 + (レベル) * (レベル) * 0.06);
+			最大HP = st->最大HP * (1.0 + (レベル)* 0.2 + (レベル) * (レベル) * 0.06) * DifficultyDataS[TDSystem::難易度].HP補正[TDSystem::isトライアル];
 			防御力 = int(st->防御力 * レベル);
 
 			if (isBoss)
@@ -63,18 +63,17 @@ namespace SDX_TD
 			//MP&SP&スコア増
 			if (TDSystem::isカップル)
 			{
-				Witch::Main->Mp += スコア - int(スコア*0.3);
-				Witch::Sub->Mp += int(スコア*0.3);
+				Witch::Main->Mp += スコア*0.07;
+				Witch::Sub->Mp += スコア*0.03;
 			}
 			else
 			{
-				Witch::Main->Mp += スコア;
+				Witch::Main->Mp += スコア *0.1;
 			}
 			Witch::Main->Sp += st->スコア;
 
-			TDSystem::スコア += スコア;
+			SStage->score += スコア;
 			isRemove = true;
-			DeadSub();
 		}
 
 		/**.*/
@@ -117,8 +116,11 @@ namespace SDX_TD
 			Move(mx, my);
 			地形衝突();
 
-			//敵毎の特殊処理
-			ActSub();
+			//飛行能力発動
+			if (st->is離陸 && 残りHP < 最大HP / 2 && 移動種 != MoveType::空)
+			{
+				移動種 = MoveType::空;				
+			}
 		}
 
 		void 方向更新()
@@ -175,7 +177,7 @@ namespace SDX_TD
 		void 地形衝突()
 		{
 			//はみ出ている量
-			const int X差 = (int)GetX() % CHIP_SIZE - 判定大きさ/2;
+			const int X差 = (int)GetX() % CHIP_SIZE - 判定大きさ / 2;
 			const int Y差 = (int)GetY() % CHIP_SIZE - 判定大きさ / 2;
 
 			//各方向にはみ出ているか
@@ -187,16 +189,16 @@ namespace SDX_TD
 			bool 衝突[9] = {};
 
 			//平面にめりこみ
-			if (is↑) { 衝突[1] = SStage->land.Check地形(GetX(), GetY() - 7, 移動種); }
-			if (is←) { 衝突[3] = SStage->land.Check地形(GetX() - 7, GetY(), 移動種); }
-			if (is→) { 衝突[5] = SStage->land.Check地形(GetX() + 7, GetY(), 移動種); }
-			if (is↓) { 衝突[7] = SStage->land.Check地形(GetX() - 7, GetY() + 7, 移動種); }
+			if (is↑) { 衝突[1] = SStage->land.Check地形(GetX(), GetY() - 6, 移動種); }
+			if (is←) { 衝突[3] = SStage->land.Check地形(GetX() - 6, GetY(), 移動種); }
+			if (is→) { 衝突[5] = SStage->land.Check地形(GetX() + 6, GetY(), 移動種); }
+			if (is↓) { 衝突[7] = SStage->land.Check地形(GetX() - 6, GetY() + 6, 移動種); }
 
 			//角にめりこみ
-			if (is↑ && is←){ 衝突[0] = SStage->land.Check地形(GetX() - 7, GetY() - 7, 移動種); }
-			if (is↑ && is→){ 衝突[2] = SStage->land.Check地形(GetX() + 7, GetY() - 7, 移動種); }
-			if (is↓ && is←){ 衝突[6] = SStage->land.Check地形(GetX() - 7, GetY() + 7, 移動種); }
-			if (is↓ && is→){ 衝突[8] = SStage->land.Check地形(GetX() + 7, GetY() + 7, 移動種); }
+			if (is↑ && is←){ 衝突[0] = SStage->land.Check地形(GetX() - 6, GetY() - 6, 移動種); }
+			if (is↑ && is→){ 衝突[2] = SStage->land.Check地形(GetX() + 6, GetY() - 6, 移動種); }
+			if (is↓ && is←){ 衝突[6] = SStage->land.Check地形(GetX() - 6, GetY() + 6, 移動種); }
+			if (is↓ && is→){ 衝突[8] = SStage->land.Check地形(GetX() + 6, GetY() + 6, 移動種); }
 
 			//現在のマスが移動不可能
 			if (SStage->land.Check地形(GetX(), GetY(), 移動種))
@@ -225,6 +227,7 @@ namespace SDX_TD
 		{
 			int アニメ = 0;
 			bool 反転 = false;
+
 
 			switch (方向)
 			{
@@ -260,7 +263,21 @@ namespace SDX_TD
 				break;
 			}
 
-			MUnit::敵[st->種族][アニメ]->DrawRotate({ GetX(), GetY() }, 1 + isBoss, 0, 反転);
+			Point pos = {GetX(),GetY()};
+			const auto image = MUnit::敵[st->種族][アニメ];
+
+			if (鈍足時間 > 0)
+			{
+				image->SetColor({ 0, 255, 0 });
+			}
+			if (麻痺時間 > 0)
+			{
+				//@todo リプレイ再現対応 
+				pos.Move(Rand::Get(-3, 3), Rand::Get(-3, 3));
+			}
+
+			image->DrawRotate(pos, 1 + isBoss, 0, 反転);
+			image->SetColor(Color::White);
 
 			//ターゲット
 			if (SStage->selected == this)
@@ -322,23 +339,17 @@ namespace SDX_TD
 			const int x = (int)GetX() / CHIP_SIZE;
 			const int y = (int)GetY() / CHIP_SIZE;
 
-			//飛行能力発動
-			if (st->is離陸 && 残りHP > 0 && 残りHP < 最大HP / 2 && 移動種 != MoveType::空)
+			if (残りHP <= 0)
 			{
-				移動種 = MoveType::空;
-				SStage->Add(this);//飛行敵リストに追加
-				return true;//現在のリストからは削除
+				Dead();
 			}
-
-			//ゴール判定
-			if (SStage->land.地形[x][y] == ChipType::畑)
+			else if (SStage->land.地形[x][y] == ChipType::畑)
 			{
-				//ボスはダメージ5倍
+				//ゴール判定、ボスはダメージ5倍
 				Witch::Main->Damage(1+isBoss*4);
 				isRemove = true;
 			}
 
-			if (残りHP <= 0) Dead();
 			if (isRemove)
 			{
 				SStage->ResetSelect(this);
@@ -376,7 +387,6 @@ namespace SDX_TD
 			ダメージ量 = std::max(ダメージ量 - 防御力, 1.0);
 
 			残りHP -= ダメージ量;
-			React(ダメージ量);
 		}
 
 		void 麻痺付与(IShot* 衝突相手)
@@ -419,21 +429,6 @@ namespace SDX_TD
 				(衝突相手->st->属性 == Element::空 && st->属性 == Element::樹)
 				);
 		}
-
-		/**ダメージを受けた時の特殊処理.*/
-		void React(double ダメージ量)
-		{
-		}
-
-		/**死亡時の特殊処理.*/
-		void DeadSub()
-		{
-		}
-
-		/**敵別の特殊処理.*/
-		void ActSub()
-		{
-		}
 	};
 
 	class Enemy : public IEnemy
@@ -446,6 +441,10 @@ namespace SDX_TD
 			IEnemy(shape, sprite, &EnemyDataS[敵種類], Lv, isBoss),
 			shape((X座標 + 0.5)*CHIP_SIZE, (Y座標 + 0.5)*CHIP_SIZE, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2)
 		{
+			if (isBoss)
+			{
+				shape.SetZoom(2, 2);
+			}
 		}
 	};
 }

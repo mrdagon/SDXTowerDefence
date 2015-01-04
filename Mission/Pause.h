@@ -4,6 +4,8 @@
 #pragma once
 #include "Object.h"
 #include "Design.h"
+#include "IStage.h"
+#include "StageSelect.h"
 
 namespace SDX_TD
 {
@@ -12,15 +14,18 @@ namespace SDX_TD
 	/** サブメニュー用オブジェクト、ミッション中にメニュー開いて一時停止.*/
 	/** @todo 仮実装*/
 	/** 位置情報はほぼ無駄*/
-	class Pause : IScene
+	class Pause : public IScene
 	{
 	public:
 		Pause()
-		{}
+		{
+			Director::IsDraw() = true;
+		}
 
 		void Update()
 		{
 			namespace UI = UI_Pause;
+			UI_Reset();
 
 			if (!Input::mouse.Left.on) { return; }
 
@@ -28,14 +33,18 @@ namespace SDX_TD
 
 			if (UI::Rあきらめる.Hit(&pt))
 			{
+				//難易度選択から
+				Director::AddScene(std::make_shared<StageSelect>());
 				isEnd = true;
 			}
 			if (UI::Rやり直す.Hit(&pt))
 			{
+				SStage->Init();
 				isEnd = true;
 			}
 			if (UI::R続ける.Hit(&pt))
 			{
+				//何もしない
 				isEnd = true;
 			}
 		}
@@ -43,17 +52,26 @@ namespace SDX_TD
 		void Draw()
 		{
 			namespace UI = UI_Pause;
+
 			//暗くステージ状況を描画
 			Screen::SetBright(Color::Gray);
-			Director::GetScene(-1)->Draw();
+			SStage->Draw();
 			Screen::SetBright(Color::White);
 
-			//リスタート
-			MSystem::フレーム[0].Draw(UI::Rやり直す);
+			Point def = { 17, 19 };
+
 			//リタイア
-			MSystem::フレーム[0].Draw(UI::Rあきらめる);
+			MSystem::フレーム[3].Draw(UI::Rあきらめる);
+			MFont::ゴシック中.DrawRotate(UI::Rあきらめる.GetPoint() + def , 2, 0, Color::Black, false, { "あきらめる" });
+
+			//リスタート
+			MSystem::フレーム[3].Draw(UI::Rやり直す);
+			MFont::ゴシック中.DrawRotate(UI::Rやり直す.GetPoint() + def , 2, 0, Color::Black, false, { "やり直す" });
+
 			//続ける
-			MSystem::フレーム[0].Draw(UI::R続ける);
+			MSystem::フレーム[3].Draw(UI::R続ける);
+			MFont::ゴシック中.DrawRotate(UI::R続ける.GetPoint() + def , 2, 0, Color::Black, false, { "続ける" });
+
 		}
 	};
 }

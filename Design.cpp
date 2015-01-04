@@ -85,9 +85,23 @@ namespace SDX_TD
 
 	void UI_Pause::Reset()
 	{
-		R続ける = { 0, 0, 10, 10 };
-		Rやり直す = { 0, 0, 10, 10 };
-		Rあきらめる = { 0, 0, 10, 10 };
+		Rあきらめる = { 320, 160, 100, 25, 100, 25 };
+		Rやり直す = { 320, 240, 100, 25, 100, 25 };
+		R続ける = { 320, 320, 100, 25 ,100,25};
+	}
+
+	void UI_Result::Reset()
+	{
+		R終了 = {320,260,100,25,100,25};
+		Rリトライ = {320,380,100,25,100,25};
+	}
+
+	void UI_StageSelect::Reset()
+	{
+		for (int a = 0; a < 6; ++a)
+		{
+			R難易度[a] = {320,60+a*60,100,25,100,25};
+		}
 	}
 
 	void UI_Reset()
@@ -95,5 +109,7 @@ namespace SDX_TD
 		UI_Stage::Reset();
 		UI_Unit::Reset();
 		UI_Pause::Reset();
+		UI_Result::Reset();
+		UI_StageSelect::Reset();
 	}
 }
