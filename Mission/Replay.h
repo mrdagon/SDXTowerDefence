@@ -13,5 +13,5 @@ namespace SDX_TD
 
 	//大魔法を発動
 
-	//強化or送還or発動or配置
+	//強化or売却or発動or配置
 }

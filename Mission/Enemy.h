@@ -70,9 +70,14 @@ namespace SDX_TD
 			{
 				Witch::Main->Mp += スコア *0.1;
 			}
-			Witch::Main->Sp += st->スコア;
 
-			SStage->score += スコア;
+			Witch::Main->AddSp( st->スコア );
+
+			//ダメージに応じてスコアは5%まで低下
+			SStage->score += int(スコア * std::max(1.0, 10 - 0.5*Witch::被ダメージ));
+
+			MSound::撃破.Play();
+
 			isRemove = true;
 		}
 
@@ -98,6 +103,7 @@ namespace SDX_TD
 			if (鈍足時間 > 0)
 			{
 				speed = speed * 鈍足率;
+				--鈍足時間;
 			}
 
 			//斜め移動補正
@@ -222,12 +228,11 @@ namespace SDX_TD
 			Move(x, y);
 		}
 
-		/**デバッグ用描画処理.*/
+		/**.*/
 		void Draw() const
 		{
 			int アニメ = 0;
 			bool 反転 = false;
-
 
 			switch (方向)
 			{
@@ -278,6 +283,21 @@ namespace SDX_TD
 
 			image->DrawRotate(pos, 1 + isBoss, 0, 反転);
 			image->SetColor(Color::White);
+
+			//Hpゲージ
+			const int life = int(残りHP * 32 / 最大HP);
+			Color color = Color::Blue;
+			if (life <= 8)
+			{
+				color = Color::Red;
+			}
+			else if (life <= 16)
+			{
+				color = Color::Yellow;
+			}
+
+			Drawing::Rect({ GetX() - 16, GetY() + 8, 32, 4 },Color::Black);
+			Drawing::Rect({GetX()-16,GetY()+8,life,4},color);
 
 			//ターゲット
 			if (SStage->selected == this)

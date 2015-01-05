@@ -27,7 +27,9 @@ namespace SDX_TD
 			Witch::Main->Mp -= st->コスト[0];
 			--Witch::詠唱回数[職種];
 
-			SetWait();
+			待機時間 = WAIT_TIME;
+
+			MSound::設置.Play();
 		}
 
 		using S勇者 = Shot < Circle, SpImage, MOTION::勇者 >;
@@ -40,10 +42,13 @@ namespace SDX_TD
 		{
 			double 速度 = st->弾速[Lv];
 			double 角度;
+						
 			if (対象)
 			{
 				角度 = this->GetDirect(対象);
 			}
+
+			MSound::攻撃.Play();
 
 //入力省略,描画方法,移動方法
 #define DEF { GetX(), GetY(), st->半径 },st,Lv,角度,支援補正

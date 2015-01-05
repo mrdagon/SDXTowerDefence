@@ -18,16 +18,16 @@ namespace SDX_TD
 		virtual void Dead(){}
 	public:
 		static const int Size = 2;//2x2角
-		static const int 速度値 = 6000;
+		static const int WAIT_TIME = 6000;
 
 		UnitData *st;//ステータス
 		int    Lv = 0;
 		double 支援補正 = 1.0;
 
 		int    待機時間 = -1;//攻撃の待機
-		int    残り送還時間 = -1;
+		int    残り売却時間 = -1;
 		int    残り強化時間 = -1;
-		int    強化or送還長さ = 1;
+		int    強化or売却長さ = 1;
 		bool   isジョブリスト = false;//画面左のジョブリスト用
 
 		IUnit(IShape &図形, ISprite &描画方法, UnitType 職種 , bool isリスト) :
@@ -35,13 +35,6 @@ namespace SDX_TD
 			st(&UnitDataS[職種]),
 			isジョブリスト(isリスト)
 		{}
-
-		/**.*/
-		void SetWait()
-		{
-			if (st->連射[Lv] <= 0){ return; }
-			待機時間 = int(速度値 / st->連射[Lv]);				
-		}
 
 		/**配置時の描画処理.*/
 		void Draw() const override
@@ -57,15 +50,17 @@ namespace SDX_TD
 				MSystem::フレーム[1].Draw({ GetX() - CHIP_SIZE, GetY() - CHIP_SIZE, CHIP_SIZE * 2, CHIP_SIZE * 2 });
 			}
 
-			//強化中or送還中
+			//強化中or売却中
 			if (残り強化時間 > 0)
 			{
-				int Num = 99 - 残り強化時間 * 99 / 強化or送還長さ;
+				//数値が増えていく
+				int Num = 99 - 残り強化時間 * 99 / 強化or売却長さ;
 				MFont::BMP黒.DrawExtend({ GetX() - 12, GetY() - 10 }, 2, 2, { 255, 120, 120 }, { std::setw(2), Num });
 			}
-			else if (残り送還時間 > 0)
+			else if (残り売却時間 > 0)
 			{
-				int Num = 残り送還時間 * 99 / 強化or送還長さ;
+				//数値が減っていく
+				int Num = 残り売却時間 * 99 / 強化or売却長さ;
 				MFont::BMP黒.DrawExtend({ GetX() - 12, GetY() - 10 }, 2, 2, { 120, 120, 255 }, { std::setw(2), Num });
 			}
 			else
@@ -136,8 +131,7 @@ namespace SDX_TD
 		{
 			namespace UI = UI_Unit;
 
-			bool 変化量表示 = isジョブリスト;
-			if (Lv == 5){ isジョブリスト = false; }
+			const bool 変化量表示 = (Lv != 5);
 
 			IconType アイコン[5] =
 			{
@@ -204,29 +198,27 @@ namespace SDX_TD
 		/*射程を表示する*/
 		void DrawRange()
 		{
-			if (isジョブリスト){ return; }
-
-			//射程表示
-			Drawing::Circle({ GetX(), GetY(), (double)st->射程[Lv] }, {255,255,255,128}, 0);
-			Drawing::Circle({ GetX(), GetY(), (double)st->射程[Lv] }, Color::Red , 2);
+			if (isジョブリスト)
+			{ 
+				Drawing::Circle({ (double)Input::mouse.x, (double)Input::mouse.y, (double)st->射程[Lv] }, { 255, 255, 255, 128 }, 0);
+				Drawing::Circle({ (double)Input::mouse.x, (double)Input::mouse.y, (double)st->射程[Lv] }, Color::Red, 2);
+			}
+			else
+			{
+				//射程表示
+				Drawing::Circle({ GetX(), GetY(), (double)st->射程[Lv] }, { 255, 255, 255, 128 }, 0);
+				Drawing::Circle({ GetX(), GetY(), (double)st->射程[Lv] }, Color::Red, 2);
+			}
 		}
 
 		/**.*/
 		bool RemoveCheck() override
 		{
-			//送還
-			if (残り送還時間 == 0)
-			{
-				isRemove = true;
-				Witch::Main->Mp += st->コスト[Lv] * Witch::Main->回収率;
-			}
-
 			if (isRemove)
 			{
 				const int x = int(GetX() - Size * CHIP_SIZE) / CHIP_SIZE + 1;
 				const int y = int(GetY() - Size * CHIP_SIZE) / CHIP_SIZE + 1;
 				SStage->land.RemoveUnit(x, y, Size);
-
 				SStage->ResetSelect(this);
 				Remove();
 			}
@@ -240,7 +232,7 @@ namespace SDX_TD
 				isジョブリスト ||
 				Lv >= 5 ||
 				残り強化時間 > 0 ||
-				残り送還時間 > 0 ||
+				残り売却時間 > 0 ||
 				!Witch::Main->is使用可能[st->職種] ||
 				(!Witch::詠唱回数[st->職種] && !st->isウィッチ)
 				)
@@ -260,7 +252,7 @@ namespace SDX_TD
 			Witch::Main->Mp -= 必要MP;
 
 			残り強化時間 = int((Lv + 1) * (Lv + 1) * 60 * Witch::Main->強化速度);
-			強化or送還長さ = 残り強化時間;
+			強化or売却長さ = 残り強化時間;
 
 			//開始前は即LVアップ
 			if (SStage->GetWave() == 0)
@@ -273,10 +265,10 @@ namespace SDX_TD
 		}
 
 		/** 売却処理or発動処理.*/
-		bool 送還開始()
+		bool 売却開始()
 		{
 			if (isジョブリスト) return false;
-			if (残り強化時間 > 0 || 残り送還時間 > 0) return false;
+			if (残り強化時間 > 0 || 残り売却時間 > 0) return false;
 
 			if (SStage->GetWave() == 0)
 			{
@@ -285,7 +277,7 @@ namespace SDX_TD
 				if (st->isウィッチ){ Witch::詠唱回数[st->職種]++; }
 				else{ Witch::詠唱回数[st->職種] += Lv + 1; }
 				Witch::Main->Mp += st->コスト[Lv];
-				残り送還時間 = -1;
+				残り売却時間 = -1;
 			}
 			else
 			{
@@ -298,8 +290,8 @@ namespace SDX_TD
 				else
 				{
 					//売却
-					残り送還時間 = int((SStage->GetWave() + 1) * 60 * Witch::Main->回収速度);
-					強化or送還長さ = 残り送還時間;
+					残り売却時間 = int((SStage->GetWave() + 1) * 60 * Witch::Main->回収速度);
+					強化or売却長さ = 残り売却時間;
 				}
 			}
 
@@ -309,17 +301,28 @@ namespace SDX_TD
 		/**.*/
 		void Act()
 		{
-			--残り送還時間;
+			--残り売却時間;
 			--残り強化時間;
-			--待機時間;
+			待機時間 -= st->連射[Lv];
+
 			if (残り強化時間 == 0)
 			{
+				MSound::強化.Play();
 				Lv++;
-				残り強化時間 = -1;
-				SetWait();
+				待機時間 = WAIT_TIME;
+				return;
 			}
 
-			if (待機時間 <= 0 && 残り送還時間 < 0 && 残り強化時間 < 0 && !st->is使い捨て )
+			if (残り売却時間 == 0)
+			{
+				MSound::売却.Play();
+				Witch::Main->Mp += st->コスト[Lv] * Witch::Main->回収率;
+				isRemove = true;
+				return;
+			}
+
+
+			if (待機時間 <= 0 && 残り売却時間 < 0 && 残り強化時間 < 0 && !st->is使い捨て )
 			{
 				IEnemy* 対象 = nullptr;
 				//敵を選択中
@@ -347,7 +350,7 @@ namespace SDX_TD
 				{
 					//射程内に敵がいるなら攻撃					
 					Shoot(対象);
-					SetWait();
+					待機時間 = WAIT_TIME;
 				}
 			}
 		}
@@ -355,5 +358,4 @@ namespace SDX_TD
 		/**攻撃処理.*/
 		virtual void Shoot(IEnemy* 対象){};
 	};
-
 }

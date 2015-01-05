@@ -56,7 +56,7 @@ namespace SDX_TD
 				const Difficulty no = (Difficulty)a;
 
 				MSystem::フレーム[3].Draw(UI::R難易度[a]);
-				MFont::ゴシック中.DrawRotate(UI::R難易度[a].GetPoint() + def ,2,0, Color::Black , false, DifficultyDataS[no].名前);
+				MFont::ゴシック中.DrawRotate(UI::R難易度[a].GetPoint() + def ,2,0, Color::Black , DifficultyDataS[no].名前, false);
 			}
 		}
 	};

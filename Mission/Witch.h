@@ -287,6 +287,7 @@ namespace SDX_TD
 			{
 				Sp = 0;
 				補正計算();//ステータスを元に戻す
+				MMusic::通常.Play();//BGMを元に戻す
 
 				if (TDSystem::isカップル)
 				{
@@ -296,14 +297,32 @@ namespace SDX_TD
 			}
 		}
 
+		/**Sp上昇処理.*/
+		void AddSp(double 上昇量)
+		{
+			if (Sp >= 最大Sp)
+			{
+				return;
+			}
+
+			Sp += 上昇量;
+
+			//最大値を超えたら効果音を鳴らす
+			if (Sp >= 最大Sp)
+			{
+				MSound::Spチャージ完了.Play();
+			}
+		}
+
 		/**被ダメージ処理.*/
 		void Damage(int ダメージ量)
 		{
 			//SPが増加し、逆境補正がかかる
-			Sp += 最大Sp / 20;
+			AddSp(最大Sp / 20);
 			被ダメージ += ダメージ量;
 			Hp = std::max(0, Hp - ダメージ量);
 			補正計算();
+			MSound::ダメージ.Play();
 
 			if (TDSystem::isカップル)
 			{
@@ -315,10 +334,14 @@ namespace SDX_TD
 		/**大魔法発動時の性能計算、効果処理.*/
 		void 大魔法発動()
 		{
+			//使用可能かどうか判定
 			if (Sp < 最大Sp || 大魔法残り時間 > 0)
 			{
 				return;
 			}
+
+			MMusic::大魔法.Play();
+
 			//演出
 			for (int a = 0; a < 250; ++a)
 			{

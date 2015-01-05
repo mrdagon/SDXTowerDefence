@@ -237,6 +237,7 @@ namespace SDX_TD
 			int enemyCount;
 			int lv;
 
+			MSound::Wave.Play();
 			lv = int((wave.現在Wave + 1) * DifficultyDataS[TDSystem::難易度].レベル補正[TDSystem::isトライアル]);
 
 			if (wave.isBoss[waveNo]){ enemyCount = DifficultyDataS[TDSystem::難易度].ボス召喚数[TDSystem::isトライアル]; }
@@ -493,7 +494,7 @@ namespace SDX_TD
 				break;
 			case Command::売却://使い捨ても
 				if (!selectUnit){ break; }
-				selectUnit->送還開始();
+				selectUnit->売却開始();
 				break;
 			case Command::種別選択:
 				SetSelect(&jobS[param]);
@@ -680,6 +681,9 @@ namespace SDX_TD
 
 			//ウィッチ初期化
 			Witch::InitAll();
+
+			//BGM開始
+			MMusic::通常.Play();
 		}
 
 		/**毎フレーム実行される更新処理.*/

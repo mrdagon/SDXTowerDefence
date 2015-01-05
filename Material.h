@@ -192,16 +192,44 @@ namespace SDX_TD
 	/**BGM.*/
 	namespace MMusic
 	{
+		Music 通常;
+		Music 大魔法;
+
 		static void Load()
 		{
+			通常.Load("File/Music/");
+			大魔法.Load("File/Music/");
+
+			通常.SetFadeInTime(1000);
+			通常.SetFadeOutTime(1000);
+
+			大魔法.SetFadeInTime(1000);
+			大魔法.SetFadeOutTime(1000);
 		}
 	}
 
 	/**効果音.*/
 	namespace MSound
 	{
+		Sound Spチャージ完了;//Spが最大値になった時
+		Sound 攻撃;//ユニットの攻撃時の音、とりあえず共通
+		Sound 強化;//ユニット強化完了時
+		Sound 売却;//ユニット売却完了時
+		Sound 設置;//ユニット設置時
+		Sound Wave;//次Wave進行時
+		Sound 撃破;//敵撃破時
+		Sound ダメージ;//ウィッチが被ダメ
+
 		static void Load()
 		{
+			Spチャージ完了.Load("File/Sound/.wav");
+			攻撃.Load("File/Sound/cursor18.wav");
+			強化.Load("File/Sound/power39.wav");
+			売却.Load("File/Sound/coin06.wav");
+			設置.Load("File/Sound/weapon00.wav");
+			Wave.Load("File/Sound/power34.wav");
+			撃破.Load("File/Sound/bom23.wav");
+			ダメージ.Load("File/Sound/voice015.wav");
 		}
 	}
 
