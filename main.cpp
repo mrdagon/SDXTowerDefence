@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 	//UIの位置をリセット
 	UI_Reset();
 
-	System::Initialise("GTD", 640, 480);//ライブラリの初期化
+	System::Initialise("GTD ver0.02α", 640, 480);//ライブラリの初期化
 
 	LoadUnitS();
 	LoadEnemyS();

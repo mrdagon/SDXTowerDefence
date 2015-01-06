@@ -48,8 +48,6 @@ namespace SDX_TD
 				角度 = this->GetDirect(対象);
 			}
 
-			MSound::攻撃.Play();
-
 //入力省略,描画方法,移動方法
 #define DEF { GetX(), GetY(), st->半径 },st,Lv,角度,支援補正
 			switch (st->職種)

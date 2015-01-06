@@ -197,8 +197,8 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			通常.Load("File/Music/");
-			大魔法.Load("File/Music/");
+			通常.Load("File/Music/sentou.mp3",0.5);
+			大魔法.Load("File/Music/brave.mp3",0.5);
 
 			通常.SetFadeInTime(1000);
 			通常.SetFadeOutTime(1000);
@@ -212,7 +212,7 @@ namespace SDX_TD
 	namespace MSound
 	{
 		Sound Spチャージ完了;//Spが最大値になった時
-		Sound 攻撃;//ユニットの攻撃時の音、とりあえず共通
+		//Sound 攻撃;//ユニットの攻撃時の音、無し
 		Sound 強化;//ユニット強化完了時
 		Sound 売却;//ユニット売却完了時
 		Sound 設置;//ユニット設置時
@@ -222,14 +222,14 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			Spチャージ完了.Load("File/Sound/.wav");
-			攻撃.Load("File/Sound/cursor18.wav");
-			強化.Load("File/Sound/power39.wav");
-			売却.Load("File/Sound/coin06.wav");
-			設置.Load("File/Sound/weapon00.wav");
-			Wave.Load("File/Sound/power34.wav");
-			撃破.Load("File/Sound/bom23.wav");
-			ダメージ.Load("File/Sound/voice015.wav");
+			Spチャージ完了.Load("File/Sound/eco00_r.wav",0.5);
+			//攻撃.Load("File/Sound/cursor18.wav");
+			強化.Load("File/Sound/power39.wav", 0.5);
+			売却.Load("File/Sound/coin06.wav", 0.5);
+			設置.Load("File/Sound/weapon00.wav", 0.5);
+			Wave.Load("File/Sound/power34.wav", 0.5);
+			撃破.Load("File/Sound/bom23.wav", 0.5);
+			ダメージ.Load("File/Sound/voice015.wav", 0.5);
 		}
 	}
 

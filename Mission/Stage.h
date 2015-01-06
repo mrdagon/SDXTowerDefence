@@ -130,6 +130,7 @@ namespace SDX_TD
 				}
 			}
 		}
+
 		/**通常弾の判定.*/
 		void HitSingle(IShot* 弾, IEnemy* 始点[MAP_SIZE][MAP_SIZE])
 		{

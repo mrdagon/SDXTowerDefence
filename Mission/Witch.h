@@ -397,7 +397,7 @@ namespace SDX_TD
 				SStage->Draw();
 				Screen::SetBright(Color::White);
 				//@todo 演出は仮
-				MFont::ゴシック中.DrawRotate({ 800 - a * 6, 300 }, 5, 0, Color::White, false, "大魔法 フォルドアーカレイト");
+				MFont::ゴシック中.DrawRotate({ 800 - a * 6, 300 }, 5, 0, Color::White, "大魔法 フォルドアーカレイト");
 				System::Update();
 			}
 

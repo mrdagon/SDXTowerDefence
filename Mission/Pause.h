@@ -62,15 +62,15 @@ namespace SDX_TD
 
 			//リタイア
 			MSystem::フレーム[3].Draw(UI::Rあきらめる);
-			MFont::ゴシック中.DrawRotate(UI::Rあきらめる.GetPoint() + def , 2, 0, Color::Black, false, { "あきらめる" });
+			MFont::ゴシック中.DrawRotate(UI::Rあきらめる.GetPoint() + def , 2, 0, Color::Black,{ "あきらめる" });
 
 			//リスタート
 			MSystem::フレーム[3].Draw(UI::Rやり直す);
-			MFont::ゴシック中.DrawRotate(UI::Rやり直す.GetPoint() + def , 2, 0, Color::Black, false, { "やり直す" });
+			MFont::ゴシック中.DrawRotate(UI::Rやり直す.GetPoint() + def , 2, 0, Color::Black,{ "やり直す" });
 
 			//続ける
 			MSystem::フレーム[3].Draw(UI::R続ける);
-			MFont::ゴシック中.DrawRotate(UI::R続ける.GetPoint() + def , 2, 0, Color::Black, false, { "続ける" });
+			MFont::ゴシック中.DrawRotate(UI::R続ける.GetPoint() + def , 2, 0, Color::Black,{ "続ける" });
 
 		}
 	};

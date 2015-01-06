@@ -60,11 +60,11 @@ namespace SDX_TD
 
 			Point def = { 17, 19 };
 			MSystem::フレーム[3].Draw(UI::Rリトライ);
-			MFont::ゴシック中.DrawRotate(UI::Rリトライ.GetPoint() + def, 2, 0, Color::Black, false, { "リトライ" });
+			MFont::ゴシック中.DrawRotate(UI::Rリトライ.GetPoint() + def, 2, 0, Color::Black, { "リトライ" });
 
 			//続ける
 			MSystem::フレーム[3].Draw(UI::R終了);
-			MFont::ゴシック中.DrawRotate(UI::R終了.GetPoint() + def, 2, 0, Color::Black, false, { "終了" });
+			MFont::ゴシック中.DrawRotate(UI::R終了.GetPoint() + def, 2, 0, Color::Black, { "終了" });
 		}
 	};
 }

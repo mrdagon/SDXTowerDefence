@@ -195,13 +195,16 @@ namespace SDX_TD
 			}
 		}
 
-		/*射程を表示する*/
+		/**射程を表示する.*/
 		void DrawRange()
 		{
 			if (isジョブリスト)
-			{ 
-				Drawing::Circle({ (double)Input::mouse.x, (double)Input::mouse.y, (double)st->射程[Lv] }, { 255, 255, 255, 128 }, 0);
-				Drawing::Circle({ (double)Input::mouse.x, (double)Input::mouse.y, (double)st->射程[Lv] }, Color::Red, 2);
+			{
+				const double x = (Input::mouse.x - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
+				const double y = (Input::mouse.y - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
+
+				Drawing::Circle({ x, y, (double)st->射程[Lv] }, { 255, 255, 255, 128 }, 0);
+				Drawing::Circle({ x, y, (double)st->射程[Lv] }, Color::Red, 2);
 			}
 			else
 			{

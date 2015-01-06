@@ -285,7 +285,8 @@ namespace SDX_TD
 			image->SetColor(Color::White);
 
 			//Hpゲージ
-			const int life = int(残りHP * 32 / 最大HP);
+			int life = int(残りHP * 32 / 最大HP);
+
 			Color color = Color::Blue;
 			if (life <= 8)
 			{
@@ -293,11 +294,19 @@ namespace SDX_TD
 			}
 			else if (life <= 16)
 			{
-				color = Color::Yellow;
+				color = { 255, 128, 0 };
 			}
-
-			Drawing::Rect({ GetX() - 16, GetY() + 8, 32, 4 },Color::Black);
-			Drawing::Rect({GetX()-16,GetY()+8,life,4},color);
+			
+			if (isBoss)
+			{
+				Drawing::Rect({ GetX() - 16, GetY() + 16, 32, 2 }, Color::Black);
+				Drawing::Rect({ GetX() - 16, GetY() + 16, life, 2 }, color);
+			}
+			else
+			{
+				Drawing::Rect({ GetX() - 8, GetY() + 8, 16, 2 }, Color::Black);
+				Drawing::Rect({ GetX() - 8, GetY() + 8, life/2, 2 }, color);
+			}
 
 			//ターゲット
 			if (SStage->selected == this)
