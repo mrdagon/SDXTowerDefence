@@ -15,6 +15,7 @@ namespace SDX_TD
 		Element 属性;
 
 		std::string 名前;
+		std::string 大魔法名;
 		std::string 魔導具名;
 		std::string 説明文;
 

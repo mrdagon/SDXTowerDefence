@@ -12,8 +12,6 @@ namespace SDX_TD
 	class Credit : public Menu
 	{
 	public:
-		Credit()
-		{
-		}
+		Credit(){}
 	};
 }

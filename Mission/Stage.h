@@ -557,7 +557,7 @@ namespace SDX_TD
 			int spd = 1;
 			for (int a = 0; a < 4; ++a)
 			{
-				const int SIZE = 2;
+				//const int SIZE = 2;
 
 				if (spd == gameSpeed)
 				{
@@ -569,9 +569,9 @@ namespace SDX_TD
 				}
 				
 				MFont::BMP黒.Draw(UI::Rゲーム速度[a].GetPoint() + UI::P差分[7], Color::White, "x");
-				MFont::BMP黒.DrawExtend(UI::Rゲーム速度[a].GetPoint() + UI::P差分[6], SIZE, SIZE, Color::White, { std::setw(2), spd });
+				MFont::BMP黒.DrawExtend(UI::Rゲーム速度[a].GetPoint() + UI::P差分[6], 2, 2, Color::White, { std::setw(2), spd });
 
-				spd *= 2;
+				spd *= 2 + 2 * TDSystem::is高速;
 			}
 
 			//全体枠

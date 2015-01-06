@@ -68,16 +68,13 @@ namespace SDX_TD
 			/**.*/
 			int 方向計算(int 現在の方向, int X座標, int Y座標)
 			{
-
 				//012
 				//345
 				//678
-				int mx = (現在の方向 % 3 - 1) * 7;
-				int my = (現在の方向 / 3 - 1) * 7;
 
 				int direct = 経路[X座標 / CHIP_SIZE][Y座標 / CHIP_SIZE];//現在のマスの向き
 
-				const int def = 7;
+				const int def = 6;
 
 				switch (direct)
 				{
@@ -239,7 +236,7 @@ namespace SDX_TD
 			}
 		}
 
-		//基本的なチェック
+		/**基本的なチェック.*/
 		bool SetCheck(int X座標, int Y座標, int 大きさ) const
 		{
 			if (X座標 < 3 || X座標 > MAP_SIZE - 3 || Y座標 < 3 || Y座標 > MAP_SIZE - 3) return false;
@@ -329,7 +326,7 @@ namespace SDX_TD
 			水路.Init(*this);
 		}
 
-		//地形の描画
+		/**地形の描画.*/
 		void Draw() const
 		{
 			//罫線の表示
@@ -356,7 +353,7 @@ namespace SDX_TD
 			}
 		}
 
-		//配置先の表示
+		/**配置先の表示.*/
 		void DrawSetPos()
 		{
 			const int x = int((Input::mouse.x - CHIP_SIZE / 2) / CHIP_SIZE);

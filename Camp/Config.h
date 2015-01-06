@@ -9,11 +9,10 @@ namespace SDX_TD
 	using namespace SDX;
 
 	//メニュー項目を配置
+	/**@todo .*/
 	class Config : public Menu
 	{
 	public:
-		Config()
-		{
-		}
+		Config(){}
 	};
 }

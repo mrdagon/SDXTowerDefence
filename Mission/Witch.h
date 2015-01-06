@@ -26,7 +26,28 @@ namespace SDX_TD
 			switch (st->種類)
 			{
 			case WitchType::ライナ:
-
+				break;
+			case WitchType::ナツメ:
+				break;
+			case WitchType::ルコウ:
+				break;
+			case WitchType::ディアネラ:
+				break;
+			case WitchType::ミナエ:
+				break;
+			case WitchType::トレニア:
+				break;
+			case WitchType::ロチエ:
+				break;
+			case WitchType::バロゥ:
+				break;
+			case WitchType::フィオナ:
+				break;
+			case WitchType::ナズナ:
+				break;
+			case WitchType::委員長:
+				break;
+			case WitchType::ミルラ:
 				break;
 			default:
 				break;
@@ -44,6 +65,28 @@ namespace SDX_TD
 				連射補正 *= 1.0 + double(被ダメージ) / 20;
 				攻撃補正 *= 1.2;
 				逆境補正 *= 2.0;
+				break;
+			case WitchType::ナツメ:
+				break;
+			case WitchType::ルコウ:
+				break;
+			case WitchType::ディアネラ:
+				break;
+			case WitchType::ミナエ:
+				break;
+			case WitchType::トレニア:
+				break;
+			case WitchType::ロチエ:
+				break;
+			case WitchType::バロゥ:
+				break;
+			case WitchType::フィオナ:
+				break;
+			case WitchType::ナズナ:
+				break;
+			case WitchType::委員長:
+				break;
+			case WitchType::ミルラ:
 				break;
 			default:
 				break;
@@ -83,6 +126,7 @@ namespace SDX_TD
 			}
 
 			//メインのみサブのみ、両方OKで計算を変える
+
 			//両方使えない
 			if (!is使用可能[type] && !Sub->is使用可能[type])
 			{
@@ -320,6 +364,10 @@ namespace SDX_TD
 			//SPが増加し、逆境補正がかかる
 			AddSp(最大Sp / 20);
 			被ダメージ += ダメージ量;
+			if (被ダメージ > 20)
+			{
+				被ダメージ = 20;
+			}
 			Hp = std::max(0, Hp - ダメージ量);
 			補正計算();
 			MSound::ダメージ.Play();

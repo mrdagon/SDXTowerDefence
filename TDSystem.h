@@ -20,21 +20,23 @@ namespace SDX_TD
 
 		//アイテム関連
 		int 素材数[4];
+		int 資金;
 
 		//実績関連
+
 
 		//設定関連
 		double 効果音の音量;
 		double BGMの音量;
-		bool isグリッド;
-		bool isHPゲージ;
-		bool isエフェクト;
+		bool is高速;//ゲーム速度を1,4,16,64倍速モードにする
+		bool isグリッド;//マスのグリッドと中央の薄い十字の表示
+		bool isHPゲージ;//敵Hpゲージの表示ON/OFF
+		bool isエフェクト;//死亡時エフェクト,大魔法カットインのON/OFF		
 
+		//ウィッチの経験値とステージの最高記録は、WitchDataS,StageDataSで
 		static void SaveAndLoad(FileMode 読み込みor書込)
 		{
-
 			SaveOrLoadScore(読み込みor書込);
-
 		}
 	}
 }
