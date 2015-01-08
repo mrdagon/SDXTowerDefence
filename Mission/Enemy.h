@@ -60,6 +60,24 @@ namespace SDX_TD
 		/**死亡時、基本処理.*/
 		void Dead()
 		{
+			//分裂
+			if (st->種族 == EnemyType::ゼリー王)
+			{
+				for (int a = 0; a < 4; ++a)
+				{
+					auto enemy = new Enemy(GetX(), GetY(), EnemyType::ゼリー, レベル, isBoss);
+					double r = Rand::Get(PAI);
+					enemy->最大HP /= 4;
+					enemy->残りHP /= 4;
+					enemy->スコア /= 4;
+					enemy->麻痺時間 = 120;
+					enemy->吹き飛びX = std::sin(PAI) * 16 * (1 + isBoss);
+					enemy->吹き飛びY = std::cos(PAI) * 16 * (1 + isBoss);
+
+					SStage->Add(enemy);
+				}
+			}
+
 			//MP&SP&スコア増
 			if (TDSystem::isカップル)
 			{
@@ -88,6 +106,12 @@ namespace SDX_TD
 			const int x = (int)(GetX() / CHIP_SIZE);
 			const int y = (int)(GetY() / CHIP_SIZE);
 
+			//飛行能力発動
+			if (st->is離陸 && 残りHP < 最大HP / 2 && 移動種 != MoveType::空)
+			{
+				移動種 = MoveType::空;
+			}
+
 			//方向を更新
 			方向更新();
 
@@ -109,6 +133,12 @@ namespace SDX_TD
 			//斜め移動補正
 			if (方向 % 2 == 0) speed *= 0.7;
 
+			//ピンチで加速
+			if (st->is加速 && 残りHP < 最大HP/2 )
+			{
+				speed *= 1.5;
+			}
+
 			double mx = (方向 % 3 - 1) * speed;
 			double my = (方向 / 3 - 1) * speed;
 
@@ -122,11 +152,7 @@ namespace SDX_TD
 			Move(mx, my);
 			地形衝突();
 
-			//飛行能力発動
-			if (st->is離陸 && 残りHP < 最大HP / 2 && 移動種 != MoveType::空)
-			{
-				移動種 = MoveType::空;				
-			}
+
 		}
 
 		void 方向更新()
@@ -421,14 +447,14 @@ namespace SDX_TD
 		void 麻痺付与(IShot* 衝突相手)
 		{
 			//判定
-			if (!Rand::Coin(衝突相手->デバフ率)) return;
+			if (!Rand::Coin(衝突相手->デバフ率)){ return; }
 
 			//付与処理
 			麻痺時間 = std::max(衝突相手->デバフ効果, 麻痺時間);
 		}
 		void 鈍足付与(IShot* 衝突相手)
 		{
-			if (鈍足時間 <= 0) 鈍足率 = 1.0;
+			if (鈍足時間 <= 0){ 鈍足率 = 1.0; }
 
 			//付与処理
 			鈍足率 = std::min(1 - 衝突相手->デバフ率, 鈍足率);

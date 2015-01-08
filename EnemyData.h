@@ -22,9 +22,9 @@ namespace SDX_TD
 		int 最大HP = 100;
 		double 移動速度 = 1;
 		double 防御力 = 0;
-		double 回避力 = 0;
 		double 再生力 = 0;
 		bool is離陸 = false;//HPが減ると空をとぶフラグ
+		bool is加速 = false;//直線移動が早い
 
 		//無効 or 有効
 		EnumArray<bool, DebuffType> 特殊耐性;
@@ -73,21 +73,21 @@ namespace SDX_TD
 		EnemyDataS[EnemyType::ドラゴン].Set(MoveType::陸, Element::炎, 80, 25, 40);
 		EnemyDataS[EnemyType::ゼリー王].Set(MoveType::陸, Element::氷, 30, 20, 40);
 		EnemyDataS[EnemyType::マーマン].Set(MoveType::水, Element::氷, 60, 15, 50);
-		EnemyDataS[EnemyType::ロボット].Set(MoveType::空, Element::氷, 60, 20, 15);
+		EnemyDataS[EnemyType::トレント].Set(MoveType::空, Element::氷, 60, 20, 15);
 
-		EnemyDataS[EnemyType::コボルド].回避力 = 1;
-
-		EnemyDataS[EnemyType::ケルベロス].防御力 = 0.5;
 		EnemyDataS[EnemyType::マーマン].防御力 = 0.5;
 		EnemyDataS[EnemyType::ゴーレム].防御力 = 1;
-		EnemyDataS[EnemyType::ロボット].防御力 = 1;
+		EnemyDataS[EnemyType::トレント].防御力 = 1;
 		EnemyDataS[EnemyType::ドラゴン].防御力 = 0.5;
-
-		EnemyDataS[EnemyType::グリフィン].is離陸 = true;
 
 		EnemyDataS[EnemyType::スケルトン].再生力 = 1;
 
 		EnemyDataS[EnemyType::オーガ].特殊耐性[DebuffType::吹飛] = true;
-		EnemyDataS[EnemyType::ケルベロス].特殊耐性[DebuffType::鈍足] = true;
+		EnemyDataS[EnemyType::コボルド].特殊耐性[DebuffType::鈍足] = true;
+		EnemyDataS[EnemyType::トレント].特殊耐性[DebuffType::麻痺] = true;
+	
+		EnemyDataS[EnemyType::ケルベロス].is加速 = true;
+		EnemyDataS[EnemyType::グリフィン].is離陸 = true;
+
 	}
 }

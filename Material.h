@@ -73,7 +73,7 @@ namespace SDX_TD
 			敵[EnemyType::ゼリー王].Load("File/Enemy/009.png", 9, 3, 3);
 			敵[EnemyType::マーマン].Load("File/Enemy/010.png", 9, 3, 3);
 			敵[EnemyType::インプ].Load("File/Enemy/011.png", 9, 3, 3);
-			敵[EnemyType::ロボット].Load("File/Enemy/012.png", 9, 3, 3);
+			敵[EnemyType::トレント].Load("File/Enemy/012.png", 9, 3, 3);
 			敵[EnemyType::グリフィン].Load("File/Enemy/013.png", 9, 3, 3);
 			敵[EnemyType::ドラゴン].Load("File/Enemy/014.png", 9, 3, 3);
 		}
