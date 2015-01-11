@@ -79,7 +79,7 @@ namespace SDX
 		public:
 			bool Update(IPosition* 移動対象) override
 			{
-
+				return false;
 			}
 		};
 
@@ -90,7 +90,7 @@ namespace SDX
 		public:
 			bool Update(IPosition* 移動対象) override
 			{
-
+				return false;
 			}
 		};
 
@@ -101,7 +101,7 @@ namespace SDX
 		public:
 			bool Update(IPosition* 移動対象) override
 			{
-
+				return false;
 			}
 		};
 
@@ -112,7 +112,7 @@ namespace SDX
 		public:
 			bool Update(IPosition* 移動対象) override
 			{
-
+				return false;
 			}
 		};
 
@@ -123,7 +123,7 @@ namespace SDX
 		public:
 			bool Update(IPosition* 移動対象) override
 			{
-
+				return false;
 			}
 		};
 
@@ -134,7 +134,7 @@ namespace SDX
 		public:
 			bool Update(IPosition* 移動対象) override
 			{
-
+				return false;
 			}
 		};
 
@@ -145,7 +145,7 @@ namespace SDX
 		public:
 			bool Update(IPosition* 移動対象) override
 			{
-
+				return false;
 			}
 		};
 
@@ -158,7 +158,7 @@ namespace SDX
 		public:
 			bool Update(IPosition* 移動対象) override
 			{
-
+				return false;
 			}
 		};
 
@@ -220,7 +220,7 @@ namespace SDX
 		public:
 			bool Update(IPosition* 移動対象) override
 			{
-
+				return false;
 			}
 		};
 
