@@ -65,16 +65,16 @@ namespace SDX_TD
 			{
 				for (int a = 0; a < 4; ++a)
 				{
-					auto enemy = new Enemy(GetX(), GetY(), EnemyType::ゼリー, レベル, isBoss);
-					double r = Rand::Get(PAI);
-					enemy->最大HP /= 4;
-					enemy->残りHP /= 4;
-					enemy->スコア /= 4;
-					enemy->麻痺時間 = 120;
-					enemy->吹き飛びX = std::sin(PAI) * 16 * (1 + isBoss);
-					enemy->吹き飛びY = std::cos(PAI) * 16 * (1 + isBoss);
+					//auto enemy = new Enemy(GetX(), GetY(), EnemyType::ゼリー, レベル, isBoss);
+					//double r = Rand::Get(PAI);
+					//enemy->最大HP /= 4;
+					//enemy->残りHP /= 4;
+					//enemy->スコア /= 4;
+					//enemy->麻痺時間 = 120;
+					//enemy->吹き飛びX = std::sin(PAI) * 16 * (1 + isBoss);
+					//enemy->吹き飛びY = std::cos(PAI) * 16 * (1 + isBoss);
 
-					SStage->Add(enemy);
+					//SStage->Add(enemy);
 				}
 			}
 
