@@ -17,65 +17,65 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			魔女[UnitType::ライナ].Load("File/Unit/Witch/Lina.png", 9, 3, 3);
-			魔女[UnitType::ナツメ].Load("File/Unit/Witch/Natsume.png", 9, 3, 3);
-			魔女[UnitType::ルコウ].Load("File/Unit/Witch/Rukou.png", 9, 3, 3);
-			魔女[UnitType::ディアネラ].Load("File/Unit/Witch/Dianella.png", 9, 3, 3);
-			魔女[UnitType::ミナエ].Load("File/Unit/Witch/Minae.png", 9, 3, 3);
-			魔女[UnitType::トレニア].Load("File/Unit/Witch/Torenia.png", 9, 3, 3);
-			魔女[UnitType::ロチエ].Load("File/Unit/Witch/Rochie.png", 9, 3, 3);
-			魔女[UnitType::バロゥ].Load("File/Unit/Witch/Barrow.png", 9, 3, 3);
-			魔女[UnitType::フィオナ].Load("File/Unit/Witch/Fiona.png", 9, 3, 3);
-			魔女[UnitType::ナズナ].Load("File/Unit/Witch/Nazuna.png", 9, 3, 3);
-			魔女[UnitType::委員長].Load("File/Unit/Witch/Chairwoman.png", 9, 3, 3);
-			魔女[UnitType::ミルラ].Load("File/Unit/Witch/Myrra.png", 9, 3, 3);
+			魔女[UnitType::ライナ].Load("file/unit/witch/lina.png", 9, 3, 3);
+			魔女[UnitType::ナツメ].Load("file/unit/witch/natsume.png", 9, 3, 3);
+			魔女[UnitType::ルコウ].Load("file/unit/witch/rukou.png", 9, 3, 3);
+			魔女[UnitType::ディアネラ].Load("file/unit/witch/dianella.png", 9, 3, 3);
+			魔女[UnitType::ミナエ].Load("file/unit/witch/minae.png", 9, 3, 3);
+			魔女[UnitType::トレニア].Load("file/unit/witch/torenia.png", 9, 3, 3);
+			魔女[UnitType::ロチエ].Load("file/unit/witch/rochie.png", 9, 3, 3);
+			魔女[UnitType::バロゥ].Load("file/unit/witch/barrow.png", 9, 3, 3);
+			魔女[UnitType::フィオナ].Load("file/unit/witch/fiona.png", 9, 3, 3);
+			魔女[UnitType::ナズナ].Load("file/unit/witch/nazuna.png", 9, 3, 3);
+			魔女[UnitType::委員長].Load("file/unit/witch/chairwoman.png", 9, 3, 3);
+			魔女[UnitType::ミルラ].Load("file/unit/witch/myrra.png", 9, 3, 3);
 
-			魔女[UnitType::兵士].Load("File/Unit/Common/000.png", 9, 3, 3);
-			魔女[UnitType::踊り子].Load("File/Unit/Common/001.png", 9, 3, 3);
-			魔女[UnitType::狩人].Load("File/Unit/Common/002.png", 9, 3, 3);
-			魔女[UnitType::執事].Load("File/Unit/Common/003.png", 9, 3, 3);
-			魔女[UnitType::技師].Load("File/Unit/Common/004.png", 9, 3, 3);
-			魔女[UnitType::くノ一].Load("File/Unit/Common/005.png", 9, 3, 3);
-			魔女[UnitType::師範].Load("File/Unit/Common/006.png", 9, 3, 3);
-			魔女[UnitType::術士].Load("File/Unit/Common/007.png", 9, 3, 3);
-			魔女[UnitType::賢者].Load("File/Unit/Common/008.png", 9, 3, 3);
-			魔女[UnitType::武闘家].Load("File/Unit/Common/009.png", 9, 3, 3);
-			魔女[UnitType::忍者].Load("File/Unit/Common/010.png", 9, 3, 3);
-			魔女[UnitType::剣豪].Load("File/Unit/Common/011.png", 9, 3, 3);
-			魔女[UnitType::料理人].Load("File/Unit/Common/012.png", 9, 3, 3);
-			魔女[UnitType::勇者].Load("File/Unit/Common/013.png", 9, 3, 3);
-			魔女[UnitType::射手].Load("File/Unit/Common/014.png", 9, 3, 3);
-			魔女[UnitType::盗賊].Load("File/Unit/Common/015.png", 9, 3, 3);
-			魔女[UnitType::騎士].Load("File/Unit/Common/016.png", 9, 3, 3);
-			魔女[UnitType::司祭].Load("File/Unit/Common/017.png", 9, 3, 3);
-			魔女[UnitType::僧侶].Load("File/Unit/Common/018.png", 9, 3, 3);
-			魔女[UnitType::闘士].Load("File/Unit/Common/019.png", 9, 3, 3);
-			魔女[UnitType::斧士].Load("File/Unit/Common/020.png", 9, 3, 3);
-			魔女[UnitType::傭兵].Load("File/Unit/Common/021.png", 9, 3, 3);
-			魔女[UnitType::プリンス].Load("File/Unit/Common/022.png", 9, 3, 3);
-			魔女[UnitType::プリンセス].Load("File/Unit/Common/023.png", 9, 3, 3);
-			魔女[UnitType::剣士].Load("File/Unit/Common/024.png", 9, 3, 3);
-			魔女[UnitType::槍士].Load("File/Unit/Common/025.png", 9, 3, 3);
-			魔女[UnitType::給仕].Load("File/Unit/Common/026.png", 9, 3, 3);
-			魔女[UnitType::足軽].Load("File/Unit/Common/027.png", 9, 3, 3);
-			魔女[UnitType::将軍].Load("File/Unit/Common/028.png", 9, 3, 3);
-			魔女[UnitType::軍師].Load("File/Unit/Common/029.png", 9, 3, 3);
+			魔女[UnitType::兵士].Load("file/unit/common/000.png", 9, 3, 3);
+			魔女[UnitType::踊り子].Load("file/unit/common/001.png", 9, 3, 3);
+			魔女[UnitType::狩人].Load("file/unit/common/002.png", 9, 3, 3);
+			魔女[UnitType::執事].Load("file/unit/common/003.png", 9, 3, 3);
+			魔女[UnitType::技師].Load("file/unit/common/004.png", 9, 3, 3);
+			魔女[UnitType::くノ一].Load("file/unit/common/005.png", 9, 3, 3);
+			魔女[UnitType::師範].Load("file/unit/common/006.png", 9, 3, 3);
+			魔女[UnitType::術士].Load("file/unit/common/007.png", 9, 3, 3);
+			魔女[UnitType::賢者].Load("file/unit/common/008.png", 9, 3, 3);
+			魔女[UnitType::武闘家].Load("file/unit/common/009.png", 9, 3, 3);
+			魔女[UnitType::忍者].Load("file/unit/common/010.png", 9, 3, 3);
+			魔女[UnitType::剣豪].Load("file/unit/common/011.png", 9, 3, 3);
+			魔女[UnitType::料理人].Load("file/unit/common/012.png", 9, 3, 3);
+			魔女[UnitType::勇者].Load("file/unit/common/013.png", 9, 3, 3);
+			魔女[UnitType::射手].Load("file/unit/common/014.png", 9, 3, 3);
+			魔女[UnitType::盗賊].Load("file/unit/common/015.png", 9, 3, 3);
+			魔女[UnitType::騎士].Load("file/unit/common/016.png", 9, 3, 3);
+			魔女[UnitType::司祭].Load("file/unit/common/017.png", 9, 3, 3);
+			魔女[UnitType::僧侶].Load("file/unit/common/018.png", 9, 3, 3);
+			魔女[UnitType::闘士].Load("file/unit/common/019.png", 9, 3, 3);
+			魔女[UnitType::斧士].Load("file/unit/common/020.png", 9, 3, 3);
+			魔女[UnitType::傭兵].Load("file/unit/common/021.png", 9, 3, 3);
+			魔女[UnitType::プリンス].Load("file/unit/common/022.png", 9, 3, 3);
+			魔女[UnitType::プリンセス].Load("file/unit/common/023.png", 9, 3, 3);
+			魔女[UnitType::剣士].Load("file/unit/common/024.png", 9, 3, 3);
+			魔女[UnitType::槍士].Load("file/unit/common/025.png", 9, 3, 3);
+			魔女[UnitType::給仕].Load("file/unit/common/026.png", 9, 3, 3);
+			魔女[UnitType::足軽].Load("file/unit/common/027.png", 9, 3, 3);
+			魔女[UnitType::将軍].Load("file/unit/common/028.png", 9, 3, 3);
+			魔女[UnitType::軍師].Load("file/unit/common/029.png", 9, 3, 3);
 
-			敵[EnemyType::ゼリー].Load("File/Enemy/000.png", 9, 3, 3);
-			敵[EnemyType::ゴブリン].Load("File/Enemy/001.png", 9, 3, 3);
-			敵[EnemyType::ケットシー].Load("File/Enemy/002.png", 9, 3, 3);
-			敵[EnemyType::オーガ].Load("File/Enemy/003.png", 9, 3, 3);
-			敵[EnemyType::コボルド].Load("File/Enemy/004.png", 9, 3, 3);
-			敵[EnemyType::ゴーレム].Load("File/Enemy/005.png", 9, 3, 3);
-			敵[EnemyType::ケルベロス].Load("File/Enemy/006.png", 9, 3, 3);
-			敵[EnemyType::スケルトン].Load("File/Enemy/007.png", 9, 3, 3);
-			敵[EnemyType::シャーマン].Load("File/Enemy/008.png", 9, 3, 3);
-			敵[EnemyType::ゼリー王].Load("File/Enemy/009.png", 9, 3, 3);
-			敵[EnemyType::マーマン].Load("File/Enemy/010.png", 9, 3, 3);
-			敵[EnemyType::インプ].Load("File/Enemy/011.png", 9, 3, 3);
-			敵[EnemyType::トレント].Load("File/Enemy/012.png", 9, 3, 3);
-			敵[EnemyType::グリフィン].Load("File/Enemy/013.png", 9, 3, 3);
-			敵[EnemyType::ドラゴン].Load("File/Enemy/014.png", 9, 3, 3);
+			敵[EnemyType::ゼリー].Load("file/enemy/000.png", 9, 3, 3);
+			敵[EnemyType::ゴブリン].Load("file/enemy/001.png", 9, 3, 3);
+			敵[EnemyType::ケットシー].Load("file/enemy/002.png", 9, 3, 3);
+			敵[EnemyType::オーガ].Load("file/enemy/003.png", 9, 3, 3);
+			敵[EnemyType::コボルド].Load("file/enemy/004.png", 9, 3, 3);
+			敵[EnemyType::ゴーレム].Load("file/enemy/005.png", 9, 3, 3);
+			敵[EnemyType::ケルベロス].Load("file/enemy/006.png", 9, 3, 3);
+			敵[EnemyType::スケルトン].Load("file/enemy/007.png", 9, 3, 3);
+			敵[EnemyType::シャーマン].Load("file/enemy/008.png", 9, 3, 3);
+			敵[EnemyType::ゼリー王].Load("file/enemy/009.png", 9, 3, 3);
+			敵[EnemyType::マーマン].Load("file/enemy/010.png", 9, 3, 3);
+			敵[EnemyType::インプ].Load("file/enemy/011.png", 9, 3, 3);
+			敵[EnemyType::トレント].Load("file/enemy/012.png", 9, 3, 3);
+			敵[EnemyType::グリフィン].Load("file/enemy/013.png", 9, 3, 3);
+			敵[EnemyType::ドラゴン].Load("file/enemy/014.png", 9, 3, 3);
 		}
 	}
 
@@ -89,42 +89,42 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			ターゲット.Load("File/System/target.png", 3, 3, 1);
+			ターゲット.Load("file/system/target.png", 3, 3, 1);
 
-			UI[IconType::ライフ].Load("File/System/icon/000.png");
-			UI[IconType::マナ].Load("File/System/icon/001.png");
-			UI[IconType::レベル].Load("File/System/icon/002.png");
-			UI[IconType::攻撃].Load("File/System/icon/003.png");
-			UI[IconType::連射].Load("File/System/icon/004.png");
-			UI[IconType::支援].Load("File/System/icon/005.png");
-			UI[IconType::鈍足].Load("File/System/icon/006.png");
-			UI[IconType::麻痺].Load("File/System/icon/007.png");
-			UI[IconType::強化].Load("File/System/icon/008.png");
-			UI[IconType::吹飛].Load("File/System/icon/009.png");
-			UI[IconType::防壊].Load("File/System/icon/010.png");
-			UI[IconType::速度].Load("File/System/icon/011.png");
-			UI[IconType::回避].Load("File/System/icon/012.png");
-			UI[IconType::防御].Load("File/System/icon/013.png");
-			UI[IconType::回復].Load("File/System/icon/014.png");
+			UI[IconType::ライフ].Load("file/system/icon/000.png");
+			UI[IconType::マナ].Load("file/system/icon/001.png");
+			UI[IconType::レベル].Load("file/system/icon/002.png");
+			UI[IconType::攻撃].Load("file/system/icon/003.png");
+			UI[IconType::連射].Load("file/system/icon/004.png");
+			UI[IconType::支援].Load("file/system/icon/005.png");
+			UI[IconType::鈍足].Load("file/system/icon/006.png");
+			UI[IconType::麻痺].Load("file/system/icon/007.png");
+			UI[IconType::強化].Load("file/system/icon/008.png");
+			UI[IconType::吹飛].Load("file/system/icon/009.png");
+			UI[IconType::防壊].Load("file/system/icon/010.png");
+			UI[IconType::速度].Load("file/system/icon/011.png");
+			UI[IconType::回避].Load("file/system/icon/012.png");
+			UI[IconType::防御].Load("file/system/icon/013.png");
+			UI[IconType::回復].Load("file/system/icon/014.png");
 
-			魔導具[WitchType::ライナ].Load("File/Unit/artifact/000.png");
-			魔導具[WitchType::ナツメ].Load("File/Unit/artifact/001.png");
-			魔導具[WitchType::ルコウ].Load("File/Unit/artifact/002.png");
-			魔導具[WitchType::ディアネラ].Load("File/Unit/artifact/003.png");
-			魔導具[WitchType::ミナエ].Load("File/Unit/artifact/004.png");
-			魔導具[WitchType::トレニア].Load("File/Unit/artifact/005.png");
-			魔導具[WitchType::ロチエ].Load("File/Unit/artifact/006.png");
-			魔導具[WitchType::バロゥ].Load("File/Unit/artifact/007.png");
-			魔導具[WitchType::フィオナ].Load("File/Unit/artifact/008.png");
-			魔導具[WitchType::ナズナ].Load("File/Unit/artifact/009.png");
-			魔導具[WitchType::委員長].Load("File/Unit/artifact/010.png");
-			魔導具[WitchType::ミルラ].Load("File/Unit/artifact/011.png");
+			魔導具[WitchType::ライナ].Load("file/unit/artifact/000.png");
+			魔導具[WitchType::ナツメ].Load("file/unit/artifact/001.png");
+			魔導具[WitchType::ルコウ].Load("file/unit/artifact/002.png");
+			魔導具[WitchType::ディアネラ].Load("file/unit/artifact/003.png");
+			魔導具[WitchType::ミナエ].Load("file/unit/artifact/004.png");
+			魔導具[WitchType::トレニア].Load("file/unit/artifact/005.png");
+			魔導具[WitchType::ロチエ].Load("file/unit/artifact/006.png");
+			魔導具[WitchType::バロゥ].Load("file/unit/artifact/007.png");
+			魔導具[WitchType::フィオナ].Load("file/unit/artifact/008.png");
+			魔導具[WitchType::ナズナ].Load("file/unit/artifact/009.png");
+			魔導具[WitchType::委員長].Load("file/unit/artifact/010.png");
+			魔導具[WitchType::ミルラ].Load("file/unit/artifact/011.png");
 
-			属性[Element::炎].Load("File/Unit/element/000.png");
-			属性[Element::氷].Load("File/Unit/element/001.png");
-			属性[Element::空].Load("File/Unit/element/002.png");
-			属性[Element::樹].Load("File/Unit/element/003.png");
-			属性[Element::無].Load("File/Unit/element/004.png");
+			属性[Element::炎].Load("file/unit/element/000.png");
+			属性[Element::氷].Load("file/unit/element/001.png");
+			属性[Element::空].Load("file/unit/element/002.png");
+			属性[Element::樹].Load("file/unit/element/003.png");
+			属性[Element::無].Load("file/unit/element/004.png");
 		}
 	}
 
@@ -135,7 +135,7 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			弾.Load("File/Effect/shot000.png");
+			弾.Load("file/Effect/shot000.png");
 		}
 	}
 
@@ -152,21 +152,21 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			マップチップ.Load("File/System/mapchip.png", 10, 10, 1);
-			枠画像[0].Load("File/System/frame000.png", 9, 3, 3);
-			枠画像[1].Load("File/System/frame001.png", 9, 3, 3);
-			枠画像[2].Load("File/System/frame002.png", 9, 3, 3);
-			枠画像[3].Load("File/System/frame003.png", 9, 3, 3);
-			枠画像[4].Load("File/System/frame004.png", 9, 3, 3);
-			枠画像[5].Load("File/System/frame005.png", 9, 3, 3);
-			枠画像[6].Load("File/System/frame006.png", 9, 3, 3);
-			枠画像[7].Load("File/System/frame007.png", 9, 3, 3);
-			枠画像[8].Load("File/System/frame008.png", 9, 3, 3);
-			枠画像[9].Load("File/System/frame009.png", 9, 3, 3);
-			枠画像[10].Load("File/System/frame010.png", 9, 3, 3);
-			枠画像[11].Load("File/System/frame011.png", 9, 3, 3);
-			枠画像[12].Load("File/System/frame012.png", 9, 3, 3);
-			枠画像[13].Load("File/System/frame013.png", 9, 3, 3);
+			マップチップ.Load("file/system/mapchip.png", 10, 10, 1);
+			枠画像[0].Load("file/system/frame000.png", 9, 3, 3);
+			枠画像[1].Load("file/system/frame001.png", 9, 3, 3);
+			枠画像[2].Load("file/system/frame002.png", 9, 3, 3);
+			枠画像[3].Load("file/system/frame003.png", 9, 3, 3);
+			枠画像[4].Load("file/system/frame004.png", 9, 3, 3);
+			枠画像[5].Load("file/system/frame005.png", 9, 3, 3);
+			枠画像[6].Load("file/system/frame006.png", 9, 3, 3);
+			枠画像[7].Load("file/system/frame007.png", 9, 3, 3);
+			枠画像[8].Load("file/system/frame008.png", 9, 3, 3);
+			枠画像[9].Load("file/system/frame009.png", 9, 3, 3);
+			枠画像[10].Load("file/system/frame010.png", 9, 3, 3);
+			枠画像[11].Load("file/system/frame011.png", 9, 3, 3);
+			枠画像[12].Load("file/system/frame012.png", 9, 3, 3);
+			枠画像[13].Load("file/system/frame013.png", 9, 3, 3);
 
 			for (int a = 0; a < 14; ++a)
 			{
@@ -183,9 +183,9 @@ namespace SDX_TD
 			フレーム[8].Make(&枠画像[8]);
 			フレーム[9].Make(&枠画像[9]);
 
-			背景.Load("File/System/back000.jpg");
+			背景.Load("file/system/back000.jpg");
 
-			マーク.Load("File/System/mark.png", 4, 4, 1);
+			マーク.Load("file/system/mark.png", 4, 4, 1);
 		}
 	}
 
@@ -197,8 +197,8 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			通常.Load("File/Music/sentou.mp3",0.5);
-			大魔法.Load("File/Music/brave.mp3",0.5);
+			通常.Load("file/music/sentou.mp3",0.5);
+			大魔法.Load("file/music/brave.mp3",0.5);
 
 			通常.SetFadeInTime(1000);
 			通常.SetFadeOutTime(1000);
@@ -222,14 +222,14 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			Spチャージ完了.Load("File/Sound/eco00_r.wav",0.5);
-			//攻撃.Load("File/Sound/cursor18.wav");
-			強化.Load("File/Sound/power39.wav", 0.5);
-			売却.Load("File/Sound/coin06.wav", 0.5);
-			設置.Load("File/Sound/weapon00.wav", 0.5);
-			Wave.Load("File/Sound/power34.wav", 0.5);
-			撃破.Load("File/Sound/bom23.wav", 0.5);
-			ダメージ.Load("File/Sound/voice015.wav", 0.5);
+			Spチャージ完了.Load("file/sound/eco00_r.wav",0.5);
+			//攻撃.Load("file/sound/cursor18.wav");
+			強化.Load("file/sound/power39.wav", 0.5);
+			売却.Load("file/sound/coin06.wav", 0.5);
+			設置.Load("file/sound/weapon00.wav", 0.5);
+			Wave.Load("file/sound/power34.wav", 0.5);
+			撃破.Load("file/sound/bom23.wav", 0.5);
+			ダメージ.Load("file/sound/voice015.wav", 0.5);
 		}
 	}
 
@@ -250,17 +250,17 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			ゴシック小.Load(SystemFont::Gothic, 12,0);
-			ゴシック中.Load(SystemFont::Gothic, 16,0);
+			ゴシック小.Load("file/font/ipag.ttf", 12,0);
+			ゴシック中.Load("file/font/ipag.ttf", 16, 0);
 			BMP黒.Load("", 6,0);
 			BMP黒影.Load("", 7, 0);
 			BMP白.Load("", 6, 0);
 
-			英語.Load("File/Font/font2.png", 30, 10, 3);
-			英影.Load("File/Font/font.png", 30, 10, 3);
-			黒影.Load("File/Font/font_num_black.png", 10, 10, 1);
-			黒数字.Load("File/Font/font_num_black2.png", 10, 10, 1);
-			白数字.Load("File/Font/font_num_white.png", 10, 10, 1);
+			英語.Load("file/font/font2.png", 30, 10, 3);
+			英影.Load("file/font/font.png", 30, 10, 3);
+			黒影.Load("file/font/font_num_black.png", 10, 10, 1);
+			黒数字.Load("file/font/font_num_black2.png", 10, 10, 1);
+			白数字.Load("file/font/font_num_white.png", 10, 10, 1);
 
 			//フォント調整_____a__b__c__d__e__f__g__h__i__j__k__l__m__n__o__p__q__r__s__t__u__v__w__x__y__z
 			英語.AdjustWidth({ 1, 3, 2, 2, 3, 3, 1, 2, 4, 2, 3, 2, 0, 1, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 2, 2 });
@@ -290,7 +290,9 @@ namespace SDX_TD
 	{
 		MFont::Load();
 
+#ifdef __WINDOWS__
 		Loading::Start();
+#endif
 		MUnit::Load();
 		MUnit::Load();
 		MIcon::Load();
@@ -299,6 +301,7 @@ namespace SDX_TD
 
 		MMusic::Load();
 		MSound::Load();
+
 		Loading::End();
 	}
 }

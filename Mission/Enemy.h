@@ -188,16 +188,16 @@ namespace SDX_TD
 				移動量X /= 2;
 				移動量Y /= 2;
 				break;
-			case SDX_TD::ChipType::↑:
+			case SDX_TD::ChipType::上:
 				移動量Y -= 自動床速度;
 				break;
-			case SDX_TD::ChipType::↓:
+			case SDX_TD::ChipType::下:
 				移動量Y += 自動床速度;
 				break;
-			case SDX_TD::ChipType::←:
+			case SDX_TD::ChipType::左:
 				移動量X -= 自動床速度;
 				break;
-			case SDX_TD::ChipType::→:
+			case SDX_TD::ChipType::右:
 				移動量X += 自動床速度;
 				break;
 			default:
@@ -213,24 +213,24 @@ namespace SDX_TD
 			const int Y差 = (int)GetY() % CHIP_SIZE - 判定大きさ / 2;
 
 			//各方向にはみ出ているか
-			const bool is↑ = Y差 < 0;
-			const bool is↓ = Y差 > 0;
-			const bool is← = X差 < 0;
-			const bool is→ = X差 > 0;
+			const bool is上 = Y差 < 0;
+			const bool is下 = Y差 > 0;
+			const bool is左 = X差 < 0;
+			const bool is右 = X差 > 0;
 
 			bool 衝突[9] = {};
 
 			//平面にめりこみ
-			if (is↑) { 衝突[1] = SStage->land.Check地形(GetX(), GetY() - 6, 移動種); }
-			if (is←) { 衝突[3] = SStage->land.Check地形(GetX() - 6, GetY(), 移動種); }
-			if (is→) { 衝突[5] = SStage->land.Check地形(GetX() + 6, GetY(), 移動種); }
-			if (is↓) { 衝突[7] = SStage->land.Check地形(GetX() - 6, GetY() + 6, 移動種); }
+			if (is上) { 衝突[1] = SStage->land.Check地形(GetX(), GetY() - 6, 移動種); }
+			if (is左) { 衝突[3] = SStage->land.Check地形(GetX() - 6, GetY(), 移動種); }
+			if (is右) { 衝突[5] = SStage->land.Check地形(GetX() + 6, GetY(), 移動種); }
+			if (is下) { 衝突[7] = SStage->land.Check地形(GetX() - 6, GetY() + 6, 移動種); }
 
 			//角にめりこみ
-			if (is↑ && is←){ 衝突[0] = SStage->land.Check地形(GetX() - 6, GetY() - 6, 移動種); }
-			if (is↑ && is→){ 衝突[2] = SStage->land.Check地形(GetX() + 6, GetY() - 6, 移動種); }
-			if (is↓ && is←){ 衝突[6] = SStage->land.Check地形(GetX() - 6, GetY() + 6, 移動種); }
-			if (is↓ && is→){ 衝突[8] = SStage->land.Check地形(GetX() + 6, GetY() + 6, 移動種); }
+			if (is上 && is左){ 衝突[0] = SStage->land.Check地形(GetX() - 6, GetY() - 6, 移動種); }
+			if (is上 && is右){ 衝突[2] = SStage->land.Check地形(GetX() + 6, GetY() - 6, 移動種); }
+			if (is下 && is左){ 衝突[6] = SStage->land.Check地形(GetX() - 6, GetY() + 6, 移動種); }
+			if (is下 && is右){ 衝突[8] = SStage->land.Check地形(GetX() + 6, GetY() + 6, 移動種); }
 
 			//現在のマスが移動不可能
 			if (SStage->land.Check地形(GetX(), GetY(), 移動種))

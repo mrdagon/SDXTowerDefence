@@ -43,7 +43,7 @@ namespace SDX_TD
 
 		for (StageData &it : StageDataS)
 		{
-			File enemyS("File/Map/enemy_001.csv", FileMode::Read, true);
+			File enemyS("file/Map/enemy_001.csv", FileMode::Read, true);
 			auto data = enemyS.GetCsvToInt();
 
 			//敵情報読み込み
@@ -53,7 +53,7 @@ namespace SDX_TD
 				it.isBoss[a] = (data[a] >= 20);
 			}
 
-			File landS("File/Map/map_001.csv", FileMode::Read, true);
+			File landS("file/Map/map_001.csv", FileMode::Read, true);
 
 			auto landData = landS.GetCsvToInt();
 

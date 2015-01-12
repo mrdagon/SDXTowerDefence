@@ -3,6 +3,14 @@
 
 #include "stdafx.h"
 
+#ifndef __WINDOWS__
+
+#include "PreCompile.cpp"
+#include "Design.cpp"
+
+#endif
+
+
 #include "Mission/Stage.h"
 #include "Camp/Title.h"
 

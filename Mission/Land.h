@@ -78,22 +78,22 @@ namespace SDX_TD
 
 				switch (direct)
 				{
-				case 1://↑
+				case 1://上
 					if (現在の方向 == 0 && X座標 % CHIP_SIZE > def ) break;
 					if (現在の方向 == 2 && X座標 % CHIP_SIZE < def) break;
 					if (is通行[(X座標 - def) / CHIP_SIZE][Y座標 / CHIP_SIZE - 1] && is通行[(X座標 + def) / CHIP_SIZE][Y座標 / CHIP_SIZE - 1]) return direct;
 					break;
-				case 3://←
+				case 3://左
 					if (現在の方向 == 0 && Y座標 % CHIP_SIZE > def) break;
 					if (現在の方向 == def && Y座標 % CHIP_SIZE < def ) break;
 					if (is通行[X座標 / CHIP_SIZE - 1][(Y座標 - def ) / CHIP_SIZE] && is通行[X座標 / CHIP_SIZE - 1][(Y座標 + def) / CHIP_SIZE]) return direct;
 					break;
-				case 5://→
+				case 5://右
 					if (現在の方向 == 2 && Y座標 % CHIP_SIZE > def ) break;
 					if (現在の方向 == 8 && Y座標 % CHIP_SIZE < def ) break;
 					if (is通行[X座標 / CHIP_SIZE + 1][(Y座標 - def ) / CHIP_SIZE] && is通行[X座標 / CHIP_SIZE + 1][(Y座標 + def) / CHIP_SIZE]) return direct;
 					break;
-				case 7://↓
+				case 7://下
 					if (現在の方向 == 6 && X座標 % CHIP_SIZE > def ) break;
 					if (現在の方向 == 8 && X座標 % CHIP_SIZE < def ) break;
 					if (is通行[(X座標 - def) / CHIP_SIZE][Y座標 / CHIP_SIZE + 1] && is通行[(X座標 + def ) / CHIP_SIZE][Y座標 / CHIP_SIZE + 1]) return direct;

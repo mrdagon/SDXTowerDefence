@@ -283,7 +283,7 @@ namespace SDX_TD
 				Director::AddScene(std::make_shared<Pause>());
 			}
 
-			//↑はリプレイ時も共通
+			//ここより上はリプレイ時も共通
 			
 			//右クリックで解除
 			if (Input::mouse.Right.on)
