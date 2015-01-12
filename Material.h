@@ -290,9 +290,8 @@ namespace SDX_TD
 	{
 		MFont::Load();
 
-#ifdef __WINDOWS__
 		Loading::Start();
-#endif
+
 		MUnit::Load();
 		MUnit::Load();
 		MIcon::Load();

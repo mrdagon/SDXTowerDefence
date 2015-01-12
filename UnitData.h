@@ -55,7 +55,7 @@ namespace SDX_TD
 	
 	void LoadUnitS()
 	{
-		File UnitFile("file/Data/unit_data.dat", FileMode::Read, true);
+		File UnitFile("file/data/unit_data.dat", FileMode::Read, true);
 		int count = 0;
 
 		for (auto &it : DefUnitDataS)
