@@ -88,6 +88,5 @@ namespace SDX_TD
 	
 		EnemyDataS[EnemyType::ケルベロス].is加速 = true;
 		EnemyDataS[EnemyType::グリフィン].is離陸 = true;
-
 	}
 }
