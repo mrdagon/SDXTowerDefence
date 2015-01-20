@@ -188,18 +188,6 @@ namespace SDX_TD
 				移動量X /= 2;
 				移動量Y /= 2;
 				break;
-			case SDX_TD::ChipType::上:
-				移動量Y -= 自動床速度;
-				break;
-			case SDX_TD::ChipType::下:
-				移動量Y += 自動床速度;
-				break;
-			case SDX_TD::ChipType::左:
-				移動量X -= 自動床速度;
-				break;
-			case SDX_TD::ChipType::右:
-				移動量X += 自動床速度;
-				break;
 			default:
 				break;
 			}

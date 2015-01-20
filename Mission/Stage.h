@@ -925,11 +925,53 @@ namespace SDX_TD
 					}
 				}
 			}
+
+			//大魔法による支援効果
+
 		}
 
 		int GetWave()
 		{
 			return wave.現在Wave;
 		}
+
+		void 大魔法効果()
+		{
+			switch (Witch::Main->種類)
+			{
+			case WitchType::ライナ:
+
+				break;
+			case WitchType::ナツメ:
+
+				break;
+			case WitchType::ルコウ:
+				//全敵のHPを半減
+				break;
+			case WitchType::ディアネラ:
+				break;
+			case WitchType::ミナエ:
+				break;
+			case WitchType::トレニア:
+				break;
+			case WitchType::ロチエ:
+				break;
+			case WitchType::バロゥ:
+				break;
+			case WitchType::フィオナ:
+				//HP+5
+				break;
+			case WitchType::ナズナ:
+				//MP+20%
+				break;
+			case WitchType::委員長:
+				break;
+			case WitchType::ミルラ:
+				break;
+			default:
+				break;
+			}
+		}
+
 	};
 }

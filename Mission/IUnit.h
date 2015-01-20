@@ -22,7 +22,7 @@ namespace SDX_TD
 
 		UnitData *st;//ステータス
 		int    Lv = 0;
-		double 支援補正 = 1.0;
+		double 支援補正 = 1.0;//StageのSupportで再計算
 
 		int    待機時間 = -1;//攻撃の待機
 		int    残り売却時間 = -1;

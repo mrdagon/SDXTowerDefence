@@ -48,6 +48,8 @@ namespace SDX_TD
 
 		virtual void Support() = 0;
 		virtual int GetWave() = 0;
+
+		virtual void 大魔法効果() = 0;
 	};
 
 	/**アクティブなStage.*/

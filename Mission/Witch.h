@@ -26,14 +26,17 @@ namespace SDX_TD
 			switch (st->種類)
 			{
 			case WitchType::ライナ:
+
 				break;
 			case WitchType::ナツメ:
+				
 				break;
 			case WitchType::ルコウ:
+				//全敵のHPを半減
 				break;
 			case WitchType::ディアネラ:
 				break;
-			case WitchType::ミナエ:
+			case WitchType::ミナエ:				
 				break;
 			case WitchType::トレニア:
 				break;
@@ -42,8 +45,10 @@ namespace SDX_TD
 			case WitchType::バロゥ:
 				break;
 			case WitchType::フィオナ:
+				//HP+5
 				break;
 			case WitchType::ナズナ:
+				//MP+20%
 				break;
 			case WitchType::委員長:
 				break;
@@ -403,7 +408,7 @@ namespace SDX_TD
 
 			大魔法残り時間 = 大魔法時間;
 			補正計算();
-			大魔法効果();
+			SStage->大魔法効果();
 		}
 	};
 

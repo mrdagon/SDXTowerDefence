@@ -32,10 +32,6 @@ namespace SDX_TD
 		ChipDataS[ChipType::森].Set(true, false, false);
 		ChipDataS[ChipType::道].Set(false, true, true);
 		ChipDataS[ChipType::橋].Set(false, true, true);
-		ChipDataS[ChipType::上].Set(true, true, true);
-		ChipDataS[ChipType::下].Set(true, true, true);
-		ChipDataS[ChipType::左].Set(true, true, true);
-		ChipDataS[ChipType::右].Set(true, true, true);
 		ChipDataS[ChipType::山].Set(false, false, false);
 		ChipDataS[ChipType::水].Set(false, false, true);
 		ChipDataS[ChipType::穴].Set(false, true, true);

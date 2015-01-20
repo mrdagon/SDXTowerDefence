@@ -119,7 +119,8 @@ namespace SDX_TD
 							距離[a][b] = 0;
 							計算リスト.push_back(a + b*MAP_SIZE);
 						}
-						else{
+						else
+						{
 							距離[a][b] = 到達不可;
 						}
 					}
@@ -139,16 +140,28 @@ namespace SDX_TD
 
 				for (int a = 0; a < 9; ++a)
 				{
+					//現在のマスは無視
 					if (a == 4) continue;
+
 					const int X = X座標 - 1 + a % 3;
 					const int Y = Y座標 - 1 + a / 3;
+					//移動不可能なマスは無視
+					if (!is通行[X][Y]) continue;
+					//画面外になる場合は無視
 					if (X < 0 || X >= MAP_SIZE || Y < 0 || Y >= MAP_SIZE) continue;
+					//斜め移動が制限される場合は無視
 					if (a == 0 && (!is通行[X座標 - 1][Y座標] || !is通行[X座標][Y座標 - 1])) continue;
 					if (a == 2 && (!is通行[X座標 + 1][Y座標] || !is通行[X座標][Y座標 - 1])) continue;
 					if (a == 6 && (!is通行[X座標 - 1][Y座標] || !is通行[X座標][Y座標 + 1])) continue;
 					if (a == 8 && (!is通行[X座標 + 1][Y座標] || !is通行[X座標][Y座標 + 1])) continue;
-					if (!is通行[X][Y]) continue;
 
+					//斜め移動優先
+					if (a % 2 == 0 && 距離[X][Y] == distance[0] && 経路[X][Y] % 2 == 0)
+					{
+						経路[X][Y] = 8 - a;
+					}
+
+					//最短経路更新
 					if (距離[X][Y] > distance[a % 2])
 					{
 						距離[X][Y] = distance[a % 2];

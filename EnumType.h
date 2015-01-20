@@ -9,7 +9,6 @@ namespace SDX_TD
 	static const int MAP_SIZE = 32;//マップの縦横タイル数
 	static const int CHIP_SIZE = 16;//マップチップのドット数
 	static const int 到達不可 = 99999999;
-	static const double 自動床速度 = 0.5;
 	static const int MAX_WAVE = 100;
 
 	/**敵の移動タイプ.*/
@@ -56,11 +55,7 @@ namespace SDX_TD
 		//以下α版未実装
 		高山,//飛行も通行不可能
 		沼,//移動速度半減
-		橋,//配置不可、通行可//水
-		上,//ベルトコンベア四種
-		下,
-		左,
-		右,
+		橋,//配置不可、通行可
 		水,//一部敵のみ通行可
 		COUNT
 	};
