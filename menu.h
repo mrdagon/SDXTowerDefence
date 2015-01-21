@@ -2,8 +2,8 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
-#include "Mission/Layer.h"
-#include "Mission/Object.h"
+#include "Layer.h"
+#include "Object.h"
 #include "IMenu.h"
 
 namespace SDX_TD

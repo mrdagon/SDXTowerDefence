@@ -267,7 +267,7 @@ namespace SDX_TD
 		{
 			namespace UI = UI_Stage;
 
-			Point マウス座標(Input::mouse.x, Input::mouse.y);
+			const Point point = { Input::mouse.x / TDSystem::カメラ.zoom, Input::mouse.y / TDSystem::カメラ.zoom };
 			Command comType = Command::null;
 			int comNo = 0;
 
@@ -278,7 +278,7 @@ namespace SDX_TD
 			gameSpeed = std::max(gameSpeed, 1);
 
 			//ポーズ
-			if (UI::Rメニュー.Hit(&マウス座標) && Input::mouse.Left.on)
+			if (UI::Rメニュー.Hit(&point) && Input::mouse.Left.on)
 			{
 				Director::AddScene(std::make_shared<Pause>());
 			}
@@ -301,14 +301,14 @@ namespace SDX_TD
 			//新規配置		
 			comType = Command::新規配置;
 
-			if (InputCheckEnemy(&マウス座標)){ return; }
+			if (InputCheckEnemy(&point)){ return; }
 
-			if (UI::R大魔法.Hit(&マウス座標))
+			if (UI::R大魔法.Hit(&point))
 			{
 				comType = Command::大魔法発動;
 			}
 
-			if (マウス座標.x < 38 )
+			if (point.x < 38 )
 			{
 				comType = Command::Wave送り;
 			}
@@ -318,7 +318,7 @@ namespace SDX_TD
 			{
 				for (int a = 0; a < unitS.GetCount(); ++a)
 				{
-					if (unitS[a]->Hit(&マウス座標))
+					if (unitS[a]->Hit(&point))
 					{
 						comType = Command::ユニット選択;
 						comNo = a;
@@ -330,7 +330,7 @@ namespace SDX_TD
 			//一覧の魔法を選択
 			for (int a = 0; a < 12; ++a)
 			{
-				if (UI::R魔法一覧[a].Hit(&マウス座標))
+				if (UI::R魔法一覧[a].Hit(&point))
 				{
 					comType = Command::種別選択;
 					comNo = a;
@@ -339,12 +339,12 @@ namespace SDX_TD
 			}
 
 			//強化
-			if (UI_Unit::R強化.Hit(&マウス座標))
+			if (UI_Unit::R強化.Hit(&point))
 			{
 				comType = Command::強化;
 			}
 			//売却or必殺
-			if (UI_Unit::R回収.Hit(&マウス座標))
+			if (UI_Unit::R回収.Hit(&point))
 			{
 				comType = Command::売却;
 			}
@@ -384,7 +384,7 @@ namespace SDX_TD
 		}
 
 		/**敵選択のチェック.*/
-		bool InputCheckEnemy(Point *マウス座標)
+		bool InputCheckEnemy(const Point *マウス座標)
 		{
 			//敵を選択、Shift押しながらだと選択不可能
 			if (Input::key.LShift.hold || Input::key.RShift.hold)
@@ -396,8 +396,8 @@ namespace SDX_TD
 			{
 				if (selectEnemy->移動種 == MoveType::空)
 				{
-					if (InputCheckEnemyS(true,マウス座標, true)){ return true; }
-					if (InputCheckEnemyS(false,マウス座標, false)){ return true; }
+					if (InputCheckEnemyS(true, マウス座標, true)){ return true; }
+					if (InputCheckEnemyS(false, マウス座標, false)){ return true; }
 					if (InputCheckEnemyS(true, マウス座標, false)){ return true; }
 				}
 				else
@@ -417,7 +417,7 @@ namespace SDX_TD
 		}
 
 		/**敵選択のチェック.*/
-		bool InputCheckEnemyS(bool is地上 ,Point *マウス座標, bool 検査位置判定)
+		bool InputCheckEnemyS(bool is地上 ,const Point *マウス座標, bool 検査位置判定)
 		{
 			int index = 0;
 			Layer<IEnemy> *enemyS;
@@ -486,8 +486,11 @@ namespace SDX_TD
 				Witch::Main->大魔法発動();
 				break;
 			case Command::Wave送り:
-				wave.isStop = false;
-				wave.待ち時間 = 0;
+				if (wave.現在Wave == 0)
+				{
+					wave.isStop = false;
+					wave.待ち時間 = 0;
+				}
 				break;
 			case Command::強化:
 				if (!selectUnit ){ break; }
@@ -517,9 +520,8 @@ namespace SDX_TD
 			{
 				return;
 			}
-
-			const int x = (Input::mouse.x - CHIP_SIZE / 2) / CHIP_SIZE;
-			const int y = (Input::mouse.y - CHIP_SIZE / 2) / CHIP_SIZE;
+			const int x = int( Input::mouse.x / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE;
+			const int y = int( Input::mouse.y / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE;
 
 			//敵の位置を更新
 			LandUpdate();
@@ -704,8 +706,11 @@ namespace SDX_TD
 			midEffectS.Update();
 			frontEffectS.Update();
 
-			skyEnemyS.Update();
-			groundEnemyS.Update();
+			if (!wave.isStop)
+			{
+				skyEnemyS.Update();
+				groundEnemyS.Update();
+			}
 
 			shotS.Update();
 			unitS.Update();
@@ -747,7 +752,6 @@ namespace SDX_TD
 			{
 				//敗北
 				Director::AddScene(std::make_shared<Result>());
-
 			}
 			else if (groundEnemyS.GetCount() == 0 && skyEnemyS.GetCount() == 0 && (int)groundEnemyS.suspendS.size() == 0 && (int)skyEnemyS.suspendS.size() == 0 && wave.現在Wave == wave.最終Wave)
 			{
@@ -925,53 +929,100 @@ namespace SDX_TD
 					}
 				}
 			}
-
-			//大魔法による支援効果
-
 		}
 
+		/**現在のWave数を取得.*/
 		int GetWave()
 		{
 			return wave.現在Wave;
 		}
 
-		void 大魔法効果()
+		/** 大魔法発動時の瞬間的な効果.*/
+		/** 敵HP減少等の依存関係でStageの関数で処理*/
+		void 大魔法効果(bool is発動)
 		{
+			if (!is発動)
+			{
+				wave.isStop = false;
+
+				if (TDSystem::isカップル)
+				{
+					std::swap(Witch::Main, Witch::Sub);
+					ResetJobList();
+				}
+
+				MMusic::通常.Play();//BGMを元に戻す
+				return;
+			}
+			else
+			{
+				MMusic::大魔法.Play();
+
+				//演出
+				for (int a = 0; a < 250; ++a)
+				{
+					Screen::SetBright(Color::Gray);
+					SStage->Draw();
+					Screen::SetBright(Color::White);
+					//@todo 演出は仮
+					MFont::ゴシック中.DrawRotate({ 800 - a * 6, 300 }, 5, 0, Color::White, "大魔法 フォルドアーカレイト");
+					System::Update();
+				}
+			}
+
+			//全体ダメージ
+			//地上or空中のみダメージ
+			//ボスorザコのみ
+			//特定種類だけダメージ
+			//全体異常
+			//MP増加
+			//HP増加
+			//防御/再生/低下
 			switch (Witch::Main->種類)
 			{
 			case WitchType::ライナ:
-
+				//被ダメにより強化幅が変化
+				//アクティベート効果なし
 				break;
 			case WitchType::ナツメ:
-
+				//全敵の防御0化
 				break;
 			case WitchType::ルコウ:
-				//全敵のHPを半減
+				//全敵のHP半減
 				break;
 			case WitchType::ディアネラ:
+
 				break;
 			case WitchType::ミナエ:
+				//
 				break;
 			case WitchType::トレニア:
+				//無し
 				break;
 			case WitchType::ロチエ:
+				//全体に耐性無視の鈍足
+				//鈍足状態の敵に継続ダメージ
 				break;
 			case WitchType::バロゥ:
+				//Wave停止
+				wave.isStop = true;
 				break;
 			case WitchType::フィオナ:
 				//HP+5
+				Witch::Hp += 5;
 				break;
 			case WitchType::ナズナ:
 				//MP+20%
 				break;
 			case WitchType::委員長:
+				//無し
 				break;
 			case WitchType::ミルラ:
+				//無し
 				break;
 			default:
 				break;
 			}
 		}
-
 	};
 }

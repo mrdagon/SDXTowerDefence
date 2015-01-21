@@ -25,7 +25,6 @@ namespace SDX_TD
 		Land land;//
 		int score;
 
-
 		/**敵や魔法が消滅する前に呼び出す.*/
 		void ResetSelect(IObject* 消滅するオブジェクト)
 		{
@@ -49,7 +48,7 @@ namespace SDX_TD
 		virtual void Support() = 0;
 		virtual int GetWave() = 0;
 
-		virtual void 大魔法効果() = 0;
+		virtual void 大魔法効果(bool is発動) = 0;
 	};
 
 	/**アクティブなStage.*/

@@ -28,6 +28,7 @@ local.properties
 # PDT-specific
 .buildpath
 
+.html
 
 #################
 ## Visual Studio

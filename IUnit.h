@@ -16,6 +16,17 @@ namespace SDX_TD
 	{
 	protected:
 		virtual void Dead(){}
+
+		double Get射程()
+		{
+			if (Witch::Main->is射程支援 && 支援補正 > 1.0)
+			{
+				return (double)st->射程[Lv] * 支援補正;
+			}
+
+			return (double)st->射程[Lv];
+		}
+
 	public:
 		static const int Size = 2;//2x2角
 		static const int WAIT_TIME = 6000;
@@ -198,19 +209,21 @@ namespace SDX_TD
 		/**射程を表示する.*/
 		void DrawRange()
 		{
+			double 射程 = Get射程();
+
 			if (isジョブリスト)
 			{
-				const double x = (Input::mouse.x - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
-				const double y = (Input::mouse.y - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
+				const double x = ( Input::mouse.x / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
+				const double y = ( Input::mouse.y / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
 
-				Drawing::Circle({ x, y, (double)st->射程[Lv] }, { 255, 255, 255, 128 }, 0);
-				Drawing::Circle({ x, y, (double)st->射程[Lv] }, Color::Red, 2);
+				Drawing::Circle({ x, y, 射程 }, { 255, 255, 255, 128 }, 0);
+				Drawing::Circle({ x, y, 射程 }, Color::Red, 2);
 			}
 			else
 			{
 				//射程表示
-				Drawing::Circle({ GetX(), GetY(), (double)st->射程[Lv] }, { 255, 255, 255, 128 }, 0);
-				Drawing::Circle({ GetX(), GetY(), (double)st->射程[Lv] }, Color::Red, 2);
+				Drawing::Circle({ GetX(), GetY(), 射程 }, { 255, 255, 255, 128 }, 0);
+				Drawing::Circle({ GetX(), GetY(), 射程 }, Color::Red, 2);
 			}
 		}
 
@@ -328,12 +341,13 @@ namespace SDX_TD
 			if (待機時間 <= 0 && 残り売却時間 < 0 && 残り強化時間 < 0 && !st->is使い捨て )
 			{
 				IEnemy* 対象 = nullptr;
+				double 射程 = Get射程();
 				//敵を選択中
 				if ( SStage->selectEnemy )
 				{
 					const bool 地形対応 = (SStage->selectEnemy->st->移動種 == MoveType::空 && st->is対空) || (SStage->selectEnemy->st->移動種 != MoveType::空 && st->is対地);
 
-					if ( 地形対応 && GetDistance(SStage->selectEnemy) <= st->射程[Lv])
+					if ( 地形対応 && GetDistance(SStage->selectEnemy) <= 射程)
 					{
 						対象 = SStage->selectEnemy;
 					}
@@ -343,7 +357,7 @@ namespace SDX_TD
 				if ( 対象 == nullptr)
 				{
 					対象 = SStage->GetNearEnemy(this , st->is対地 , st->is対空);
-					if ( !対象 || GetDistance(対象) > st->射程[Lv])
+					if ( !対象 || GetDistance(対象) > 射程)
 					{
 						対象 = nullptr;
 					}

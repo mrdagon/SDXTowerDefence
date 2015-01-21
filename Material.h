@@ -231,6 +231,12 @@ namespace SDX_TD
 			撃破.Load("file/sound/bom23.wav", 0.5);
 			ダメージ.Load("file/sound/voice015.wav", 0.5);
 		}
+		
+		static void SetVolume(double 音量 = 1.0)
+		{
+
+		}
+
 	}
 
 	/**フォント.*/

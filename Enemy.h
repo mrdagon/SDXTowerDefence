@@ -6,6 +6,7 @@
 #include "Shot.h"
 #include "DataS.h"
 #include "Design.h"
+#include "Witch.h"
 
 namespace SDX_TD
 {
@@ -58,102 +59,7 @@ namespace SDX_TD
 		virtual ~IEnemy(){}
 
 		/**死亡時、基本処理.*/
-		void Dead()
-		{
-			//分裂
-			if (st->種族 == EnemyType::ゼリー王)
-			{
-				for (int a = 0; a < 4; ++a)
-				{
-					//auto enemy = new Enemy(GetX(), GetY(), EnemyType::ゼリー, レベル, isBoss);
-					//double r = Rand::Get(PAI);
-					//enemy->最大HP /= 4;
-					//enemy->残りHP /= 4;
-					//enemy->スコア /= 4;
-					//enemy->麻痺時間 = 120;
-					//enemy->吹き飛びX = std::sin(PAI) * 16 * (1 + isBoss);
-					//enemy->吹き飛びY = std::cos(PAI) * 16 * (1 + isBoss);
-
-					//SStage->Add(enemy);
-				}
-			}
-
-			//MP&SP&スコア増
-			if (TDSystem::isカップル)
-			{
-				Witch::Main->Mp += スコア*0.07;
-				Witch::Sub->Mp += スコア*0.03;
-			}
-			else
-			{
-				Witch::Main->Mp += スコア *0.1;
-			}
-
-			Witch::Main->AddSp( st->スコア );
-
-			//ダメージに応じてスコアは5%まで低下
-			SStage->score += int(スコア * std::max(1.0, 10 - 0.5*Witch::被ダメージ));
-
-			MSound::撃破.Play();
-
-			isRemove = true;
-		}
-
-		/**.*/
-		void Act()
-		{
-			double speed = st->移動速度;
-			const int x = (int)(GetX() / CHIP_SIZE);
-			const int y = (int)(GetY() / CHIP_SIZE);
-
-			//飛行能力発動
-			if (st->is離陸 && 残りHP < 最大HP / 2 && 移動種 != MoveType::空)
-			{
-				移動種 = MoveType::空;
-			}
-
-			//方向を更新
-			方向更新();
-
-			if (isBoss){ speed *= 0.66; }
-
-			//異常補正
-			if (麻痺時間 > 0)
-			{
-				speed = 0;
-				--麻痺時間;
-			}
-
-			if (鈍足時間 > 0)
-			{
-				speed = speed * 鈍足率;
-				--鈍足時間;
-			}
-
-			//斜め移動補正
-			if (方向 % 2 == 0) speed *= 0.7;
-
-			//ピンチで加速
-			if (st->is加速 && 残りHP < 最大HP/2 )
-			{
-				speed *= 1.5;
-			}
-
-			double mx = (方向 % 3 - 1) * speed;
-			double my = (方向 / 3 - 1) * speed;
-
-			//吹き飛び処理
-			mx += 吹き飛びX / 8;
-			吹き飛びX -= 吹き飛びX / 8;
-			my += 吹き飛びY / 8;
-			吹き飛びY -= 吹き飛びY / 8;
-
-			地形処理(mx, my);
-			Move(mx, my);
-			地形衝突();
-
-
-		}
+		virtual void Dead() = 0;
 
 		void 方向更新()
 		{
@@ -437,7 +343,7 @@ namespace SDX_TD
 			//判定
 			if (!Rand::Coin(衝突相手->デバフ率)){ return; }
 
-			//付与処理
+			//付与処理、残り時間を上回る場合のみ上書き
 			麻痺時間 = std::max(衝突相手->デバフ効果, 麻痺時間);
 		}
 		void 鈍足付与(IShot* 衝突相手)
@@ -445,7 +351,7 @@ namespace SDX_TD
 			if (鈍足時間 <= 0){ 鈍足率 = 1.0; }
 
 			//付与処理
-			鈍足率 = std::min(1 - 衝突相手->デバフ率, 鈍足率);
+			鈍足率 = std::max(衝突相手->デバフ率, 鈍足率);
 			鈍足時間 = std::max(衝突相手->デバフ効果, 鈍足時間);
 		}
 		void 吹飛付与(IShot* 衝突相手)
@@ -488,6 +394,145 @@ namespace SDX_TD
 			{
 				shape.SetZoom(2, 2);
 			}
+		}
+
+		/** 更新処理.*/
+		/**@todo 飛行タイプは移動方法変えるかも？*/
+		void Act() override
+		{
+			//飛行能力発動
+			if (st->is離陸 && 残りHP < 最大HP / 2 && 移動種 != MoveType::空)
+			{
+				移動種 = MoveType::空;
+			}
+
+			//シャーマン/召喚/10秒に1回/ボスは1秒に1回
+			if (st->種族 == EnemyType::シャーマン && timer % 60 + 540 * !isBoss == 0)
+			{
+				auto enemy = new Enemy(GetX(), GetY(), EnemyType::ゼリー, レベル,false);
+				double r = Rand::Get(PAI);
+				enemy->最大HP /= 16;
+				enemy->残りHP /= 16;
+				enemy->スコア = 0;
+				enemy->再生力 = 0;
+				enemy->麻痺時間 = 120;
+				enemy->吹き飛びX = std::sin(PAI) * 16 * (1 + isBoss);
+				enemy->吹き飛びY = std::cos(PAI) * 16 * (1 + isBoss);
+
+				SStage->Add(enemy);
+			}
+
+			//再生力
+			if (再生力 > 0 && 残りHP > 0 && 鈍足時間 <= 0 && 麻痺時間 <= 0)
+			{
+				残りHP += 再生力;
+			}
+
+			//スリップダメージ効果
+			if (Witch::Main->is継続ダメージ)
+			{
+				if (鈍足時間)
+				{
+					残りHP -= 残りHP / 200;
+				}
+				if (麻痺時間)
+				{
+					残りHP -= 残りHP / 200;
+				}
+			}
+
+			//移動
+			Walk();
+		}
+
+		/** 移動処理.*/
+		void Walk()
+		{
+			double speed = st->移動速度;
+			const int x = (int)(GetX() / CHIP_SIZE);
+			const int y = (int)(GetY() / CHIP_SIZE);
+
+			//方向を更新
+			方向更新();
+
+			if (isBoss){ speed *= 0.66; }
+
+			//異常補正
+			if (麻痺時間 > 0)
+			{
+				speed = 0;
+				--麻痺時間;
+			}
+
+			if (鈍足時間 > 0)
+			{
+				speed = speed * 鈍足率;
+				--鈍足時間;
+			}
+
+			//斜め移動補正
+			if (方向 % 2 == 0) speed *= 0.7;
+
+			//ピンチで加速
+			if (st->is加速 && 残りHP < 最大HP / 2)
+			{
+				speed *= 1.5;
+			}
+
+			double mx = (方向 % 3 - 1) * speed;
+			double my = (方向 / 3 - 1) * speed;
+
+			//吹き飛び処理
+			mx += 吹き飛びX / 8;
+			吹き飛びX -= 吹き飛びX / 8;
+			my += 吹き飛びY / 8;
+			吹き飛びY -= 吹き飛びY / 8;
+
+			地形処理(mx, my);
+			Move(mx, my);
+			地形衝突();
+		}
+
+		/**死亡時、基本処理.*/
+		void Dead() override
+		{
+			//分裂
+			if (st->種族 == EnemyType::ゼリー王)
+			{
+				for (int a = 0; a < 4; ++a)
+				{
+					auto enemy = new Enemy(GetX(), GetY(), EnemyType::ゼリー, レベル, isBoss);
+					double r = Rand::Get(PAI);
+					enemy->最大HP /= 4;
+					enemy->残りHP /= 4;
+					enemy->スコア /= 4;
+					enemy->麻痺時間 = 120;
+					enemy->吹き飛びX = std::sin(PAI) * 16 * (1 + isBoss);
+					enemy->吹き飛びY = std::cos(PAI) * 16 * (1 + isBoss);
+
+					SStage->Add(enemy);
+				}
+			}
+
+			//MP&SP&スコア増
+			if (TDSystem::isカップル)
+			{
+				Witch::Main->Mp += スコア*0.07;
+				Witch::Sub->Mp += スコア*0.03;
+			}
+			else
+			{
+				Witch::Main->Mp += スコア *0.1;
+			}
+
+			Witch::Main->AddSp(st->スコア);
+
+			//ダメージに応じてスコアは5%まで低下
+			SStage->score += int(スコア * std::max(1.0, 10 - 0.5*Witch::被ダメージ));
+
+			MSound::撃破.Play();
+
+			isRemove = true;
 		}
 	};
 }

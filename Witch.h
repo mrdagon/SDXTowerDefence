@@ -19,44 +19,17 @@ namespace SDX_TD
 
 		WitchData *st;//レベル上昇や大魔法発動補正前のステータス
 
-		/**発動時の追加効果.*/
-		/**敵 HP半減等はこっちで計算*/
-		void 大魔法効果()
+		/** Mainとサブ含めて.*/
+		/** 初期化時、大魔法発動時、終了時、被ダメージ時、MP補正有りでMP変動時に計算すれば良い*/
+		static void 全補正計算()
 		{
-			switch (st->種類)
+			Main->補正計算();
+			if (TDSystem::isカップル)
 			{
-			case WitchType::ライナ:
-
-				break;
-			case WitchType::ナツメ:
-				
-				break;
-			case WitchType::ルコウ:
-				//全敵のHPを半減
-				break;
-			case WitchType::ディアネラ:
-				break;
-			case WitchType::ミナエ:				
-				break;
-			case WitchType::トレニア:
-				break;
-			case WitchType::ロチエ:
-				break;
-			case WitchType::バロゥ:
-				break;
-			case WitchType::フィオナ:
-				//HP+5
-				break;
-			case WitchType::ナズナ:
-				//MP+20%
-				break;
-			case WitchType::委員長:
-				break;
-			case WitchType::ミルラ:
-				break;
-			default:
-				break;
+				Sub->補正計算();
 			}
+
+			Main->ユニット補正();
 		}
 
 		/**発動中の能力補正効果.*/
@@ -66,32 +39,61 @@ namespace SDX_TD
 			switch (st->種類)
 			{
 			case WitchType::ライナ:
+				//被ダメージで効果変動
 				射程補正 *= 1.0 + double(被ダメージ) / 20;
 				連射補正 *= 1.0 + double(被ダメージ) / 20;
 				攻撃補正 *= 1.2;
 				逆境補正 *= 2.0;
 				break;
 			case WitchType::ナツメ:
+				攻撃補正 *= 2.0;
+				特殊補正[DebuffType::防壊] *= 2.0;
 				break;
 			case WitchType::ルコウ:
+				攻撃補正 *= 1.5;
 				break;
 			case WitchType::ディアネラ:
+				攻撃補正 *= 1.2;
+				射程補正 *= 1.1;
+				連射補正 *= 1.1;
+				支援補正 *= 1.1;
 				break;
 			case WitchType::ミナエ:
+				攻撃補正 *= 1.3;
+				射程補正 *= 1.3;
 				break;
 			case WitchType::トレニア:
+				攻撃補正 *= 1.2;
+				炸裂加算 = 32;
 				break;
 			case WitchType::ロチエ:
+				攻撃補正 *= 1.2;
+				特殊補正[DebuffType::鈍足] *= 2.0;
+				特殊補正[DebuffType::麻痺] *= 2.0;
+				is継続ダメージ = true;
 				break;
 			case WitchType::バロゥ:
+				射程補正 *= 1.5;
+				連射補正 *= 1.5;
 				break;
 			case WitchType::フィオナ:
+				射程補正 *= 1.0 + double(Hp) / 20;
+				連射補正 *= 1.0 + double(Hp) / 20;
+				攻撃補正 *= 1.0 + double(Hp) / 20;
 				break;
 			case WitchType::ナズナ:
+				射程補正 *= 1.0 + double(Hp) / 20;
+				連射補正 *= 1.0 + double(Hp) / 20;
+				攻撃補正 *= 1.0 + double(Hp) / 20;
 				break;
 			case WitchType::委員長:
+				攻撃補正 *= 1.2;
+				弱点補正 *= 2.0;
 				break;
 			case WitchType::ミルラ:
+				支援補正 *= 1.2;
+				is速度支援 = true;
+				is射程支援 = true;
 				break;
 			default:
 				break;
@@ -107,9 +109,11 @@ namespace SDX_TD
 			}
 		}
 
-		/**.*/
+		/**個別の計算.*/
 		void ユニット補正(UnitType type)
 		{
+			//メインのみサブのみ、両方OKで計算を変える
+
 			if (!TDSystem::isカップル)
 			{
 				if (!is使用可能[type]){ return; }
@@ -123,14 +127,11 @@ namespace SDX_TD
 					UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * 射程補正);
 					UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * 弾速補正;
 					UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * 支援補正;
-					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正);
+					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正) + 炸裂加算;
 					UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[UnitDataS[type].デバフ種]);
 				}
-
 				return;
 			}
-
-			//メインのみサブのみ、両方OKで計算を変える
 
 			//両方使えない
 			if (!is使用可能[type] && !Sub->is使用可能[type])
@@ -149,7 +150,7 @@ namespace SDX_TD
 					UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * 射程補正 * Sub->射程補正);
 					UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * 弾速補正 * Sub->弾速補正;
 					UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * 支援補正 * 支援補正;
-					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正 * Sub->炸裂補正);
+					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正 * Sub->炸裂補正) + 炸裂加算;
 					UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[UnitDataS[type].デバフ種] * Sub->特殊補正[UnitDataS[type].デバフ種]);
 				}
 				else if (is使用可能[type])
@@ -161,7 +162,7 @@ namespace SDX_TD
 					UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * 射程補正);
 					UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * 弾速補正;
 					UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * 支援補正;
-					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正);
+					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正) + 炸裂加算;
 					UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[UnitDataS[type].デバフ種]);
 				}
 				else
@@ -173,7 +174,7 @@ namespace SDX_TD
 					UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * Sub->射程補正);
 					UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * Sub->弾速補正;
 					UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * Sub->支援補正;
-					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * Sub->炸裂補正);
+					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * Sub->炸裂補正) + 炸裂加算;
 					UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * Sub->特殊補正[UnitDataS[type].デバフ種]);
 				}
 			}
@@ -211,6 +212,11 @@ namespace SDX_TD
 			追加Hp = st->追加Hp;
 			初期Mp = st->初期Mp;
 
+			is継続ダメージ = false;//鈍足or麻痺状態のスリップダメージ
+			is速度支援 = false;//速度も強化するかどうか
+			is射程支援 = false;//射程も強化するかどうか
+			炸裂加算 = 0;
+
 			if (大魔法残り時間 > 0)
 			{
 				大魔法補正();
@@ -225,7 +231,6 @@ namespace SDX_TD
 
 			//逆境補正
 			攻撃補正 *= 1 + (逆境補正 * 被ダメージ);
-			ユニット補正();
 		}
 
 		/**レベルによる補正計算.*/
@@ -247,6 +252,11 @@ namespace SDX_TD
 		static int 被ダメージ;
 		static	EnumArray<int, UnitType> 詠唱回数;
 
+		bool is継続ダメージ = false;//鈍足or麻痺状態のスリップダメージ
+		bool is速度支援 = false;//速度も強化するかどうか
+		bool is射程支援 = false;//射程も強化するかどうか
+		int 炸裂加算 = 0;//範囲攻撃追加
+
 		double Mp = 50;
 		double Sp = 0;
 		const double 最大Sp = 1000;
@@ -258,6 +268,7 @@ namespace SDX_TD
 		{
 			Hp = 20;
 			被ダメージ = 0;
+			全補正計算();
 
 			for (auto & it : 詠唱回数)
 			{
@@ -265,10 +276,12 @@ namespace SDX_TD
 			}
 
 			Main->Init();
+
 			if (TDSystem::isカップル)
 			{
 				Sub->Init();
 			}
+
 			SStage->ResetJobList();
 		}
 
@@ -314,13 +327,12 @@ namespace SDX_TD
 		/**戦闘開始時の初期化処理.*/
 		void Init()
 		{
-			補正計算();
 			Hp += 追加Hp;
 			Mp = 初期Mp;
 			Sp = 0;
 			大魔法残り時間 = 0;
 			被ダメージ = 0;
-
+			
 			for (int a = 0; a < 12; ++a)
 			{
 				詠唱回数[職種[a]] += int(UnitDataS[職種[a]].基礎詠唱回数 * 詠唱回数補正);
@@ -334,16 +346,13 @@ namespace SDX_TD
 			大魔法残り時間--;
 			if (大魔法残り時間 == 0)
 			{
+				//効果終了時処理
+				SStage->大魔法効果(false);
 				Sp = 0;
-				補正計算();//ステータスを元に戻す
-				MMusic::通常.Play();//BGMを元に戻す
 
-				if (TDSystem::isカップル)
-				{
-					std::swap(Main, Sub);
-					SStage->ResetJobList();
-				}
 			}
+
+			全補正計算();
 		}
 
 		/**Sp上昇処理.*/
@@ -366,22 +375,13 @@ namespace SDX_TD
 		/**被ダメージ処理.*/
 		void Damage(int ダメージ量)
 		{
-			//SPが増加し、逆境補正がかかる
-			AddSp(最大Sp / 20);
-			被ダメージ += ダメージ量;
-			if (被ダメージ > 20)
-			{
-				被ダメージ = 20;
-			}
-			Hp = std::max(0, Hp - ダメージ量);
-			補正計算();
 			MSound::ダメージ.Play();
 
-			if (TDSystem::isカップル)
-			{
-				Sub->Sp += 最大Sp / 20;
-				Sub->補正計算();
-			}
+			//SPが増加し、逆境補正がかかる
+			AddSp(最大Sp / 20);
+			//被ダメ補正は最大で20まで
+			被ダメージ = std::min(被ダメージ+ダメージ量,20);
+			Hp = std::max(0, Hp - ダメージ量);
 		}
 
 		/**大魔法発動時の性能計算、効果処理.*/
@@ -393,22 +393,8 @@ namespace SDX_TD
 				return;
 			}
 
-			MMusic::大魔法.Play();
-
-			//演出
-			for (int a = 0; a < 250; ++a)
-			{
-				Screen::SetBright(Color::Gray);
-				SStage->Draw();
-				Screen::SetBright(Color::White);
-				//@todo 演出は仮
-				MFont::ゴシック中.DrawRotate({ 800 - a * 6, 300 }, 5, 0, Color::White, "大魔法 フォルドアーカレイト");
-				System::Update();
-			}
-
 			大魔法残り時間 = 大魔法時間;
-			補正計算();
-			SStage->大魔法効果();
+			SStage->大魔法効果(true);
 		}
 	};
 

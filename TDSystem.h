@@ -26,8 +26,10 @@ namespace SDX_TD
 
 
 		//設定関連
+		Camera カメラ = { { 0, 0 }, 1 };
 		double 効果音の音量;
 		double BGMの音量;
+		
 		bool is高速;//ゲーム速度を1,4,16,64倍速モードにする
 		bool isグリッド;//マスのグリッドと中央の薄い十字の表示
 		bool isHPゲージ;//敵Hpゲージの表示ON/OFF

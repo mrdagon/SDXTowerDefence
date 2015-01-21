@@ -41,7 +41,8 @@ namespace SDX_TD
 		void Shoot(IEnemy *対象)
 		{
 			double 速度 = st->弾速[Lv];
-			double 角度;
+			double 角度 = 0;
+			double 射程 = Get射程();
 						
 			if (対象)
 			{
@@ -56,7 +57,7 @@ namespace SDX_TD
 				for (int a = 0; a < st->Hit数[Lv]; ++a)
 				{
 					角度 = PAI * 2 * a / st->Hit数[Lv];
-					SStage->Add	( new S勇者(&MEffect::弾, { { GetX(), GetY() }, Rand::Get( st->射程[Lv]/2 , st->射程[Lv]), 角度 , 速度 / 10 }, DEF) );
+					SStage->Add	( new S勇者(&MEffect::弾, { { GetX(), GetY() }, (int)Rand::Get( 射程/2 , 射程), 角度 , 速度 / 10 }, DEF) );
 				}
 				break;
 			case UnitType::ナツメ://武闘家強化
@@ -160,7 +161,7 @@ namespace SDX_TD
 				break;
 			case UnitType::執事://使い捨てA-円形使い捨て
 				//実装する
-				SStage->Add(new Bomm({ GetX(), GetY(), (double)st->射程[Lv] }, st, Lv, 支援補正));
+				SStage->Add(new Bomm({ GetX(), GetY(), 射程 }, st, Lv, 支援補正));
 				break;
 			case UnitType::給仕://使い捨てB-十字使い捨て
 				break;
