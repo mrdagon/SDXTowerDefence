@@ -61,6 +61,8 @@ namespace SDX_TD
 				}
 				break;
 			case UnitType::ナツメ://武闘家強化
+
+
 				break;
 			case UnitType::ルコウ://騎士強化
 				break;

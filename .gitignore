@@ -28,7 +28,10 @@ local.properties
 # PDT-specific
 .buildpath
 
-.html
+# DoxygenFiles
+html/
+latex/
+
 
 #################
 ## Visual Studio

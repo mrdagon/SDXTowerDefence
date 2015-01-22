@@ -8,11 +8,31 @@ namespace SDX_TD
 {
 	using namespace SDX;
 
-	//メニュー項目を配置
-	/**@todo .*/
+	/** 設定変更画面*/
+	/** @todo .*/
 	class Config : public Menu
 	{
 	public:
-		Config(){}
+		Config()
+		{
+			Director::IsDraw() = true;
+		}
+
+		void Update()
+		{
+
+		}
+
+		void Draw()
+		{
+			//設定項目の表示
+			//BGM音量
+			//SE音量
+			//HPゲージ表示フラグ
+			//マス目表示の有無
+			//64倍速モード
+			//エフェクトの有無
+		}
+
 	};
 }
