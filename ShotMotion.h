@@ -72,17 +72,6 @@ namespace SDX
 			}
 		};
 
-		//ナツメ:武闘家強化、
-		class ナツメ : public IMotion
-		{
-		private:
-		public:
-			bool Update(IPosition* 移動対象) override
-			{
-				return false;
-			}
-		};
-
 		//ルコウ:減速しつつ後方へ、急加速
 		class ルコウ : public IMotion
 		{

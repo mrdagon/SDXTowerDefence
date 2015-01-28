@@ -120,5 +120,31 @@ namespace SDX_TD
 		{
 			return objectS[index].get();
 		}
+
+		/** 範囲for用.*/
+		auto begin() ->decltype(objectS.begin())
+		{
+			return objectS.begin();
+		}
+
+		/** 範囲for用.*/
+		auto end() ->decltype(objectS.end())
+		{
+			return objectS.end();
+		}
+
+		/** 範囲for用.*/
+		auto begin() const ->decltype(objectS.begin())
+		{
+			return objectS.begin();
+		}
+
+		/** 範囲for用.*/
+		auto end() const ->decltype(objectS.end())
+		{
+			return objectS.end();
+		}
+
+
 	};
 }

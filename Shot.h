@@ -24,7 +24,7 @@ namespace SDX_TD
 
 		bool   is貫通 = false;
 		bool   isSmall = true;//分割当たり判定用
-		bool   is必中 = false;
+		int	   反射回数 = 0;
 
 		virtual ~IShot() = default;
 
@@ -98,7 +98,6 @@ namespace SDX_TD
 		}
 	};
 
-
 	class Bomm : public IShot
 	{
 	public:
@@ -116,6 +115,21 @@ namespace SDX_TD
 
 			SStage->AddFront( new BommEfect(circle));
 		}
+	};
+
+	class Beam : public IShot
+	{
+	public:
+		Line line;
+		SpNull spNull;
+
+		Beam(const Line &範囲, UnitData* st, int Lv, double 支援補正) :
+			IShot(line, spNull, 0, st, Lv, 支援補正),
+			line(範囲)
+		{
+
+		}
+
 	};
 
 	/**弾のテンプレート.*/

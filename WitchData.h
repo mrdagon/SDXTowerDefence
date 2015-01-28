@@ -68,6 +68,7 @@ namespace SDX_TD
 	void LoadWitchS()
 	{
 		//α版は暫定的にライナのみ実装
+		//ツールなくても良い？
 		WitchDataS[WitchType::ライナ].名前 = "ライナ";
 		WitchDataS[WitchType::ライナ].属性 = Element::炎;
 		WitchDataS[WitchType::ライナ].攻撃補正 = 1.05;

@@ -89,6 +89,9 @@ namespace SDX_TD
 			case WitchType::委員長:
 				攻撃補正 *= 1.2;
 				弱点補正 *= 2.0;
+				回収速度 = 0;
+				回収率 = 1.0;
+				強化速度 = 0;
 				break;
 			case WitchType::ミルラ:
 				支援補正 *= 1.2;

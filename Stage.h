@@ -943,6 +943,7 @@ namespace SDX_TD
 		{
 			if (!is発動)
 			{
+				//終了時処理
 				wave.isStop = false;
 
 				if (TDSystem::isカップル)
@@ -956,6 +957,7 @@ namespace SDX_TD
 			}
 			else
 			{
+				//開始時処理
 				MMusic::大魔法.Play();
 
 				//演出
@@ -970,6 +972,11 @@ namespace SDX_TD
 				}
 			}
 
+			for (auto && it : unitS)
+			{
+				it->Super();
+			}
+
 			//全体ダメージ
 			//地上or空中のみダメージ
 			//ボスorザコのみ
@@ -981,27 +988,46 @@ namespace SDX_TD
 			switch (Witch::Main->種類)
 			{
 			case WitchType::ライナ:
-				//被ダメにより強化幅が変化
-				//アクティベート効果なし
+				//アクティベート時、ライナが大量連射
+				//被ダメにより攻撃量が変化
 				break;
 			case WitchType::ナツメ:
-				//全敵の防御0化
+				//アクティベート時、ナツメが大範囲攻撃
 				break;
 			case WitchType::ルコウ:
 				//全敵のHP半減
+				for (auto it : groundEnemyS)
+				{
+					it->残りHP /= 2;
+				}
+				for (auto it : skyEnemyS)
+				{
+					it->残りHP /= 2;
+				}
 				break;
 			case WitchType::ディアネラ:
-
+				//アクティベート時、ディアネラが大量発射
 				break;
 			case WitchType::ミナエ:
-				//
+				//アクティベート時、ミナエが大量発射
 				break;
 			case WitchType::トレニア:
-				//無し
+				//アクティベート時、極太ビーム発射
+				//全攻撃に炸裂追加
 				break;
 			case WitchType::ロチエ:
 				//全体に耐性無視の鈍足
 				//鈍足状態の敵に継続ダメージ
+				for (auto it : groundEnemyS)
+				{
+					it->鈍足時間 = Witch::Main->大魔法時間;
+					it->鈍足率 = std::max(it->鈍足率,4.0);
+				}
+				for (auto it : skyEnemyS)
+				{
+					it->鈍足時間 = Witch::Main->大魔法時間;
+					it->鈍足率 = std::max(it->鈍足率, 4.0);
+				}
 				break;
 			case WitchType::バロゥ:
 				//Wave停止
@@ -1009,16 +1035,24 @@ namespace SDX_TD
 				break;
 			case WitchType::フィオナ:
 				//HP+5
-				Witch::Hp += 5;
+				//残りHPに応じて攻撃
+				Witch::Hp += 5;		
 				break;
 			case WitchType::ナズナ:
 				//MP+20%
+				Witch::Main->Mp *= 1.2;
 				break;
 			case WitchType::委員長:
-				//無し
+				//アクティブ攻撃
+				//即強化＆回収
+				for (auto && it : unitS)
+				{
+					if (it->残り強化時間 > 0){ it->残り強化時間 = 1; }
+					if (it->残り売却時間 > 0){ it->残り売却時間 = 1; }
+				}
 				break;
 			case WitchType::ミルラ:
-				//無し
+				//アクティブ攻撃のみ
 				break;
 			default:
 				break;

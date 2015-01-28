@@ -86,6 +86,7 @@ namespace SDX_TD
 			}
 		}
 
+		/**画面右の情報.*/
 		void DrawInfo() override
 		{
 			namespace UI = UI_Unit;
@@ -138,6 +139,7 @@ namespace SDX_TD
 			DrawInfoState();
 		}
 
+		/**画面右の情報その2.*/
 		void DrawInfoState()
 		{
 			namespace UI = UI_Unit;
@@ -270,8 +272,8 @@ namespace SDX_TD
 			残り強化時間 = int((Lv + 1) * (Lv + 1) * 60 * Witch::Main->強化速度);
 			強化or売却長さ = 残り強化時間;
 
-			//開始前は即LVアップ
-			if (SStage->GetWave() == 0)
+			//開始前、or強化速度=0の時は即LVアップ
+			if (SStage->GetWave() == 0 || Witch::Main->強化速度 <= 0)
 			{
 				++Lv;
 				残り強化時間 = -1;
@@ -286,9 +288,9 @@ namespace SDX_TD
 			if (isジョブリスト) return false;
 			if (残り強化時間 > 0 || 残り売却時間 > 0) return false;
 
-			if (SStage->GetWave() == 0)
+			//開始前or回収速度=0の時は即回収
+			if (SStage->GetWave() == 0 || Witch::Main->回収速度 <= 0)
 			{
-				//開始前は即回収
 				isRemove = true;
 				if (st->isウィッチ){ Witch::詠唱回数[st->職種]++; }
 				else{ Witch::詠唱回数[st->職種] += Lv + 1; }
@@ -321,7 +323,7 @@ namespace SDX_TD
 			--残り強化時間;
 			待機時間 -= st->連射[Lv];
 
-			if (残り強化時間 == 0)
+			if (残り強化時間 == 0 )
 			{
 				MSound::強化.Play();
 				Lv++;
@@ -329,7 +331,7 @@ namespace SDX_TD
 				return;
 			}
 
-			if (残り売却時間 == 0)
+			if (残り売却時間 == 0 )
 			{
 				MSound::売却.Play();
 				Witch::Main->Mp += st->コスト[Lv] * Witch::Main->回収率;
@@ -374,5 +376,8 @@ namespace SDX_TD
 
 		/**攻撃処理.*/
 		virtual void Shoot(IEnemy* 対象){};
+
+		/**大魔法発動時の攻撃.*/
+		virtual void Super(){};
 	};
 }
