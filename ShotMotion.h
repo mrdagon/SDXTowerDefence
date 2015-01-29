@@ -206,7 +206,16 @@ namespace SDX
 		class 回転 : public IMotion
 		{
 		private:
+			double angle = 0;
+			double speed = 0;
+			double range = 0;
+
 		public:
+			回転(const Point &中心, double 初角, double 速度 , double 半径 ):
+				angle(初角),
+				speed(速度)
+			{}
+
 			bool Update(IPosition* 移動対象) override
 			{
 				return false;
