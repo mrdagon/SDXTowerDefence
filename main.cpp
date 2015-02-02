@@ -21,7 +21,10 @@ int main(int argc, char* argv[])
 	//UIの位置をリセット
 	UI_Reset();
 
-	System::Initialise("GTD ver0.02α", int(640 * TDSystem::カメラ.zoom), int(480 * TDSystem::カメラ.zoom));//ライブラリの初期化
+	System::Initialise("GTD ver0.02α", 640 , 480 );//ライブラリの初期化
+
+	Window::SetLogicalSize(640, 480);
+	Window::SetSize(1280, 960);
 
 	LoadUnitS();
 	LoadEnemyS();

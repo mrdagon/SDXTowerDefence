@@ -267,7 +267,7 @@ namespace SDX_TD
 		{
 			namespace UI = UI_Stage;
 
-			const Point point = { Input::mouse.x / TDSystem::カメラ.zoom, Input::mouse.y / TDSystem::カメラ.zoom };
+			const Point point = { Input::mouse.x , Input::mouse.y };
 			Command comType = Command::null;
 			int comNo = 0;
 
@@ -520,8 +520,8 @@ namespace SDX_TD
 			{
 				return;
 			}
-			const int x = int( Input::mouse.x / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE;
-			const int y = int( Input::mouse.y / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE;
+			const int x = int( Input::mouse.x - CHIP_SIZE / 2) / CHIP_SIZE;
+			const int y = int( Input::mouse.y - CHIP_SIZE / 2) / CHIP_SIZE;
 
 			//敵の位置を更新
 			LandUpdate();

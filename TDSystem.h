@@ -26,7 +26,6 @@ namespace SDX_TD
 
 
 		//設定関連
-		Camera カメラ = { { 0, 0 }, 1 };
 		double 効果音の音量;
 		double BGMの音量;
 		
