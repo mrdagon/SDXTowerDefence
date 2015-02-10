@@ -147,9 +147,9 @@ namespace SDX_TD
 				case UnitType::司祭://対地ビームB
 					SStage->Add(new Beam({ GetX(), GetY(), 角度, 100, 0, 10 }, st, Lv, 支援補正));
 					break;
-				case UnitType::プリンス://3-8方向攻撃
+				case UnitType::プリンス://短ビーム
 					break;
-				case UnitType::プリンセス://3-8方向攻撃
+				case UnitType::プリンセス://
 					break;
 				case UnitType::術士://範囲A-加速弾、命中時範囲攻撃
 					SStage->Add(new S加速(&MEffect::弾, { { 0, 速度 / 10, 速度 } }, DEF));

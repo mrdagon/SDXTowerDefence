@@ -135,7 +135,7 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			弾.Load("file/Effect/shot000.png");
+			弾.Load("file/effect/shot000.png");
 		}
 	}
 
