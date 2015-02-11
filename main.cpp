@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 	System::Initialise("GTD ver0.02α", 640 , 480 );//ライブラリの初期化
 
 	Window::SetLogicalSize(640, 480);
-	Window::SetSize(1280, 960);
+	//Window::SetSize(1280, 960);
 
 	LoadUnitS();
 	LoadEnemyS();

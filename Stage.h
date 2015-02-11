@@ -507,8 +507,11 @@ namespace SDX_TD
 				if (wave.現在Wave == 0)
 				{
 					wave.isStop = false;
-					wave.待ち時間 = 0;
 				}
+                if( wave.最終Wave != wave.現在Wave )
+                {
+  				    wave.待ち時間 = 0;              
+                }
 				break;
 			case Command::強化:
 				if (!selectUnit ){ break; }
