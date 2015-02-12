@@ -248,6 +248,8 @@ namespace SDX_TD
 		Font BMP黒影;
 		Font BMP白;
 
+		Image BMPゴシック中;
+
 		ImagePack 英語;
 		ImagePack 英影;
 		ImagePack 黒数字;
@@ -256,8 +258,10 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			ゴシック小.Load("file/font/ipag.ttf", 12,0);
-			ゴシック中.Load("file/font/ipag.ttf", 16, 0);
+			ゴシック小.Load("file/font/ipag.ttf", 12, 0,false);
+			ゴシック中.Load("file/font/ipag.ttf", 16, 0,false);
+			BMPゴシック中.Load("file/font/ipa.bmp");
+
 			BMP黒.Load("", 6,0);
 			BMP黒影.Load("", 7, 0);
 			BMP白.Load("", 6, 0);
