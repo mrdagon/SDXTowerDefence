@@ -231,12 +231,6 @@ namespace SDX_TD
 			撃破.Load("file/sound/bom23.wav", 0.5);
 			ダメージ.Load("file/sound/voice015.wav", 0.5);
 		}
-		
-		static void SetVolume(double 音量 = 1.0)
-		{
-
-		}
-
 	}
 
 	/**フォント.*/
@@ -260,7 +254,7 @@ namespace SDX_TD
 		{
 			ゴシック小.Load("file/font/ipag.ttf", 12, 0,false);
 			ゴシック中.Load("file/font/ipag.ttf", 16, 0,false);
-			BMPゴシック中.Load("file/font/ipa.bmp");
+			BMPゴシック中.Load("file/font/ipa.png");
 
 			BMP黒.Load("", 6,0);
 			BMP黒影.Load("", 7, 0);

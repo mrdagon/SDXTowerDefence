@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 		if (Loading::GetLoadingCount() == Loading::GetSuccesCount()) break;
 	}
 
-	MFont::ゴシック中.MakeBMPFont("bmp_font_list.txt");
+	MFont::ゴシック小.MakeBMPFont("bmp_font_list.txt");
 	MFont::ゴシック中.LoadBMPFont(MFont::BMPゴシック中,"bmp_font_list.txt");
 
 	//ゲームモード設定等
