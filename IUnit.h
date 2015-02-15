@@ -215,8 +215,8 @@ namespace SDX_TD
 
 			if (isジョブリスト)
 			{
-				const double x = ( Input::mouse.x / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
-				const double y = ( Input::mouse.y / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
+				const double x = int( Input::mouse.x / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
+				const double y = int( Input::mouse.y / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
 
 				Drawing::Circle({ x, y, 射程 }, { 255, 255, 255, 128 }, 0);
 				Drawing::Circle({ x, y, 射程 }, Color::Red, 2);
