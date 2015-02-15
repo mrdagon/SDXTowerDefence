@@ -242,6 +242,7 @@ namespace SDX_TD
 		Font BMP黒影;
 		Font BMP白;
 
+		Image BMPゴシック小;
 		Image BMPゴシック中;
 
 		ImagePack 英語;
@@ -252,9 +253,15 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			ゴシック小.Load("file/font/ipag.ttf", 12, 0,false);
-			ゴシック中.Load("file/font/ipag.ttf", 16, 0,false);
+			ゴシック小.Load("afile/font/ipag.ttf", 12, 0,false);
+			ゴシック中.Load("afile/font/ipag.ttf", 16, 0,false);
+
+            //BMPフォントを利用
+            //AndroidだとFont生成が遅いので必要
 			BMPゴシック中.Load("file/font/ipa.png");
+			BMPゴシック小.Load("file/font/ipa2.png");
+            MFont::ゴシック小.LoadBMPFont(MFont::BMPゴシック小,"file/font/bmp_font_list.txt");
+	        MFont::ゴシック中.LoadBMPFont(MFont::BMPゴシック中,"file/font/bmp_font_list.txt");
 
 			BMP黒.Load("", 6,0);
 			BMP黒影.Load("", 7, 0);
