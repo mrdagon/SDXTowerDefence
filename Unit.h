@@ -133,7 +133,7 @@ namespace SDX_TD
 					SStage->Add(new S加速(&MEffect::弾, { { 速度 * 2, -0.1, 速度 } }, { GetX(), GetY(), st->半径 }, st, Lv, a * PAI / 4, 支援補正));
 					break;
 				case UnitType::師範://防御破壊B-炸裂弾、周りぐるぐる
-					new S回転(&MEffect::弾, { {GetX(),GetY(),a*PAI/2,速度,射程} }, DEF);
+					//new S回転(&MEffect::弾, { {GetX(),GetY(),a*PAI/2,速度,射程} }, DEF);
 					break;
 				case UnitType::狩人://対空専用A-長射程、3連射
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, DEF), a * 10);
@@ -147,9 +147,9 @@ namespace SDX_TD
 				case UnitType::司祭://対地ビームB
 					SStage->Add(new Beam({ GetX(), GetY(), 角度, 100, 0, 10 }, st, Lv, 支援補正));
 					break;
-				case UnitType::プリンス://3-8方向攻撃
+				case UnitType::プリンス://短ビーム
 					break;
-				case UnitType::プリンセス://3-8方向攻撃
+				case UnitType::プリンセス://
 					break;
 				case UnitType::術士://範囲A-加速弾、命中時範囲攻撃
 					SStage->Add(new S加速(&MEffect::弾, { { 0, 速度 / 10, 速度 } }, DEF));

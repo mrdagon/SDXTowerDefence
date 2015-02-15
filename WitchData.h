@@ -19,6 +19,7 @@ namespace SDX_TD
 		std::string 魔導具名;
 		std::string 説明文;
 
+		//外部に保存
 		int レベル;
 		int 経験値;
 
@@ -67,13 +68,16 @@ namespace SDX_TD
 
 	void LoadWitchS()
 	{
-		//α版は暫定的にライナのみ実装
-		//ツールなくても良い？
+		//α版は暫定的にライナのみ実装、ツールなくても良い？		
 		WitchDataS[WitchType::ライナ].名前 = "ライナ";
+		WitchDataS[WitchType::ライナ].大魔法名 = "フォルドアーカレイト";
+		WitchDataS[WitchType::ライナ].魔導具名 = "トルネルージュ";
+		WitchDataS[WitchType::ライナ].説明文 = "";
+
 		WitchDataS[WitchType::ライナ].属性 = Element::炎;
 		WitchDataS[WitchType::ライナ].攻撃補正 = 1.05;
 		WitchDataS[WitchType::ライナ].連射補正 = 1.05;
-		WitchDataS[WitchType::ライナ].逆境補正 = 0.02;
+		WitchDataS[WitchType::ライナ].逆境補正 = 0.03;//通常の三倍
 
 		WitchDataS[WitchType::ライナ].職種[0] = UnitType::ライナ;
 		WitchDataS[WitchType::ライナ].職種[1] = UnitType::兵士;

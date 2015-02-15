@@ -267,7 +267,14 @@ namespace SDX_TD
 		{
 			namespace UI = UI_Stage;
 
-			const Point point = { Input::mouse.x / TDSystem::カメラ.zoom, Input::mouse.y / TDSystem::カメラ.zoom };
+			const Point point = { Input::mouse.x , Input::mouse.y };
+			//タブレットでは指を離した時、デスクトップはクリック時に操作
+#ifdef TABLET
+			const bool isClick = Input::mouse.Left.on;
+#else
+			const bool isClick = Input::mouse.Left.on;
+#endif
+
 			Command comType = Command::null;
 			int comNo = 0;
 
@@ -277,8 +284,19 @@ namespace SDX_TD
 			gameSpeed = std::min(gameSpeed, 8);
 			gameSpeed = std::max(gameSpeed, 1);
 
+			int sp = 1;
+
+			for (int a = 0; a < 4; ++a)
+			{
+				if (UI::Rゲーム速度[a].Hit(&point) && isClick)
+				{
+					gameSpeed = sp;
+				}
+				sp *= 2;
+			}
+
 			//ポーズ
-			if (UI::Rメニュー.Hit(&point) && Input::mouse.Left.on)
+			if (UI::Rメニュー.Hit(&point) && isClick)
 			{
 				Director::AddScene(std::make_shared<Pause>());
 			}
@@ -295,8 +313,8 @@ namespace SDX_TD
 			//ショートカットキーの入力チェック
 			if (InputShortCut()){ return; };
 
-			//左クリック系操作
-			if (!Input::mouse.Left.on){ return; }
+			//左クリックしていなければ、処理しない
+			if (!isClick){ return; }
 
 			//新規配置		
 			comType = Command::新規配置;
@@ -489,8 +507,11 @@ namespace SDX_TD
 				if (wave.現在Wave == 0)
 				{
 					wave.isStop = false;
-					wave.待ち時間 = 0;
 				}
+                if( wave.最終Wave != wave.現在Wave )
+                {
+  				    wave.待ち時間 = 0;              
+                }
 				break;
 			case Command::強化:
 				if (!selectUnit ){ break; }
@@ -520,8 +541,8 @@ namespace SDX_TD
 			{
 				return;
 			}
-			const int x = int( Input::mouse.x / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE;
-			const int y = int( Input::mouse.y / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE;
+			const int x = int( Input::mouse.x - CHIP_SIZE / 2) / CHIP_SIZE;
+			const int y = int( Input::mouse.y - CHIP_SIZE / 2) / CHIP_SIZE;
 
 			//敵の位置を更新
 			LandUpdate();

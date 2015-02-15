@@ -369,8 +369,8 @@ namespace SDX_TD
 		/**配置先の表示.*/
 		void DrawSetPos()
 		{
-			const int x = int((Input::mouse.x / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE);
-			const int y = int((Input::mouse.y / TDSystem::カメラ.zoom - CHIP_SIZE / 2) / CHIP_SIZE);
+			const int x = int((Input::mouse.x - CHIP_SIZE / 2) / CHIP_SIZE);
+			const int y = int((Input::mouse.y - CHIP_SIZE / 2) / CHIP_SIZE);
 
 			if (SetCheck((int)x, (int)y, 2))
 			{

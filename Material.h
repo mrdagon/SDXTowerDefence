@@ -135,7 +135,7 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			弾.Load("file/Effect/shot000.png");
+			弾.Load("file/effect/shot000.png");
 		}
 	}
 
@@ -231,12 +231,6 @@ namespace SDX_TD
 			撃破.Load("file/sound/bom23.wav", 0.5);
 			ダメージ.Load("file/sound/voice015.wav", 0.5);
 		}
-		
-		static void SetVolume(double 音量 = 1.0)
-		{
-
-		}
-
 	}
 
 	/**フォント.*/
@@ -248,6 +242,9 @@ namespace SDX_TD
 		Font BMP黒影;
 		Font BMP白;
 
+		Image BMPゴシック小;
+		Image BMPゴシック中;
+
 		ImagePack 英語;
 		ImagePack 英影;
 		ImagePack 黒数字;
@@ -256,8 +253,16 @@ namespace SDX_TD
 
 		static void Load()
 		{
-			ゴシック小.Load("file/font/ipag.ttf", 12,0);
-			ゴシック中.Load("file/font/ipag.ttf", 16, 0);
+			ゴシック小.Load("afile/font/ipag.ttf", 12, 0,false);
+			ゴシック中.Load("afile/font/ipag.ttf", 16, 0,false);
+
+            //BMPフォントを利用
+            //AndroidだとFont生成が遅いので必要
+			BMPゴシック中.Load("file/font/ipa.png");
+			BMPゴシック小.Load("file/font/ipa2.png");
+            MFont::ゴシック小.LoadBMPFont(MFont::BMPゴシック小,"file/font/bmp_font_list.txt");
+	        MFont::ゴシック中.LoadBMPFont(MFont::BMPゴシック中,"file/font/bmp_font_list.txt");
+
 			BMP黒.Load("", 6,0);
 			BMP黒影.Load("", 7, 0);
 			BMP白.Load("", 6, 0);

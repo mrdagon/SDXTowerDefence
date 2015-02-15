@@ -63,7 +63,6 @@ namespace SDX_TD
 			it.職種 = UnitType(count);
 			if (it.職種 <= UnitType::ミルラ){ it.isウィッチ = true; }
 
-
 			UnitFile.Read(it.名前);
 			UnitFile.Read(it.説明文);
 

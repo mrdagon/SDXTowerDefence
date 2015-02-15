@@ -45,7 +45,7 @@ namespace SDX_TD
 			namespace UI = UI_StageSelect;
 			const Point def = { 17, 19 };
 
-			//暗くステージ状況を描画			
+			//暗くステージ状況を描画
 			Screen::SetBright(Color::Gray);
 			SStage->Draw();
 			Screen::SetBright(Color::White);
