@@ -269,11 +269,11 @@ namespace SDX_TD
 
 			const Point point = { Input::mouse.x , Input::mouse.y };
 			//タブレットでは指を離した時、デスクトップはクリック時に操作
-#ifdef TABLET
-			const bool isClick = Input::mouse.Left.on;
-#else
-			const bool isClick = Input::mouse.Left.on;
-#endif
+			bool isClick = Input::mouse.Left.on;
+			if (TDSystem::isタッチ)
+			{
+				isClick = Input::mouse.Left.off;
+			}
 
 			Command comType = Command::null;
 			int comNo = 0;
@@ -988,14 +988,9 @@ namespace SDX_TD
 					SStage->Draw();
 					Screen::SetBright(Color::White);
 					//@todo 演出は仮
-					MFont::ゴシック中.DrawRotate({ 800 - a * 6, 300 }, 5, 0, Color::White, "大魔法 フォルドアーカレイト");
+					MFont::ゴシック中.DrawRotate({ 800 - a * 6, 300 }, 5, 0, Color::White, Witch::Main->大魔法名);
 					System::Update();
 				}
-			}
-
-			for (auto && it : unitS)
-			{
-				it->Super();
 			}
 
 			//全体ダメージ

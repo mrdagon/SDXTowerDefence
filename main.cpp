@@ -12,6 +12,7 @@
 
 #include "Stage.h"
 #include "Title.h"
+#include "Sample/Sample.h"
 
 int main(int argc, char* argv[])
 {
@@ -20,6 +21,8 @@ int main(int argc, char* argv[])
 
 	//UIの位置をリセット
 	UI_Reset();
+
+	SampleWindow();
 
 	System::Initialise("GTD ver0.02α", 640 , 480 );//ライブラリの初期化
 
@@ -34,6 +37,7 @@ int main(int argc, char* argv[])
 	LoadChipS();
 
 	LoadMaterial();
+
 
 	while (1)
 	{

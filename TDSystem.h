@@ -32,7 +32,9 @@ namespace SDX_TD
 		bool isグリッド;//マスのグリッドと中央の薄い十字の表示
 		bool isHPゲージ = true;//敵Hpゲージの表示ON/OFF
 		bool is高速;//ゲーム速度を1,4,16,64倍速モードにする
-		bool isエフェクト;//死亡時エフェクト,大魔法カットインのON/OFF		
+		bool isエフェクト;//死亡時エフェクト,大魔法カットインのON/OFF
+
+		bool isタッチ;//タブレット用の操作スタイルフラグ
 
 		//ウィッチの経験値とステージの最高記録は、WitchDataS,StageDataSで
 		static void SaveAndLoad(FileMode 読み込みor書込)

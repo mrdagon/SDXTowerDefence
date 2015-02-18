@@ -15,6 +15,7 @@ namespace SDX_TD
 	{
 	public:
 		const static int 判定大きさ = 14;
+		const static int ボスダメージ = 2;
 
 		const EnemyData *st;
 		MoveType 移動種;
@@ -296,8 +297,15 @@ namespace SDX_TD
 			}
 			else if (SStage->land.地形[x][y] == ChipType::畑)
 			{
-				//ゴール判定、ボスはダメージ5倍
-				Witch::Main->Damage(1+isBoss*4);
+				//ゴール判定
+				if (isBoss)
+				{
+					Witch::Main->Damage(ボスダメージ);
+				}
+				else
+				{
+					Witch::Main->Damage(1);
+				}				
 				isRemove = true;
 			}
 

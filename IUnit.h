@@ -376,8 +376,5 @@ namespace SDX_TD
 
 		/**攻撃処理.*/
 		virtual void Shoot(IEnemy* 対象){};
-
-		/**大魔法発動時の攻撃.*/
-		virtual void Super(){};
 	};
 }

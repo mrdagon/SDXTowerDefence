@@ -72,74 +72,6 @@ namespace SDX
 			}
 		};
 
-		//ルコウ:減速しつつ後方へ、急加速
-		class ルコウ : public IMotion
-		{
-		private:
-		public:
-			bool Update(IPosition* 移動対象) override
-			{
-				return false;
-			}
-		};
-
-		//ディアネラ:
-		class ディアネラ : public IMotion
-		{
-		private:
-		public:
-			bool Update(IPosition* 移動対象) override
-			{
-				return false;
-			}
-		};
-
-		//ミナエ
-		class ミナエ : public IMotion
-		{
-		private:
-		public:
-			bool Update(IPosition* 移動対象) override
-			{
-				return false;
-			}
-		};
-
-		//トレニア:範囲型吹き飛ばし
-		class トレニア : public IMotion
-		{
-		private:
-		public:
-			bool Update(IPosition* 移動対象) override
-			{
-				return false;
-			}
-		};
-
-		//ロチエ
-		class ロチエ : public IMotion
-		{
-		private:
-		public:
-			bool Update(IPosition* 移動対象) override
-			{
-				return false;
-			}
-		};
-
-		//バロゥ
-		class バロゥ : public IMotion
-		{
-		private:
-		public:
-			bool Update(IPosition* 移動対象) override
-			{
-				return false;
-			}
-		};
-
-		//フィオナ:ただのビーム
-
 		//ナズナ:螺旋吹き飛ばし
 		class 螺旋 : public IMotion
 		{
@@ -200,6 +132,28 @@ namespace SDX
 
 				return true;
 			}
+		};
+
+		/** 最初に後方に飛んで、その後追尾.*/
+		class 追跡 : public IMotion
+		{
+		private:
+			double 初速;
+			double 速度;
+			double 角度;
+		public:
+			追跡(double 初角,double 速度)
+			{}
+
+			bool Update(IPosition* 移動対象) override
+			{
+				//最初は減速しつつ移動
+
+				//後に加速しつつ追尾
+
+				return true;
+			}
+
 		};
 
 		//師範:周りぐるぐる
