@@ -22,8 +22,6 @@ int main(int argc, char* argv[])
 	//UIの位置をリセット
 	UI_Reset();
 
-	SampleWindow();
-
 	System::Initialise("GTD ver0.02α", 640 , 480 );//ライブラリの初期化
 
 	Window::SetLogicalSize(640, 480);
