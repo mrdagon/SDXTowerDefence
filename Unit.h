@@ -38,6 +38,7 @@ namespace SDX_TD
 		using S直進 = Shot < Circle, SpImage, MOTION::ToFront<SPEED::Liner> >;
 		using S加速 = Shot < Circle, SpImage, MOTION::ToFront<SPEED::AccelLimit> >;
 		using S回転 = Shot < Circle, SpImage, MOTION::回転 > ;
+		using S追跡 = Shot < Circle, SpImage, MOTION::追跡 > ;
 
 		void Shoot(IEnemy *対象)
 		{
@@ -80,17 +81,18 @@ namespace SDX_TD
 				case UnitType::ロチエ://周囲鈍足
 					SStage->Add(new Bomm({ GetX(), GetY(), 射程 }, st, Lv, 支援補正));
 					break;
-				case UnitType::バロゥ://追尾、防御低下
+				case UnitType::バロゥ://全方向、防御低下
 					角度 = PAI * 2 * a / st->Hit数[Lv];
 					SStage->Add(new S直進(&MEffect::弾, { st->弾速[Lv] }, DEF), a * 5);
 					break;
 				case UnitType::フィオナ://司祭強化
-					SStage->Add(new Beam({ GetX(), GetY(),角度,100 , 0 , 10 }, st, Lv, 支援補正));
+					SStage->Add(new Beam({ GetX(), GetY(),角度, 1000 , 0 , 10 }, st, Lv, 支援補正));
 					break;
-				case UnitType::ナズナ://吹き飛び
+				case UnitType::ナズナ://吹き飛び、直進弾
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, DEF));
 					break;
 				case UnitType::委員長://麻痺範囲、追尾
+					SStage->Add(new S追跡(&MEffect::弾, { -角度 , 速度}, DEF));
 					break;
 				case UnitType::ミルラ://防御低下
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, DEF));
@@ -133,7 +135,7 @@ namespace SDX_TD
 					SStage->Add(new S加速(&MEffect::弾, { { 速度 * 2, -0.1, 速度 } }, { GetX(), GetY(), st->半径 }, st, Lv, a * PAI / 4, 支援補正));
 					break;
 				case UnitType::師範://防御破壊B-炸裂弾、周りぐるぐる
-					//new S回転(&MEffect::弾, { {GetX(),GetY(),a*PAI/2,速度,射程} }, DEF);
+					SStage->Add(new S回転(&MEffect::弾, { { { GetX(), GetY() }, a*PAI / 2, 速度, 射程 } }, DEF));
 					break;
 				case UnitType::狩人://対空専用A-長射程、3連射
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, DEF), a * 10);
@@ -145,16 +147,19 @@ namespace SDX_TD
 					SStage->Add(new Bomm({ GetX(), GetY(), 射程 }, st, Lv, 支援補正));
 					break;
 				case UnitType::司祭://対地ビームB
-					SStage->Add(new Beam({ GetX(), GetY(), 角度, 100, 0, 10 }, st, Lv, 支援補正));
+					SStage->Add(new Beam({ GetX(), GetY(), 角度, 1000, 0, 10 }, st, Lv, 支援補正));
 					break;
 				case UnitType::プリンス://短ビーム
+					SStage->Add(new Beam({ GetX(), GetY(), 角度, 射程 , 0, 10 }, st, Lv, 支援補正));
 					break;
-				case UnitType::プリンセス://
+				case UnitType::プリンセス://連続ビーム
+					SStage->Add(new Beam({ GetX(), GetY(), 角度, 射程, 0, 10 }, st, Lv, 支援補正));
 					break;
 				case UnitType::術士://範囲A-加速弾、命中時範囲攻撃
 					SStage->Add(new S加速(&MEffect::弾, { { 0, 速度 / 10, 速度 } }, DEF));
 					break;
 				case UnitType::賢者://範囲B-ホーミング弾、命中時範囲攻撃
+					SStage->Add(new S追跡(&MEffect::弾, { -角度, 速度 }, DEF));
 					break;
 				case UnitType::踊り子://支援A-弱麻痺
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, DEF));
@@ -189,49 +194,5 @@ namespace SDX_TD
 #undef DEF
 		}
 
-		void Super()
-		{
-			double 速度 = st->弾速[Lv];
-			double 角度 = 0;
-			double 射程 = Get射程();
-
-			//ウィッチ以外のユニットは必殺攻撃しない
-			if (st->職種 > UnitType::ミルラ)
-			{
-				return;
-			}
-
-			待機時間 = WAIT_TIME;
-
-			switch (st->職種)
-			{
-			case UnitType::ライナ://勇者強化
-				break;
-			case UnitType::ナツメ://武闘家強化
-				break;
-			case UnitType::ルコウ://騎士強化
-				break;
-			case UnitType::ディアネラ://プリンセス強化
-				break;
-			case UnitType::ミナエ://賢者強化
-				break;
-			case UnitType::トレニア://闘士強化
-				break;
-			case UnitType::ロチエ://くの一強化
-				break;
-			case UnitType::バロゥ://狩人強化
-				break;
-			case UnitType::フィオナ://司祭強化
-				break;
-			case UnitType::ナズナ://軍師強化
-				break;
-			case UnitType::委員長://僧侶強化
-				break;
-			case UnitType::ミルラ://将軍強化
-				break;
-			default:
-				break;
-			}
-		}
 	};
 }

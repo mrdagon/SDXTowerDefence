@@ -38,8 +38,8 @@ namespace SDX_TD
 	{
 		//とりあえず暫定的に
 		StageDataS[StageType::一面].名前 = "チュートリアル";
-		StageDataS[StageType::一面].Wave間隔 = 1000;
 		StageDataS[StageType::一面].説明 = "テスト";
+		StageDataS[StageType::一面].Wave間隔 = 1000;
 
 		for (StageData &it : StageDataS)
 		{

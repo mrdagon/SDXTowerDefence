@@ -12,6 +12,7 @@
 
 #include "Stage.h"
 #include "Title.h"
+#include "Sample/Sample.h"
 
 int main(int argc, char* argv[])
 {
@@ -34,6 +35,7 @@ int main(int argc, char* argv[])
 	LoadChipS();
 
 	LoadMaterial();
+
 
 	while (1)
 	{
