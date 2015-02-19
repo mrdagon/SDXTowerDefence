@@ -68,6 +68,11 @@ namespace SDX_TD
 	void LoadWitchS()
 	{
 		//数も少ないので直接入力
+		for (int a = 0; a < 12; ++a)
+		{
+			WitchDataS[WitchType(a)].種類 = WitchType(a);
+		}
+
 		WitchDataS[WitchType::ライナ].名前 = "ライナ";
 		WitchDataS[WitchType::ライナ].大魔法名 = "フォルドアーカレイト";
 		WitchDataS[WitchType::ライナ].魔導具名 = "トルネルージュ";
@@ -91,7 +96,6 @@ namespace SDX_TD
 		WitchDataS[WitchType::ライナ].職種[10] = UnitType::踊り子;
 		WitchDataS[WitchType::ライナ].職種[11] = UnitType::執事;
 
-		//
 		WitchDataS[WitchType::ナツメ].名前 = "ナツメ";
 		WitchDataS[WitchType::ナツメ].大魔法名 = "グリンブルスティ";
 		WitchDataS[WitchType::ナツメ].魔導具名 = "ジャガーノート";

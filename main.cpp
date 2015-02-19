@@ -25,6 +25,9 @@ int main(int argc, char* argv[])
 	System::Initialise("GTD ver0.02α", 640 , 480 );//ライブラリの初期化
 
 	Window::SetLogicalSize(640, 480);
+
+	Music::SetMainVolume(0.0);
+	Sound::SetMainVolume(0.0);
 	//Window::SetSize(1280, 960);
 
 	LoadUnitS();
@@ -36,7 +39,6 @@ int main(int argc, char* argv[])
 
 	LoadMaterial();
 
-
 	while (1)
 	{
 		if (Loading::GetLoadingCount() == Loading::GetSuccesCount()) break;
@@ -46,7 +48,7 @@ int main(int argc, char* argv[])
 	TDSystem::isカップル = false;
 	TDSystem::isトライアル = true;
 
-	Witch::SetMain(WitchType::ライナ);
+	Witch::SetMain(WitchType::ディアネラ);
 
 	Director::AddScene(std::make_shared<Stage>());
 	Director::AddScene(std::make_shared<StageSelect>());
