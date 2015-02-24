@@ -211,22 +211,54 @@ namespace SDX_TD
 		/**射程を表示する.*/
 		void DrawRange()
 		{
-			double 射程 = Get射程();
+			const double 射程 = Get射程();
+			const double 幅 = st->射程幅[Lv]/2;
+			double x, y;
+			const Color color = {255,255,255,128};
 
 			if (isジョブリスト)
 			{
-				const double x = ( Input::mouse.x - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
-				const double y = ( Input::mouse.y - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
-
-				Drawing::Circle({ x, y, 射程 }, { 255, 255, 255, 128 }, 0);
-				Drawing::Circle({ x, y, 射程 }, Color::Red, 2);
+				x = ( Input::mouse.x - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
+				y = ( Input::mouse.y - CHIP_SIZE / 2) / CHIP_SIZE * CHIP_SIZE + CHIP_SIZE;
 			}
 			else
 			{
-				//射程表示
-				Drawing::Circle({ GetX(), GetY(), 射程 }, { 255, 255, 255, 128 }, 0);
-				Drawing::Circle({ GetX(), GetY(), 射程 }, Color::Red, 2);
+				x = GetX();
+				y = GetY();
 			}
+
+			switch (st->射程種)
+			{
+			case RangeType::円:
+				Drawing::Circle({ x, y, 射程 }, color, 0);
+				Drawing::Circle({ x, y, 射程 }, Color::Red, 2);
+				break;
+			case RangeType::十字:
+				Drawing::Rect({ x -射程 , y -幅, x +射程 , y+幅 }, color);
+				Drawing::Rect({ x - 幅, y - 射程, x + 幅, y + 幅 }, color);
+				Drawing::Rect({ x - 幅, y - 幅, x + 幅, y + 射程 }, color);
+				Drawing::Polygon
+					({
+						{x-幅,y-幅},
+						{x-幅,y-射程},
+						{x+幅,y-射程},
+						{x+幅,y-幅},
+						{x+射程,y-幅},
+						{x+射程, y+幅 },
+						{x+幅, y+幅 },
+						{x+幅, y+射程 },
+						{x-幅, y+射程 },
+						{x-幅, y+幅 },
+						{x-射程, y+幅 },
+						{x-射程, y-幅 },
+						{x-幅, y-幅 }
+					},color, 2);
+				break;
+			default:
+				break;
+			}
+
+
 		}
 
 		/**.*/
@@ -252,7 +284,7 @@ namespace SDX_TD
 				残り強化時間 > 0 ||
 				残り売却時間 > 0 ||
 				!Witch::Main->is使用可能[st->職種] ||
-				(!Witch::詠唱回数[st->職種] && !st->isウィッチ)
+				!Witch::強化回数[st->職種]
 				)
 			{ 
 				return false; 
@@ -262,10 +294,7 @@ namespace SDX_TD
 
 			if (Witch::Main->Mp < 必要MP){ return false; }
 
-			if (!st->isウィッチ)
-			{
-				--Witch::詠唱回数[st->職種];
-			}
+			--Witch::強化回数[st->職種];
 
 			Witch::Main->Mp -= 必要MP;
 
@@ -292,8 +321,8 @@ namespace SDX_TD
 			if (SStage->GetWave() == 0 || Witch::Main->回収速度 <= 0)
 			{
 				isRemove = true;
-				if (st->isウィッチ){ Witch::詠唱回数[st->職種]++; }
-				else{ Witch::詠唱回数[st->職種] += Lv + 1; }
+				Witch::配置回数[st->職種]++;
+				Witch::強化回数[st->職種] += Lv;
 				Witch::Main->Mp += st->コスト[Lv];
 				残り売却時間 = -1;
 			}
@@ -339,32 +368,10 @@ namespace SDX_TD
 				return;
 			}
 
-
 			if (待機時間 <= 0 && 残り売却時間 < 0 && 残り強化時間 < 0 && !st->is使い捨て )
 			{
-				IEnemy* 対象 = nullptr;
-				double 射程 = Get射程();
-				//敵を選択中
-				if ( SStage->selectEnemy )
-				{
-					const bool 地形対応 = (SStage->selectEnemy->st->移動種 == MoveType::空 && st->is対空) || (SStage->selectEnemy->st->移動種 != MoveType::空 && st->is対地);
-
-					if ( 地形対応 && GetDistance(SStage->selectEnemy) <= 射程)
-					{
-						対象 = SStage->selectEnemy;
-					}
-				}
-
-				//選択した敵が範囲外 or 敵を未選択
-				if ( 対象 == nullptr)
-				{
-					対象 = SStage->GetNearEnemy(this , st->is対地 , st->is対空);
-					if ( !対象 || GetDistance(対象) > 射程)
-					{
-						対象 = nullptr;
-					}
-				}
-
+				IEnemy* 対象 = CheckRange();
+				
 				if ( 対象 )
 				{
 					//射程内に敵がいるなら攻撃					
@@ -372,6 +379,61 @@ namespace SDX_TD
 					待機時間 = WAIT_TIME;
 				}
 			}
+		}
+
+		/**敵が射程内か判定.*/
+		IEnemy* CheckRange()
+		{
+			IEnemy* 対象 = nullptr;
+			double 射程 = Get射程();
+			int 幅 = st->射程幅[Lv];
+
+			switch (st->射程種)
+			{
+			case RangeType::円:
+				//敵を選択中
+				if (SStage->selectEnemy)
+				{
+					const bool 地形対応 = (SStage->selectEnemy->st->移動種 == MoveType::空 && st->is対空) || (SStage->selectEnemy->st->移動種 != MoveType::空 && st->is対地);
+
+					if (地形対応 && GetDistance(SStage->selectEnemy) <= 射程)
+					{
+						対象 = SStage->selectEnemy;
+					}
+				}
+
+				//選択した敵が範囲外 or 敵未選択
+				if (対象 == nullptr)
+				{
+					対象 = SStage->GetNearEnemy(this, st->is対地, st->is対空);
+					if (!対象 || GetDistance(対象) > 射程)
+					{
+						対象 = nullptr;
+					}
+				}
+				break;
+			case RangeType::十字:
+				//敵を選択中
+				if (SStage->selectEnemy)
+				{
+					const bool 地形対応 = (SStage->selectEnemy->st->移動種 == MoveType::空 && st->is対空) || (SStage->selectEnemy->st->移動種 != MoveType::空 && st->is対地);
+
+					if (地形対応 && SStage->GetClossDistance(this,SStage->selectEnemy, 幅 ,射程) >= 0)
+					{
+						対象 = SStage->selectEnemy;
+					}
+				}
+
+				//選択した敵が範囲外 or 敵未選択
+				if (対象 == nullptr)
+				{
+					対象 = SStage->GetNearEnemyCloss(this, st->is対地, st->is対空,幅,射程);
+				}
+
+				break;
+			}
+
+			return 対象;
 		}
 
 		/**攻撃処理.*/

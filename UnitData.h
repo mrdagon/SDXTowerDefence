@@ -24,6 +24,7 @@ namespace SDX_TD
 		int 攻撃力[最大強化];
 		int 連射[最大強化];
 		int 射程[最大強化];
+		int 射程幅[最大強化];//十字射程ユニットのみ
 		double 弾速[最大強化];
 
 		double 支援効果[最大強化];
@@ -33,10 +34,11 @@ namespace SDX_TD
 
 		DebuffType デバフ種;
 		EnemyType 特攻種族;
+
 		int    デバフ効果[最大強化];
 		double デバフ率[最大強化];
 
-		int  基礎詠唱回数;
+		int  基礎強化回数;
 
 		//以下はウィッチ補正が無い
 		int  Hit数[最大強化];
@@ -75,7 +77,7 @@ namespace SDX_TD
 			if (param == 2){it.is対地 = false;}
 			if (param == 3){it.is使い捨て = true;}
 
-			UnitFile.Read(it.基礎詠唱回数);
+			UnitFile.Read(it.基礎強化回数);
 			UnitFile.Read(it.デバフ種);
 			UnitFile.Read(it.特攻種族);
 

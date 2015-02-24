@@ -25,8 +25,9 @@ namespace SDX_TD
 			shape(X座標, Y座標, Size * CHIP_SIZE / 2, Size * CHIP_SIZE / 2, Size * CHIP_SIZE / 2, Size * CHIP_SIZE / 2)
 		{
 			Witch::Main->Mp -= st->コスト[0];
-			--Witch::詠唱回数[職種];
-
+			
+			--Witch::配置回数[職種];
+			
 			待機時間 = WAIT_TIME;
 
 			MSound::設置.Play();

@@ -145,6 +145,12 @@ namespace SDX_TD
 		COUNT,
 	};
 
+	/**ユニットがウィッチかどうか返す .*/
+	bool IsWitch(UnitType ユニット種)
+	{
+		return (int(ユニット種) < (int)UnitType::ミルラ);
+	}
+
 	/**ウィッチの種類.*/
 	enum class WitchType
 	{

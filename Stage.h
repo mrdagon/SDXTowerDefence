@@ -537,7 +537,7 @@ namespace SDX_TD
             if (!selectUnit || !selectUnit->isジョブリスト){ return; }
 
             //資金不足
-            if (selectUnit->st->コスト[0] > Witch::Main->Mp || Witch::詠唱回数[職種] <= 0)
+            if (selectUnit->st->コスト[0] > Witch::Main->Mp || Witch::配置回数[職種] <= 0)
             {
                 return;
             }
@@ -915,6 +915,59 @@ namespace SDX_TD
             return 一番近い敵;
         }
         
+		/**十字射程内で一番近いEnemyを返す.*/
+		IEnemy* GetNearEnemyCloss(const IPosition* 比較対象, bool is地上, bool is空中 , int 幅 , double 射程) override
+		{
+			IEnemy* 一番近い敵 = nullptr;
+			double  最短距離 = 9999999999;//適当に大きな値
+			double  距離;
+
+			if (is地上)
+			{
+				for (auto && it : groundEnemyS.objectS)
+				{
+					距離 = GetClossDistance(it.get(), 比較対象, 幅, 射程);
+
+					if (距離 >= 0 && 距離 < 最短距離)
+					{					
+						一番近い敵 = it.get();
+						最短距離 = 距離;
+					}
+				}
+			}
+			if (is空中)
+			{
+				for (auto && it : skyEnemyS.objectS)
+				{
+					距離 = GetClossDistance(it.get(), 比較対象, 幅, 射程);
+
+					if (距離 >= 0 && 距離 < 最短距離)
+					{
+						一番近い敵 = it.get();
+						最短距離 = 距離;
+					}
+				}
+			}
+
+			return 一番近い敵;
+		}
+
+		/**AとBが十字射程内にあるなら距離を返す、いないなら-1を返す.*/
+		int GetClossDistance(const IPosition* 対象A, const IPosition* 対象B, int 幅, double 射程) override
+		{
+			const double xd = std::abs(対象A->GetX() - 対象B->GetX());
+			const double yd = std::abs(対象A->GetY() - 対象B->GetY());
+
+			if (
+				(xd <= 幅 && yd <= 射程) ||
+				(xd <= 射程 && yd <= 幅)
+				)
+			{
+				return int(xd * xd + yd * yd);
+			}
+			return -1;
+		}
+
         /**ユニットの支援再計算.*/
         void Support() override
         {

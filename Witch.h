@@ -255,7 +255,8 @@ namespace SDX_TD
 		//変動パラメータ
 		static int Hp;//共通
 		static int 被ダメージ;
-		static	EnumArray<int, UnitType> 詠唱回数;
+		static EnumArray<int, UnitType> 配置回数;
+		static EnumArray<int, UnitType> 強化回数;
 
 		bool is継続ダメージ = false;//鈍足or麻痺状態のスリップダメージ
 		bool is速度支援 = false;//速度も強化するかどうか
@@ -275,7 +276,20 @@ namespace SDX_TD
 			被ダメージ = 0;
 			全補正計算();
 
-			for (auto & it : 詠唱回数)
+			//ウィッチは1回、他は無制限に配置可能
+			for (int a = 0; a < (int)UnitType::COUNT; ++a)
+			{
+				if ( IsWitch(UnitType(a)) )
+				{
+					配置回数[UnitType(a)] = 1;
+				}
+				else
+				{
+					配置回数[UnitType(a)] = 65536;
+				}
+			}
+
+			for (auto & it : 強化回数)
 			{
 				it = 0;
 			}
@@ -330,6 +344,7 @@ namespace SDX_TD
 		}
 
 		/**戦闘開始時の初期化処理.*/
+		/**@todo パワーかどうかで処理変化*/
 		void Init()
 		{
 			Hp += 追加Hp;
@@ -337,10 +352,18 @@ namespace SDX_TD
 			Sp = 0;
 			大魔法残り時間 = 0;
 			被ダメージ = 0;
-			
+
 			for (int a = 0; a < 12; ++a)
 			{
-				詠唱回数[職種[a]] += int(UnitDataS[職種[a]].基礎詠唱回数 * 詠唱回数補正);
+				if (IsWitch(職種[a]))
+				{
+					強化回数[職種[a]] += UnitDataS[職種[a]].基礎強化回数;
+				}
+				else
+				{
+					//カップルなら半減？
+					強化回数[職種[a]] += int(UnitDataS[職種[a]].基礎強化回数 * 強化回数補正);
+				}
 			}
 		};
 
@@ -407,7 +430,8 @@ namespace SDX_TD
 	Witch* Witch::Main;
 	Witch* Witch::Sub;
 
-	EnumArray<int, UnitType> Witch::詠唱回数;
+	EnumArray<int, UnitType> Witch::配置回数;
+	EnumArray<int, UnitType> Witch::強化回数;
 	int	  Witch::Hp;
 	int   Witch::被ダメージ;
 }

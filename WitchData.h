@@ -50,7 +50,7 @@ namespace SDX_TD
 		int    追加Hp = 0;
 		int    初期Mp = 50;
 
-		double 詠唱回数補正 = 1.0;
+		double 強化回数補正 = 1.0;
 
 		UnitType 職種[12];
 
