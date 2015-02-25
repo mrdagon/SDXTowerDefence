@@ -95,7 +95,7 @@ namespace SDX_TD
 				case UnitType::委員長://麻痺範囲、追尾
 					SStage->Add(new S追跡(&MEffect::弾, { -角度 , 速度}, DEF));
 					break;
-				case UnitType::ミルラ://防御低下
+				case UnitType::ミルラ://防御低下、追尾
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, DEF));
 					break;
 				case UnitType::兵士://通路用A-単発直進
