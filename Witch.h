@@ -5,6 +5,7 @@
 #include "TDSystem.h"
 #include "IStage.h"
 #include "DataS.h"
+#include "Artifact.h"
 
 namespace SDX_TD
 {
@@ -241,11 +242,38 @@ namespace SDX_TD
 		/**レベルによる補正計算.*/
 		void レベル補正()
 		{
+			//強化回数のみ影響予定
 		}
 
 		/**アイテムによる補正計算.*/
 		void アイテム補正()
 		{
+			for (auto &it : 装備)
+			{
+				if (it == nullptr){ continue; }
+
+				攻撃補正 += it->攻撃;
+				連射補正 += it->連射;
+				範囲補正 += it->範囲;
+				射程補正 += it->射程;
+				支援補正 += it->支援;
+				//弾速補正 += it->弾速;
+
+				MP消費 += it->消費;
+				回収速度 += it->回収;
+				強化速度 += it->強化;
+
+				特殊補正[DebuffType::吹飛] += it->吹飛;
+				特殊補正[DebuffType::防壊] += it->防壊;
+				特殊補正[DebuffType::麻痺] += it->麻痺;
+				特殊補正[DebuffType::鈍足] += it->鈍足;
+
+				獲得SP += it->Sp;
+				追加Hp += it->Hp;
+				初期Mp += it->Mp;
+
+				逆境補正 += it->逆境;
+			}
 		}
 
 	public:
@@ -268,6 +296,7 @@ namespace SDX_TD
 		const double 最大Sp = 1000;
 		int 大魔法残り時間 = 0;
 		EnumArray<bool, UnitType> is使用可能;
+		Artifact* 装備[4];
 
 		/**メインとサブ両方を初期化.*/
 		static void InitAll()

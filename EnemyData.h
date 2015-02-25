@@ -81,11 +81,12 @@ namespace SDX_TD
 		EnemyDataS[EnemyType::ドラゴン].防御力 = 0.5;
 
 		EnemyDataS[EnemyType::スケルトン].再生力 = 1;
+		EnemyDataS[EnemyType::トレント].再生力 = 0.5;
 
 		EnemyDataS[EnemyType::オーガ].特殊耐性[DebuffType::吹飛] = true;
 		EnemyDataS[EnemyType::ケルベロス].特殊耐性[DebuffType::鈍足] = true;
-		EnemyDataS[EnemyType::トレント].特殊耐性[DebuffType::麻痺] = true;
-	
+		EnemyDataS[EnemyType::トレント].特殊耐性[DebuffType::吹飛] = true;
+
 		EnemyDataS[EnemyType::コボルド].is加速 = true;
 		EnemyDataS[EnemyType::グリフィン].is離陸 = true;
 	}
