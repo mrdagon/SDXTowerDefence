@@ -233,10 +233,10 @@ namespace SDX_TD
 				Drawing::Circle({ x, y, 射程 }, color, 0);
 				Drawing::Circle({ x, y, 射程 }, Color::Red, 2);
 				break;
-			case RangeType::十字:
-				Drawing::Rect({ x -射程 , y -幅, x +射程 , y+幅 }, color);
-				Drawing::Rect({ x - 幅, y - 射程, x + 幅, y + 幅 }, color);
-				Drawing::Rect({ x - 幅, y - 幅, x + 幅, y + 射程 }, color);
+			case RangeType::十字:				
+				Drawing::Rect({ x -射程 , y -幅, 射程*2 , 幅*2 }, color);
+				Drawing::Rect({ x - 幅, y - 射程, 幅*2, 射程-幅 }, color);
+				Drawing::Rect({ x - 幅, y + 幅, 幅*2, 射程-幅 }, color);
 				Drawing::Polygon
 					({
 						{x-幅,y-幅},
@@ -252,7 +252,7 @@ namespace SDX_TD
 						{x-射程, y+幅 },
 						{x-射程, y-幅 },
 						{x-幅, y-幅 }
-					},color, 2);
+					},Color::Red, 2);
 				break;
 			default:
 				break;

@@ -88,7 +88,7 @@ namespace SDX_TD
 			UnitFile.Read<int>(it.弾速, 6, 100);
 
 			UnitFile.Read<int>(it.支援効果, 6, 100);//支援A
-			UnitFile.Read<int>(it.炸裂威力, 6, 100);//支援B-無視
+			UnitFile.Read(it.射程幅, 6);//支援B-暫定的に十字代わり
 			UnitFile.Read<int>(it.炸裂威力, 6, 100);
 			UnitFile.Read(it.炸裂範囲, 6);
 
