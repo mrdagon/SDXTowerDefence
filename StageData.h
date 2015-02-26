@@ -16,12 +16,14 @@ namespace SDX_TD
 		struct Score
 		{
 			EnumArray<int, WitchType> シングル;
-			int カップル[3];
-			std::tuple<WitchType, WitchType> カップリング[3];
-			Difficulty シングル達成度[(int)WitchType::COUNT];
-			Difficulty カップル達成度[3];
+			EnumArray<int, WitchType> カップル;
+			EnumArray<Difficulty, WitchType> シングル達成度;
+			EnumArray<Difficulty, WitchType> カップル達成度;
+			EnumArray<bool, WitchType> シングル完勝;
+			EnumArray<bool, WitchType> カップル完勝;
 		};
 
+		//全体の最高スコア
 		Score トライアル;//レベル制限あり
 		Score リミットレス;//レベル制限無し
 

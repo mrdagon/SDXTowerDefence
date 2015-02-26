@@ -12,12 +12,14 @@
 
 #include "Stage.h"
 #include "Title.h"
-#include "Sample/Sample.h"
+#include "Artifact.h"
 
 int main(int argc, char* argv[])
 {
 	using namespace SDX;
 	using namespace SDX_TD;
+
+	Artifact::出現率計算();
 
 	//UIの位置をリセット
 	UI_Reset();
