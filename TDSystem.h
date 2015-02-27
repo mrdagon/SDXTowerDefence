@@ -4,6 +4,7 @@
 #pragma once
 
 #include "DataS.h"
+#include "Artifact.h"
 
 namespace SDX_TD
 {
@@ -20,10 +21,17 @@ namespace SDX_TD
 
 		//アイテム関連
 		int 素材数[4];
-		int 資金;
+		int 特殊素材数[4];
+		Artifact 魔導具[200];
+		//特殊アイテム
+		//レシピのレア度が分かるようになる
+		//
 
+		int 工房レベル;
+		int 工房経験;
+		int 菜園レベル;
+		int 菜園経験;
 		//実績関連
-
 
 		//設定関連
 		double 効果音の音量;
