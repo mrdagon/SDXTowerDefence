@@ -22,8 +22,9 @@ namespace SDX_TD
 
 		double 炸裂半径 = 0;
 
-		bool   is貫通 = false;
-		bool   isSmall = true;//分割当たり判定用
+		bool   is貫通 = false;//命中時、消滅するかどうか
+		bool   isHitCheck = true;//当たり判定を行うかどうか
+		bool   isArea = false;//範囲攻撃フラグ
 		int	   反射回数 = 0;
 
 		virtual ~IShot() = default;
@@ -45,57 +46,6 @@ namespace SDX_TD
 			炸裂半径 = st->炸裂範囲[レベル];
 		}
 
-		/**消滅判定.*/
-		virtual bool RemoveCheck()
-		{
-			const double x = GetX();
-			const double y = GetY();
-
-			if (x < -10 || x > MAP_SIZE * CHIP_SIZE + 10 || y < -10 || y > MAP_SIZE * CHIP_SIZE + 10)
-			{
-				isRemove = true;
-			}
-			return isRemove;
-		}
-
-		/**衝突した時の処理.*/
-		virtual void Damaged(IObject* 衝突相手)
-		{
-			if (!is貫通)
-			{
-				isRemove = true;
-			}
-		}
-
-		/**毎フレームの処理.*/
-		virtual void Act(){};
-	};
-
-	class BommEfect : public IObject
-	{
-	public:
-		Circle circle;
-		SpNull spNull;
-		int time = 255;
-
-		BommEfect(const Circle &位置):
-			IObject(circle,spNull),
-			circle(位置)
-		{}
-
-		void Update() override
-		{
-			time -= 5;
-			if (time <= 0)
-			{
-				isRemove = true;
-			}
-		}
-
-		void Draw() const override
-		{
-			circle.Draw({255,0,0,time});
-		}
 	};
 
 	class Bomm : public IShot
@@ -108,13 +58,29 @@ namespace SDX_TD
 			IShot( circle , spNull , 0 , st , Lv , 支援補正),
 			circle(範囲)
 		{
-			isSmall = false;
+			isArea = true;
 			is貫通 = true;
-			isRemove = true;
-			炸裂半径 = 0;
-
-			SStage->AddFront( new BommEfect(circle));
 		}
+
+		void Draw() const override
+		{
+			circle.Draw({ 255, 0, 0, 255 - timer * 5 });
+		}
+
+		void Act() override
+		{
+			//発生フレームのみ判定がある
+			if (timer != 1)
+			{
+				isHitCheck = false;
+			}
+			if (timer >= 50)
+			{
+				isRemove = true;
+			}
+		}
+
+
 	};
 
 	class Beam : public IShot
@@ -122,12 +88,46 @@ namespace SDX_TD
 	public:
 		Line line;
 		SpNull spNull;
+		int ヒット数;
+		int 透明度 = 255;
 
-		Beam(const Line &範囲, UnitData* st, int Lv, double 支援補正) :
+		Beam(const Line &範囲, UnitData* st, int Lv, double 支援補正 , int ヒット数) :
 			IShot(line, spNull, 0, st, Lv, 支援補正),
-			line(範囲)
+			line(範囲),
+			ヒット数(ヒット数 - 1)
 		{
+			isArea = true;
+			is貫通 = true;
+		}
 
+		void Draw() const override
+		{
+			line.Draw({ 255, 0, 0, 透明度 });
+		}
+
+		void Act() override
+		{
+			//発生フレームのみ判定がある
+			//1秒に6回判定がある
+			if (timer % 10 == 0 && ヒット数 > 0)
+			{
+				--ヒット数;
+				isHitCheck = true;
+			}
+			else
+			{
+				isHitCheck = false;
+			}
+
+			if (ヒット数 <= 0)
+			{
+				透明度 -= 10;
+			}
+
+			if (透明度 <= 0)
+			{
+				isRemove = true;
+			}
 		}
 
 	};
@@ -157,6 +157,19 @@ namespace SDX_TD
 			motion.Update( this );
 		}
 
+		/**消滅判定.*/
+		virtual bool RemoveCheck()
+		{
+			const double x = GetX();
+			const double y = GetY();
+
+			if (x < -10 || x > MAP_SIZE * CHIP_SIZE + 10 || y < -10 || y > MAP_SIZE * CHIP_SIZE + 10)
+			{
+				isRemove = true;
+			}
+			return isRemove;
+		}
+
 		/**衝突した時の処理.*/
 		void Damaged(IObject* 衝突相手) override
 		{
@@ -166,7 +179,7 @@ namespace SDX_TD
 				isRemove = true;
 			}
 
-			if (炸裂半径 > 0)
+			if (炸裂半径 > 0 && !isArea)
 			{
 				SStage->Add(new Bomm({ GetX(), GetY(), 炸裂半径 }, st, Lv, 支援補正));
 			}

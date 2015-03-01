@@ -46,11 +46,12 @@ namespace SDX_TD
 			const double 速度 = st->弾速[Lv];
 			const double 射程 = Get射程();
 			double 角度 = 0;
-						
+			
 			if (対象)
 			{
 				角度 = this->GetDirect(対象);
 			}
+			double 敵方向 = 角度;
 
 			//入力省略,描画方法,移動方法
 			#define DEF { GetX(), GetY(), st->半径 },st,Lv,角度,支援補正
@@ -67,13 +68,18 @@ namespace SDX_TD
 					SStage->Add(new Bomm({ GetX(), GetY(), 射程 }, st, Lv, 支援補正));
 					break;
 				case UnitType::ルコウ://騎士強化
-					SStage->Add(new S加速(&MEffect::弾, { { -5.0, 1.0, 20.0 } }, DEF), a * 20);
+					SStage->Add(new S加速(&MEffect::弾, { { -速度, 速度/30, 9999 } }, DEF), a * 3);
 					break;
-				case UnitType::ディアネラ://武闘家強化//八方向攻撃
-					角度 = PAI * 2 * a / st->Hit数[Lv];
-					SStage->Add(new S直進(&MEffect::弾, { st->弾速[Lv] }, DEF), a * 5);
+				case UnitType::ディアネラ://槍兵強化//八方向攻撃
+					if (a == 0)
+					{
+						角度 -= DEG * 10 * (st->Hit数[Lv] / 2 + 1);
+					}
+					角度 += DEG * 10;
+					SStage->Add(new S加速(&MEffect::弾, { { 速度 / 10, 速度 / 60, 速度 } }, DEF));
 					break;
 				case UnitType::ミナエ://剣豪強化
+					角度 = 敵方向 + Rand::Get(-a * DEG * 5, a * DEG * 5);
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, { GetX(), GetY(), st->半径 }, st, Lv, 角度 + Rand::Get(-30 * DEG, 30 * DEG), 支援補正), a * 2);
 					break;
 				case UnitType::トレニア://斧兵強化/範囲吹き飛び
@@ -84,16 +90,17 @@ namespace SDX_TD
 					break;
 				case UnitType::バロゥ://全方向、防御低下
 					角度 = PAI * 2 * a / st->Hit数[Lv];
-					SStage->Add(new S直進(&MEffect::弾, { st->弾速[Lv] }, DEF), a * 5);
+					SStage->Add(new S追尾(&MEffect::弾, { 速度 , DEG * 2}, DEF), a * 5);
 					break;
 				case UnitType::フィオナ://司祭強化
-					SStage->Add(new Beam({ GetX(), GetY(),角度, 1000 , 0 , 10 }, st, Lv, 支援補正));
+					if (a != 0) break;
+					SStage->Add(new Beam({ GetX(), GetY(),角度, 1000 , 0 , 10 }, st, Lv, 支援補正 , st->Hit数[Lv]));
 					break;
 				case UnitType::ナズナ://吹き飛び、直進弾
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, DEF));
 					break;
 				case UnitType::委員長://麻痺範囲、追尾
-					SStage->Add(new S追跡(&MEffect::弾, { -角度 , 速度}, DEF));
+					SStage->Add(new S追跡(&MEffect::弾, { 速度 }, DEF) , a * 10);
 					break;
 				case UnitType::ミルラ://防御低下、追尾
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, DEF));
@@ -108,11 +115,11 @@ namespace SDX_TD
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, DEF));
 					break;
 				case UnitType::技師://必中追尾A-単発型
-					SStage->Add(new S追尾(&MEffect::弾, { 速度, DEG }, DEF));
+					SStage->Add(new S追尾(&MEffect::弾, { 速度, DEG*2 }, DEF));
 					break;
 				case UnitType::勇者://必中追尾B-周囲展開型
 					角度 = PAI * 2 * a / st->Hit数[Lv];
-					SStage->Add(new S勇者(&MEffect::弾, { { GetX(), GetY() }, (int)Rand::Get(射程 / 2, 射程), 角度, 0 }, DEF));
+					SStage->Add(new S勇者(&MEffect::弾, { { GetX(), GetY() }, (int)射程, 角度, 速度 / 10 }, DEF));
 					break;
 				case UnitType::剣士://連射A-単発直進
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, DEF));
@@ -124,16 +131,17 @@ namespace SDX_TD
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, {GetX(),GetY(),st->半径},st,Lv,角度 - (st->Hit数[Lv]*5-5 + a*10) * DEG,支援補正));
 					break;
 				case UnitType::騎士://反射B-連射加速直進
-					SStage->Add(new S加速(&MEffect::弾, { { -速度, 0.1, 速度 * 2 } }, DEF), a * 10);
+					SStage->Add(new S加速(&MEffect::弾, { { -速度, 速度/20, 速度 * 2 } }, DEF), a * 10);
 					break;
 				case UnitType::斧士://吹き飛びA-後ろ射出加速
-					SStage->Add(new S加速(&MEffect::弾, { { -速度, 0.1, 速度 } }, DEF));
+					SStage->Add(new S加速(&MEffect::弾, { { -速度, 0.1, 速度*10 } }, DEF));
 					break;
 				case UnitType::闘士://吹き飛びB-後ろ射出複数
-					SStage->Add(new S加速(&MEffect::弾, { { -速度, 0.1, 速度 } }, DEF));
+					角度 = 敵方向 + Rand::Get(-PAI/8,+PAI/8);
+					SStage->Add(new S加速(&MEffect::弾, { { -速度, 0.1, 速度*10 } }, DEF) , a * 10);
 					break;
 				case UnitType::武闘家://防御破壊A-加速弾-8WAY					
-					SStage->Add(new S加速(&MEffect::弾, { { 速度 * 2, -0.1, 速度 } }, { GetX(), GetY(), st->半径 }, st, Lv, a * PAI / 4, 支援補正));
+					SStage->Add(new S加速(&MEffect::弾, { { 速度 , -速度/10, 速度/2 } }, { GetX(), GetY(), st->半径 }, st, Lv, a * PAI / 4, 支援補正));
 					break;
 				case UnitType::師範://防御破壊B-炸裂弾、周りぐるぐる
 					SStage->Add(new S回転(&MEffect::弾, { { { GetX(), GetY() }, a*PAI / 2, 速度, 射程 } }, DEF));
@@ -148,19 +156,23 @@ namespace SDX_TD
 					SStage->Add(new Bomm({ GetX(), GetY(), 射程 }, st, Lv, 支援補正));
 					break;
 				case UnitType::司祭://対地ビームB
-					SStage->Add(new Beam({ GetX(), GetY(), 角度, 1000, 0, 10 }, st, Lv, 支援補正));
+					if (a != 0) break;
+					SStage->Add(new Beam({ GetX(), GetY(), 角度, 1000, 0, 10 }, st, Lv, 支援補正 , st->Hit数[Lv]));
 					break;
 				case UnitType::プリンス://短ビーム
-					SStage->Add(new Beam({ GetX(), GetY(), 角度, 射程 , 0, 10 }, st, Lv, 支援補正));
+					SStage->Add(new Beam({ GetX(), GetY(), 角度, 射程 , 0, 10 }, st, Lv, 支援補正,1));
 					break;
 				case UnitType::プリンセス://連続ビーム
-					SStage->Add(new Beam({ GetX(), GetY(), 角度, 射程, 0, 10 }, st, Lv, 支援補正));
+					SStage->Add(new Beam({ GetX()+32, GetY(), 0		  , 射程-32, 0, (double)st->射程幅[Lv] }, st, Lv, 支援補正,1));
+					SStage->Add(new Beam({ GetX(), GetY() + 32, PAI / 2, 射程 - 32, 0, (double)st->射程幅[Lv] }, st, Lv, 支援補正, 1));
+					SStage->Add(new Beam({ GetX() - 32, GetY(), PAI, 射程 - 32, 0, (double)st->射程幅[Lv] }, st, Lv, 支援補正, 1));
+					SStage->Add(new Beam({ GetX(), GetY() - 32, PAI * 3 / 2, 射程 - 32, 0, (double)st->射程幅[Lv] }, st, Lv, 支援補正, 1));
 					break;
 				case UnitType::術士://範囲A-加速弾、命中時範囲攻撃
 					SStage->Add(new S加速(&MEffect::弾, { { 0, 速度 / 10, 速度 } }, DEF));
 					break;
 				case UnitType::賢者://範囲B-ホーミング弾、命中時範囲攻撃
-					SStage->Add(new S追跡(&MEffect::弾, { -角度, 速度 }, DEF));
+					SStage->Add(new S追跡(&MEffect::弾, { 速度 }, DEF), a * 10);
 					break;
 				case UnitType::踊り子://支援A-弱麻痺
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, DEF));
@@ -175,8 +187,8 @@ namespace SDX_TD
 					SStage->Add(new Bomm({ GetX(), GetY(), 射程 }, st, Lv, 支援補正));
 					break;
 				case UnitType::給仕://使い捨てB-十字使い捨て
-					SStage->Add(new Beam({ GetX(), GetY(), 0, 1000, 射程 / 2 }, st, Lv, 支援補正));
-					SStage->Add(new Beam({ GetX(), GetY(), PAI/2, 1000, 射程 / 2 }, st, Lv, 支援補正));
+					SStage->Add(new Beam({ GetX(), GetY(), 0, 1000, (double)st->射程幅[Lv] }, st, Lv, 支援補正 , 1));
+					SStage->Add(new Beam({ GetX(), GetY(), PAI / 2, 1000, (double)st->射程幅[Lv] }, st, Lv, 支援補正, 1));
 					break;
 				case UnitType::料理人://使い捨てB-円形使い捨て
 					SStage->Add(new Bomm({ GetX(), GetY(), 射程 }, st, Lv, 支援補正));

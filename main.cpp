@@ -19,8 +19,6 @@ int main(int argc, char* argv[])
 	using namespace SDX;
 	using namespace SDX_TD;
 
-	Artifact::出現率計算();
-
 	//UIの位置をリセット
 	UI_Reset();
 
@@ -50,7 +48,18 @@ int main(int argc, char* argv[])
 	TDSystem::isカップル = false;
 	TDSystem::isトライアル = true;
 
-	Witch::SetMain(WitchType::ディアネラ);
+	//★Witch::SetMain(WitchType::ライナ);
+	//★Witch::SetMain(WitchType::ナツメ);
+	//★Witch::SetMain(WitchType::ルコウ);
+	//★Witch::SetMain(WitchType::ディアネラ);
+	//★Witch::SetMain(WitchType::ミナエ);
+	//★Witch::SetMain(WitchType::トレニア);
+	//★Witch::SetMain(WitchType::ロチエ);
+	//★Witch::SetMain(WitchType::バロゥ);
+	//★Witch::SetMain(WitchType::フィオナ);
+	//★Witch::SetMain(WitchType::ナズナ);
+	//★Witch::SetMain(WitchType::委員長);
+	Witch::SetMain(WitchType::ミルラ);
 
 	Director::AddScene(std::make_shared<Stage>());
 	Director::AddScene(std::make_shared<StageSelect>());

@@ -172,7 +172,7 @@ namespace SDX_TD
         /**当たり判定処理を行う.*/
         void Hit()
         {
-            //空と地上の分割木を初期化
+            //空と地上の敵のリストを初期化
             for (int a = 0; a < MAP_SIZE; ++a){
                 for (int b = 0; b < MAP_SIZE; ++b)
                 {
@@ -187,6 +187,8 @@ namespace SDX_TD
             //判定開始
             for (int a = 0; a < shotS.GetCount(); ++a)
             {
+				if ( !shotS[a]->isHitCheck ){ continue; }
+
                 if (shotS[a]->is貫通)
                 {
                     if (shotS[a]->st->is対地){ HitArea(shotS[a], 地上Top); }
@@ -196,22 +198,6 @@ namespace SDX_TD
                 {
                     if (shotS[a]->st->is対地){ HitSingle(shotS[a], 地上Top); }
                     if (shotS[a]->st->is対空){ HitSingle(shotS[a], 空中Top); }
-                }
-            }
-
-            return;
-
-            for (auto && shot : shotS.objectS)
-            {
-                if (shot->is貫通)
-                {
-                    if (shot->st->is対地){ HitArea(shot.get(), 地上Top); }
-                    if (shot->st->is対空){ HitArea(shot.get(), 空中Top); }
-                }
-                else
-                {
-                    if (shot->st->is対地){ HitSingle(shot.get(), 地上Top); }
-                    if (shot->st->is対空){ HitSingle(shot.get(), 空中Top); }
                 }
             }
         }

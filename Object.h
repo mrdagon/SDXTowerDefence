@@ -52,7 +52,7 @@ namespace SDX_TD
 		}
 
 		/**毎フレームの更新処理.*/
-		virtual void Update()
+		virtual void Update() final
 		{
 			timer++;
 			iSprite.Update();

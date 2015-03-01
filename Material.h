@@ -253,7 +253,7 @@ namespace SDX_TD
 
         static void Load()
         {
-            ゴシック小.Load("file/font/ipag.ttf", 13, 0,false);
+            ゴシック小.Load("file/font/ipag.ttf", 12, 0,false);
             ゴシック中.Load("file/font/ipag.ttf", 16, 0,false);
 
             //BMPフォントを利用
