@@ -18,7 +18,7 @@ namespace SDX_TD
 
 		//配置位置
 		JobUnit() :
-			IUnit(shape, sprite, UnitType::ライナ , true),
+			IUnit(shape, sprite, UnitType::ライナ , true , 0),
 			shape({0,0,0,0})
 		{}
 

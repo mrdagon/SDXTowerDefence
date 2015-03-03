@@ -23,8 +23,8 @@ namespace SDX_TD
 		double 鈍足;
 		double 吹飛;
 		double 防壊;
-		double 回収;//回収速度と回収率+
-		double 強化;//強化回数と強化速度+
+		double 回収;//回収速度+と回収率+
+		double 強化;//強化速度+
 		double 逆境;
 		double 消費;
 		int Hp;

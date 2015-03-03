@@ -3,11 +3,13 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include "EnumType.h"
+#include "PlaceData.h"
 
 namespace SDX_TD
 {
 	using namespace SDX;
 
+	/**ステージの情報.*/
 	struct StageData
 	{
 		std::string 名前;
@@ -25,19 +27,25 @@ namespace SDX_TD
 
 		//全体の最高スコア
 		Score トライアル;//レベル制限あり
-		Score リミットレス;//レベル制限無し
+		Score アンリミテッド;//レベル制限無し
 
 		int Wave間隔;
+		int 難易度補正;//リミットレス時の難易度補正量
 
 		EnemyType 敵種類[MAX_WAVE];
 		bool	  isBoss[MAX_WAVE];
 		ChipType  地形[MAP_SIZE][MAP_SIZE];
+
+		//メインウィッチ種、トライアルorパワー
+		std::vector<Place> 初期配置[(int)WitchType::COUNT][2];
 	};
 
-	EnumArray<StageData, StageType> StageDataS;
+	EnumArray<StageData, StageType> StageDataS;//標準ステージ
+	//追加ステージデータ
 
 	void LoadStageS()
 	{
+		//ソフト起動時のみ行う
 		//とりあえず暫定的に
 		StageDataS[StageType::一面].名前 = "チュートリアル";
 		StageDataS[StageType::一面].説明 = "テスト";

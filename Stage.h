@@ -16,27 +16,10 @@
 #include "Wave.h"
 
 #include "JobUnit.h"
+#include "ReplayData.h"
 
 namespace SDX_TD
 {
-    //ステージ中での操作一覧
-    enum class Command
-    {
-        //リプレイに残る
-        選択解除,
-        ユニット選択,
-        地上敵選択,
-        空中敵選択,
-        大魔法発動,
-        Wave送り,
-        強化,
-        売却,
-        発動,
-        種別選択,
-        新規配置,
-        null,
-    };
-
     using namespace SDX;
     /**.*/
     class Stage : public IStage
@@ -55,6 +38,8 @@ namespace SDX_TD
         Layer<IUnit> unitS;
 
         Wave wave;
+
+		ReplayData replayData;//リプレイの保存or読み込んだデータ
 
         IEnemy* 地上Top[MAP_SIZE][MAP_SIZE];
         IEnemy* 地上End[MAP_SIZE][MAP_SIZE];
@@ -79,6 +64,8 @@ namespace SDX_TD
 
             shotS.Clear();
             unitS.Clear();
+
+			land.Init();
         }
 
         void AddChainList(Layer<IEnemy> &処理するレイヤ, IEnemy* 始点[MAP_SIZE][MAP_SIZE], IEnemy* 終点[MAP_SIZE][MAP_SIZE])
@@ -288,11 +275,24 @@ namespace SDX_TD
             }
 
             //ここより上はリプレイ時も共通
-            
+			if (isReplay)
+			{
+				for (auto &it : replayData.commandS)
+				{
+					if (it.操作した時間 == timer)
+					{
+						DoCommand( it.種類,it.操作情報 ,it.マウス座標);
+					}
+				}
+
+				return;
+			}
+
+
             //右クリックで解除
             if (Input::mouse.Right.on)
             {
-                DoCommand(Command::選択解除, 0);
+                DoCommand(Command::選択解除, 0 , Input::mouse.GetPoint());
                 return;
             }
 
@@ -356,7 +356,7 @@ namespace SDX_TD
             //コマンド実行
             if (comType != Command::null)
             {
-                DoCommand(comType, comNo);
+				DoCommand(comType, comNo, Input::mouse.GetPoint());
             }
         }
 
@@ -366,22 +366,22 @@ namespace SDX_TD
             //各種ショートカット
             if (Input::key.B.on)
             {
-                DoCommand(Command::大魔法発動,0);
+				DoCommand(Command::大魔法発動, 0, Input::mouse.GetPoint());
                 return true;
             }
             if (Input::key.N.on || Input::key.Space.hold)
             {
-                DoCommand(Command::Wave送り, 0);
+				DoCommand(Command::Wave送り, 0, Input::mouse.GetPoint());
                 return true;
             }
             if (Input::key.U.on)
             {
-                DoCommand(Command::強化, 0);
+				DoCommand(Command::強化, 0, Input::mouse.GetPoint());
                 return true;
             }
             if (Input::key.S.on)
             {
-                DoCommand(Command::売却, 0);
+				DoCommand(Command::売却, 0, Input::mouse.GetPoint());
                 return true;
             }
             return false;
@@ -455,11 +455,11 @@ namespace SDX_TD
                 {
                     if (is地上)
                     {
-                        DoCommand(Command::地上敵選択, a);
+						DoCommand(Command::地上敵選択, a, Input::mouse.GetPoint());
                     }
                     else
                     {
-                        DoCommand(Command::空中敵選択, a);			
+						DoCommand(Command::空中敵選択, a, Input::mouse.GetPoint());
                     }
                     return true;
                 }
@@ -468,8 +468,14 @@ namespace SDX_TD
         }
 
         /**操作を実行.*/
-        void DoCommand(Command 操作, int param)
+        void DoCommand(Command 操作, int param , const Point& 座標)
         {
+			if ( !isReplay)
+			{
+				//コマンドの記録
+				replayData.commandS.push_back({操作,座標,param,timer});
+			}
+
             switch (操作)
             {
             case Command::選択解除:
@@ -493,6 +499,8 @@ namespace SDX_TD
                 if (wave.現在Wave == 0)
                 {
                     wave.isStop = false;
+					//非リプレイ時は初期配置を記憶			
+					SaveUnitS();
                 }
                 if( wave.最終Wave != wave.現在Wave )
                 {
@@ -503,7 +511,7 @@ namespace SDX_TD
                 if (!selectUnit ){ break; }
                 selectUnit->強化開始();
                 break;
-            case Command::売却://使い捨ても
+            case Command::売却://使い捨て発動も含む
                 if (!selectUnit){ break; }
                 selectUnit->売却開始();
                 break;
@@ -512,13 +520,44 @@ namespace SDX_TD
                 break;
             case Command::新規配置:
                 if (!selectUnit || !selectUnit->isジョブリスト){ break; }
-                SetCheck(selectUnit->st->職種);
+                SetCheck(selectUnit->st->職種 , 座標);
                 break;
             }
         }
 
+		/**初期配置を記憶.*/
+		void SaveUnitS()
+		{
+			if (!isReplay){ return; }
+
+			auto &place = StageDataS[TDSystem::選択ステージ].初期配置[(int)Witch::Main->種類][TDSystem::isカップル];
+
+			place.clear();
+
+			for (int a = 0; a < unitS.GetCount(); ++a)
+			{
+				Point pt = { unitS[a]->GetX(), unitS[a]->GetY() };
+				place.push_back({ pt, unitS[0]->Lv, unitS[0]->st->職種 });
+			}
+		}
+
+		/**初期配置を読み込む.*/
+		/**装備変更等でMp or 強化回数が不足すると途中で打ち切り*/
+		void LoadUnitS()
+		{
+			auto &place = StageDataS[TDSystem::選択ステージ].初期配置[(int)Witch::Main->種類][TDSystem::isカップル];
+
+			for (auto & it : place)
+			{
+				if (Witch::Main->Mp < UnitDataS[it.職種].コスト[it.Lv]) { break; }
+				if (Witch::強化回数[it.職種] < it.Lv){ break; }
+
+				Add(new Unit(it.職種, (int)it.座標.x, (int)it.座標.y, it.Lv));
+			}
+		}
+
         /**配置処理.*/
-        void SetCheck(UnitType 職種)
+        void SetCheck(UnitType 職種 , const Point &座標)
         {
             if (!selectUnit || !selectUnit->isジョブリスト){ return; }
 
@@ -527,8 +566,8 @@ namespace SDX_TD
             {
                 return;
             }
-            const int x = int( Input::mouse.x - CHIP_SIZE / 2) / CHIP_SIZE;
-            const int y = int( Input::mouse.y - CHIP_SIZE / 2) / CHIP_SIZE;
+            const int x = int( 座標.x - CHIP_SIZE / 2) / CHIP_SIZE;
+			const int y = int(座標.y - CHIP_SIZE / 2) / CHIP_SIZE;
 
             //敵の位置を更新
             LandUpdate();
@@ -663,7 +702,7 @@ namespace SDX_TD
         }
 
     public:
-        int timer = 0;
+        int timer = 0;//フレームスキップ用のタイマー
         int gameSpeed = 1;
 
         Stage()
@@ -688,9 +727,13 @@ namespace SDX_TD
             land.Init();
 
             score = 0;
+			timer = 0;
 
             //ウィッチ初期化
             Witch::InitAll();
+
+			//初期配置読み込み
+			LoadUnitS();
 
             //BGM開始
             MMusic::通常.Play();
@@ -701,8 +744,24 @@ namespace SDX_TD
         {
             SStage = this;
 
-            ++timer;
-            Director::IsDraw() = (timer % gameSpeed == 0);
+			if (wave.現在Wave != 0)
+			{
+				++timer;
+				Director::IsDraw() = (timer % gameSpeed == 0);
+			}
+			else
+			{
+				Director::IsDraw() = true;
+			}
+
+			InputCheck();
+
+			if (gameSpeed == 0)
+			{
+				Director::IsDraw() = true;
+				return;
+			}
+			//■停止中は処理ここまで■
 
             NextWave();
 
@@ -752,20 +811,28 @@ namespace SDX_TD
             //補正計算
             Support();
 
-            InputCheck();
-
             //終了判定
             if (Witch::Hp <= 0)
-            {
-                //敗北
-                Director::AddScene(std::make_shared<Result>());
+            {				
+				GameOver( false );//敗北
             }
             else if (groundEnemyS.GetCount() == 0 && skyEnemyS.GetCount() == 0 && (int)groundEnemyS.suspendS.size() == 0 && (int)skyEnemyS.suspendS.size() == 0 && wave.現在Wave == wave.最終Wave)
-            {
-                //勝利
-                Director::AddScene(std::make_shared<Result>());
+			{
+				GameOver( true);//勝利
             }
         }
+
+		/**クリアor全滅処理.*/
+		void GameOver(bool is勝利)
+		{
+			Director::AddScene(std::make_shared<Result>());
+		}
+
+		/**リプレイ保存処理.*/
+		void SaveReplay()
+		{
+
+		}
 
         /**画面の描画.*/
         void Draw() override

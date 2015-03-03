@@ -23,6 +23,7 @@ namespace SDX_TD
 		IEnemy* selectEnemy = nullptr;//選択中の敵
 		IUnit* selectUnit = nullptr;//選択中の魔法
 		Land land;//
+		bool isReplay;
 		int score;
 
 		/**敵や魔法が消滅する前に呼び出す.*/
@@ -51,6 +52,8 @@ namespace SDX_TD
 		virtual int GetWave() = 0;
 
 		virtual void 大魔法効果(bool is発動) = 0;
+
+		virtual void SaveReplay() = 0;
 	};
 
 	/**アクティブなStage.*/

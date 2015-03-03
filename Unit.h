@@ -20,13 +20,14 @@ namespace SDX_TD
 		SpNull sprite;
 
 		//配置位置
-		Unit(UnitType 職種 , int X座標,int Y座標) :
-			IUnit(shape, sprite, 職種, false),
+		Unit(UnitType 職種 , int X座標,int Y座標 , int Lv = 0) :
+			IUnit(shape, sprite, 職種, false , Lv),
 			shape(X座標, Y座標, Size * CHIP_SIZE / 2, Size * CHIP_SIZE / 2, Size * CHIP_SIZE / 2, Size * CHIP_SIZE / 2)
 		{
-			Witch::Main->Mp -= st->コスト[0];
+			Witch::Main->Mp -= st->コスト[Lv];
 			
 			--Witch::配置回数[職種];
+			Witch::強化回数[職種] -= Lv;
 			
 			待機時間 = WAIT_TIME;
 

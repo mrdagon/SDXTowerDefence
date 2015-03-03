@@ -29,7 +29,7 @@ namespace SDX_TD
 
 	public:
 		static const int Size = 2;//2x2角
-		static const int WAIT_TIME = 6000;
+		static const int WAIT_TIME = 6000;//回収、強化時間の基準値
 
 		UnitData *st;//ステータス
 		int    Lv = 0;
@@ -41,10 +41,11 @@ namespace SDX_TD
 		int    強化or売却長さ = 1;
 		bool   isジョブリスト = false;//画面左のジョブリスト用
 
-		IUnit(IShape &図形, ISprite &描画方法, UnitType 職種 , bool isリスト) :
+		IUnit(IShape &図形, ISprite &描画方法, UnitType 職種 , bool isリスト , int Lv) :
 			IObject(図形, 描画方法),
 			st(&UnitDataS[職種]),
-			isジョブリスト(isリスト)
+			isジョブリスト(isリスト),
+			Lv(Lv)
 		{}
 
 		/**配置時の描画処理.*/

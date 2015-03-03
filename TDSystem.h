@@ -13,11 +13,11 @@ namespace SDX_TD
 
 	namespace TDSystem
 	{
+		//この4つはStageSelectとStageで共通なのでグローバル変数
 		Difficulty 難易度;
 		StageType 選択ステージ = StageType::一面;
 		bool isトライアル = true;//notならパワー
 		bool isカップル = true;//notならシングル
-		bool isリプレイ = false;
 
 		//アイテム関連
 		int 素材数[4];
@@ -25,12 +25,10 @@ namespace SDX_TD
 		Artifact 魔導具[200];
 		//特殊アイテム
 		//レシピのレア度が分かるようになる
-		//
-
 		int 工房レベル;
 		int 工房経験;
-		int 菜園レベル;
-		int 菜園経験;
+		//ランダムステージの状況
+
 		//実績関連
 
 		//設定関連
@@ -43,6 +41,10 @@ namespace SDX_TD
 		bool isエフェクト;//死亡時エフェクト,大魔法カットインのON/OFF
 
 		bool isタッチ;//タブレット用の操作スタイルフラグ
+
+		bool is常時リプレイ保存;//常にリプレイの自動保存フラグ
+		bool is更新リプレイ保存;//スコア更新時にリプレイの自動保存フラグ
+		bool is勝利リプレイ保存;//勝利時にリプレイの自動保存フラグ
 
 		//ウィッチの経験値とステージの最高記録は、WitchDataS,StageDataSで
 		static void SaveAndLoad(FileMode 読み込みor書込)

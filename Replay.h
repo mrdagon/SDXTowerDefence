@@ -5,6 +5,7 @@
 namespace SDX_TD
 {
 	using namespace SDX;
+	//リプレイ選択画面
 
 	//操作タイプ
 	//敵を選択/選択解除
