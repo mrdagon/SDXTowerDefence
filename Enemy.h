@@ -336,8 +336,8 @@ namespace SDX_TD
 				}
 			}
 
-			//弱点補正
-			if (弱点判定(衝突相手))
+			//特攻補正
+			if (st->サブ種族 == 衝突相手->st->特攻種族)
 			{
 				ダメージ量 *= Witch::Main->弱点補正;
 			}
@@ -378,16 +378,6 @@ namespace SDX_TD
 			防御力 = std::max(0, 防御力 - 衝突相手->デバフ効果);
 		}
 
-		bool 弱点判定(IShot* 衝突相手)
-		{
-			return
-				(
-				(衝突相手->st->属性 == Element::炎 && st->属性 == Element::氷) ||
-				(衝突相手->st->属性 == Element::氷 && st->属性 == Element::炎) ||
-				(衝突相手->st->属性 == Element::樹 && st->属性 == Element::空) ||
-				(衝突相手->st->属性 == Element::空 && st->属性 == Element::樹)
-				);
-		}
 	};
 
 	class Enemy : public IEnemy

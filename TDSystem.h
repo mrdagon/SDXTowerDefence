@@ -2,15 +2,14 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
-
 #include "DataS.h"
-#include "Artifact.h"
 
 namespace SDX_TD
 {
 	using namespace SDX;
 	class IUnit;
 
+	/**グローバル変数用.*/
 	namespace TDSystem
 	{
 		//この4つはStageSelectとStageで共通なのでグローバル変数
@@ -22,7 +21,6 @@ namespace SDX_TD
 		//アイテム関連
 		int 素材数[4];
 		int 特殊素材数[4];
-		Artifact 魔導具[200];
 		//特殊アイテム
 		//レシピのレア度が分かるようになる
 		int 工房レベル;
@@ -45,11 +43,5 @@ namespace SDX_TD
 		bool is常時リプレイ保存;//常にリプレイの自動保存フラグ
 		bool is更新リプレイ保存;//スコア更新時にリプレイの自動保存フラグ
 		bool is勝利リプレイ保存;//勝利時にリプレイの自動保存フラグ
-
-		//ウィッチの経験値とステージの最高記録は、WitchDataS,StageDataSで
-		static void SaveAndLoad(FileMode 読み込みor書込)
-		{
-			SaveOrLoadScore(読み込みor書込);
-		}
 	}
 }

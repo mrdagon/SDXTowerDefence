@@ -145,7 +145,7 @@ namespace SDX_TD
 					SStage->Add(new S加速(&MEffect::弾, { { 速度 , -速度/10, 速度/2 } }, { GetX(), GetY(), st->半径 }, st, Lv, a * PAI / 4, 支援補正));
 					break;
 				case UnitType::師範://防御破壊B-炸裂弾、周りぐるぐる
-					SStage->Add(new S回転(&MEffect::弾, { { { GetX(), GetY() }, a*PAI / 2, 速度, 射程 } }, DEF));
+					SStage->Add(new S回転(&MEffect::弾, { { GetX(), GetY() }, a*PAI / 2, 速度, 射程 }, DEF));
 					break;
 				case UnitType::狩人://対空専用A-長射程、3連射
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, DEF), a * 10);

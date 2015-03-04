@@ -33,7 +33,7 @@ namespace SDX_TD
 		int 炸裂威力[最大強化];//廃止予定
 
 		DebuffType デバフ種;
-		EnemyType 特攻種族;
+		SubEnemyType 特攻種族;
 
 		int    デバフ効果[最大強化];
 		double デバフ率[最大強化];

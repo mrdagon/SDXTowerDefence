@@ -5,7 +5,7 @@
 namespace SDX_TD
 {
 	using namespace SDX;
-	/**初期配置の情報.*/
+	/**ユニット初期配置の情報.*/
 	struct Place
 	{
 		Point 座標;
