@@ -61,6 +61,37 @@ namespace SDX_TD
 			特殊補正[DebuffType::麻痺] = 1.0;
 			特殊補正[DebuffType::鈍足] = 1.0;
 		}
+
+		/**装備による補正.*/
+		void Equip(const WitchData& b)
+		{
+			攻撃補正 += std::sqrt(b.攻撃補正);
+			連射補正 += std::sqrt(b.連射補正);
+			射程補正 += std::sqrt(b.射程補正);
+			範囲補正 += std::sqrt(b.範囲補正);
+			炸裂補正 += std::sqrt(b.炸裂補正);
+			支援補正 += std::sqrt(b.支援補正);
+			弾速補正 += std::sqrt(b.弾速補正);
+
+			MP消費 += std::sqrt(b.MP消費);
+			MP獲得 += std::sqrt(b.MP獲得);
+			獲得SP += std::sqrt(b.獲得SP);//溜まり易さ
+			回収率 += std::sqrt(b.回収率);
+			回収速度 += std::sqrt(b.回収速度);
+			強化速度 += std::sqrt(b.強化速度);
+
+			弱点補正 += std::sqrt(b.弱点補正);
+
+			特殊補正[DebuffType::吹飛] += std::sqrt(b.特殊補正[DebuffType::吹飛]);
+			特殊補正[DebuffType::防壊] += std::sqrt(b.特殊補正[DebuffType::防壊]);
+			特殊補正[DebuffType::麻痺] += std::sqrt(b.特殊補正[DebuffType::麻痺]);
+			特殊補正[DebuffType::鈍足] += std::sqrt(b.特殊補正[DebuffType::鈍足]);
+
+			強化回数補正 += std::sqrt(b.強化回数補正);
+
+			追加Hp += std::sqrt(b.追加Hp);
+			初期Mp += std::sqrt(b.初期Mp);
+		}
 	};
 
 	EnumArray<WitchData, WitchType> WitchDataS;//基本性能
