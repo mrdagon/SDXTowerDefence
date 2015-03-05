@@ -6,6 +6,7 @@
 #include <tuple>
 #include "TDSystem.h"
 
+//このソースコードは使用していない
 namespace SDX_TD
 {
 	//レシピの状態
@@ -37,8 +38,8 @@ namespace SDX_TD
 		double 鈍足;
 		double 吹飛;
 		double 防壊;
-		double 回収;//回収速度+と回収率+
-		double 強化;//強化速度+
+		double 回収;
+		double 強化;
 		double 逆境;
 		double 消費;
 		int Hp;
@@ -71,33 +72,60 @@ namespace SDX_TD
 			Lv = std::min( TDSystem::工房レベル + Rand::Get(レベル補正) , 9999 );
 			int レア度 = レア度決定(開発種);
 			種類決定(レア度);
+			//性能はレベル+9に比例
+			double pt = (Lv + 9) / 2;
 
 			switch (種類)
 			{
+				//神レア、コモンの3倍の性能
 				case ArtifactType::トルネルージュ:
+					break;
 				case ArtifactType::ジャガーノート:
+					break;
 				case ArtifactType::雪風＆空魂:
+					break;
 				case ArtifactType::皇剣シルヴァウス:
+					break;
 				case ArtifactType::カランコエ:
+					break;
 				case ArtifactType::フォトンルーメン:
+					break;
 				case ArtifactType::紅蜂:
+					break;
 				case ArtifactType::クレメンス:
+					break;
 				case ArtifactType::スヴァーズ:
+					break;
 				case ArtifactType::プリティワンド:
+					break;
 				case ArtifactType::チューベローズ:
+					break;
 				case ArtifactType::フィソステギア:
+					break;
 				case ArtifactType::炎の宝珠:
+					break;
 				case ArtifactType::氷の宝珠:
+					break;
 				case ArtifactType::風の宝珠:
+					break;
 				case ArtifactType::樹の宝珠:
+					break;
 				case ArtifactType::炎の結晶:
+					break;
 				case ArtifactType::氷の結晶:
+					break;
 				case ArtifactType::風の結晶:
+					break;
 				case ArtifactType::樹の結晶:
+					break;
 				case ArtifactType::炎の欠片:
+					break;
 				case ArtifactType::氷の欠片:
+					break;
 				case ArtifactType::風の欠片:
+					break;
 				case ArtifactType::樹の欠片:
+					break;
 			}
 		}
 

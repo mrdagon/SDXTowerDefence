@@ -12,7 +12,6 @@
 
 #include "Stage.h"
 #include "Title.h"
-#include "Artifact.h"
 
 int main(int argc, char* argv[])
 {

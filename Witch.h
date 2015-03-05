@@ -5,7 +5,6 @@
 #include "TDSystem.h"
 #include "IStage.h"
 #include "DataS.h"
-#include "Artifact.h"
 
 namespace SDX_TD
 {
@@ -223,56 +222,63 @@ namespace SDX_TD
 			is射程支援 = false;//射程も強化するかどうか
 			炸裂加算 = 0;
 
+			種族特攻[SubEnemyType::闇] = 1.0;
+			種族特攻[SubEnemyType::亜人] = 1.0;
+			種族特攻[SubEnemyType::自然] = 1.0;
+			種族特攻[SubEnemyType::獣] = 1.0;
+			種族特攻[SubEnemyType::水棲] = 1.0;
+			種族特攻[SubEnemyType::竜] = 1.0;
+
 			if (大魔法残り時間 > 0)
 			{
 				大魔法補正();
 			}
 
-			//アイテムや成長補正の有無
+			//成長補正の有無
 			if (!TDSystem::isトライアル)
 			{
-				レベル補正();
-				アイテム補正();
+				スキル補正();
 			}
 
 			//逆境補正
 			攻撃補正 *= 1 + (逆境補正 * 被ダメージ);
 		}
 
-		/**レベルによる補正計算.*/
-		void レベル補正()
+		/**スキルによる補正計算.*/
+		void スキル補正()
 		{
-			//強化回数と攻撃力が上がる
-		}
-
-		/**アイテムによる補正計算.*/
-		void アイテム補正()
-		{
-			for (auto &it : 装備)
+			for (int a = 0; a < (int)SkillType::COUNT; ++a)
 			{
-				if (it == nullptr){ continue; }
+				SkillType type = SkillType(a);
+				
+				double pt = 1 + (スキルLv[type] * 200 - (スキルLv[type]-1) * (スキルLv[type]-1)) * 0.01;
 
-				攻撃補正 += it->攻撃;
-				連射補正 += it->連射;
-				範囲補正 += it->範囲;
-				射程補正 += it->射程;
-				支援補正 += it->支援;
-				//弾速補正 += it->弾速;
-
-				MP消費 += it->消費;
-				回収速度 += it->回収;
-				強化速度 += it->強化;
-
-				特殊補正[DebuffType::吹飛] += it->吹飛;
-				特殊補正[DebuffType::防壊] += it->防壊;
-				特殊補正[DebuffType::麻痺] += it->麻痺;
-				特殊補正[DebuffType::鈍足] += it->鈍足;
-
-				獲得SP += it->Sp;
-				追加Hp += it->Hp;
-				初期Mp += it->Mp;
-
-				逆境補正 += it->逆境;
+				switch ( type)
+				{
+					case SkillType::攻撃:攻撃補正 *= pt; break;
+					case SkillType::連射:連射補正 *= pt; break;
+					case SkillType::射程:射程補正 *= pt; break;
+					case SkillType::支援:支援補正 *= pt; break;
+					case SkillType::拡散:炸裂補正 *= pt; break;
+					case SkillType::麻痺:特殊補正[DebuffType::麻痺] *= pt;
+					case SkillType::鈍足:特殊補正[DebuffType::鈍足] *= pt;
+					case SkillType::吹飛:特殊補正[DebuffType::吹飛] *= pt;
+					case SkillType::防壊:特殊補正[DebuffType::防壊] *= pt;
+					case SkillType::回収:回収速度 *= pt; break;
+					case SkillType::強化:強化速度 *= pt; break;
+					case SkillType::逆境:逆境補正 *= pt; break;
+					case SkillType::節約:MP消費 /= pt; break;
+					case SkillType::体力:追加Hp += スキルLv[type];
+					case SkillType::魔力:初期Mp *= pt; break;
+					case SkillType::必殺:獲得SP *= pt; break;
+					case SkillType::対竜:種族特攻[SubEnemyType::竜] *= pt; break;
+					case SkillType::対獣:種族特攻[SubEnemyType::獣] *= pt; break;
+					case SkillType::対人:種族特攻[SubEnemyType::亜人] *= pt; break;
+					case SkillType::対闇:種族特攻[SubEnemyType::闇] *= pt; break;
+					case SkillType::対水:種族特攻[SubEnemyType::水棲] *= pt; break;
+					case SkillType::対樹:種族特攻[SubEnemyType::自然] *= pt; break;
+					case SkillType::幸運:スコア補正 *= pt; break;
+				}
 			}
 		}
 
@@ -296,7 +302,14 @@ namespace SDX_TD
 		const double 最大Sp = 1000;
 		int 大魔法残り時間 = 0;
 		EnumArray<bool, UnitType> is使用可能;
-		Artifact* 装備[4];
+
+		double スコア補正;
+		EnumArray<int, SkillType> スキルLv;
+		EnumArray<double, SubEnemyType> 種族特攻;
+
+		int 経験値;
+		int Lv;		
+		int 最大スキルポイント;
 
 		/**メインとサブ両方を初期化.*/
 		static void InitAll()
@@ -305,7 +318,6 @@ namespace SDX_TD
 			被ダメージ = 0;
 			全補正計算();
 			
-
 			//ウィッチは1回、他は無制限に配置可能
 			for (int a = 0; a < (int)UnitType::COUNT; ++a)
 			{
