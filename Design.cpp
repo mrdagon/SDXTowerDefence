@@ -104,6 +104,7 @@ namespace SDX_TD
 		}
 	}
 
+	/**UIの位置を更新する.*/
 	void UI_Reset()
 	{
 		UI_Stage::Reset();

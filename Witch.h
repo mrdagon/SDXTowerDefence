@@ -269,7 +269,7 @@ namespace SDX_TD
 					case SkillType::逆境:逆境補正 *= pt; break;
 					case SkillType::節約:MP消費 /= pt; break;
 					case SkillType::体力:追加Hp += スキルLv[type];
-					case SkillType::魔力:初期Mp *= pt; break;
+					case SkillType::魔力:初期Mp = int(初期Mp * pt); break;
 					case SkillType::必殺:獲得SP *= pt; break;
 					case SkillType::対竜:種族特攻[SubEnemyType::竜] *= pt; break;
 					case SkillType::対獣:種族特攻[SubEnemyType::獣] *= pt; break;
@@ -304,12 +304,8 @@ namespace SDX_TD
 		EnumArray<bool, UnitType> is使用可能;
 
 		double スコア補正;
-		EnumArray<int, SkillType> スキルLv;
 		EnumArray<double, SubEnemyType> 種族特攻;
 
-		int 経験値;
-		int Lv;		
-		int 最大スキルポイント;
 
 		/**メインとサブ両方を初期化.*/
 		static void InitAll()

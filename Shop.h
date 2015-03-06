@@ -9,10 +9,10 @@ namespace SDX_TD
 	using namespace SDX;
 
 	//メニュー項目を配置
-	class Labo : public Menu
+	class Shop : public Menu
 	{
 	public:
-		Labo()
+		Shop()
 		{
 		}
 	};

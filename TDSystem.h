@@ -15,14 +15,13 @@ namespace SDX_TD
 		//この4つはStageSelectとStageで共通なのでグローバル変数
 		Difficulty 難易度;
 		StageType 選択ステージ = StageType::一面;
-		bool isトライアル = true;//notならパワー
+		bool isトライアル = true;//notならアンリミテッド
 		bool isカップル = true;//notならシングル
 
 		//アイテム関連
+		int 資金;
 		int 素材数[4];
-		int 特殊素材数[4];
 		//特殊アイテム
-		//レシピのレア度が分かるようになる
 		int 工房レベル;
 		int 工房経験;
 		//ランダムステージの状況
@@ -32,7 +31,7 @@ namespace SDX_TD
 		//設定関連
 		double 効果音の音量;
 		double BGMの音量;
-		
+
 		bool isグリッド;//マスのグリッドと中央の薄い十字の表示
 		bool isHPゲージ = true;//敵Hpゲージの表示ON/OFF
 		bool is高速;//ゲーム速度を1,4,16,64倍速モードにする

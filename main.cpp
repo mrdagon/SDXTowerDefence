@@ -12,6 +12,7 @@
 
 #include "Stage.h"
 #include "Title.h"
+#include "SaveAndLoad.h"
 
 int main(int argc, char* argv[])
 {

@@ -11,6 +11,9 @@ namespace SDX_TD
 		Point 座標;
 		int Lv;
 		UnitType 職種;
+
+		Place() = default;
+
 		Place(const Point &座標, int Lv, UnitType 職種) :
 			座標(座標),
 			Lv(Lv),

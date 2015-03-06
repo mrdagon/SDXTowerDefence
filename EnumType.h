@@ -89,7 +89,8 @@ namespace SDX_TD
 		亜人,
 		闇,
 		水棲,
-		自然
+		自然,
+		COUNT
 	};
 
 	/**魔法の種類.*/
@@ -190,7 +191,8 @@ namespace SDX_TD
 	enum class RangeType
 	{
 		円,
-		十字
+		十字,
+		COUNT
 	};
 
 	enum class DebuffType

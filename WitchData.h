@@ -22,6 +22,8 @@ namespace SDX_TD
 		//外部に保存
 		int レベル;
 		int 経験値;
+		int 最大スキルポイント;
+		EnumArray<int, SkillType> スキルLv;
 
 		double 攻撃補正 = 1.0;
 		double 連射補正 = 1.0;
