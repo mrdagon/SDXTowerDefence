@@ -18,13 +18,17 @@ namespace SDX_TD
 
 		if (file.GetFileMode() == FileMode::None){return false;}
 
+		//古いバージョンのセーブデータを読み込む時のなんちゃら用
+		file.ReadWrite(TDSystem::バージョン);
+
 		for (auto &it : WitchDataS)
 		{
 			file.ReadWrite(it.レベル);
-			file.ReadWrite(it.スキルLv);
 			file.ReadWrite(it.経験値);
-			file.ReadWrite(it.最大スキルポイント);
 		}
+
+		file.ReadWrite(WitchData::最大スキルLv);
+		file.ReadWrite(WitchData::スキルLv);
 
 		for (auto &it : StageDataS)
 		{

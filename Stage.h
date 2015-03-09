@@ -825,7 +825,7 @@ namespace SDX_TD
 		/**クリアor全滅処理.*/
 		void GameOver(bool is勝利)
 		{
-			Director::AddScene(std::make_shared<Result>());
+			Director::AddScene(std::make_shared<Result>(is勝利));
 		}
 
 		/**リプレイ保存処理.*/

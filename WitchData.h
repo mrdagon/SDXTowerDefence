@@ -22,8 +22,8 @@ namespace SDX_TD
 		//外部に保存
 		int レベル;
 		int 経験値;
-		int 最大スキルポイント;
-		EnumArray<int, SkillType> スキルLv;
+		static int 最大スキルLv;
+		static EnumArray<int, SkillType> スキルLv;
 
 		double 攻撃補正 = 1.0;
 		double 連射補正 = 1.0;
@@ -67,6 +67,8 @@ namespace SDX_TD
 	};
 
 	EnumArray<WitchData, WitchType> WitchDataS;//基本性能
+	int WitchData::最大スキルLv;
+	EnumArray<int, SkillType> WitchData::スキルLv;
 
 	void LoadWitchS()
 	{
@@ -182,6 +184,7 @@ namespace SDX_TD
 		WitchDataS[WitchType::ミナエ].攻撃補正 = 1.2;
 		WitchDataS[WitchType::ミナエ].連射補正 = 0.8;
 		WitchDataS[WitchType::ミナエ].射程補正 = 1.2;
+		WitchDataS[WitchType::ミナエ].特殊補正[DebuffType::吹飛] = 1.2;
 
 		WitchDataS[WitchType::ミナエ].職種[0] = UnitType::ミナエ;
 		WitchDataS[WitchType::ミナエ].職種[1] = UnitType::兵士;
@@ -192,7 +195,7 @@ namespace SDX_TD
 		WitchDataS[WitchType::ミナエ].職種[6] = UnitType::プリンセス;
 		WitchDataS[WitchType::ミナエ].職種[7] = UnitType::術士;
 		WitchDataS[WitchType::ミナエ].職種[8] = UnitType::賢者;
-		WitchDataS[WitchType::ミナエ].職種[9] = UnitType::踊り子;
+		WitchDataS[WitchType::ミナエ].職種[9] = UnitType::将軍;
 		WitchDataS[WitchType::ミナエ].職種[10] = UnitType::料理人;
 		WitchDataS[WitchType::ミナエ].職種[11] = UnitType::くノ一;
 
@@ -286,7 +289,7 @@ namespace SDX_TD
 		WitchDataS[WitchType::フィオナ].職種[6] = UnitType::司祭;
 		WitchDataS[WitchType::フィオナ].職種[7] = UnitType::プリンセス;
 		WitchDataS[WitchType::フィオナ].職種[8] = UnitType::術士;
-		WitchDataS[WitchType::フィオナ].職種[9] = UnitType::将軍;
+		WitchDataS[WitchType::フィオナ].職種[9] = UnitType::踊り子;
 		WitchDataS[WitchType::フィオナ].職種[10] = UnitType::執事;
 		WitchDataS[WitchType::フィオナ].職種[11] = UnitType::料理人;
 
@@ -309,7 +312,7 @@ namespace SDX_TD
 		WitchDataS[WitchType::ナズナ].職種[6] = UnitType::司祭;
 		WitchDataS[WitchType::ナズナ].職種[7] = UnitType::プリンセス;
 		WitchDataS[WitchType::ナズナ].職種[8] = UnitType::賢者;
-		WitchDataS[WitchType::ナズナ].職種[9] = UnitType::踊り子;
+		WitchDataS[WitchType::ナズナ].職種[9] = UnitType::将軍;
 		WitchDataS[WitchType::ナズナ].職種[10] = UnitType::給仕;
 		WitchDataS[WitchType::ナズナ].職種[11] = UnitType::くノ一;
 
@@ -355,8 +358,8 @@ namespace SDX_TD
 		WitchDataS[WitchType::ミルラ].職種[5] = UnitType::僧侶;
 		WitchDataS[WitchType::ミルラ].職種[6] = UnitType::プリンス;
 		WitchDataS[WitchType::ミルラ].職種[7] = UnitType::賢者;
-		WitchDataS[WitchType::ミルラ].職種[8] = UnitType::軍師;
-		WitchDataS[WitchType::ミルラ].職種[9] = UnitType::将軍;
+		WitchDataS[WitchType::ミルラ].職種[8] = UnitType::踊り子;
+		WitchDataS[WitchType::ミルラ].職種[9] = UnitType::軍師;
 		WitchDataS[WitchType::ミルラ].職種[10] = UnitType::給仕;
 		WitchDataS[WitchType::ミルラ].職種[11] = UnitType::盗賊;
 	}

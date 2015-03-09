@@ -16,10 +16,12 @@ namespace SDX_TD
 	class Result : public IScene
 	{
 	private:
-		bool isWin;
-		bool isSaveReplay = false;
+		bool is勝利;
+		bool isリプレイ保存済み = false;
 	public:
-		Result()
+		Result(bool is勝利):
+			is勝利(is勝利),
+			isリプレイ保存済み(!SStage->isReplay)//リプレイ再生時は保存出来ない
 		{
 			Director::IsDraw() = true;
 		}
@@ -32,7 +34,12 @@ namespace SDX_TD
 
 			const Point pt = Input::mouse.GetPoint();
 
-			//リプレイ保存ボタン
+			//リプレイ保存ボタン、1回だけ保存出来る
+			if ( !isリプレイ保存済み )
+			{
+				SStage->SaveReplay();
+			}
+
 			if (UI::Rリトライ.Hit(&pt))
 			{
 				SStage->Init();
@@ -41,7 +48,6 @@ namespace SDX_TD
 			if (UI::R終了.Hit(&pt))
 			{
 				//ステージ選択画面に戻る
-				Director::AddScene(std::make_shared<StageSelect>());
 				isEnd = true;
 				SStage->isEnd = true;
 			}
@@ -61,6 +67,8 @@ namespace SDX_TD
 
 			//スコア更新等の表示
 
+			//レベルアップの表示
+
 			//ボタン類
 			Point def = { 17, 19 };
 			//リトライ
@@ -71,9 +79,7 @@ namespace SDX_TD
 			MSystem::フレーム[3].Draw(UI::R終了);
 			MFont::ゴシック中.DrawRotate(UI::R終了.GetPoint() + def, 2, 0, Color::Black, { "終了" });
 
-			//リプレイ保存ボタン～保存済みだと済マーク付ける
-
-
+			//リプレイ保存ボタン～保存済みだと済マーク付ける			
 		}
 	};
 }

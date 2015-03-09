@@ -11,6 +11,7 @@ namespace SDX_TD
 	using namespace SDX;
 
 	/**メニュー項目を配置.*/
+	/**@todo 非使用クラス*/
 	class Menu : public IMenu
 	{
 	private:
@@ -18,7 +19,6 @@ namespace SDX_TD
 		Layer<IObject> midEffectS;
 		Layer<IObject> frontEffectS;
 	public:
-
 		int timer = 0;
 
 		Camera camera;

@@ -34,7 +34,7 @@ namespace SDX_TD
 			if (UI::Rあきらめる.Hit(&pt))
 			{
 				//難易度選択から
-				Director::AddScene(std::make_shared<StageSelect>());
+				SStage->isEnd = true;
 				isEnd = true;
 			}
 			if (UI::Rやり直す.Hit(&pt))

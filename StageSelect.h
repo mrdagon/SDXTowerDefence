@@ -11,12 +11,12 @@ namespace SDX_TD
 {
 	using namespace SDX;
 
-	/** α版用の難易度選択.*/
+	/** 難易度,モード,ステージ,使用ウィッチの選択選択.*/
 	/** @todo 仮実装*/
-	class StageSelect : public IScene
+	class QuestSelect : public IScene
 	{
 	public:
-		StageSelect()
+		QuestSelect()
 		{
 			Director::IsDraw() = true;
 		}
@@ -60,4 +60,23 @@ namespace SDX_TD
 			}
 		}
 	};
+
+	/** 難易度,モード,ステージ,使用ウィッチの選択選択.*/
+	/** QuestSelectとレイアウトを似せる*/
+	/** @todo 仮実装*/
+	class FreeSelect
+	{
+
+	};
+
+	/** 難易度,ステージの選択.*/
+	/** @todo 1.03 非実装*/
+	class StorySelect
+	{
+
+
+	};
+
+
+
 }

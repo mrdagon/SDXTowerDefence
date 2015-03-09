@@ -9,9 +9,21 @@ namespace SDX_TD
 	using namespace SDX;
 
 	//メニュー項目を配置
-	class Credit : public Menu
+	class Credit : public IScene
 	{
 	public:
 		Credit(){}
+
+		void Update() override
+		{
+			//戻るボタンor右クリックで戻る
+
+		}
+
+		void Draw() override
+		{
+			//下に戻るボタン
+			//Creditを表示
+		}
 	};
 }

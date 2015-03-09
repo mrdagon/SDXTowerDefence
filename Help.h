@@ -9,11 +9,24 @@ namespace SDX_TD
 	using namespace SDX;
 
 	//メニュー項目を配置
-	class Help : public Menu
+	class Help : public IScene
 	{
 	public:
 		Help()
 		{
+		}
+
+		void Update() override
+		{
+			//戻るボタンor右クリックで戻る
+
+		}
+
+		void Draw() override
+		{
+			//項目を選ぶとメッセージが表示される
+
+			//下に戻るボタン
 		}
 	};
 }

@@ -17,6 +17,7 @@ namespace SDX_TD
 		StageType 選択ステージ = StageType::一面;
 		bool isトライアル = true;//notならアンリミテッド
 		bool isカップル = true;//notならシングル
+		int バージョン = 102;//
 
 		//アイテム関連
 		int 資金;

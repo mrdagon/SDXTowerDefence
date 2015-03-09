@@ -502,11 +502,11 @@ namespace SDX_TD
 				for (int a = 0; a < 4; ++a)
 				{
 					auto enemy = new Enemy(GetX(), GetY(), EnemyType::ゼリー, レベル, isBoss);
-					double r = Rand::Get(PAI);
-					enemy->最大HP /= 4;
-					enemy->残りHP /= 4;
-					enemy->スコア /= 4;
-					enemy->麻痺時間 = 120;
+					double r = Rand::Get(PAI/2) + PAI * a / 2;
+					enemy->最大HP /= 8;
+					enemy->残りHP /= 8;
+					enemy->スコア /= 8;
+					enemy->麻痺時間 = 30;
 					enemy->吹き飛びX = std::sin(PAI) * 16 * (1 + isBoss);
 					enemy->吹き飛びY = std::cos(PAI) * 16 * (1 + isBoss);
 
@@ -527,8 +527,15 @@ namespace SDX_TD
 
 			Witch::Main->AddSp(st->スコア);
 
-			//ダメージに応じてスコアは5%まで低下
-			SStage->score += int(スコア * std::max(1.0, 10 - 0.5*Witch::被ダメージ));
+			//ダメージに応じてスコアが低下する
+			if (Witch::Hp < Witch::最大Hp)
+			{
+				SStage->score += int(スコア * Witch::Main->スコア補正 * Witch::Hp / Witch::最大Hp);
+			}
+			else
+			{
+				SStage->score += int(スコア * Witch::Main->スコア補正);
+			}
 
 			MSound::撃破.Play();
 

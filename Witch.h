@@ -19,19 +19,6 @@ namespace SDX_TD
 
 		WitchData *st;//レベル上昇や大魔法発動補正前のステータス
 
-		/** Mainとサブ含めて.*/
-		/** 初期化時、大魔法発動時、終了時、被ダメージ時、MP補正有りでMP変動時に計算すれば良い*/
-		static void 全補正計算()
-		{
-			Main->補正計算();
-			if (TDSystem::isカップル)
-			{
-				Sub->補正計算();
-			}
-
-			Main->ユニット補正();
-		}
-
 		/**発動中の能力補正効果.*/
 		/**補正率アップ等はこっちで計算*/
 		void 大魔法補正()
@@ -40,8 +27,8 @@ namespace SDX_TD
 			{
 			case WitchType::ライナ:
 				//被ダメージで効果変動
-				射程補正 *= 1.0 + double(被ダメージ) / 20;
-				連射補正 *= 1.0 + double(被ダメージ) / 20;
+				射程補正 *= 2.0 - double(Witch::Hp) / Witch::最大Hp;
+				連射補正 *= 2.0 - double(Witch::Hp) / Witch::最大Hp;
 				攻撃補正 *= 1.2;
 				逆境補正 *= 2.0;
 				break;
@@ -114,73 +101,21 @@ namespace SDX_TD
 
 		/**個別の計算.*/
 		void ユニット補正(UnitType type)
-		{
-			//メインのみサブのみ、両方OKで計算を変える
-
-			if (!TDSystem::isカップル)
-			{
-				if (!is使用可能[type]){ return; }
-
-				for (int a = 0; a < UnitData::最大強化; ++a)
-				{
-					//メインのみ使える
-					UnitDataS[type].コスト[a] = int(DefUnitDataS[type].コスト[a] * MP消費);
-					UnitDataS[type].攻撃力[a] = int(DefUnitDataS[type].攻撃力[a] * 攻撃補正);
-					UnitDataS[type].連射[a] = int(DefUnitDataS[type].連射[a] * 連射補正);
-					UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * 射程補正);
-					UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * 弾速補正;
-					UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * 支援補正;
-					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正) + 炸裂加算;
-					UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[UnitDataS[type].デバフ種]);
-				}
-				return;
-			}
-
-			//両方使えない
-			if (!is使用可能[type] && !Sub->is使用可能[type])
-			{
-				return;
-			}
-
+		{			
 			for (int a = 0; a < UnitData::最大強化; ++a)
 			{
-				if (is使用可能[type] && Sub->is使用可能[type])
-				{
-					//両方使える
-					UnitDataS[type].コスト[a] = int(DefUnitDataS[type].コスト[a] * MP消費 * Sub->MP消費);
-					UnitDataS[type].攻撃力[a] = int(DefUnitDataS[type].攻撃力[a] * 攻撃補正 * Sub->攻撃補正);
-					UnitDataS[type].連射[a] = int(DefUnitDataS[type].連射[a] * 連射補正 * Sub->連射補正);
-					UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * 射程補正 * Sub->射程補正);
-					UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * 弾速補正 * Sub->弾速補正;
-					UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * 支援補正 * 支援補正;
-					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正 * Sub->炸裂補正) + 炸裂加算;
-					UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[UnitDataS[type].デバフ種] * Sub->特殊補正[UnitDataS[type].デバフ種]);
-				}
-				else if (is使用可能[type])
-				{
-					//メインのみ使える
-					UnitDataS[type].コスト[a] = int(DefUnitDataS[type].コスト[a] * MP消費);
-					UnitDataS[type].攻撃力[a] = int(DefUnitDataS[type].攻撃力[a] * 攻撃補正);
-					UnitDataS[type].連射[a] = int(DefUnitDataS[type].連射[a] * 連射補正);
-					UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * 射程補正);
-					UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * 弾速補正;
-					UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * 支援補正;
-					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正) + 炸裂加算;
-					UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[UnitDataS[type].デバフ種]);
-				}
-				else
-				{
-					//サブのみ使える
-					UnitDataS[type].コスト[a] = int(DefUnitDataS[type].コスト[a] * Sub->MP消費);
-					UnitDataS[type].攻撃力[a] = int(DefUnitDataS[type].攻撃力[a] * Sub->攻撃補正);
-					UnitDataS[type].連射[a] = int(DefUnitDataS[type].連射[a] * Sub->連射補正);
-					UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * Sub->射程補正);
-					UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * Sub->弾速補正;
-					UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * Sub->支援補正;
-					UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * Sub->炸裂補正) + 炸裂加算;
-					UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * Sub->特殊補正[UnitDataS[type].デバフ種]);
-				}
+				//メインの補正のみ有効
+				UnitDataS[type].コスト[a] = UnitDataS[type].コスト[a] - int(DefUnitDataS[type].コスト[a] * (1.0 - MP消費) );
+				UnitDataS[type].攻撃力[a] = int(DefUnitDataS[type].攻撃力[a] * 攻撃補正);
+				UnitDataS[type].連射[a] = int(DefUnitDataS[type].連射[a] * 連射補正);
+				UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * 射程補正);
+				UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * 弾速補正;
+				UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * 支援補正;
+				UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正) + 炸裂加算;
+				UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[UnitDataS[type].デバフ種]);
 			}
+
+			return;
 		}
 
 		/**通常時の性能計算.*/
@@ -241,7 +176,13 @@ namespace SDX_TD
 			}
 
 			//逆境補正
-			攻撃補正 *= 1 + (逆境補正 * 被ダメージ);
+			if (Hp < 最大Hp)
+			{
+				攻撃補正 *= 1 + (逆境補正 * (1 - double(Hp) / 最大Hp));
+			}
+
+			//補正効果をユニットに反映
+			ユニット補正();
 		}
 
 		/**スキルによる補正計算.*/
@@ -249,35 +190,53 @@ namespace SDX_TD
 		{
 			for (int a = 0; a < (int)SkillType::COUNT; ++a)
 			{
-				SkillType type = SkillType(a);
-				
-				double pt = 1 + (スキルLv[type] * 200 - (スキルLv[type]-1) * (スキルLv[type]-1)) * 0.01;
+				auto type = SkillType(a);
 
-				switch ( type)
+				double pt = 0;
+
+				if (スキルLv[type] < 100)
 				{
-					case SkillType::攻撃:攻撃補正 *= pt; break;
-					case SkillType::連射:連射補正 *= pt; break;
-					case SkillType::射程:射程補正 *= pt; break;
-					case SkillType::支援:支援補正 *= pt; break;
-					case SkillType::拡散:炸裂補正 *= pt; break;
-					case SkillType::麻痺:特殊補正[DebuffType::麻痺] *= pt;
-					case SkillType::鈍足:特殊補正[DebuffType::鈍足] *= pt;
-					case SkillType::吹飛:特殊補正[DebuffType::吹飛] *= pt;
-					case SkillType::防壊:特殊補正[DebuffType::防壊] *= pt;
-					case SkillType::回収:回収速度 *= pt; break;
-					case SkillType::強化:強化速度 *= pt; break;
-					case SkillType::逆境:逆境補正 *= pt; break;
-					case SkillType::節約:MP消費 /= pt; break;
-					case SkillType::体力:追加Hp += スキルLv[type];
-					case SkillType::魔力:初期Mp = int(初期Mp * pt); break;
-					case SkillType::必殺:獲得SP *= pt; break;
-					case SkillType::対竜:種族特攻[SubEnemyType::竜] *= pt; break;
-					case SkillType::対獣:種族特攻[SubEnemyType::獣] *= pt; break;
-					case SkillType::対人:種族特攻[SubEnemyType::亜人] *= pt; break;
-					case SkillType::対闇:種族特攻[SubEnemyType::闇] *= pt; break;
-					case SkillType::対水:種族特攻[SubEnemyType::水棲] *= pt; break;
-					case SkillType::対樹:種族特攻[SubEnemyType::自然] *= pt; break;
-					case SkillType::幸運:スコア補正 *= pt; break;
+					//レベル1で2%上昇
+					for (int b = 0; b < スキルLv[type]; ++b)
+					{
+						//レベル5毎に+補正-0.1%
+						pt += (20 - b / 5);
+					}
+					pt = pt/1000;
+				}
+				else
+				{
+					//レベル100で105%上昇
+					//レベル100以降は+0.1%される
+					pt = 1.05 + (スキルLv[type] - 100) * 0.01;
+				}
+
+				switch (type)
+				{
+					case SkillType::攻撃:攻撃補正 *= (1.0+pt); break;
+					case SkillType::連射:連射補正 *= (1.0+pt); break;
+					case SkillType::射程:射程補正 *= (1.0 + pt); break;
+					case SkillType::支援:支援補正 *= (1.0 + pt); break;
+					case SkillType::拡散:炸裂補正 *= (1.0 + pt); break;
+					case SkillType::麻痺:特殊補正[DebuffType::麻痺] *= (1.0 + pt);
+					case SkillType::鈍足:特殊補正[DebuffType::鈍足] *= (1.0 + pt);
+					case SkillType::吹飛:特殊補正[DebuffType::吹飛] *= (1.0 + pt);
+					case SkillType::防壊:特殊補正[DebuffType::防壊] *= (1.0 + pt);
+					case SkillType::回収:回収速度 *= (1.0 + pt); break;
+					case SkillType::強化:強化速度 *= (1.0 + pt); break;
+					case SkillType::逆境:逆境補正 *= (1.0 + pt); break;
+					case SkillType::節約:MP消費 /= (1.0 + pt); break;
+					case SkillType::体力:追加Hp +=スキルLv[type]; break;
+					case SkillType::魔力:初期Mp += スキルLv[type] * 5; break;
+					case SkillType::必殺:獲得SP *= (1.0 + pt); break;
+					case SkillType::対竜:種族特攻[SubEnemyType::竜] *= (1.0 + pt); break;
+					case SkillType::対獣:種族特攻[SubEnemyType::獣] *= (1.0 + pt); break;
+					case SkillType::対人:種族特攻[SubEnemyType::亜人] *= (1.0 + pt); break;
+					case SkillType::対闇:種族特攻[SubEnemyType::闇] *= (1.0 + pt); break;
+					case SkillType::対水:種族特攻[SubEnemyType::水棲] *= (1.0 + pt); break;
+					case SkillType::対樹:種族特攻[SubEnemyType::自然] *= (1.0 + pt); break;
+					case SkillType::試練:break;
+					case SkillType::幸運:スコア補正 *= 1 + 0.02*スキルLv[type]; break;
 				}
 			}
 		}
@@ -287,8 +246,9 @@ namespace SDX_TD
 		static Witch* Sub;
 
 		//変動パラメータ
+		static const int 基本Hp = 20;
+		static int 最大Hp;//共通
 		static int Hp;//共通
-		static int 被ダメージ;
 		static EnumArray<int, UnitType> 配置回数;
 		static EnumArray<int, UnitType> 強化回数;
 
@@ -299,20 +259,25 @@ namespace SDX_TD
 
 		double Mp = 50;
 		double Sp = 0;
-		const double 最大Sp = 1000;
+		double 最大Sp = 1000;
 		int 大魔法残り時間 = 0;
 		EnumArray<bool, UnitType> is使用可能;
 
 		double スコア補正;
 		EnumArray<double, SubEnemyType> 種族特攻;
 
-
 		/**メインとサブ両方を初期化.*/
 		static void InitAll()
 		{
-			Hp = 20;
-			被ダメージ = 0;
-			全補正計算();
+			Hp = 基本Hp;
+			最大Hp = 基本Hp;
+
+			if (Sub)
+			{
+				Sub->補正計算();
+			}
+			Main->補正計算();
+
 			
 			//ウィッチは1回、他は無制限に配置可能
 			for (int a = 0; a < (int)UnitType::COUNT; ++a)
@@ -349,15 +314,16 @@ namespace SDX_TD
 
 			Main->st = &WitchDataS[ウィッチ種];
 
+			//特殊ステージはここで代入する職種を変える
 			for (int a = 0; a < 12; ++a)
 			{
 				Main->職種[a] = WitchDataS[ウィッチ種].職種[a];
 			}
+
 			for (auto &it : Main->is使用可能)
 			{
 				it = false;
 			}
-
 			for (auto &it : Main->職種)
 			{
 				Main->is使用可能[it] = true;
@@ -385,15 +351,12 @@ namespace SDX_TD
 		/**@todo パワーかどうかで処理変化*/
 		void Init()
 		{
+
 			Hp += 追加Hp;
 			Mp = 初期Mp;
 
-			//デバッグ用
-			Mp = 1000;
-
 			Sp = 0;
 			大魔法残り時間 = 0;
-			被ダメージ = 0;
 
 			名前 = st->名前;
 			大魔法名 = st->大魔法名;
@@ -404,11 +367,11 @@ namespace SDX_TD
 			{
 				if (IsWitch(職種[a]))
 				{
-					強化回数[職種[a]] += UnitDataS[職種[a]].基礎強化回数;
+					//ウィッチは常に1
+					強化回数[職種[a]] = 1;
 				}
 				else
 				{
-					//カップルなら半減？
 					強化回数[職種[a]] += int(UnitDataS[職種[a]].基礎強化回数 * 強化回数補正);
 				}
 			}
@@ -424,10 +387,8 @@ namespace SDX_TD
 				//効果終了時処理
 				SStage->大魔法効果(false);
 				Sp = 0;
-
 			}
-
-			全補正計算();
+			補正計算();//速度気にするなら毎回補正を計算しなおさない。
 		}
 
 		/**Sp上昇処理.*/
@@ -455,8 +416,9 @@ namespace SDX_TD
 			//SPが増加し、逆境補正がかかる
 			AddSp(最大Sp / 20);
 			//被ダメ補正は最大で20まで
-			被ダメージ = std::min(被ダメージ+ダメージ量,20);
 			Hp = std::max(0, Hp - ダメージ量);
+
+
 		}
 
 		/**大魔法発動時の性能計算、効果処理.*/
@@ -479,6 +441,6 @@ namespace SDX_TD
 
 	EnumArray<int, UnitType> Witch::配置回数;
 	EnumArray<int, UnitType> Witch::強化回数;
-	int	  Witch::Hp;
-	int   Witch::被ダメージ;
+	int Witch::最大Hp;
+	int	Witch::Hp;
 }
