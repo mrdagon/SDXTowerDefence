@@ -24,6 +24,7 @@ namespace SDX_TD
 		void Update()
 		{
 			namespace UI = UI_StageSelect;
+			UI::Reset();
 
 			if (!Input::mouse.Left.on) { return; }
 
@@ -35,7 +36,7 @@ namespace SDX_TD
 				{
 					TDSystem::難易度 = Difficulty(a);
 					isEnd = true;
-					SStage->Init();
+					//Director::AddScene(std::make_shared<Stage>());
 				}
 			}
 		}
@@ -43,21 +44,34 @@ namespace SDX_TD
 		void Draw()
 		{
 			namespace UI = UI_StageSelect;
-			const Point def = { 17, 19 };
+			//ショートカットタブ
+			MSystem::フレーム[0].Draw({ 0, 0, 60, 60 });
+			MSystem::フレーム[0].Draw({ 0, 60, 60, 60 });
+			MSystem::フレーム[0].Draw({ 0, 120, 60, 60 });
+			MSystem::フレーム[0].Draw({ 0, 180, 60, 60 });
+			MSystem::フレーム[0].Draw({ 0, 240, 60, 60 });
+			MSystem::フレーム[0].Draw({ 0, 300, 60, 60 });
+			MSystem::フレーム[0].Draw({ 0, 360, 60, 60 });
+			MSystem::フレーム[0].Draw({ 0, 420, 60, 60 });
 
-			//暗くステージ状況を描画
-			Screen::SetBright(Color::Gray);
-			SStage->Draw();
-			Screen::SetBright(Color::White);
+			//難易度
+			MFont::ゴシック小.Draw({ 100, 60 }, Color::White, { (int)TDSystem::難易度 });
 
-			//難易度一覧
-			for (int a = 0; a < (int)Difficulty::COUNT; ++a)
+			//モード
+			MFont::ゴシック小.Draw({ 100, 120 }, Color::White, { TDSystem::isトライアル });
+			MFont::ゴシック小.Draw({ 100, 180 }, Color::White, { TDSystem::isカップル });
+
+			//ステージアイコン
+			for (int a = 0; a < (int)StageType::COUNT; ++a)
 			{
-				const Difficulty no = (Difficulty)a;
-
-				MSystem::フレーム[3].Draw(UI::R難易度[a]);
-				MFont::ゴシック中.DrawRotate(UI::R難易度[a].GetPoint() + def ,2,0, Color::Black , DifficultyDataS[no].名前, false);
+				//選択中の枠は色変更
+				MSystem::フレーム[0].Draw({ 200, 200, 50, 50 });
+				MIcon::魔導具[WitchType::トレニア].Draw({ 200, 200 });
 			}
+
+			//ウィッチ＆スコア
+			MUnit::魔女[UnitType::ディアネラ][1]->Draw({ 300, 300 });
+
 		}
 	};
 

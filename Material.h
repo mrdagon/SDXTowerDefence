@@ -241,10 +241,9 @@ namespace SDX_TD
         Font BMP黒;
         Font BMP黒影;
         Font BMP白;
-
-        Image BMPゴシック小;
-        Image BMPゴシック中;
-
+		
+		Image BMPゴシック小;
+		Image BMPゴシック中;
         ImagePack 英語;
         ImagePack 英影;
         ImagePack 黒数字;

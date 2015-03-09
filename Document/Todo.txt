@@ -50,7 +50,7 @@ Mpの小数点表示
 　Replay～リプレイを見る
 　Config～設定の変更
 　Help～操作説明等
-　Credit～作者情報などの表示
+　Credit～作者情報などの表示～
 　Quit～ソフトの終了
 
 ●実装しない要素
