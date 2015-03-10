@@ -23,7 +23,7 @@ namespace SDX_TD
 
 		for (auto &it : WitchDataS)
 		{
-			file.ReadWrite(it.レベル);
+			file.ReadWrite(it.Lv);
 			file.ReadWrite(it.経験値);
 		}
 

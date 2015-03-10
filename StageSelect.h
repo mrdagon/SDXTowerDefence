@@ -85,7 +85,7 @@ namespace SDX_TD
 
 	/** 難易度,ステージの選択.*/
 	/** @todo 1.03 非実装*/
-	class StorySelect
+	class StorySelect : public IScene
 	{
 
 

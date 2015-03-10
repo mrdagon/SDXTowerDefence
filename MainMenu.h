@@ -14,17 +14,35 @@ namespace SDX_TD
 {
 	using namespace SDX;
 
-	/**メインメニュー.*/
+	enum class SubMenuType
+	{
+		Main,
+		Story,
+		Quest,
+		Free,
+		Skill,
+		Archive,
+		Help,
+		Replay,
+		Config,
+		//Quitは無し
+	};
+
+	/** メインメニュー.*/
 	class MainMenu : public Menu
 	{
 	public:
+		IScene* サブ;//std::uniqueptrにして毎回newしても良い感じはある
+		QuestSelect questSelect;
+
 		MainMenu()
 		{
 		}
 
-		
 		void Update() override
 		{
+			//画面切り替えは一瞬+効果音
+
 			//各ボタンの押下判定
 			//Story～ストーリー～未実装
 			//Quest～クエスト
@@ -33,9 +51,17 @@ namespace SDX_TD
 			//Archive～実績や合計スコアの表示等
 			//Replay～リプレイを見る
 			//Config～設定の変更
-			//Help～操作説明等
-			//Credit～作者情報などの表示
+			//Help～操作説明、及びCredit
 			//Quit～ソフトの終了
+			if (true)
+			{
+				サブ = &questSelect;
+			}
+			
+			if (サブ)
+			{
+				サブ->Update();
+			}
 
 		}
 
@@ -43,6 +69,10 @@ namespace SDX_TD
 		{
 			//各項目を表示
 
+			if (サブ)
+			{
+				サブ->Draw();
+			}
 		}
 	};
 }

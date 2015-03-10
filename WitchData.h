@@ -20,7 +20,7 @@ namespace SDX_TD
 		std::string 説明文;
 
 		//外部に保存
-		int レベル;
+		int Lv;
 		int 経験値;
 		static int 最大スキルLv;
 		static EnumArray<int, SkillType> スキルLv;
