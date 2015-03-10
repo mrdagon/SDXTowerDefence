@@ -78,17 +78,30 @@ namespace SDX_TD
 	/** 難易度,モード,ステージ,使用ウィッチの選択選択.*/
 	/** QuestSelectとレイアウトを似せる*/
 	/** @todo 仮実装*/
-	class FreeSelect
+	class FreeSelect : public IScene
 	{
+		void Update() override
+		{
+		}
 
+		void Draw() override
+		{
+
+		}
 	};
 
 	/** 難易度,ステージの選択.*/
 	/** @todo 1.03 非実装*/
 	class StorySelect : public IScene
 	{
+		void Update() override
+		{
+		}
 
+		void Draw() override
+		{
 
+		}
 	};
 
 
