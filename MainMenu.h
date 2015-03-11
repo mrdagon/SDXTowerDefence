@@ -42,6 +42,8 @@ namespace SDX_TD
 		void Update() override
 		{
 			//画面切り替えは一瞬+効果音
+			namespace UI = UI_MainMenu;
+			UI_Reset();
 
 			//各ボタンの押下判定
 			//Story～ストーリー～未実装
@@ -67,7 +69,7 @@ namespace SDX_TD
 
 		void Draw() override
 		{
-			//各項目を表示
+			namespace UI = UI_MainMenu;
 
 			if (サブ)
 			{

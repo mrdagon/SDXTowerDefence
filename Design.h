@@ -87,11 +87,51 @@ namespace SDX_TD
 		EXT Rect Rリトライ;
 	}
 
-	namespace UI_StageSelect
+	namespace UI_MainMenu
+	{
+		void Reset();
+	}
+
+	namespace UI_StorySelect
+	{
+		void Reset();
+	}
+
+	namespace UI_QuestSelect
 	{
 		void Reset();
 
 		EXT Rect R難易度[6];
+	}
+
+	namespace UI_FreeSelect
+	{
+		void Reset();
+	}
+
+	namespace UI_Skill
+	{
+		void Reset();
+	}
+
+	namespace UI_Archive
+	{
+		void Reset();
+	}
+
+	namespace UI_Replay
+	{
+		void Reset();
+	}
+
+	namespace UI_Help
+	{
+		void Reset();
+	}
+
+	namespace UI_Config
+	{
+		void Reset();
 	}
 
 #undef EXT

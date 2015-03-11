@@ -96,12 +96,52 @@ namespace SDX_TD
 		Rリトライ = {320,380,100,25,100,25};
 	}
 
-	void UI_StageSelect::Reset()
+	void UI_MainMenu::Reset()
+	{
+
+	}
+
+	void UI_StorySelect::Reset()
+	{
+
+	}
+
+	void UI_QuestSelect::Reset()
 	{
 		for (int a = 0; a < 6; ++a)
 		{
 			R難易度[a] = {320,60+a*60,100,25,100,25};
 		}
+	}
+
+	void UI_FreeSelect::Reset()
+	{
+
+	}
+
+	void UI_Skill::Reset()
+	{
+
+	}
+
+	void UI_Archive::Reset()
+	{
+
+	}
+
+	void UI_Replay::Reset()
+	{
+
+	}
+
+	void UI_Help::Reset()
+	{
+
+	}
+
+	void UI_Config::Reset()
+	{
+
 	}
 
 	/**UIの位置を更新する.*/
@@ -111,6 +151,6 @@ namespace SDX_TD
 		UI_Unit::Reset();
 		UI_Pause::Reset();
 		UI_Result::Reset();
-		UI_StageSelect::Reset();
+		UI_QuestSelect::Reset();
 	}
 }

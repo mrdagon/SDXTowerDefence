@@ -18,18 +18,18 @@ namespace SDX_TD
 	public:
 		QuestSelect()
 		{
-			Director::IsDraw() = true;
+
 		}
 
 		void Update()
 		{
-			namespace UI = UI_StageSelect;
+			namespace UI = UI_QuestSelect;
 			UI::Reset();
 
 			if (!Input::mouse.Left.on) { return; }
 
 			const Point pt = Input::mouse.GetPoint();
-
+			/*
 			for (int a = 0; a < (int)Difficulty::COUNT; ++a)
 			{
 				if (UI::R難易度[a].Hit(&pt))
@@ -39,11 +39,12 @@ namespace SDX_TD
 					//Director::AddScene(std::make_shared<Stage>());
 				}
 			}
+			*/
 		}
 
 		void Draw()
 		{
-			namespace UI = UI_StageSelect;
+			namespace UI = UI_QuestSelect;
 			//ショートカットタブ
 			MSystem::フレーム[0].Draw({ 0, 0, 60, 60 });
 			MSystem::フレーム[0].Draw({ 0, 60, 60, 60 });
