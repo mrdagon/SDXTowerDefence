@@ -6,34 +6,26 @@
 #include "Archive.h"
 #include "Config.h"
 #include "Help.h"
+#include "SkillMenu.h"
 #include "ReplaySelect.h"
-#include "Tutorial.h"
-
 
 namespace SDX_TD
 {
 	using namespace SDX;
 
-	enum class SubMenuType
-	{
-		Main,
-		Story,
-		Quest,
-		Free,
-		Skill,
-		Archive,
-		Help,
-		Replay,
-		Config,
-		//Quitは無し
-	};
-
 	/** メインメニュー.*/
-	class MainMenu : public Menu
+	class MainMenu : public IScene
 	{
 	public:
-		IScene* サブ;//std::uniqueptrにして毎回newしても良い感じはある
-		QuestSelect questSelect;
+		IScene *サブメニュー = nullptr;
+		QuestSelect quest;
+		StorySelect story;
+		FreeSelect free;
+		Archive archive;
+		Config config;
+		Help help;
+		SkillMenu skill;
+
 
 		MainMenu()
 		{
@@ -55,14 +47,14 @@ namespace SDX_TD
 			//Config～設定の変更
 			//Help～操作説明、及びCredit
 			//Quit～ソフトの終了
-			if (true)
+			if ( true )
 			{
-				サブ = &questSelect;
+				サブメニュー = &story;
 			}
 			
-			if (サブ)
+			if ( サブメニュー )
 			{
-				サブ->Update();
+				サブメニュー->Update();
 			}
 
 		}
@@ -71,9 +63,9 @@ namespace SDX_TD
 		{
 			namespace UI = UI_MainMenu;
 
-			if (サブ)
+			if ( サブメニュー )
 			{
-				サブ->Draw();
+				サブメニュー->Draw();
 			}
 		}
 	};

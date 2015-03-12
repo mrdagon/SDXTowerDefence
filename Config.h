@@ -10,7 +10,7 @@ namespace SDX_TD
 
 	/** 設定変更画面*/
 	/** @todo .*/
-	class Config : public Menu
+	class Config : public IScene
 	{
 	public:
 		Config()
@@ -18,13 +18,16 @@ namespace SDX_TD
 			Director::IsDraw() = true;
 		}
 
-		void Update()
+
+		void Update() override
 		{
+			namespace UI = UI_Config;
 
 		}
 
-		void Draw()
+		void Draw() override
 		{
+			namespace UI = UI_Config;
 			//設定項目の表示
 			//BGM音量
 			//SE音量
@@ -33,6 +36,5 @@ namespace SDX_TD
 			//64倍速モード
 			//エフェクトの有無
 		}
-
 	};
 }

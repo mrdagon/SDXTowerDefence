@@ -10,11 +10,23 @@ namespace SDX_TD
 	using namespace SDX;
 
 	//メニュー項目を配置
-	class Title : public Menu
+	class Title : public IScene
 	{
 	public:
 		Title()
 		{
+		}
+
+		void Update() override
+		{
+			namespace UI = UI_Title;
+			UI::Reset();
+
+		}
+
+		void Draw() override
+		{
+			namespace UI = UI_Title;
 		}
 	};
 }

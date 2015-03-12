@@ -87,6 +87,11 @@ namespace SDX_TD
 		EXT Rect Rリトライ;
 	}
 
+	namespace UI_Title
+	{
+		void Reset();
+	}
+
 	namespace UI_MainMenu
 	{
 		void Reset();

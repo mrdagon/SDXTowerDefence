@@ -101,6 +101,11 @@ namespace SDX_TD
 
 	}
 
+	void UI_Title::Reset()
+	{
+	
+	}
+
 	void UI_StorySelect::Reset()
 	{
 
@@ -144,13 +149,22 @@ namespace SDX_TD
 
 	}
 
-	/**UIの位置を更新する.*/
+	/**全てのUIの位置を更新する.*/
 	void UI_Reset()
 	{
 		UI_Stage::Reset();
 		UI_Unit::Reset();
 		UI_Pause::Reset();
 		UI_Result::Reset();
+		UI_Title::Reset();
+		UI_MainMenu::Reset();
+		UI_StorySelect::Reset();
 		UI_QuestSelect::Reset();
+		UI_FreeSelect::Reset();
+		UI_Skill::Reset();
+		UI_Archive::Reset();
+		UI_Replay::Reset();
+		UI_Help::Reset();
+		UI_Config::Reset();
 	}
 }

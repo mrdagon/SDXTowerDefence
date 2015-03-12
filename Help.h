@@ -18,12 +18,13 @@ namespace SDX_TD
 
 		void Update() override
 		{
-			//戻るボタンor右クリックで戻る
+			namespace UI = UI_Help;
 
 		}
 
 		void Draw() override
 		{
+			namespace UI = UI_Help;
 			//項目を選ぶとメッセージが表示される
 
 			//下に戻るボタン

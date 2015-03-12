@@ -10,8 +10,7 @@ namespace SDX_TD
 {
 	using namespace SDX;
 
-	/**メニュー項目を配置.*/
-	/**@todo 非使用クラス*/
+	/**動的な要素のあるメニュー用.*/
 	class Menu : public IMenu
 	{
 	private:
@@ -19,26 +18,10 @@ namespace SDX_TD
 		Layer<IObject> midEffectS;
 		Layer<IObject> frontEffectS;
 	public:
-		int timer = 0;
-
-		Camera camera;
-
-		Menu() :
-			camera({ 400, 300 }, 1)
-		{
-			Init();
-		}
-
-		void Init()
-		{
-			SMenu = this;
-		}
-
 		/**毎フレーム実行される更新処理.*/
-		void Update() override
+		void Update() final
 		{
 			SMenu = this;
-			++timer;
 
 			//レイヤー処理
 			backEffectS.Update();
@@ -49,10 +32,13 @@ namespace SDX_TD
 			backEffectS.ExeRemove();
 			midEffectS.ExeRemove();
 			frontEffectS.ExeRemove();
+
+			//サブ処理
+			SubUpdate();
 		}
 
 		/**画面の描画.*/
-		void Draw() override
+		void Draw() final
 		{
 			SMenu = this;
 
@@ -61,7 +47,13 @@ namespace SDX_TD
 			midEffectS.Draw();
 
 			frontEffectS.Draw();
+
+			//サブ描画
+			SubDraw();
 		}
+
+		virtual void SubUpdate(){}
+		virtual void SubDraw(){}
 
 		/**エフェクト等を追加.*/
 		void Add(IObject* 追加するオブジェクト, int 待機時間 = 0) override

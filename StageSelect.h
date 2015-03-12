@@ -83,11 +83,12 @@ namespace SDX_TD
 	{
 		void Update() override
 		{
+			namespace UI = UI_FreeSelect;
 		}
 
 		void Draw() override
 		{
-
+			namespace UI = UI_FreeSelect;
 		}
 	};
 
@@ -97,11 +98,12 @@ namespace SDX_TD
 	{
 		void Update() override
 		{
+			namespace UI = UI_StorySelect;
 		}
 
 		void Draw() override
 		{
-
+			namespace UI = UI_StorySelect;
 		}
 	};
 

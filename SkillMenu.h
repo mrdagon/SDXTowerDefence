@@ -10,7 +10,7 @@ namespace SDX_TD
 
 	/** スキルポイント割り振り画面画面*/
 	/** @todo .*/
-	class SkillMenu : public Menu
+	class SkillMenu : public IScene
 	{
 	public:
 		EnumArray<int, SkillType> 限界Lv;
@@ -57,13 +57,15 @@ namespace SDX_TD
 			Director::IsDraw() = true;
 		}
 
-		void Update()
+		void Update() override
 		{
+			namespace UI = UI_Skill;
 
 		}
 
-		void Draw()
+		void Draw() override
 		{
+			namespace UI = UI_Skill;
 			//際右にタブメニュー
 
 			//右にスキルアイコンと限界大レベル、現在レベルを表示

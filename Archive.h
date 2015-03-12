@@ -9,11 +9,23 @@ namespace SDX_TD
 	using namespace SDX;
 
 	//実績一覧
-	class Archive : public Menu
+	class Archive : public IScene
 	{
 	public:
 		Archive()
 		{
 		}
+
+		void Update() override
+		{
+			namespace UI = UI_Archive;
+
+		}
+
+		void Draw() override
+		{
+			namespace UI = UI_Archive;
+		}
+
 	};
 }
