@@ -2,6 +2,7 @@
 //[License] GNU Affero General Public License, version 3
 #pragma once
 #include "Framework/Shape.h"
+#include "EnumType.h"
 
 namespace SDX_TD
 {
@@ -90,11 +91,18 @@ namespace SDX_TD
 	namespace UI_Title
 	{
 		void Reset();
+
+		EXT Point P題字;
+		EXT Point P何か入力して下さい;
 	}
 
 	namespace UI_MainMenu
 	{
 		void Reset();
+		static const int SUB_COUNT = 8;
+
+		EXT Rect Rボタン[SUB_COUNT];
+		EXT Rect R背景枠;
 	}
 
 	namespace UI_StorySelect
@@ -105,8 +113,10 @@ namespace SDX_TD
 	namespace UI_QuestSelect
 	{
 		void Reset();
-
-		EXT Rect R難易度[6];
+		//文字
+		//ボタン
+		EXT Rect R難易度UP;
+		EXT Rect R難易度DOWN;
 	}
 
 	namespace UI_FreeSelect

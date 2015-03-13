@@ -9,10 +9,10 @@ namespace SDX_TD
 	using namespace SDX;
 
 	//実績一覧
-	class Archive : public IScene
+	class ArchiveMenu : public IScene
 	{
 	public:
-		Archive()
+		ArchiveMenu()
 		{
 		}
 

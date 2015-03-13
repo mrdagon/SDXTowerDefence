@@ -13,10 +13,10 @@ namespace SDX_TD
 
 	/** 難易度,モード,ステージ,使用ウィッチの選択選択.*/
 	/** @todo 仮実装*/
-	class QuestSelect : public IScene
+	class QuestMenu : public IScene
 	{
 	public:
-		QuestSelect()
+		QuestMenu()
 		{
 
 		}
@@ -79,7 +79,7 @@ namespace SDX_TD
 	/** 難易度,モード,ステージ,使用ウィッチの選択選択.*/
 	/** QuestSelectとレイアウトを似せる*/
 	/** @todo 仮実装*/
-	class FreeSelect : public IScene
+	class FreeMenu : public IScene
 	{
 		void Update() override
 		{
@@ -94,7 +94,7 @@ namespace SDX_TD
 
 	/** 難易度,ステージの選択.*/
 	/** @todo 1.03 非実装*/
-	class StorySelect : public IScene
+	class StoryMenu : public IScene
 	{
 		void Update() override
 		{

@@ -9,10 +9,10 @@ namespace SDX_TD
 	using namespace SDX;
 
 	//メニュー項目を配置
-	class Help : public IScene
+	class HelpMenu : public IScene
 	{
 	public:
-		Help()
+		HelpMenu()
 		{
 		}
 

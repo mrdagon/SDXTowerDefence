@@ -10,10 +10,10 @@ namespace SDX_TD
 
 	/** 設定変更画面*/
 	/** @todo .*/
-	class Config : public IScene
+	class ConfigMenu : public IScene
 	{
 	public:
-		Config()
+		ConfigMenu()
 		{
 			Director::IsDraw() = true;
 		}

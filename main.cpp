@@ -61,8 +61,8 @@ int main(int argc, char* argv[])
 	//★Witch::SetMain(WitchType::委員長);
 	Witch::SetMain(WitchType::ミルラ);
 
-	Director::AddScene(std::make_shared<Stage>());
-	Director::AddScene(std::make_shared<QuestSelect>());
+	//Director::AddScene(std::make_shared<Stage>());
+	Director::AddScene(std::make_shared<MainMenu>());
 	Director::Run();
 
 	System::End();//ライブラリの終了処理
