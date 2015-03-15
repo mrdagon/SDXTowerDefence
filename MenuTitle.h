@@ -3,29 +3,30 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include "Menu.h"
+#include "MenuMain.h"
 
 namespace SDX_TD
 {
 	using namespace SDX;
 
-	//実績一覧
-	class ArchiveMenu : public IScene
+	//メニュー項目を配置
+	class MenuTitle : public IScene
 	{
 	public:
-		ArchiveMenu()
+		MenuTitle()
 		{
 		}
 
 		void Update() override
 		{
-			namespace UI = UI_Archive;
+			namespace UI = UI_Title;
+			UI::Reset();
 
 		}
 
 		void Draw() override
 		{
-			namespace UI = UI_Archive;
+			namespace UI = UI_Title;
 		}
-
 	};
 }

@@ -14,7 +14,7 @@ namespace SDX_TD
 	{
 		//この4つはStageSelectとStageで共通なのでグローバル変数
 		Difficulty 難易度;
-		StageType 選択ステージ = StageType::一面;
+		int 選択ステージ = 0;
 		bool isトライアル = true;//notならアンリミテッド
 		bool isカップル = true;//notならシングル
 		int バージョン = 102;//
@@ -28,6 +28,7 @@ namespace SDX_TD
 		//ランダムステージの状況
 
 		//実績関連
+		Difficulty 限界難易度;
 
 		//設定関連
 		double 効果音の音量;
@@ -40,8 +41,15 @@ namespace SDX_TD
 
 		bool isタッチ;//タブレット用の操作スタイルフラグ
 
-		bool is常時リプレイ保存;//常にリプレイの自動保存フラグ
-		bool is更新リプレイ保存;//スコア更新時にリプレイの自動保存フラグ
-		bool is勝利リプレイ保存;//勝利時にリプレイの自動保存フラグ
+		int 画面サイズ;
+
+		enum ReplaySaveType
+		{
+			クリア時保存,
+			更新時保存,
+			自動保存無し
+		};
+
+		ReplaySaveType リプレイ保存;//常にリプレイの自動保存フラグ
 	}
 }

@@ -8,7 +8,6 @@
 #include "IStage.h"
 #include "Pause.h"
 #include "Result.h"
-#include "StageSelect.h"
 
 #include "Enemy.h"
 #include "Unit.h"

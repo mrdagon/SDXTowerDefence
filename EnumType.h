@@ -157,12 +157,6 @@ namespace SDX_TD
 		COUNT,
 	};
 
-	/**ユニットがウィッチかどうか返す .*/
-	bool IsWitch(UnitType ユニット種)
-	{
-		return (int(ユニット種) < (int)UnitType::ミルラ);
-	}
-
 	/**ウィッチの種類.*/
 	enum class WitchType
 	{
@@ -182,11 +176,10 @@ namespace SDX_TD
 	};
 
 	/**ステージの種類.*/
-	enum class StageType
+	namespace StageType
 	{
-		一面,
-		COUNT
-	};
+		static const int COUNT = 20;
+	}
 
 	enum class RangeType
 	{

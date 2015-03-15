@@ -282,7 +282,7 @@ namespace SDX_TD
 			//ウィッチは1回、他は無制限に配置可能
 			for (int a = 0; a < (int)UnitType::COUNT; ++a)
 			{
-				if ( IsWitch(UnitType(a)) )
+				if ( a <= (int)UnitType::ミルラ )
 				{
 					配置回数[UnitType(a)] = 1;
 				}
@@ -365,15 +365,7 @@ namespace SDX_TD
 
 			for (int a = 0; a < 12; ++a)
 			{
-				if (IsWitch(職種[a]))
-				{
-					//ウィッチは常に1
-					強化回数[職種[a]] = 1;
-				}
-				else
-				{
-					強化回数[職種[a]] += int(UnitDataS[職種[a]].基礎強化回数 * 強化回数補正);
-				}
+				強化回数[職種[a]] += int(UnitDataS[職種[a]].基礎強化回数 * 強化回数補正);
 			}
 		};
 

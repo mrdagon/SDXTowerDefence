@@ -11,7 +11,7 @@
 #endif
 
 #include "Stage.h"
-#include "Title.h"
+#include "MenuTitle.h"
 #include "SaveAndLoad.h"
 
 int main(int argc, char* argv[])
@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 
 	Music::SetMainVolume(0.0);
 	Sound::SetMainVolume(0.0);
-	//Window::SetSize(1280, 960);
+	//Window::SetSize(960, 720);
 
 	LoadUnitS();
 	LoadEnemyS();
@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 	Witch::SetMain(WitchType::ミルラ);
 
 	//Director::AddScene(std::make_shared<Stage>());
-	Director::AddScene(std::make_shared<MainMenu>());
+	Director::AddScene(std::make_shared<MenuMain>());
 	Director::Run();
 
 	System::End();//ライブラリの終了処理

@@ -5,7 +5,6 @@
 #include "Object.h"
 #include "Design.h"
 #include "IStage.h"
-#include "StageSelect.h"
 
 namespace SDX_TD
 {

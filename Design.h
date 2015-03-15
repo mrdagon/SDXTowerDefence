@@ -3,6 +3,7 @@
 #pragma once
 #include "Framework/Shape.h"
 #include "EnumType.h"
+#include "Utility/EnumArray.h"
 
 namespace SDX_TD
 {
@@ -105,6 +106,14 @@ namespace SDX_TD
 		EXT Rect R背景枠;
 	}
 
+	namespace UI_WitchSelect
+	{
+		void Reset();
+		
+		EXT EnumArray<Rect, WitchType> Rウィッチ;
+
+	}
+
 	namespace UI_StorySelect
 	{
 		void Reset();
@@ -113,10 +122,32 @@ namespace SDX_TD
 	namespace UI_QuestSelect
 	{
 		void Reset();
+		//右にステージ一覧等
+
+		//左に縮小ステージ
+
 		//文字
+		EXT Point Pステージ名;
+		EXT Point P難易度;
+		EXT Point Pモード;
+		EXT Point Pステージ;
+		EXT Rect Rミニマップ;
+		EXT Point Pミニマップ;
+		EXT Point P難易度Up;
+		EXT Point P難易度Down;
+		EXT Point Pウィッチ[(int)WitchType::COUNT];
+		EXT Point P星差分;
+		EXT Point Pスコア差分;
 		//ボタン
-		EXT Rect R難易度UP;
-		EXT Rect R難易度DOWN;
+		EXT Rect R難易度Up;
+		EXT Rect R難易度Down;
+
+		EXT Rect Rトライアル;
+		EXT Rect Rカップル;
+
+		EXT Rect Rステージ[(int)StageType::COUNT];
+
+		EXT Rect R開始;
 	}
 
 	namespace UI_FreeSelect
@@ -137,16 +168,57 @@ namespace SDX_TD
 	namespace UI_Replay
 	{
 		void Reset();
+		//左リスト部
+		EXT Rect R左ブロック;
+		EXT Rect Rスクロールボックス;
+		EXT Rect R再生;
+
+		//右詳細
+		EXT Rect R右ブロック;
+		EXT Point Pステージ名;
+		EXT Point P縮小マップ;
+		EXT Point P難易度;
+		EXT Point Pスコア;
+		EXT Point Pモード;
+		EXT Point Pメインウィッチ;
+		EXT Point Pサブウィッチ;
+		//スキルLvは非表示
 	}
 
 	namespace UI_Help
 	{
 		void Reset();
+		//ボタン
+		//ヘルプ項目毎に一つ
+		//ボタンには文字とアイコンを付ける
+		//ボタンを押すとポップアップでヘルプを表示
+		EXT Rect Rボタン;
+		EXT Point P文字;
 	}
 
 	namespace UI_Config
 	{
 		void Reset();
+		//ボタン
+		EXT Rect R効果音Up;
+		EXT Rect R効果音Down;
+		EXT Rect R音楽Up;
+		EXT Rect R音楽Down;
+		EXT Rect Rグリッド表示;
+		EXT Rect Rライフ表示;
+		EXT Rect Rエフェクト表示;
+		EXT Rect Rタッチ操作;
+		EXT Rect Rリプレイ保存;
+		//文字
+		EXT Point P効果音Up;
+		EXT Point P効果音Down;
+		EXT Point P音楽Up;
+		EXT Point P音楽Down;
+		EXT Point Pグリッド表示;
+		EXT Point Pライフ表示;
+		EXT Point Pエフェクト表示;
+		EXT Point Pタッチ操作;
+		EXT Point Pリプレイ保存;
 	}
 
 #undef EXT

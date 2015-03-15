@@ -4,7 +4,6 @@
 #pragma once
 #include "Object.h"
 #include "Design.h"
-#include "StageSelect.h"
 
 namespace SDX_TD
 {

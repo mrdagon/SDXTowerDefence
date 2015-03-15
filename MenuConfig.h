@@ -10,19 +10,12 @@ namespace SDX_TD
 
 	/** 設定変更画面*/
 	/** @todo .*/
-	class ConfigMenu : public IScene
+	class MenuConfig : public IScene
 	{
 	public:
-		ConfigMenu()
-		{
-			Director::IsDraw() = true;
-		}
-
-
 		void Update() override
 		{
 			namespace UI = UI_Config;
-
 		}
 
 		void Draw() override
@@ -33,8 +26,9 @@ namespace SDX_TD
 			//SE音量
 			//HPゲージ表示フラグ
 			//マス目表示の有無
-			//64倍速モード
 			//エフェクトの有無
+			//タッチ操作モード
+			//リプレイ保存//1攻略したら保存,2更新したら保存,3毎回選択
 		}
 	};
 }

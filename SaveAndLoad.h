@@ -32,14 +32,15 @@ namespace SDX_TD
 
 		for (auto &it : StageDataS)
 		{
-			file.ReadWrite(it.トライアル);
-			file.ReadWrite(it.アンリミテッド);
+			file.ReadWrite(it.ハイスコア,4);
 			
 			for (int a = 0; a < 24; ++a)
 			{
 				file.ReadWrite(it.初期配置[a/2][a%12]);
 			}			
 		}
+
+		file.ReadWrite(TDSystem::限界難易度);
 
 		file.ReadWrite(TDSystem::資金);
 		file.ReadWrite(TDSystem::素材数,4);
@@ -54,9 +55,7 @@ namespace SDX_TD
 
 		file.ReadWrite(TDSystem::isタッチ);
 
-		file.ReadWrite(TDSystem::is常時リプレイ保存);
-		file.ReadWrite(TDSystem::is更新リプレイ保存);
-		file.ReadWrite(TDSystem::is勝利リプレイ保存);
+		file.ReadWrite(TDSystem::リプレイ保存);
 
 		return true;
 	}

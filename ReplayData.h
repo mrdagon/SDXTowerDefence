@@ -44,8 +44,9 @@ namespace SDX_TD
 	class ReplayData
 	{
 	public:
-		//初期配置データ
-		std::vector<Place> 初期配置;
+		//■見出し情報
+		int バージョン;
+
 
 		//使用ウィッチ、サブウィッチ
 		std::string ステージ名;//自作マップ対応用
@@ -53,9 +54,17 @@ namespace SDX_TD
 		WitchType サブ;
 		bool isトライアル;
 		bool isカップル;
+		EnumArray<int, SkillType> スキルLv;
 
-		//パワーモードのリプレイ記憶はとりあえず非実装
-		int StageNo;//初期マップ用
+		//自作マップリプレイはとりあえず非実装
+		int StageNo;//初期マップ用		
+
+		Difficulty 難易度;
+		int スコア;
+
+		//■内部情報
+		//初期配置データ
+		std::vector<Place> 初期配置;
 
 		int 乱数初期化子;
 		//操作データ一覧

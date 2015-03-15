@@ -4,6 +4,7 @@
 #pragma once
 #include "EnumType.h"
 #include "PlaceData.h"
+#include "TDSystem.h"
 
 namespace SDX_TD
 {
@@ -17,17 +18,14 @@ namespace SDX_TD
 
 		struct Score
 		{
-			EnumArray<int, WitchType> シングル;
-			EnumArray<int, WitchType> カップル;
-			EnumArray<Difficulty, WitchType> シングル達成度;
-			EnumArray<Difficulty, WitchType> カップル達成度;
-			EnumArray<bool, WitchType> シングル完勝;
-			EnumArray<bool, WitchType> カップル完勝;
+			EnumArray<int, WitchType> スコア;
+			EnumArray<Difficulty, WitchType> 達成度;
+			EnumArray<Difficulty, WitchType> 完勝;
 		};
 
 		//全体の最高スコア
-		Score トライアル;//レベル制限あり
-		Score アンリミテッド;//レベル制限無し
+		//[isトライアル][isカップル]
+		Score ハイスコア[2][2];//レベル制限あり
 
 		int Wave間隔;
 		int 難易度補正;//リミットレス時の難易度補正量
@@ -36,20 +34,25 @@ namespace SDX_TD
 		bool	  isBoss[MAX_WAVE];
 		ChipType  地形[MAP_SIZE][MAP_SIZE];
 
+		Score& Getスコア()
+		{
+			return ハイスコア[TDSystem::isトライアル][TDSystem::isカップル];
+		}
+
 		//メインウィッチ種、トライアルorパワー
 		std::vector<Place> 初期配置[(int)WitchType::COUNT][2];
 	};
 
-	EnumArray<StageData, StageType> StageDataS;//標準ステージ
+	std::array<StageData,StageType::COUNT> StageDataS;//標準ステージ
 	//追加ステージデータ
 
 	void LoadStageS()
 	{
 		//ソフト起動時のみ行う
 		//とりあえず暫定的に
-		StageDataS[StageType::一面].名前 = "チュートリアル";
-		StageDataS[StageType::一面].説明 = "テスト";
-		StageDataS[StageType::一面].Wave間隔 = 1000;
+		StageDataS[0].名前 = "チュートリアル";
+		StageDataS[0].説明 = "テスト";
+		StageDataS[0].Wave間隔 = 1000;
 
 		for (StageData &it : StageDataS)
 		{

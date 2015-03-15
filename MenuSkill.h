@@ -10,12 +10,12 @@ namespace SDX_TD
 
 	/** スキルポイント割り振り画面画面*/
 	/** @todo .*/
-	class SkillMenu : public IScene
+	class MenuSkill : public IScene
 	{
 	public:
 		EnumArray<int, SkillType> 限界Lv;
 
-		SkillMenu()
+		MenuSkill()
 		{
 			//初期化時に最大スキルレベルを計算
 			//合算=ライナ/ナツメ/トレニア
@@ -66,8 +66,6 @@ namespace SDX_TD
 		void Draw() override
 		{
 			namespace UI = UI_Skill;
-			//際右にタブメニュー
-
 			//右にスキルアイコンと限界大レベル、現在レベルを表示
 			//左に説明を表示
 

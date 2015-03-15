@@ -8,26 +8,21 @@ namespace SDX_TD
 {
 	using namespace SDX;
 
-	//メニュー項目を配置
-	class ReplayMenu : public IScene
+	//実績一覧
+	class MenuArchive : public IScene
 	{
 	public:
-		ReplayMenu()
-		{
-		}
 
 		void Update() override
 		{
-			namespace UI = UI_Replay;
+			namespace UI = UI_Archive;
 
 		}
 
 		void Draw() override
 		{
-			namespace UI = UI_Replay;
-			//項目を選ぶとメッセージが表示される
-
-			//下に戻るボタン
+			namespace UI = UI_Archive;
 		}
+
 	};
 }

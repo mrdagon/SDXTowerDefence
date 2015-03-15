@@ -98,7 +98,11 @@ namespace SDX_TD
 
 	void UI_MainMenu::Reset()
 	{
-
+		R背景枠 = {60,0,640-60,480};
+		for (int a = 0; a < SUB_COUNT; ++a)
+		{
+			Rボタン[a] = { 0, a*60 , 60, 60 };
+		}
 	}
 
 	void UI_Title::Reset()
@@ -113,10 +117,6 @@ namespace SDX_TD
 
 	void UI_QuestSelect::Reset()
 	{
-		for (int a = 0; a < 6; ++a)
-		{
-			R難易度[a] = {320,60+a*60,100,25,100,25};
-		}
 	}
 
 	void UI_FreeSelect::Reset()

@@ -9,11 +9,20 @@ namespace SDX_TD
 	using namespace SDX;
 
 	//メニュー項目を配置
-	class Tutorial : public Menu
+	class MenuReplay : public IScene
 	{
 	public:
-		Tutorial()
+		void Update() override
 		{
+			namespace UI = UI_Replay;
+
+		}
+
+		void Draw() override
+		{
+			namespace UI = UI_Replay;
+			//左にリスト、右に詳細
+			
 		}
 	};
 }
