@@ -147,6 +147,8 @@ namespace SDX_TD
 
 		EXT Rect Rステージ[(int)StageType::COUNT];
 
+		EXT Rect Rウィッチ[(int)WitchType::COUNT];
+
 		EXT Rect R開始;
 	}
 

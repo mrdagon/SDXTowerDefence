@@ -11,7 +11,7 @@ namespace SDX_TD
 {
 	using namespace SDX;
 
-	/** ウィッチ選択ウィンドウモード*/
+	/** サブウィッチ選択ウィンドウモード*/
 	class WitchSelect : public IScene
 	{
 	private:
@@ -31,7 +31,7 @@ namespace SDX_TD
 
 			const Point pt = Input::mouse.GetPoint();
 
-			//リプレイ保存ボタン、1回だけ保存出来る
+			//メイン、サブの準に選ぶ
 			if (UI::Rリトライ.Hit(&pt))
 			{
 				SStage->Init();
@@ -48,30 +48,9 @@ namespace SDX_TD
 		void Draw()
 		{
 			namespace UI = UI_Result;
-			//暗くステージ状況を描画
-			Screen::SetBright(Color::Gray);
-			SStage->Draw();
-			Screen::SetBright(Color::White);
+			//メインメニューを背景表示
 
-			//成果等を表示
-
-			//勝ち負け
-
-			//スコア更新等の表示
-
-			//レベルアップの表示
-
-			//ボタン類
-			Point def = { 17, 19 };
-			//リトライ
-			MSystem::フレーム[3].Draw(UI::Rリトライ);
-			MFont::ゴシック中.DrawRotate(UI::Rリトライ.GetPoint() + def, 2, 0, Color::Black, { "リトライ" });
-
-			//終了
-			MSystem::フレーム[3].Draw(UI::R終了);
-			MFont::ゴシック中.DrawRotate(UI::R終了.GetPoint() + def, 2, 0, Color::Black, { "終了" });
-
-			//リプレイ保存ボタン～保存済みだと済マーク付ける			
+			//ウィッチ12人を表示、現在メインのウィッチは表示が違う
 		}
 
 	};
@@ -124,6 +103,11 @@ namespace SDX_TD
 			if (UI::R開始.Hit(&pt))
 			{
 				Director::AddScene(std::make_shared<Stage>());
+				if (TDSystem::isカップル)
+				{
+					//サブ選択画面をスタック
+
+				}
 			}
 		}
 
@@ -154,7 +138,7 @@ namespace SDX_TD
 				MIcon::魔導具[WitchType::トレニア].Draw(UI::Rステージ[a].GetPoint());
 			}
 
-			//ウィッチ＆スコア
+			//ウィッチボタン＆スコア
 			for (int a = 0; a < (int)WitchType::COUNT; ++a)
 			{
 				auto no = UnitType(a);
