@@ -41,6 +41,11 @@ namespace SDX_TD
 
 		//メインウィッチ種、トライアルorパワー
 		std::vector<Place> 初期配置[(int)WitchType::COUNT][2];
+
+		void DrawMinimap()
+		{
+
+		}
 	};
 
 	std::array<StageData,StageType::COUNT> StageDataS;//標準ステージ
