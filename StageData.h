@@ -28,7 +28,6 @@ namespace SDX_TD
 		Score ハイスコア[2][2];//レベル制限あり
 
 		int Wave間隔;
-		int 難易度補正;//リミットレス時の難易度補正量
 
 		EnemyType 敵種類[MAX_WAVE];
 		bool	  isBoss[MAX_WAVE];
@@ -46,6 +45,7 @@ namespace SDX_TD
 		{
 
 		}
+
 	};
 
 	std::array<StageData,StageType::COUNT> StageDataS;//標準ステージ
@@ -55,6 +55,8 @@ namespace SDX_TD
 	{
 		//ソフト起動時のみ行う
 		//とりあえず暫定的に
+		//
+
 		StageDataS[0].名前 = "チュートリアル";
 		StageDataS[0].説明 = "テスト";
 		StageDataS[0].Wave間隔 = 1000;
@@ -80,11 +82,6 @@ namespace SDX_TD
 				it.地形[a % MAP_SIZE][a / MAP_SIZE] = ChipType(landData[a]);
 			}
 		}
-	}
-
-	void SaveOrLoadScore(FileMode 保存or読込)
-	{
-
 	}
 
 }
