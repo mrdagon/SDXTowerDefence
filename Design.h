@@ -102,6 +102,7 @@ namespace SDX_TD
 		void Reset();
 		static const int SUB_COUNT = 8;
 
+		EXT Point サブモード名;
 		EXT Rect Rボタン[SUB_COUNT];
 		EXT Rect R背景枠;
 	}
@@ -122,33 +123,38 @@ namespace SDX_TD
 	namespace UI_QuestSelect
 	{
 		void Reset();
-		//右にステージ一覧等
-
-		//左に縮小ステージ
-
-		//文字
-		EXT Point Pステージ名;
-		EXT Point P難易度;
-		EXT Point Pモード;
-		EXT Point Pステージ;
-		EXT Rect Rミニマップ;
-		EXT Point Pミニマップ;
-		EXT Point P難易度Up;
-		EXT Point P難易度Down;
-		EXT Point Pウィッチ[(int)WitchType::COUNT];
-		EXT Point P星差分;
-		EXT Point Pスコア差分;
-		//ボタン
-		EXT Rect R難易度Up;
-		EXT Rect R難易度Down;
-
-		EXT Rect Rトライアル;
-		EXT Rect Rカップル;
-
+		//ステージ一覧
 		EXT Rect Rステージ[(int)StageType::COUNT];
 
-		EXT Rect Rウィッチ[(int)WitchType::COUNT];
+		//モード表示
+		EXT Point Pモード;
+		EXT Rect Rモード;
+		EXT Rect R左モード;
+		EXT Rect R右モード;
 
+		//ウィッチ
+		EXT Rect Rウィッチ[(int)WitchType::COUNT];
+		EXT Rect Rウィッチ枠;
+		EXT Point P星差分;
+		EXT Point Pスコア差分;
+
+		//ミニマップ
+		EXT Point Pステージ名;
+		EXT Rect Rミニマップ;
+		EXT Point Pミニマップ;
+
+		//難易度
+		EXT Rect R難易度Up;
+		EXT Rect R難易度Down;
+		EXT Rect R難易度説明;
+		EXT Point P難易度;
+		EXT Point PWave数;
+		EXT Point Pボス数;
+		EXT Point P雑魚数;
+		EXT Point PHP補正;
+		EXT Point PLv補正;
+
+		//開始
 		EXT Rect R開始;
 	}
 

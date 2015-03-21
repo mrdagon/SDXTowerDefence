@@ -84,6 +84,7 @@ namespace SDX_TD
 
 			if ( subIndex >= 0 )
 			{
+				MFont::BMP黒.DrawRotate(UI::サブモード名,2,0, Color::White, "Quest");
 				サブメニュー[subIndex]->Draw();
 			}
 		}

@@ -178,7 +178,7 @@ namespace SDX_TD
 	/**ステージの種類.*/
 	namespace StageType
 	{
-		static const int COUNT = 20;
+		static const int COUNT = 24;
 	}
 
 	enum class RangeType

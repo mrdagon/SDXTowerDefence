@@ -68,7 +68,7 @@ namespace SDX_TD
 			if (!Input::mouse.Left.on) { return; }
 			const Point pt = Input::mouse.GetPoint();
 
-			for (int a = 0; a < 20; ++a)
+			for (int a = 0; a < StageType::COUNT; ++a)
 			{
 				if (UI::Rステージ[a].Hit(&pt))
 				{
@@ -90,12 +90,12 @@ namespace SDX_TD
 				TDSystem::難易度 = Difficulty(no);
 			}
 
-			if (UI::Rトライアル.Hit(&pt))
+			if (UI::R左モード.Hit(&pt))
 			{
 				TDSystem::isトライアル = !TDSystem::isトライアル;
 			}
 
-			if (UI::Rカップル.Hit(&pt))
+			if (UI::R右モード.Hit(&pt))
 			{
 				TDSystem::isカップル = !TDSystem::isカップル;
 			}
@@ -114,55 +114,70 @@ namespace SDX_TD
 		void Draw()
 		{
 			namespace UI = UI_QuestSelect;
-
-			//難易度
-			MFont::BMP黒.Draw( UI::P難易度 , Color::White, { "Easy" });
-			MIcon::UI[IconType::マナ].Draw( UI::P難易度Up );
-			MIcon::UI[IconType::マナ].Draw( UI::P難易度Down );
-			MSystem::フレーム[3].Draw(UI::R難易度Up);
-			MSystem::フレーム[3].Draw(UI::R難易度Down);
-
-			//トライアルボタン
-			MFont::BMP黒.Draw( UI::Pモード , Color::White, { "Trial" });
-			MSystem::フレーム[3].Draw(UI::Rトライアル);
-
-			//カップルボタン
-			MFont::BMP黒.Draw(UI::Pモード, Color::White, { "Single" });
-			MSystem::フレーム[3].Draw(UI::Rカップル);
-
-			//ステージアイコン
+			//ステージ一覧
 			for (int a = 0; a < (int)StageType::COUNT; ++a)
 			{
 				//選択中の枠は色変更
-				MSystem::フレーム[0].Draw(UI::Rステージ[a]);
+				if (a == (int)TDSystem::選択ステージ)
+				{
+					MSystem::フレーム[0].Draw(UI::Rステージ[a], Color::Red);
+				}
+				else
+				{
+					MSystem::フレーム[0].Draw(UI::Rステージ[a]);
+				}				
 				MIcon::魔導具[WitchType::トレニア].Draw(UI::Rステージ[a].GetPoint());
 			}
 
-			//ウィッチボタン＆スコア
+			//モード表示
+			MSystem::フレーム[0].Draw(UI::Rモード);
+			MFont::BMP黒.DrawRotate( UI::Pモード,2,0 , Color::White, { "TrialSingle" });
+			MSystem::フレーム[3].Draw(UI::R左モード);
+			MSystem::フレーム[3].Draw(UI::R右モード);
+
+			//ウィッチ＆スコア
+			MSystem::フレーム[0].Draw(UI::Rウィッチ枠);
 			for (int a = 0; a < (int)WitchType::COUNT; ++a)
 			{
 				auto no = UnitType(a);
 				auto wNo = WitchType(a);
+				const auto pt = UI::Rウィッチ[a].GetPoint();
 
 				int score = StageDataS[a].Getスコア().スコア[wNo];
 				int 銀星 = (int)StageDataS[a].Getスコア().達成度[wNo];
 				int 金星 = (int)StageDataS[a].Getスコア().完勝[wNo];
 
-				MUnit::魔女[no][1]->DrawRotate( UI::Pウィッチ[a], 2, 0);
-				MFont::BMP黒.DrawRotate(UI::Pウィッチ[a], 2, 0, Color::White, { score });
+				MUnit::魔女[no][1]->DrawRotate( pt , 1, 0);
+				MFont::BMP黒.DrawRotate( pt + UI::Pスコア差分, 2, 0, Color::White, { score });
 
 				for (int b = 0; b < (int)Difficulty::COUNT; ++b)
 				{
+					Point ptBuf = pt + UI::P星差分 + Point(b * 10, 0);
 					Color 星色 = {0,0,0};
 					if (金星 >= b){ 星色 = Color::Yellow; }
 					else if (銀星 >= b){ 星色 = Color::Silver; }
 
-					MFont::BMP黒.DrawRotate(UI::Pウィッチ[a] + UI::P星差分, 1, 0, 星色, "☆");
+					MFont::BMP黒.DrawRotate( ptBuf, 1, 0, 星色, "☆");
 				}
 			}
 
 			//ミニマップ
+			MFont::ゴシック中.Draw(UI::Pステージ名, Color::White, {123});
 			MSystem::フレーム[0].Draw(UI::Rミニマップ);
+
+			//難易度
+			MSystem::フレーム[0].Draw(UI::R難易度説明);
+			MFont::BMP黒.Draw(UI::P難易度, Color::White, { "Easy" });
+			MSystem::フレーム[3].Draw(UI::R難易度Up);
+			MSystem::フレーム[3].Draw(UI::R難易度Down);
+
+			MFont::BMP黒.DrawExtend(UI::PHP補正,2,2, Color::White, { "HP ×" ,DifficultyDataS[TDSystem::難易度].HP補正[TDSystem::isトライアル] });
+			MFont::BMP黒.DrawExtend(UI::PLv補正,2,2, Color::White, { "LV ×", DifficultyDataS[TDSystem::難易度].レベル補正[TDSystem::isトライアル] });
+			MFont::BMP黒.DrawExtend(UI::P雑魚数, 2, 2, Color::White, { "Enemy ×", DifficultyDataS[TDSystem::難易度].雑魚召喚数[TDSystem::isトライアル] });
+			MFont::BMP黒.DrawExtend(UI::Pボス数, 2, 2, Color::White, { "Boss ×", DifficultyDataS[TDSystem::難易度].ボス召喚数[TDSystem::isトライアル] });
+			MFont::BMP黒.DrawExtend(UI::PWave数, 2, 2, Color::White, { "Wave ×", DifficultyDataS[TDSystem::難易度].Wave数[TDSystem::isトライアル] });
+			//開始
+			MSystem::フレーム[3].Draw(UI::R開始);
 
 		}
 	};
