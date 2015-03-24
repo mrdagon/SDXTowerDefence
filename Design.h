@@ -127,10 +127,9 @@ namespace SDX_TD
 		EXT Rect Rステージ[(int)StageType::COUNT];
 
 		//モード表示
-		EXT Point Pモード;
 		EXT Rect Rモード;
-		EXT Rect R左モード;
-		EXT Rect R右モード;
+		EXT Rect R強化;
+		EXT Rect R人数;
 
 		//ウィッチ
 		EXT Rect Rウィッチ[(int)WitchType::COUNT];

@@ -90,12 +90,12 @@ namespace SDX_TD
 				TDSystem::難易度 = Difficulty(no);
 			}
 
-			if (UI::R左モード.Hit(&pt))
+			if (UI::R強化.Hit(&pt))
 			{
 				TDSystem::isトライアル = !TDSystem::isトライアル;
 			}
 
-			if (UI::R右モード.Hit(&pt))
+			if (UI::R人数.Hit(&pt))
 			{
 				TDSystem::isカップル = !TDSystem::isカップル;
 			}
@@ -126,14 +126,15 @@ namespace SDX_TD
 				{
 					MSystem::フレーム[0].Draw(UI::Rステージ[a]);
 				}				
-				MIcon::魔導具[WitchType::トレニア].Draw(UI::Rステージ[a].GetPoint());
+				MIcon::魔導具[WitchType::トレニア].DrawRotate(UI::Rステージ[a].GetCenter(),1,0);
 			}
 
 			//モード表示
 			MSystem::フレーム[0].Draw(UI::Rモード);
-			MFont::BMP黒.DrawRotate( UI::Pモード,2,0 , Color::White, { "TrialSingle" });
-			MSystem::フレーム[3].Draw(UI::R左モード);
-			MSystem::フレーム[3].Draw(UI::R右モード);
+			MSystem::フレーム[3].Draw(UI::R強化);
+			MSystem::フレーム[3].Draw(UI::R人数);
+			MFont::BMP黒.DrawRotate(UI::R強化.GetCenter(), 2, 0, Color::White, { "Trial" });
+			MFont::BMP黒.DrawRotate(UI::R人数.GetCenter(), 2, 0, Color::White, { "Single" });
 
 			//ウィッチ＆スコア
 			MSystem::フレーム[0].Draw(UI::Rウィッチ枠);
@@ -167,18 +168,18 @@ namespace SDX_TD
 
 			//難易度
 			MSystem::フレーム[0].Draw(UI::R難易度説明);
-			MFont::BMP黒.Draw(UI::P難易度, Color::White, { "Easy" });
+			MFont::BMP黒.DrawRotate(UI::P難易度,2,0, Color::White, { "Easy" });
 			MSystem::フレーム[3].Draw(UI::R難易度Up);
 			MSystem::フレーム[3].Draw(UI::R難易度Down);
 
-			MFont::BMP黒.DrawExtend(UI::PHP補正,2,2, Color::White, { "HP ×" ,DifficultyDataS[TDSystem::難易度].HP補正[TDSystem::isトライアル] });
-			MFont::BMP黒.DrawExtend(UI::PLv補正,2,2, Color::White, { "LV ×", DifficultyDataS[TDSystem::難易度].レベル補正[TDSystem::isトライアル] });
-			MFont::BMP黒.DrawExtend(UI::P雑魚数, 2, 2, Color::White, { "Enemy ×", DifficultyDataS[TDSystem::難易度].雑魚召喚数[TDSystem::isトライアル] });
-			MFont::BMP黒.DrawExtend(UI::Pボス数, 2, 2, Color::White, { "Boss ×", DifficultyDataS[TDSystem::難易度].ボス召喚数[TDSystem::isトライアル] });
-			MFont::BMP黒.DrawExtend(UI::PWave数, 2, 2, Color::White, { "Wave ×", DifficultyDataS[TDSystem::難易度].Wave数[TDSystem::isトライアル] });
+			MFont::BMP黒.DrawExtend(UI::PHP補正,1,1, Color::White, { "HP ×" ,DifficultyDataS[TDSystem::難易度].HP補正[TDSystem::isトライアル] });
+			MFont::BMP黒.DrawExtend(UI::PLv補正,1,1, Color::White, { "LV ×", DifficultyDataS[TDSystem::難易度].レベル補正[TDSystem::isトライアル] });
+			MFont::BMP黒.DrawExtend(UI::P雑魚数, 1, 1, Color::White, { "Enemy ×", DifficultyDataS[TDSystem::難易度].雑魚召喚数[TDSystem::isトライアル] });
+			MFont::BMP黒.DrawExtend(UI::Pボス数, 1, 1, Color::White, { "Boss ×", DifficultyDataS[TDSystem::難易度].ボス召喚数[TDSystem::isトライアル] });
+			MFont::BMP黒.DrawExtend(UI::PWave数, 1, 1, Color::White, { "Wave ×", DifficultyDataS[TDSystem::難易度].Wave数[TDSystem::isトライアル] });
 			//開始
 			MSystem::フレーム[3].Draw(UI::R開始);
-
+			MFont::BMP黒.DrawRotate(UI::R開始.GetCenter(), 2, 0, Color::White, {"Easy"});
 		}
 	};
 
