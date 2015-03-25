@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="640" tileheight="480" backgroundcolor="#7f7f7f" nextobjectid="61">
+ <objectgroup color="#ffffff" name="Text" opacity="0.9">
+  <object id="26" name="文字" x="-93.5" y="157" width="45" height="42">
+   <properties>
+    <property name="text" value=""/>
+   </properties>
+  </object>
+  <object id="54" name="文字" type="abcd" x="6" y="7" width="111" height="90">
+   <properties>
+    <property name="text" value=""/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#ff0000" name="Image" opacity="0.9">
+  <object id="34" name="画像" x="-93" y="84.333" width="45.3333" height="45.6667">
+   <properties>
+    <property name="拡大率" value="2"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#0000ff" name="Button" opacity="0.9">
+  <object id="37" name="ボタン" x="-93" y="11" width="46" height="45">
+   <properties>
+    <property name="fontName" value=""/>
+    <property name="imageName" value=""/>
+    <property name="text" value=""/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="Chara4x3"/>
+ <objectgroup color="#00ff00" name="Frame">
+  <object id="58" name="フレーム" x="-92" y="221" width="43" height="42"/>
+ </objectgroup>
+</map>
