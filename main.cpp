@@ -14,10 +14,19 @@
 #include "MenuTitle.h"
 #include "SaveAndLoad.h"
 
+#include <Tiled/TmxToCode.h>
+
+#include "GUI_Factory.h"
+#include "GUI/QuestScene.h"
+
 int main(int argc, char* argv[])
 {
 	using namespace SDX;
 	using namespace SDX_TD;
+
+	TMXtoCode("template.tmx", "GUIClass_Template.h", "GUICode_Template.h");
+
+	return 0;
 
 	//UIの位置をリセット
 	UI_Reset();
