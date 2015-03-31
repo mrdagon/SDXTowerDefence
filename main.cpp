@@ -14,17 +14,37 @@
 #include "MenuTitle.h"
 #include "SaveAndLoad.h"
 
-#include <Tiled/TmxToCode.h>
+SDX::IFont* fontS[10];
+SDX::ImagePack imageS;
+SDX::IFrame* frameS[10];
 
-#include "GUI_Factory.h"
-#include "GUI/QuestScene.h"
+#include <Tiled/TmxToGUI.h>
+#include "QuestScene.h"
+
+#include <Tiled/TmxToCode.h>
 
 int main(int argc, char* argv[])
 {
 	using namespace SDX;
 	using namespace SDX_TD;
 
-	TMXtoCode("template.tmx", "GUIClass_Template.h", "GUICode_Template.h");
+	//TMXtoCode("template.tmx", "GUIClass_Template.h", "GUICode_Template.h");
+
+	System::Initialise("GTD ver0.02α", 640, 480);//ライブラリの初期化
+
+	imageS.LoadTmx("template.tmx");
+	fontS[0] = new Font(SystemFont::Gothic, 10);
+	auto frame0 = ImagePack("data/pipo-WindowBase001.png", 9, 3, 3);
+	auto frame1 = ImagePack("data/pipo-WindowBase004.png", 9, 3, 3);
+	frameS[0] = new BmpFrame( &frame0 );
+	frameS[1] = new BmpFrame(&frame1);
+
+	QuestScene scene;
+
+	while (System::Update())
+	{
+		scene.Draw();
+	}
 
 	return 0;
 
