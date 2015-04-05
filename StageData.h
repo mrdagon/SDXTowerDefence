@@ -55,8 +55,6 @@ namespace SDX_TD
 	{
 		//ソフト起動時のみ行う
 		//とりあえず暫定的に
-		//
-
 		StageDataS[0].名前 = "チュートリアル";
 		StageDataS[0].説明 = "テスト";
 		StageDataS[0].Wave間隔 = 1000;
