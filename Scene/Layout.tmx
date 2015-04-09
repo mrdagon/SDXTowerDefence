@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="79">
+ <objectgroup color="#00ffff" name="TEMPLATE">
+  <object id="24" name="Image" type="Image" x="-87.5" y="265" width="57" height="54">
+   <properties>
+    <property name="~Draw" value="imageS[@gID]-&gt;DrawRotate(@rect.GetCenter(),1,0);"/>
+   </properties>
+  </object>
+  <object id="16" name="Button" type="Button" x="-88.5" y="175" width="57" height="54">
+   <properties>
+    <property name="frameNo" value="int"/>
+    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
+   </properties>
+  </object>
+  <object id="2" name="Frame" type="Frame" x="-89" y="89" width="57" height="54">
+   <properties>
+    <property name="frameNo" value="int"/>
+    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
+    <property name="~Update" value=""/>
+   </properties>
+  </object>
+  <object id="15" name="Text" type="Text" x="-88.5" y="5" width="57" height="54">
+   <properties>
+    <property name="fontNo" value="int"/>
+    <property name="text" value="std::string"/>
+    <property name="~Draw" value="fontS[@fontNo]-&gt;Draw(@rect.GetPoint(),Color::White,@text);"/>
+    <property name="~Final" value=""/>
+    <property name="~Init" value=""/>
+    <property name="~Update" value=""/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#ffffff" draworder="index" name="QuestScene">
+  <object id="65" name="外枠" type="Frame" x="346.5" y="301" width="288" height="102">
+   <properties>
+    <property name="frameNo" value="1"/>
+   </properties>
+  </object>
+  <object id="62" name="外枠" type="Frame" x="71" y="145" width="268" height="80">
+   <properties>
+    <property name="frameNo" value="1"/>
+   </properties>
+  </object>
+  <object id="29" name="外枠" type="Frame" x="70.5" y="8" width="269" height="130">
+   <properties>
+    <property name="frameNo" value="1"/>
+   </properties>
+  </object>
+  <object id="28" name="題字" type="Text" x="76.5" y="15" width="98" height="26">
+   <properties>
+    <property name="fontNo" value="0"/>
+    <property name="text" value="こんにちは"/>
+   </properties>
+  </object>
+  <object id="30" name="キャンセルボタン" type="Button" x="344.5" y="407" width="292" height="62">
+   <properties>
+    <property name="frameNo" value="0"/>
+   </properties>
+  </object>
+  <object id="31" name="OKボタン" type="Button" x="86.5" y="162" width="112" height="47">
+   <properties>
+    <property name="frameNo" value="0"/>
+   </properties>
+  </object>
+  <object id="59" name="OKボタン" type="Button" x="222.5" y="157" width="111" height="56">
+   <properties>
+    <property name="frameNo" value="0"/>
+   </properties>
+  </object>
+  <object id="60" name="キャンセルボタン" type="Button" x="347" y="308.5" width="60" height="56">
+   <properties>
+    <property name="frameNo" value="0"/>
+   </properties>
+  </object>
+  <object id="61" name="キャンセルボタン" type="Button" x="574" y="312.5" width="57" height="53">
+   <properties>
+    <property name="frameNo" value="0"/>
+   </properties>
+  </object>
+  <object id="63" name="外枠" type="Frame" x="71" y="231" width="268" height="238">
+   <properties>
+    <property name="frameNo" value="1"/>
+   </properties>
+  </object>
+  <object id="64" name="外枠" type="Frame" x="347" y="7" width="287" height="289">
+   <properties>
+    <property name="frameNo" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#ffffc8" name="MainScene">
+  <object id="67" name="Button" type="Button" x="0" y="0" width="60" height="60">
+   <properties>
+    <property name="frameNo" value="int"/>
+    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
+   </properties>
+  </object>
+  <object id="72" name="Button" type="Button" x="0" y="60" width="60" height="60">
+   <properties>
+    <property name="frameNo" value="int"/>
+    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
+   </properties>
+  </object>
+  <object id="73" name="Button" type="Button" x="0" y="120" width="60" height="60">
+   <properties>
+    <property name="frameNo" value="int"/>
+    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
+   </properties>
+  </object>
+  <object id="74" name="Button" type="Button" x="0" y="300" width="60" height="60">
+   <properties>
+    <property name="frameNo" value="int"/>
+    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
+   </properties>
+  </object>
+  <object id="75" name="Button" type="Button" x="0" y="240" width="60" height="60">
+   <properties>
+    <property name="frameNo" value="int"/>
+    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
+   </properties>
+  </object>
+  <object id="76" name="Button" type="Button" x="0" y="180" width="60" height="60">
+   <properties>
+    <property name="frameNo" value="int"/>
+    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
+   </properties>
+  </object>
+  <object id="77" name="Button" type="Button" x="0" y="360" width="60" height="60">
+   <properties>
+    <property name="frameNo" value="int"/>
+    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
+   </properties>
+  </object>
+  <object id="78" name="Button" type="Button" x="0" y="420" width="60" height="60">
+   <properties>
+    <property name="frameNo" value="int"/>
+    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
