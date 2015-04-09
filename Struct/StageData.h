@@ -2,9 +2,9 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
-#include "EnumType.h"
+#include "Struct/EnumType.h"
 #include "PlaceData.h"
-#include "TDSystem.h"
+#include "System/TDSystem.h"
 
 namespace SDX_TD
 {

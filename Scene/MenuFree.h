@@ -2,10 +2,9 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
-#include "IStage.h"
-#include "Object.h"
+#include "Stage/IStage.h"
 #include "Design.h"
-#include "TDSystem.h"
+#include "System/TDSystem.h"
 
 namespace SDX_TD
 {

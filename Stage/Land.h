@@ -3,9 +3,9 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include <SDXFramework.h>
-#include "DataS.h"
-#include "Material.h"
-#include "TDSystem.h"
+#include "Struct/DataS.h"
+#include "System/Material.h"
+#include "System/TDSystem.h"
 
 namespace SDX_TD
 {

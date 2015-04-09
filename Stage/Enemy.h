@@ -4,7 +4,7 @@
 #pragma once
 #include "Object.h"
 #include "Shot.h"
-#include "DataS.h"
+#include "Struct/DataS.h"
 #include "Design.h"
 #include "Witch.h"
 

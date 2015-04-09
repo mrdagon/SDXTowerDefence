@@ -3,7 +3,7 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include "Object.h"
-#include "DataS.h"
+#include "Struct/DataS.h"
 #include "Witch.h"
 
 namespace SDX_TD

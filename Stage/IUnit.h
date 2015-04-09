@@ -6,7 +6,7 @@
 #include "IStage.h"
 #include "Enemy.h"
 #include "Wave.h"
-#include "DataS.h"
+#include "Struct/DataS.h"
 #include "Design.h"
 
 namespace SDX_TD

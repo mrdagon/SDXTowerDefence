@@ -4,7 +4,7 @@
 #pragma once
 #include <SDXFramework.h>
 #include "Land.h"
-#include "EnumType.h"
+#include "Struct/EnumType.h"
 
 namespace SDX_TD
 {

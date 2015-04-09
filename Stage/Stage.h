@@ -15,7 +15,7 @@
 #include "Wave.h"
 
 #include "JobUnit.h"
-#include "ReplayData.h"
+#include "Struct/ReplayData.h"
 
 namespace SDX_TD
 {
