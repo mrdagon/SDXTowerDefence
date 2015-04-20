@@ -39,7 +39,48 @@ Copyright © 2014 (´･@･)
 [License]GNU Affero General Public License, version 3
 [Contact]http://tacoika.blog87.fc2.com/
 
+○使用ライブラリ
+SDL
+http://www.libsdl.org/index.php
+
+SDXFramework
+http://sourceforge.jp/projects/dxframework/
+
+Github(ソースコード公開中)
+https://github.com/mrdagon/SDXTowerDefence
+
+
 【ソースコード以外のライセンス(txt、png、datファイル等)】
 　Scene/fileフォルダ内の画像ファイル、効果音の殆どはフリー素材として配られているのでそれぞれの配布元の規約を確認して配布元から入手して下さい。
 　その他のtxtファイル等は無断で再配布しないで下さい。
 
+[ドットワールド]
+http://whss.biz/~tsukasa/main.html
+
+[エトリエ]
+http://www5f.biglobe.ne.jp/~itazu/etolier/
+
+[臼井の会]
+http://usui.moo.jp/frame2.html
+
+[white cat]
+http://whitecafe.sakura.ne.jp/
+
+[ぴぽや]
+http://piposozai.blog76.fc2.com/
+
+[FREEDOM HOUSE 2nd]
+http://fhouse.s17.xrea.com/
+
+[famfamfam.com]
+http://www.famfamfam.com/lab/icons/
+
+[IPAフォント]
+http://ipafont.ipa.go.jp/ipafont/download.html
+
+【元ネタについて】
+本作はグランシールウィッチーズの所謂二次創作です
+http://whitecafe.sakura.ne.jp/graches/top.html
+
+　一応許可はとっていますが、公式ではありません。
+原作者の方には迷惑をかけたり変な問い合わせはしないようお願いします。
