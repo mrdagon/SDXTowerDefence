@@ -1,22 +1,16 @@
 ﻿タワーディフェンスのゲーム
 
-Sorceforgeで開発しています
+Sorceforgeで配布しています
 https://sourceforge.jp/projects/dxframework/simple/
 
 【フォルダ構成】
 　全て同じディレクトリにコードを置くコードの数が多く初見で必要な処理が書かれたソースコードを探すのが大変なのと、自動生成させるコードの管理がしにくいので、ソースコードのフォルダを分けています。
 
-[.git] 
-　git用の隠しフォルダ、無視して下さい。
-
 [Document]
-　ゲームデザインの案や更新履歴等のテキスト、Doxygen生成用のコードが入っているフォルダ。
-
-[html]
-  Doxygenで生成されたドキュメント。
+　ゲームデザインやレベルデザインの案や更新履歴等のテキスト、Doxygen生成用のコードが入っているフォルダ。
 
 [Struct]
-  各種struct型とEnum型。
+  各種struct型とEnum型のコード。
 
 [Stage]
 　敵やユニットの処理等、ステージ画面でのコード全般。
@@ -27,12 +21,15 @@ https://sourceforge.jp/projects/dxframework/simple/
 [Scene]
 　tmxファイルから生成したSceneとObjectのコード。メニュー画面等。
 
-[Scene/file]
-　ゲームで利用している画像等が入っているフォルダ。
-tmxファイルからコードを生成する時の相対パスの関係でここに置いています。
+[Scene/tiled]
+　ConvTMX用のテンプレートコード。
+
+[Old]
+　非実装にしたコード。
 
 【プルリクエストやバグ修正】
-　対応するかはこちらが決めますが、バグ修正や要望提案等はご自由にどうぞ
+　バグ修正や要望提案等はどしどしどうぞ。
+対応するかはこちらが決めます。
 
 【ソースコードのライセンス(.cpp、.h、.tmxファイル)】
 Copyright © 2014 (´･@･)
@@ -46,13 +43,9 @@ http://www.libsdl.org/index.php
 SDXFramework
 http://sourceforge.jp/projects/dxframework/
 
-Github(ソースコード公開中)
-https://github.com/mrdagon/SDXTowerDefence
-
-
 【ソースコード以外のライセンス(txt、png、datファイル等)】
-　Scene/fileフォルダ内の画像ファイル、効果音の殆どはフリー素材として配られているのでそれぞれの配布元の規約を確認して配布元から入手して下さい。
-　その他のtxtファイル等は無断で再配布しないで下さい。
+　画像ファイル、効果音の殆どはフリー素材として配られているのでそれぞれの配布元の規約を確認して配布元から入手して下さい。
+Documentフォルダ内のtxtファイルは無断で再配布しないで下さい。
 
 [ドットワールド]
 http://whss.biz/~tsukasa/main.html
