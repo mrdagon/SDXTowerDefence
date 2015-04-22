@@ -13,7 +13,7 @@ namespace SDX
 	{
 	public:
 		//@Define
-		UI_Button クレジット = { 125, {233,226,196,48} , 0.000000,int};
+		UI_Button クレジット = { 125, {233,226,196,48} , 0.000000,0};
 		//@End
 
 		SceneHelp()

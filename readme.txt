@@ -24,9 +24,6 @@ https://sourceforge.jp/projects/dxframework/simple/
 [Scene/tiled]
 　ConvTMX用のテンプレートコード。
 
-[Scene/file]
-　
-
 [Old]
 　非実装にしたコード。
 

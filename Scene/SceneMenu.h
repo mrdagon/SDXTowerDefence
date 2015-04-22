@@ -13,15 +13,15 @@ namespace SDX
 	{
 	public:
 		//@Define
-		UI_Frame 全体枠 = { 99, {60,0,580,480} , 0.000000,int};
-		UI_Button Story = { 67, {0,0,60,60} , 0.000000,int};
-		UI_Button Quest = { 72, {0,60,60,60} , 0.000000,int};
-		UI_Button Free = { 73, {0,120,60,60} , 0.000000,int};
-		UI_Button Replay = { 74, {0,300,60,60} , 0.000000,int};
-		UI_Button Archive = { 75, {0,240,60,60} , 0.000000,int};
-		UI_Button Skill = { 76, {0,180,60,60} , 0.000000,int};
-		UI_Button Help = { 77, {0,360,60,60} , 0.000000,int};
-		UI_Button Config = { 78, {0,420,60,60} , 0.000000,int};
+		UI_Frame 全体枠 = { 99, {60,0,580,480} , 0.000000,0};
+		UI_Button Story = { 67, {0,0,60,60} , 0.000000,0};
+		UI_Button Quest = { 72, {0,60,60,60} , 0.000000,0};
+		UI_Button Free = { 73, {0,120,60,60} , 0.000000,0};
+		UI_Button Replay = { 74, {0,300,60,60} , 0.000000,0};
+		UI_Button Archive = { 75, {0,240,60,60} , 0.000000,0};
+		UI_Button Skill = { 76, {0,180,60,60} , 0.000000,0};
+		UI_Button Help = { 77, {0,360,60,60} , 0.000000,0};
+		UI_Button Config = { 78, {0,420,60,60} , 0.000000,0};
 		//@End
 
 		SceneMenu()

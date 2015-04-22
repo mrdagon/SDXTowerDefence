@@ -13,8 +13,8 @@ namespace SDX
 	{
 	public:
 		//@Define
-		UI_Text 題字 = { 88, {159,134,356,78} , 0.000000,int,"std::string"};
-		UI_Text 押して下さい = { 89, {291,316,77,39} , 0.000000,int,"std::string"};
+		UI_Text 題字 = { 88, {159,134,356,78} , 0.000000,0,"ぐらちTD(仮)"};
+		UI_Text 押して下さい = { 89, {291,316,77,39} , 0.000000,0,"push any key"};
 		//@End
 
 		SceneTitle()
