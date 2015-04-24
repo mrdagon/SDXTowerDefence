@@ -53,6 +53,16 @@ namespace SDX
 		void Update() override
 		{
 			//@Update
+			if(効果音＋.isClick()){}
+			if(効果音－.isClick()){}
+			if(BGM－.isClick()){}
+			if(BGM＋.isClick()){}
+			if(グリッド.isClick()){}
+			if(敵HP.isClick()){}
+			if(エフェクト表示.isClick()){}
+			if(タッチ操作.isClick()){}
+			if(リプレイ保存.isClick()){}
+			if(ゲーム速度.isClick()){}
 			//@End
 		}
 
@@ -63,20 +73,20 @@ namespace SDX
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
 			//@Draw
-			frameS[効果音＋.frameNo]->Draw(効果音＋.rect);
-			frameS[効果音－.frameNo]->Draw(効果音－.rect);
-			frameS[BGM－.frameNo]->Draw(BGM－.rect);
-			frameS[BGM＋.frameNo]->Draw(BGM＋.rect);
-			frameS[グリッド.frameNo]->Draw(グリッド.rect);
-			frameS[敵HP.frameNo]->Draw(敵HP.rect);
-			frameS[エフェクト表示.frameNo]->Draw(エフェクト表示.rect);
-			frameS[タッチ操作.frameNo]->Draw(タッチ操作.rect);
-			frameS[リプレイ保存.frameNo]->Draw(リプレイ保存.rect);
-			fontS[効果音.fontNo]->Draw(効果音.rect.GetPoint(),Color::White,効果音.text);
-			fontS[BGM.fontNo]->Draw(BGM.rect.GetPoint(),Color::White,BGM.text);
-			frameS[BGMゲージ.frameNo]->Draw(BGMゲージ.rect);
-			frameS[効果音ゲージ.frameNo]->Draw(効果音ゲージ.rect);
-			frameS[ゲーム速度.frameNo]->Draw(ゲーム速度.rect);
+			MSystem::frameS[効果音＋.frameNo].Draw(効果音＋.rect);
+			MSystem::frameS[効果音－.frameNo].Draw(効果音－.rect);
+			MSystem::frameS[BGM－.frameNo].Draw(BGM－.rect);
+			MSystem::frameS[BGM＋.frameNo].Draw(BGM＋.rect);
+			MSystem::frameS[グリッド.frameNo].Draw(グリッド.rect);
+			MSystem::frameS[敵HP.frameNo].Draw(敵HP.rect);
+			MSystem::frameS[エフェクト表示.frameNo].Draw(エフェクト表示.rect);
+			MSystem::frameS[タッチ操作.frameNo].Draw(タッチ操作.rect);
+			MSystem::frameS[リプレイ保存.frameNo].Draw(リプレイ保存.rect);
+			MFont::fontS[効果音.fontNo].Draw(効果音.rect.GetPoint(),Color::White,効果音.text);
+			MFont::fontS[BGM.fontNo].Draw(BGM.rect.GetPoint(),Color::White,BGM.text);
+			MSystem::frameS[BGMゲージ.frameNo].Draw(BGMゲージ.rect);
+			MSystem::frameS[効果音ゲージ.frameNo].Draw(効果音ゲージ.rect);
+			MSystem::frameS[ゲーム速度.frameNo].Draw(ゲーム速度.rect);
 			//@End
 		}
 

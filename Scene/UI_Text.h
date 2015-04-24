@@ -51,7 +51,7 @@ namespace SDX
 		void Draw() override
 		{
 			//@Draw
-			fontS[fontNo]->Draw(rect.GetPoint(),Color::White,text);
+			MFont::fontS[fontNo].Draw(rect.GetPoint(),Color::White,text);
 			//@End
 		}
 	};

@@ -51,8 +51,8 @@ namespace SDX
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
 			//@Draw
-			fontS[題字.fontNo]->Draw(題字.rect.GetPoint(),Color::White,題字.text);
-			fontS[押して下さい.fontNo]->Draw(押して下さい.rect.GetPoint(),Color::White,押して下さい.text);
+			MFont::fontS[題字.fontNo].Draw(題字.rect.GetPoint(),Color::White,題字.text);
+			MFont::fontS[押して下さい.fontNo].Draw(押して下さい.rect.GetPoint(),Color::White,押して下さい.text);
 			//@End
 		}
 

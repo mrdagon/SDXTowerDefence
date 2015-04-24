@@ -10,28 +10,24 @@
 
 #endif
 
-#include "Stage/Stage.h"
-//#include "Scene/MenuTitle.h"
-#include "System/SaveAndLoad.h"
 
+//配布時は相対パス、デバッグ時は絶対パス
+#ifdef _DEBUG
+static const char* TMX_FILE_NAME = "C:/Users/Uemura/Documents/GitHub/SDXTowerDefence/Scene/Layout.tmx";
+#else
 static const char* TMX_FILE_NAME = "Layout.tmx";
-static SDX::ImagePack imageS;
-static SDX::Font* fontS[10];
-static SDX::IFrame* frameS[10];
+#endif
 
 #include <Tiled/TmxToGUI.h>
-#include "Scene/SceneArchive.h"
-#include "Scene/SceneConfig.h"
-#include "Scene/SceneHelp.h"
+#include "Stage/Stage.h"
+#include "System/Material.h"
 #include "Scene/SceneMenu.h"
-#include "Scene/ScenePause.h"
-#include "Scene/SceneQuest.h"
-#include "Scene/SceneReplay.h"
-#include "Scene/SceneSkill.h"
-//#include "Scene/SceneStage.h"
-#include "Scene/SceneStory.h"
-#include "Scene/SceneTitle.h"
 
+//#include "Scene/SceneStage.h"
+//#include "Scene/ScenePause.h"
+//#include "Scene/SceneResult.h"
+
+#include "System/SaveAndLoad.h"
 
 int main(int argc, char* argv[])
 {
@@ -81,7 +77,7 @@ int main(int argc, char* argv[])
 	Witch::SetMain(WitchType::ミルラ);
 
 	//Director::AddScene(std::make_shared<Stage>());
-	//Director::AddScene(std::make_shared<MenuMain>());
+	Director::AddScene(std::make_shared<SceneMenu>());
 	Director::Run();
 
 	System::End();//ライブラリの終了処理

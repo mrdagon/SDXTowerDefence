@@ -4,13 +4,14 @@
   <object id="16" name="Button" type="Button" x="244.5" y="503" width="57" height="54">
    <properties>
     <property name="frameNo" value="int"/>
-    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
+    <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
+    <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="2" name="Frame" type="Frame" x="145" y="503" width="57" height="54">
+  <object id="2" name="Frame" type="Frame" x="169" y="505" width="57" height="54">
    <properties>
     <property name="frameNo" value="int"/>
-    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
+    <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value=""/>
    </properties>
   </object>
@@ -18,61 +19,61 @@
    <properties>
     <property name="fontNo" value="int"/>
     <property name="text" value="std::string"/>
-    <property name="~Draw" value="fontS[@fontNo]-&gt;Draw(@rect.GetPoint(),Color::White,@text);"/>
+    <property name="~Draw" value="MFont::fontS[@fontNo].Draw(@rect.GetPoint(),Color::White,@text);"/>
     <property name="~Final" value=""/>
     <property name="~Init" value=""/>
     <property name="~Update" value=""/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup color="#ffffc8" name="SceneMenu" visible="0">
+ <objectgroup color="#ffffc8" name="SceneMenu">
   <object id="99" name="全体枠" type="Frame" x="60" y="0" width="580" height="480">
    <properties>
     <property name="frameNo" value="0"/>
    </properties>
   </object>
-  <object id="67" name="Story" type="Button" x="0" y="0" width="60" height="60">
+  <object id="67" name="Storyタグ" type="Button" x="0" y="0" width="60" height="60">
    <properties>
     <property name="frameNo" value="0"/>
    </properties>
   </object>
-  <object id="72" name="Quest" type="Button" x="0" y="60" width="60" height="60">
+  <object id="72" name="Questタグ" type="Button" x="0" y="60" width="60" height="60">
    <properties>
     <property name="frameNo" value="0"/>
    </properties>
   </object>
-  <object id="73" name="Free" type="Button" x="0" y="120" width="60" height="60">
+  <object id="73" name="Freeタグ" type="Button" x="0" y="120" width="60" height="60">
    <properties>
     <property name="frameNo" value="0"/>
    </properties>
   </object>
-  <object id="74" name="Replay" type="Button" x="0" y="300" width="60" height="60">
+  <object id="74" name="Replayタグ" type="Button" x="0" y="300" width="60" height="60">
    <properties>
     <property name="frameNo" value="0"/>
    </properties>
   </object>
-  <object id="75" name="Archive" type="Button" x="0" y="240" width="60" height="60">
+  <object id="75" name="Archiveタグ" type="Button" x="0" y="240" width="60" height="60">
    <properties>
     <property name="frameNo" value="0"/>
    </properties>
   </object>
-  <object id="76" name="Skill" type="Button" x="0" y="180" width="60" height="60">
+  <object id="76" name="Skillタグ" type="Button" x="0" y="180" width="60" height="60">
    <properties>
     <property name="frameNo" value="0"/>
    </properties>
   </object>
-  <object id="77" name="Help" type="Button" x="0" y="360" width="60" height="60">
+  <object id="77" name="Helpタグ" type="Button" x="0" y="360" width="60" height="60">
    <properties>
     <property name="frameNo" value="0"/>
    </properties>
   </object>
-  <object id="78" name="Config" type="Button" x="0" y="420" width="60" height="60">
+  <object id="78" name="Configタグ" type="Button" x="0" y="420" width="60" height="60">
    <properties>
     <property name="frameNo" value="0"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup color="#ffffff" draworder="index" name="SceneQuest" visible="0">
+ <objectgroup color="#ffffff" draworder="index" name="SceneQuest">
   <object id="65" name="難易度情報" type="Frame" x="365" y="305" width="272" height="107">
    <properties>
     <property name="frameNo" value="1"/>
@@ -357,7 +358,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneSkill">
+ <objectgroup name="SceneSkill" visible="0">
   <object id="162" name="攻撃" type="Button" x="85" y="6" width="80" height="70">
    <properties>
     <property name="frameNo" value="0"/>
@@ -557,9 +558,7 @@
   </object>
   <object id="86" name="全体枠" type="Frame" x="80" y="10" width="480" height="460">
    <properties>
-    <property name="frameNo" value="int"/>
-    <property name="~Draw" value="frameS[@frameNo]-&gt;Draw(@rect);"/>
-    <property name="~Update" value=""/>
+    <property name="frameNo" value="0"/>
    </properties>
   </object>
   <object id="87" name="Result" type="Frame" x="100" y="30" width="440" height="40">

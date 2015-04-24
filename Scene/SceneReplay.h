@@ -51,6 +51,11 @@ namespace SDX
 		void Update() override
 		{
 			//@Update
+			if(開始.isClick()){}
+			if(スクロールバー.isClick()){}
+			if(リプレイ選択.isClick()){}
+			if(下スクロール.isClick()){}
+			if(上スクロール.isClick()){}
 			//@End
 		}
 
@@ -61,18 +66,18 @@ namespace SDX
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
 			//@Draw
-			frameS[リプレイ情報.frameNo]->Draw(リプレイ情報.rect);
-			frameS[開始.frameNo]->Draw(開始.rect);
-			fontS[スコア.fontNo]->Draw(スコア.rect.GetPoint(),Color::White,スコア.text);
-			frameS[スクロールバー.frameNo]->Draw(スクロールバー.rect);
-			frameS[マップ情報.frameNo]->Draw(マップ情報.rect);
-			frameS[リプレイ選択.frameNo]->Draw(リプレイ選択.rect);
-			fontS[ウィッチ.fontNo]->Draw(ウィッチ.rect.GetPoint(),Color::White,ウィッチ.text);
-			fontS[難易度.fontNo]->Draw(難易度.rect.GetPoint(),Color::White,難易度.text);
-			fontS[結果.fontNo]->Draw(結果.rect.GetPoint(),Color::White,結果.text);
-			frameS[ステージ一覧.frameNo]->Draw(ステージ一覧.rect);
-			frameS[下スクロール.frameNo]->Draw(下スクロール.rect);
-			frameS[上スクロール.frameNo]->Draw(上スクロール.rect);
+			MSystem::frameS[リプレイ情報.frameNo].Draw(リプレイ情報.rect);
+			MSystem::frameS[開始.frameNo].Draw(開始.rect);
+			MFont::fontS[スコア.fontNo].Draw(スコア.rect.GetPoint(),Color::White,スコア.text);
+			MSystem::frameS[スクロールバー.frameNo].Draw(スクロールバー.rect);
+			MSystem::frameS[マップ情報.frameNo].Draw(マップ情報.rect);
+			MSystem::frameS[リプレイ選択.frameNo].Draw(リプレイ選択.rect);
+			MFont::fontS[ウィッチ.fontNo].Draw(ウィッチ.rect.GetPoint(),Color::White,ウィッチ.text);
+			MFont::fontS[難易度.fontNo].Draw(難易度.rect.GetPoint(),Color::White,難易度.text);
+			MFont::fontS[結果.fontNo].Draw(結果.rect.GetPoint(),Color::White,結果.text);
+			MSystem::frameS[ステージ一覧.frameNo].Draw(ステージ一覧.rect);
+			MSystem::frameS[下スクロール.frameNo].Draw(下スクロール.rect);
+			MSystem::frameS[上スクロール.frameNo].Draw(上スクロール.rect);
 			//@End
 		}
 

@@ -63,6 +63,17 @@ namespace SDX
 		void Update() override
 		{
 			//@Update
+			if(開始.isClick()){}
+			if(難易度－.isClick()){}
+			if(難易度＋.isClick()){}
+			if(面数Minus.isClick()){}
+			if(ステージA.isClick()){}
+			if(ステージB.isClick()){}
+			if(ステージC.isClick()){}
+			if(ステージD.isClick()){}
+			if(面数Plus.isClick()){}
+			if(シングル_カップル.isClick()){}
+			if(トライアル.isClick()){}
 			//@End
 		}
 
@@ -73,30 +84,30 @@ namespace SDX
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
 			//@Draw
-			frameS[難易度情報.frameNo]->Draw(難易度情報.rect);
-			frameS[ステージ一覧.frameNo]->Draw(ステージ一覧.rect);
-			frameS[開始.frameNo]->Draw(開始.rect);
-			frameS[難易度－.frameNo]->Draw(難易度－.rect);
-			frameS[難易度＋.frameNo]->Draw(難易度＋.rect);
-			frameS[ウィッチ一覧.frameNo]->Draw(ウィッチ一覧.rect);
-			frameS[マップ情報.frameNo]->Draw(マップ情報.rect);
-			frameS[面数Minus.frameNo]->Draw(面数Minus.rect);
-			frameS[ステージA.frameNo]->Draw(ステージA.rect);
-			frameS[ステージB.frameNo]->Draw(ステージB.rect);
-			frameS[ステージC.frameNo]->Draw(ステージC.rect);
-			frameS[ステージD.frameNo]->Draw(ステージD.rect);
-			frameS[面数Plus.frameNo]->Draw(面数Plus.rect);
-			fontS[難易度.fontNo]->Draw(難易度.rect.GetPoint(),Color::White,難易度.text);
-			fontS[Wave数.fontNo]->Draw(Wave数.rect.GetPoint(),Color::White,Wave数.text);
-			fontS[出現数.fontNo]->Draw(出現数.rect.GetPoint(),Color::White,出現数.text);
-			fontS[HP補正.fontNo]->Draw(HP補正.rect.GetPoint(),Color::White,HP補正.text);
-			fontS[Lv補正.fontNo]->Draw(Lv補正.rect.GetPoint(),Color::White,Lv補正.text);
-			frameS[ウィッチアイコン.frameNo]->Draw(ウィッチアイコン.rect);
-			frameS[シングル_カップル.frameNo]->Draw(シングル_カップル.rect);
-			frameS[トライアル.frameNo]->Draw(トライアル.rect);
-			fontS[ウィッチ名.fontNo]->Draw(ウィッチ名.rect.GetPoint(),Color::White,ウィッチ名.text);
-			fontS[星.fontNo]->Draw(星.rect.GetPoint(),Color::White,星.text);
-			fontS[スコア.fontNo]->Draw(スコア.rect.GetPoint(),Color::White,スコア.text);
+			MSystem::frameS[難易度情報.frameNo].Draw(難易度情報.rect);
+			MSystem::frameS[ステージ一覧.frameNo].Draw(ステージ一覧.rect);
+			MSystem::frameS[開始.frameNo].Draw(開始.rect);
+			MSystem::frameS[難易度－.frameNo].Draw(難易度－.rect);
+			MSystem::frameS[難易度＋.frameNo].Draw(難易度＋.rect);
+			MSystem::frameS[ウィッチ一覧.frameNo].Draw(ウィッチ一覧.rect);
+			MSystem::frameS[マップ情報.frameNo].Draw(マップ情報.rect);
+			MSystem::frameS[面数Minus.frameNo].Draw(面数Minus.rect);
+			MSystem::frameS[ステージA.frameNo].Draw(ステージA.rect);
+			MSystem::frameS[ステージB.frameNo].Draw(ステージB.rect);
+			MSystem::frameS[ステージC.frameNo].Draw(ステージC.rect);
+			MSystem::frameS[ステージD.frameNo].Draw(ステージD.rect);
+			MSystem::frameS[面数Plus.frameNo].Draw(面数Plus.rect);
+			MFont::fontS[難易度.fontNo].Draw(難易度.rect.GetPoint(),Color::White,難易度.text);
+			MFont::fontS[Wave数.fontNo].Draw(Wave数.rect.GetPoint(),Color::White,Wave数.text);
+			MFont::fontS[出現数.fontNo].Draw(出現数.rect.GetPoint(),Color::White,出現数.text);
+			MFont::fontS[HP補正.fontNo].Draw(HP補正.rect.GetPoint(),Color::White,HP補正.text);
+			MFont::fontS[Lv補正.fontNo].Draw(Lv補正.rect.GetPoint(),Color::White,Lv補正.text);
+			MSystem::frameS[ウィッチアイコン.frameNo].Draw(ウィッチアイコン.rect);
+			MSystem::frameS[シングル_カップル.frameNo].Draw(シングル_カップル.rect);
+			MSystem::frameS[トライアル.frameNo].Draw(トライアル.rect);
+			MFont::fontS[ウィッチ名.fontNo].Draw(ウィッチ名.rect.GetPoint(),Color::White,ウィッチ名.text);
+			MFont::fontS[星.fontNo].Draw(星.rect.GetPoint(),Color::White,星.text);
+			MFont::fontS[スコア.fontNo].Draw(スコア.rect.GetPoint(),Color::White,スコア.text);
 			//@End
 		}
 

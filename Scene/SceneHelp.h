@@ -40,6 +40,7 @@ namespace SDX
 		void Update() override
 		{
 			//@Update
+			if(クレジット.isClick()){}
 			//@End
 		}
 
@@ -50,7 +51,7 @@ namespace SDX
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
 			//@Draw
-			frameS[クレジット.frameNo]->Draw(クレジット.rect);
+			MSystem::frameS[クレジット.frameNo].Draw(クレジット.rect);
 			//@End
 		}
 

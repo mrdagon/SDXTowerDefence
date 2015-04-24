@@ -41,7 +41,7 @@ namespace SDX
 		void Update() override
 		{
 			//@Update
-			
+			if(isClick()){}
 			//@End
 		}
 
@@ -49,8 +49,9 @@ namespace SDX
 		void Draw() override
 		{
 			//@Draw
-			frameS[frameNo]->Draw(rect);
+			MSystem::frameS[frameNo].Draw(rect);
 			//@End
 		}
+
 	};
 }
