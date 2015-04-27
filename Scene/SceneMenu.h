@@ -90,7 +90,7 @@ namespace SDX
 #endif
 			//枠部分の表示
 			//@Draw
-			MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);
+			//MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);
 			MSystem::frameS[Storyタグ.frameNo].Draw(Storyタグ.rect);
 			MSystem::frameS[Questタグ.frameNo].Draw(Questタグ.rect);
 			MSystem::frameS[Freeタグ.frameNo].Draw(Freeタグ.rect);
@@ -101,6 +101,10 @@ namespace SDX
 			MSystem::frameS[Configタグ.frameNo].Draw(Configタグ.rect);
 			//@End
 			//アイコンと文字の表示
+			MIcon::UI[IconType::マナ].DrawRotate(Storyタグ.rect.GetCenter(), 1, 0);
+			MFont::fontS[(int)FontType::ゴシック中].DrawRotate(Storyタグ.rect.GetCenter(), 1, 0, Color::White, "Story");
+
+
 
 			if (activeScene)
 			{

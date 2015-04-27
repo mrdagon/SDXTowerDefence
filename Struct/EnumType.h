@@ -218,6 +218,15 @@ namespace SDX_TD
 		COUNT
 	};
 
+	enum class FontType
+	{
+		ゴシック小,
+		ゴシック中,
+		BMP黒,
+		BMP黒影,
+		BMP白
+	};
+
 	/**アーティファクトの種類.*/
 	enum class ArtifactType
 	{

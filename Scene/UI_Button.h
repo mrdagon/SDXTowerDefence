@@ -53,5 +53,9 @@ namespace SDX
 			//@End
 		}
 
+		bool isClick()
+		{
+			return Input::mouse.Left.on && rect.Hit(&Input::mouse.GetPoint());
+		}
 	};
 }
