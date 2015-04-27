@@ -13,9 +13,9 @@ namespace SDX
 	{
 	public:
 		//@Define
-		UI_Button あきらめる = { 79, {211,301,221,50} , 0.000000,int};
-		UI_Button やり直す = { 80, {209,218,221,50} , 0.000000,int};
-		UI_Button 続ける = { 81, {209,140,221,50} , 0.000000,int};
+		UI_Button あきらめる = { 79, {211,301,221,50} , 0.000000,0};
+		UI_Button やり直す = { 80, {209,218,221,50} , 0.000000,0};
+		UI_Button 続ける = { 81, {209,140,221,50} , 0.000000,0};
 		//@End
 
 		ScenePause()
@@ -42,6 +42,9 @@ namespace SDX
 		void Update() override
 		{
 			//@Update
+			if(あきらめる.isClick()){}
+			if(やり直す.isClick()){}
+			if(続ける.isClick()){}
 			//@End
 		}
 
@@ -52,9 +55,9 @@ namespace SDX
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
 			//@Draw
-			frameS[あきらめる.frameNo]->Draw(あきらめる.rect);
-			frameS[やり直す.frameNo]->Draw(やり直す.rect);
-			frameS[続ける.frameNo]->Draw(続ける.rect);
+			MSystem::frameS[あきらめる.frameNo].Draw(あきらめる.rect);
+			MSystem::frameS[やり直す.frameNo].Draw(やり直す.rect);
+			MSystem::frameS[続ける.frameNo].Draw(続ける.rect);
 			//@End
 		}
 

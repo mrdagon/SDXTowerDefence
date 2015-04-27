@@ -96,98 +96,6 @@ namespace SDX_TD
 		Rリトライ = {320,380,100,25,100,25};
 	}
 
-	void UI_MainMenu::Reset()
-	{
-		サブモード名 = { 126, 30 };
-
-		R背景枠 = {60,0,640-60,480};
-		for (int a = 0; a < SUB_COUNT; ++a)
-		{
-			Rボタン[a] = { 0, a*60 , 60, 60 };
-		}
-	}
-
-	void UI_Title::Reset()
-	{
-	
-	}
-
-	void UI_StorySelect::Reset()
-	{
-
-	}
-
-	void UI_QuestSelect::Reset()
-	{
-		//ステージ一覧
-		for (int a = 0; a < (int)StageType::COUNT; ++a)
-		{
-			Rステージ[a] = { 66 + a%8 * 35 , 37 + a / 8*35, 35, 35 };
-		}
-
-		//タッグ/強化有無
-		Rモード = { 66, 145, 280, 40 };
-		R人数 = { 66+2    , 147, 138, 36 };
-		R強化 = { 66+2+138, 147, 138, 36 };
-
-		//ウィッチ/スコア/星
-		Rウィッチ枠 = { 66, 189, 280, 286 };
-		for (int a = 0; a < (int)WitchType::COUNT; ++a)
-		{
-			Rウィッチ[a] = { 66, 189 + a * 20 , 280,20};
-		}
-		P星差分 = { 40, 0 };
-		Pスコア差分 = { 80, 0 };
-
-		//ミニマップ
-		Pステージ名 = { 348, 37+280 };
-		Rミニマップ = { 348, 37, 280, 300 };
-
-		//難易度
-		P難易度 = { 348+140, 364 };
-		R難易度Up = { 348, 340, 40, 40 };
-		R難易度Down = { 348+240, 340, 40, 40 };
-		R難易度説明 = { 348,340,280,90};
-
-		PWave数 = { 348, 381 };
-		Pボス数 = { 388, 381 };
-		P雑魚数 = { 428, 381 };
-		PHP補正 = { 348, 411 };
-		PLv補正 = { 388, 411 };
-
-		//開始
-		R開始 = {348,435,280,40};
-	}
-
-	void UI_FreeSelect::Reset()
-	{
-
-	}
-
-	void UI_Skill::Reset()
-	{
-
-	}
-
-	void UI_Archive::Reset()
-	{
-
-	}
-
-	void UI_Replay::Reset()
-	{
-
-	}
-
-	void UI_Help::Reset()
-	{
-
-	}
-
-	void UI_Config::Reset()
-	{
-
-	}
 
 	/**全てのUIの位置を更新する.*/
 	void UI_Reset()
@@ -196,15 +104,5 @@ namespace SDX_TD
 		UI_Unit::Reset();
 		UI_Pause::Reset();
 		UI_Result::Reset();
-		UI_Title::Reset();
-		UI_MainMenu::Reset();
-		UI_StorySelect::Reset();
-		UI_QuestSelect::Reset();
-		UI_FreeSelect::Reset();
-		UI_Skill::Reset();
-		UI_Archive::Reset();
-		UI_Replay::Reset();
-		UI_Help::Reset();
-		UI_Config::Reset();
 	}
 }

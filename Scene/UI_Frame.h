@@ -49,7 +49,7 @@ namespace SDX
 		void Draw() override
 		{
 			//@Draw
-			frameS[frameNo]->Draw(rect);
+			MSystem::frameS[frameNo].Draw(rect);
 			//@End
 		}
 	};

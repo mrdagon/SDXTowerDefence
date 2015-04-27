@@ -9,227 +9,179 @@ namespace SDX_TD
 {
 	using namespace SDX;
 
-	//Design.cpp以外から呼ぶ時はexternを付ける
-#ifndef EXT
-#define EXT extern
-#endif
 	//UI用の定数
 	//エディットコンティニュ時のコンパイル時間削減のためcppファイルを分離
 	namespace UI_Stage
 	{
 		void Reset();
-		EXT Point P差分[8];
+		Point P差分[8];
 
-		EXT Rect Rスコア;
-		EXT Point Pスコア;
+		Rect Rスコア;
+		Point Pスコア;
 
-		EXT Rect R敵数;
-		EXT Point P敵数;
+		Rect R敵数;
+		Point P敵数;
 
-		EXT Rect R右全体;
+		Rect R右全体;
 
-		EXT Point Pゲーム速度[4];
-		EXT Rect Rゲーム速度[4];
+		Point Pゲーム速度[4];
+		Rect Rゲーム速度[4];
 
-		EXT Point Pシングルウィッチ;//シングル時
-		EXT Point Pカップルウィッチ[2];//カップル時
+		Point Pシングルウィッチ;//シングル時
+		Point Pカップルウィッチ[2];//カップル時
 
-		EXT Point Pモード名;
-		EXT Point P難易度名;
+		Point Pモード名;
+		Point P難易度名;
 
-		EXT Point PＳＰ;
-		EXT Point P体力;
-		EXT Point P魔力;
+		Point PＳＰ;
+		Point P体力;
+		Point P魔力;
 
-		EXT Rect R大魔法;
-		EXT Rect Rメニュー;
+		Rect R大魔法;
+		Rect Rメニュー;
 
-		EXT Rect R魔法一覧[12];
-		EXT Rect R情報;
+		Rect R魔法一覧[12];
+		Rect R情報;
 	}
 
 	namespace UI_Unit
 	{
 		void Reset();
 
-		EXT Rect R名前;
+		Rect R名前;
 
-		EXT Point P画像;
-		EXT Point P名前;
-		EXT Point P詠唱数;
+		Point P画像;
+		Point P名前;
+		Point P詠唱数;
 
-		EXT Point P説明;
-		EXT Rect R説明;
+		Point P説明;
+		Rect R説明;
 
-		EXT Point P性能アイコン[5];
-		EXT Point P性能[5];
+		Point P性能アイコン[5];
+		Point P性能[5];
 
-		EXT Rect R性能[5];
+		Rect R性能[5];
 
-		EXT Rect R強化;
-		EXT Point P強化;
-		EXT Rect R回収;
-		EXT Point P回収;
+		Rect R強化;
+		Point P強化;
+		Rect R回収;
+		Point P回収;
 	}
 
 	namespace UI_Pause
 	{
 		void Reset();
 
-		EXT Rect R続ける;
-		EXT Rect Rやり直す;
-		EXT Rect Rあきらめる;
+		Rect R続ける;
+		Rect Rやり直す;
+		Rect Rあきらめる;
 	}
 
 	namespace UI_Result
 	{
 		void Reset();
 
-		EXT Rect R終了;
-		EXT Rect Rリトライ;
-	}
-
-	namespace UI_Title
-	{
-		void Reset();
-
-		EXT Point P題字;
-		EXT Point P何か入力して下さい;
-	}
-
-	namespace UI_MainMenu
-	{
-		void Reset();
-		static const int SUB_COUNT = 8;
-
-		EXT Point サブモード名;
-		EXT Rect Rボタン[SUB_COUNT];
-		EXT Rect R背景枠;
-	}
-
-	namespace UI_WitchSelect
-	{
-		void Reset();
-		
-		EXT EnumArray<Rect, WitchType> Rウィッチ;
-
-	}
-
-	namespace UI_StorySelect
-	{
-		void Reset();
-	}
-
-	namespace UI_QuestSelect
-	{
-		void Reset();
-		//ステージ一覧
-		EXT Rect Rステージ[(int)StageType::COUNT];
-
-		//モード表示
-		EXT Rect Rモード;
-		EXT Rect R強化;
-		EXT Rect R人数;
-
-		//ウィッチ
-		EXT Rect Rウィッチ[(int)WitchType::COUNT];
-		EXT Rect Rウィッチ枠;
-		EXT Point P星差分;
-		EXT Point Pスコア差分;
-
-		//ミニマップ
-		EXT Point Pステージ名;
-		EXT Rect Rミニマップ;
-		EXT Point Pミニマップ;
-
-		//難易度
-		EXT Rect R難易度Up;
-		EXT Rect R難易度Down;
-		EXT Rect R難易度説明;
-		EXT Point P難易度;
-		EXT Point PWave数;
-		EXT Point Pボス数;
-		EXT Point P雑魚数;
-		EXT Point PHP補正;
-		EXT Point PLv補正;
-
-		//開始
-		EXT Rect R開始;
-	}
-
-	namespace UI_FreeSelect
-	{
-		void Reset();
-	}
-
-	namespace UI_Skill
-	{
-		void Reset();
-	}
-
-	namespace UI_Archive
-	{
-		void Reset();
-	}
-
-	namespace UI_Replay
-	{
-		void Reset();
-		//左リスト部
-		EXT Rect R左ブロック;
-		EXT Rect Rスクロールボックス;
-		EXT Rect R再生;
-
-		//右詳細
-		EXT Rect R右ブロック;
-		EXT Point Pステージ名;
-		EXT Point P縮小マップ;
-		EXT Point P難易度;
-		EXT Point Pスコア;
-		EXT Point Pモード;
-		EXT Point Pメインウィッチ;
-		EXT Point Pサブウィッチ;
-		//スキルLvは非表示
-	}
-
-	namespace UI_Help
-	{
-		void Reset();
-		//ボタン
-		//ヘルプ項目毎に一つ
-		//ボタンには文字とアイコンを付ける
-		//ボタンを押すとポップアップでヘルプを表示
-		EXT Rect Rボタン;
-		EXT Point P文字;
-	}
-
-	namespace UI_Config
-	{
-		void Reset();
-		//ボタン
-		EXT Rect R効果音Up;
-		EXT Rect R効果音Down;
-		EXT Rect R音楽Up;
-		EXT Rect R音楽Down;
-		EXT Rect Rグリッド表示;
-		EXT Rect Rライフ表示;
-		EXT Rect Rエフェクト表示;
-		EXT Rect Rタッチ操作;
-		EXT Rect Rリプレイ保存;
-		//文字
-		EXT Point P効果音Up;
-		EXT Point P効果音Down;
-		EXT Point P音楽Up;
-		EXT Point P音楽Down;
-		EXT Point Pグリッド表示;
-		EXT Point Pライフ表示;
-		EXT Point Pエフェクト表示;
-		EXT Point Pタッチ操作;
-		EXT Point Pリプレイ保存;
+		Rect R終了;
+		Rect Rリトライ;
 	}
 
 #undef EXT
 
-	void UI_Reset();
+	//void UI_Reset();
 
+	void UI_Unit::Reset()
+	{
+		//名前枠と画像全体位置は共通
+		const int stY = 27;//X基準
+
+		R名前 = { 486, stY + 215, 140, 30 };
+
+		P画像 = { 504, stY + 227 };
+		P名前 = { 530, stY + 221 };
+		P詠唱数 = { 510, stY + 220 };
+
+		P説明 = { 495, stY + 259 };
+		R説明 = { 486, stY + 249, 140, 48 };
+
+		for (int a = 0; a < 5; ++a)
+		{
+			R性能[a] = { 486, stY + 306 + a * 27, 140, 25 };
+			P性能アイコン[a] = { 490, R性能[a].y };
+			P性能[a] = { 500, R性能[a].y + 7 };
+		}
+
+		R強化 = { 486, stY + 249, 69, 48 };
+		P強化 = { R強化.x + 19, R強化.y + 6 };
+
+		//X以外は強化と同じ
+		R回収 = { 557, stY + 249, 69, 48 };
+		P回収 = { R回収.x + 19, R回収.y + 6 };
+	}
+
+	void UI_Stage::Reset()
+	{
+		P差分[0] = { 10, -10 };
+		Pスコア = { 36, 13 };
+		Rスコア = { 44, 4, 120, 30 };
+
+		P敵数 = { 162, 13 };
+		R敵数 = { 168, 4, 60, 30 };
+
+		P差分[6] = { 22, 17 };
+		P差分[7] = { 10, 22 };
+		for (int a = 0; a < 4; ++a)
+		{
+			Pゲーム速度[a] = { 8, 10 };
+			Rゲーム速度[a] = { 234 + a * 58, -6, 58, 42, 0, 0 };
+		}
+
+		R右全体 = { 472, 0, 168, 100 + 105 + 27 };
+
+		Pシングルウィッチ = { 511, 65 };
+		Pカップルウィッチ[0] = { 496, 65 };
+		Pカップルウィッチ[1] = { 526, 65 };
+
+		Pモード名 = { 480, 90 };
+		P難易度名 = { 480, 100 };
+
+		P差分[1] = { 20, 6 };
+		PＳＰ = { 550, 17 + 27 };
+		P体力 = { 550, 39 + 27 };
+		P魔力 = { 550, 61 + 27 };
+
+		P差分[2] = { 10, 10 };
+		R大魔法 = { 556 - 74, 4, 70, 36, 0, 0 };
+		Rメニュー = { 556 + 4, 4, 70, 36, 0, 0 };
+
+		P差分[3] = { 20, 12 };//ユニット画像位置
+		P差分[4] = { 12, 20 };//残り配置回数
+		P差分[5] = { 2, 24 };//×の位置
+		for (int a = 0; a < 12; ++a)
+		{
+			R魔法一覧[a] = { 476 + a % 4 * 40, 112 + a / 4 * 40, 40, 40, 0, 0 };
+		}
+
+		R情報 = { 472, 205 + 27, 168, 269 - 27, 0, 0 };
+	}
+
+	void UI_Pause::Reset()
+	{
+		Rあきらめる = { 320, 160, 100, 25, 100, 25 };
+		Rやり直す = { 320, 240, 100, 25, 100, 25 };
+		R続ける = { 320, 320, 100, 25, 100, 25 };
+	}
+
+	void UI_Result::Reset()
+	{
+		R終了 = { 320, 260, 100, 25, 100, 25 };
+		Rリトライ = { 320, 380, 100, 25, 100, 25 };
+	}
+
+	void UI_Reset()
+	{
+		UI_Stage::Reset();
+		UI_Unit::Reset();
+		UI_Pause::Reset();
+		UI_Result::Reset();
+	}
 }

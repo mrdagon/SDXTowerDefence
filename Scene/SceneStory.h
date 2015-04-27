@@ -13,7 +13,7 @@ namespace SDX
 	{
 	public:
 		//@Define
-		UI_Text 実装中～ = { 106, {184,173,295,105} , 0.000000,int,"std::string"};
+		UI_Text 実装中～ = { 106, {184,173,295,105} , 0.000000,0,"実装中"};
 		//@End
 
 		SceneStory()
@@ -50,7 +50,7 @@ namespace SDX
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
 			//@Draw
-			fontS[実装中～.fontNo]->Draw(実装中～.rect.GetPoint(),Color::White,実装中～.text);
+			MFont::fontS[実装中～.fontNo].Draw(実装中～.rect.GetPoint(),Color::White,実装中～.text);
 			//@End
 		}
 

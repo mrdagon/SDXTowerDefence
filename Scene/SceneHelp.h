@@ -13,7 +13,7 @@ namespace SDX
 	{
 	public:
 		//@Define
-		UI_Button クレジット = { 125, {233,226,196,48} , 0.000000,int};
+		UI_Button クレジット = { 125, {233,226,196,48} , 0.000000,0};
 		//@End
 
 		SceneHelp()
@@ -40,6 +40,7 @@ namespace SDX
 		void Update() override
 		{
 			//@Update
+			if(クレジット.isClick()){}
 			//@End
 		}
 
@@ -50,7 +51,7 @@ namespace SDX
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
 			//@Draw
-			frameS[クレジット.frameNo]->Draw(クレジット.rect);
+			MSystem::frameS[クレジット.frameNo].Draw(クレジット.rect);
 			//@End
 		}
 

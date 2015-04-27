@@ -3,7 +3,7 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include <SDXFramework.h>
-#include "EnumType.h"
+#include "../Struct/EnumType.h"
 
 namespace SDX_TD
 {
@@ -145,6 +145,7 @@ namespace SDX_TD
         ImagePack マップチップ;
         ImagePack 枠画像[14];
         BmpFrame  フレーム[14];
+		BmpFrame frameS[14];
 
         ImagePack マーク;
 
@@ -171,17 +172,8 @@ namespace SDX_TD
             for (int a = 0; a < 14; ++a)
             {
                 フレーム[a].Make(&枠画像[a]);
+				frameS[a].Make(&枠画像[a]);
             }
-
-            フレーム[1].Make(&枠画像[1]);
-            フレーム[2].Make(&枠画像[2]);
-            フレーム[3].Make(&枠画像[3]);
-            フレーム[4].Make(&枠画像[4]);
-            フレーム[5].Make(&枠画像[5]);
-            フレーム[6].Make(&枠画像[6]);
-            フレーム[7].Make(&枠画像[7]);
-            フレーム[8].Make(&枠画像[8]);
-            フレーム[9].Make(&枠画像[9]);
 
             背景.Load("file/system/back000.jpg");
 
@@ -236,12 +228,23 @@ namespace SDX_TD
     /**フォント.*/
     namespace MFont
     {
+		enum Type
+		{
+			Tゴシック小,
+			Tゴシック中,
+			TBMP黒,
+			TBMP黒影,
+			TBMP白
+		};
+
+		Font fontS[5];
+
         Font ゴシック小;
         Font ゴシック中;
         Font BMP黒;
         Font BMP黒影;
         Font BMP白;
-		
+
 		Image BMPゴシック小;
 		Image BMPゴシック中;
         ImagePack 英語;
@@ -252,29 +255,28 @@ namespace SDX_TD
 
         static void Load()
         {
-            ゴシック小.Load("file/font/ipag.ttf", 12, 0,false);
-            ゴシック中.Load("file/font/ipag.ttf", 16, 0,false);
-
-            //BMPフォントを利用
-            //AndroidだとFont生成が遅いので必要
-            //BMPゴシック中.Load("file/font/ipa.png");
-            //BMPゴシック小.Load("file/font/ipa2.png");
-            //MFont::ゴシック小.LoadBMPFont(MFont::BMPゴシック小,"file/font/bmp_font_list.txt");
-            //MFont::ゴシック中.LoadBMPFont(MFont::BMPゴシック中,"file/font/bmp_font_list.txt");
-
-            BMP黒.Load("", 6,0);
-            BMP黒影.Load("", 7, 0);
-            BMP白.Load("", 6, 0);
-
+			//画像の読み込み
             英語.Load("file/font/font2.png", 30, 10, 3);
             英影.Load("file/font/font.png", 30, 10, 3);
             黒影.Load("file/font/font_num_black.png", 10, 10, 1);
             黒数字.Load("file/font/font_num_black2.png", 10, 10, 1);
             白数字.Load("file/font/font_num_white.png", 10, 10, 1);
 
-            //フォント調整_____a__b__c__d__e__f__g__h__i__j__k__l__m__n__o__p__q__r__s__t__u__v__w__x__y__z
+            //フォント幅調整_____a__b__c__d__e__f__g__h__i__j__k__l__m__n__o__p__q__r__s__t__u__v__w__x__y__z
             英語.AdjustWidth({ 1, 3, 2, 2, 3, 3, 1, 2, 4, 2, 3, 2, 0, 1, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 2, 2 });
             英影.AdjustWidth({ 1, 3, 2, 2, 3, 3, 1, 2, 4, 2, 3, 2, 0, 1, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 2, 2 });
+
+            //BMPフォントを利用
+            //AndroidだとFont生成が遅いのでほぼ必須
+            //BMPゴシック中.Load("file/font/ipa.png");
+            //BMPゴシック小.Load("file/font/ipa2.png");
+            //MFont::ゴシック小.LoadBMPFont(MFont::BMPゴシック小,"file/font/bmp_font_list.txt");
+            //MFont::ゴシック中.LoadBMPFont(MFont::BMPゴシック中,"file/font/bmp_font_list.txt");
+            ゴシック小.Load("file/font/ipag.ttf", 12, 0,false);
+            ゴシック中.Load("file/font/ipag.ttf", 16, 0,false);
+            BMP黒.Load("", 6,0);
+            BMP黒影.Load("", 7, 0);
+            BMP白.Load("", 6, 0);
 
             BMP黒.SetImageS("a", &英語, 26);
             BMP黒.SetImageS("A", &英語, 26);
@@ -293,6 +295,31 @@ namespace SDX_TD
             BMP黒影.SetImage("☆", 英影[29]);
 
             BMP白.SetImageS("0", &白数字, 10);
+
+			fontS[Type::Tゴシック小].Load("file/font/ipag.ttf", 12, 0, false);
+			fontS[Type::Tゴシック中].Load("file/font/ipag.ttf", 16, 0, false);
+			fontS[Type::TBMP黒].Load("", 6, 0);
+			fontS[Type::TBMP黒影].Load("", 7, 0);
+			fontS[Type::TBMP白].Load("", 6, 0);
+
+			fontS[Type::TBMP黒].SetImageS("a", &英語, 26);
+			fontS[Type::TBMP黒].SetImageS("A", &英語, 26);
+			fontS[Type::TBMP黒].SetImageS("0", &黒数字, 10);
+			fontS[Type::TBMP黒].SetImage("×", 英語[26]);
+			fontS[Type::TBMP黒].SetImage("□", 英語[27]);
+			fontS[Type::TBMP黒].SetImage("○", 英語[28]);
+			fontS[Type::TBMP黒].SetImage("☆", 英語[29]);
+
+			fontS[Type::TBMP黒影].SetImageS("a", &英影, 26);
+			fontS[Type::TBMP黒影].SetImageS("A", &英影, 26);
+			fontS[Type::TBMP黒影].SetImageS("0", &黒影, 10);
+			fontS[Type::TBMP黒影].SetImage("×", 英影[26]);
+			fontS[Type::TBMP黒影].SetImage("□", 英影[27]);
+			fontS[Type::TBMP黒影].SetImage("○", 英影[28]);
+			fontS[Type::TBMP黒影].SetImage("☆", 英影[29]);
+
+			fontS[Type::TBMP白].SetImageS("0", &白数字, 10);
+
         }
     }
 

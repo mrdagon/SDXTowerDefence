@@ -6,13 +6,15 @@
 #include "Land.h"
 #include "Layer.h"
 #include "IStage.h"
-#include "Pause.h"
-#include "Result.h"
+//#include "Pause.h"
+//#include "Result.h"
 
 #include "Enemy.h"
 #include "Unit.h"
 #include "Shot.h"
 #include "Wave.h"
+#include "../Scene/ScenePause.h"
+#include "../Scene/SceneResult.h"
 
 #include "JobUnit.h"
 #include "Struct/ReplayData.h"
@@ -270,7 +272,7 @@ namespace SDX_TD
             //ポーズ
             if (UI::Rメニュー.Hit(&point) && isClick)
             {
-                Director::AddScene(std::make_shared<Pause>());
+                Director::AddScene(std::make_shared<ScenePause>());
             }
 
             //ここより上はリプレイ時も共通
@@ -824,7 +826,7 @@ namespace SDX_TD
 		/**クリアor全滅処理.*/
 		void GameOver(bool is勝利)
 		{
-			Director::AddScene(std::make_shared<Result>(is勝利));
+			Director::AddScene(std::make_shared<SceneResult>(is勝利));
 		}
 
 		/**リプレイ保存処理.*/
