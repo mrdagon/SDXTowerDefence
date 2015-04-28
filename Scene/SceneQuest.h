@@ -13,30 +13,31 @@ namespace SDX
 	{
 	public:
 		//@Define
-		UI_Frame 難易度情報 = { 65, {365,305,272,107} , 0.000000,1};
-		UI_Frame ステージ一覧 = { 29, {62,305,300,172} , 0.000000,1};
-		UI_Button 開始 = { 30, {365,418,272,60} , 0.000000,0};
-		UI_Button 難易度－ = { 60, {372,310,40,40} , 0.000000,0};
-		UI_Button 難易度＋ = { 61, {591,310,40,40} , 0.000000,0};
-		UI_Frame ウィッチ一覧 = { 63, {364,2,276,300} , 0.000000,1};
-		UI_Frame マップ情報 = { 64, {62,2,300,300} , 0.000000,1};
-		UI_Button 面数Minus = { 107, {67,309,40,160} , 0.000000,0};
-		UI_Button ステージA = { 109, {113,308,195,39} , 0.000000,0};
-		UI_Button ステージB = { 110, {113,349,195,39} , 0.000000,0};
-		UI_Button ステージC = { 111, {112,391,195,38} , 0.000000,0};
-		UI_Button ステージD = { 112, {113,430,192,41} , 0.000000,0};
-		UI_Button 面数Plus = { 113, {314,313,40,160} , 0.000000,0};
+		UI_Frame 難易度情報 = { 65, {365,305,272,107} , 0.000000,5};
+		UI_Frame ステージ一覧 = { 29, {62,305,300,172} , 0.000000,5};
+		UI_Button 開始 = { 30, {365,418,272,60} , 0.000000,3};
+		UI_Button 難易度－ = { 60, {372,310,40,40} , 0.000000,3};
+		UI_Button 難易度＋ = { 61, {591,310,40,40} , 0.000000,3};
+		UI_Frame ウィッチ一覧 = { 63, {62,2,300,300} , 0.000000,5};
+		UI_Frame マップ情報 = { 64, {362,2,276,300} , 0.000000,5};
+		UI_Button 面数Minus = { 107, {68,310,40,160} , 0.000000,3};
+		UI_Button ステージA = { 109, {115,310,195,40} , 0.000000,1};
+		UI_Button ステージB = { 110, {115,350,195,40} , 0.000000,1};
+		UI_Button ステージC = { 111, {115,390,195,40} , 0.000000,1};
+		UI_Button ステージD = { 112, {115,430,195,40} , 0.000000,1};
+		UI_Button 面数Plus = { 113, {317,310,40,160} , 0.000000,3};
 		UI_Text 難易度 = { 114, {417,310,167,40} , 0.000000,0,"難易度"};
 		UI_Text Wave数 = { 115, {371,356,125,25} , 0.000000,0,"25 Wave"};
 		UI_Text 出現数 = { 116, {503,356,125,25} , 0.000000,0,"敵数 1.2倍"};
 		UI_Text HP補正 = { 117, {371,385,126,24} , 0.000000,0,"HP 1.2倍"};
 		UI_Text Lv補正 = { 118, {503,385,126,24} , 0.000000,0,"LV 1.5倍"};
-		UI_Frame ウィッチアイコン = { 119, {366,4,20,20} , 0.000000,0};
-		UI_Button シングル_カップル = { 31, {375,258,120,40} , 0.000000,0};
-		UI_Button トライアル = { 59, {507,258,120,40} , 0.000000,0};
-		UI_Text ウィッチ名 = { 121, {380,4,56,20} , 0.000000,0,"std::string"};
-		UI_Text 星 = { 122, {443,4,56,21} , 0.000000,0,"std::string"};
-		UI_Text スコア = { 123, {505,4,126,22} , 0.000000,0,"std::string"};
+		UI_Frame ウィッチアイコン = { 119, {68,32,20,20} , 0.000000,0};
+		UI_Button シングル_カップル = { 31, {69,258,140,40} , 0.000000,3};
+		UI_Button トライアル = { 59, {216,258,140,40} , 0.000000,3};
+		UI_Text ウィッチ名 = { 121, {96,32,56,20} , 0.000000,0,"std::string"};
+		UI_Text 星 = { 122, {160,32,56,21} , 0.000000,0,"std::string"};
+		UI_Text スコア = { 123, {226,32,126,22} , 0.000000,0,"std::string"};
+		UI_Text ハイスコア = { 240, {64,4,126,22} , 0.000000,0,"Hi Score"};
 		//@End
 
 		SceneQuest()
@@ -97,17 +98,18 @@ namespace SDX
 			MSystem::frameS[ステージC.frameNo].Draw(ステージC.rect);
 			MSystem::frameS[ステージD.frameNo].Draw(ステージD.rect);
 			MSystem::frameS[面数Plus.frameNo].Draw(面数Plus.rect);
-			MFont::fontS[難易度.fontNo].Draw(難易度.rect.GetPoint(),Color::White,難易度.text);
-			MFont::fontS[Wave数.fontNo].Draw(Wave数.rect.GetPoint(),Color::White,Wave数.text);
-			MFont::fontS[出現数.fontNo].Draw(出現数.rect.GetPoint(),Color::White,出現数.text);
-			MFont::fontS[HP補正.fontNo].Draw(HP補正.rect.GetPoint(),Color::White,HP補正.text);
-			MFont::fontS[Lv補正.fontNo].Draw(Lv補正.rect.GetPoint(),Color::White,Lv補正.text);
+			MFont::fontS[難易度.fontNo].DrawRotate(難易度.rect.GetCenter(),1,0,Color::White,難易度.text);
+			MFont::fontS[Wave数.fontNo].DrawRotate(Wave数.rect.GetCenter(),1,0,Color::White,Wave数.text);
+			MFont::fontS[出現数.fontNo].DrawRotate(出現数.rect.GetCenter(),1,0,Color::White,出現数.text);
+			MFont::fontS[HP補正.fontNo].DrawRotate(HP補正.rect.GetCenter(),1,0,Color::White,HP補正.text);
+			MFont::fontS[Lv補正.fontNo].DrawRotate(Lv補正.rect.GetCenter(),1,0,Color::White,Lv補正.text);
 			MSystem::frameS[ウィッチアイコン.frameNo].Draw(ウィッチアイコン.rect);
 			MSystem::frameS[シングル_カップル.frameNo].Draw(シングル_カップル.rect);
 			MSystem::frameS[トライアル.frameNo].Draw(トライアル.rect);
-			MFont::fontS[ウィッチ名.fontNo].Draw(ウィッチ名.rect.GetPoint(),Color::White,ウィッチ名.text);
-			MFont::fontS[星.fontNo].Draw(星.rect.GetPoint(),Color::White,星.text);
-			MFont::fontS[スコア.fontNo].Draw(スコア.rect.GetPoint(),Color::White,スコア.text);
+			MFont::fontS[ウィッチ名.fontNo].DrawRotate(ウィッチ名.rect.GetCenter(),1,0,Color::White,ウィッチ名.text);
+			MFont::fontS[星.fontNo].DrawRotate(星.rect.GetCenter(),1,0,Color::White,星.text);
+			MFont::fontS[スコア.fontNo].DrawRotate(スコア.rect.GetCenter(),1,0,Color::White,スコア.text);
+			MFont::fontS[ハイスコア.fontNo].DrawRotate(ハイスコア.rect.GetCenter(),1,0,Color::White,ハイスコア.text);
 			//@End
 		}
 
@@ -143,6 +145,7 @@ namespace SDX
 			ウィッチ名 = *dynamic_cast<UI_Text*>(guiData.dataS[21].get());
 			星 = *dynamic_cast<UI_Text*>(guiData.dataS[22].get());
 			スコア = *dynamic_cast<UI_Text*>(guiData.dataS[23].get());
+			ハイスコア = *dynamic_cast<UI_Text*>(guiData.dataS[24].get());
 			//@End
 		}
 	};

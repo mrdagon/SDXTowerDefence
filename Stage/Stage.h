@@ -595,13 +595,13 @@ namespace SDX_TD
 
             //スコアの表示
             MSystem::フレーム[5].Draw(UI::Rスコア);
-            MFont::BMP黒.Draw(UI::Pスコア + UI::P差分[0], Color::White, "SCORE");
-            MFont::BMP白.DrawExtend(UI::Pスコア, 2, 2, Color::White, { std::setw(10), score });
+			MFont::fontS[FontType::BMP黒].Draw(UI::Pスコア + UI::P差分[0], Color::White, "SCORE");
+			MFont::fontS[FontType::BMP白].DrawExtend(UI::Pスコア, 2, 2, Color::White, { std::setw(10), score });
 
             int 敵数 = skyEnemyS.GetCount() + groundEnemyS.GetCount();
             MSystem::フレーム[5].Draw(UI::R敵数);
-            MFont::BMP黒.Draw(UI::P敵数 + UI::P差分[0], Color::White, "ENEMY");
-            MFont::BMP白.DrawExtend(UI::P敵数, 2, 2, Color::White, { std::setw(5), 敵数 });
+			MFont::fontS[FontType::BMP黒].Draw(UI::P敵数 + UI::P差分[0], Color::White, "ENEMY");
+			MFont::fontS[FontType::BMP白].DrawExtend(UI::P敵数, 2, 2, Color::White, { std::setw(5), 敵数 });
 
             //ゲーム速度の表示
             int spd = 1;
@@ -618,8 +618,8 @@ namespace SDX_TD
                     MSystem::フレーム[3].Draw(UI::Rゲーム速度[a], Color::Gray);
                 }
                 
-                MFont::BMP黒.Draw(UI::Rゲーム速度[a].GetPoint() + UI::P差分[7], Color::White, "x");
-                MFont::BMP黒.DrawExtend(UI::Rゲーム速度[a].GetPoint() + UI::P差分[6], 2, 2, Color::White, { std::setw(2), spd });
+				MFont::fontS[FontType::BMP黒].Draw(UI::Rゲーム速度[a].GetPoint() + UI::P差分[7], Color::White, "x");
+				MFont::fontS[FontType::BMP黒].DrawExtend(UI::Rゲーム速度[a].GetPoint() + UI::P差分[6], 2, 2, Color::White, { std::setw(2), spd });
 
                 spd *= 2 + 2 * TDSystem::is高速;
             }
@@ -654,8 +654,8 @@ namespace SDX_TD
             }
 
             //モードと難易度
-            MFont::BMP黒.DrawExtend(UI::P難易度名, 1, 1, Color::White, DifficultyDataS[TDSystem::難易度].名前 );
-            MFont::BMP黒.DrawExtend(UI::Pモード名, 1, 1, Color::White, { "single" });
+			MFont::fontS[FontType::BMP黒].DrawExtend(UI::P難易度名, 1, 1, Color::White, DifficultyDataS[TDSystem::難易度].名前);
+			MFont::fontS[FontType::BMP黒].DrawExtend(UI::Pモード名, 1, 1, Color::White, { "single" });
 
             //SP,HP,MPの表示
             if (Witch::Main->大魔法残り時間 > 0)
@@ -664,28 +664,28 @@ namespace SDX_TD
                 const int SP値 = int(Witch::Main->大魔法残り時間 * 100 / Witch::Main->大魔法時間);
 
                 MIcon::UI[IconType::マナ].Draw(UI::PＳＰ);
-                MFont::BMP白.DrawExtend(UI::PＳＰ + UI::P差分[1], 2, 2, color , { std::setw(5), SP値 });//大魔法チャージ量
+				MFont::fontS[FontType::BMP白].DrawExtend(UI::PＳＰ + UI::P差分[1], 2, 2, color, { std::setw(5), SP値 });//大魔法チャージ量
             }
             else
             {
                 const int SP値 = std::min(int(Witch::Main->Sp * 100 / Witch::Main->最大Sp), 100);
                 
                 MIcon::UI[IconType::マナ].Draw(UI::PＳＰ);
-                MFont::BMP白.DrawExtend(UI::PＳＰ + UI::P差分[1], 2, 2, { 128, 128, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
+				MFont::fontS[FontType::BMP白].DrawExtend(UI::PＳＰ + UI::P差分[1], 2, 2, { 128, 128, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
             }
 
             MIcon::UI[IconType::ライフ].Draw(UI::P体力);
-            MFont::BMP白.DrawExtend(UI::P体力 + UI::P差分[1], 2, 2, { 255, 60, 60 }, { std::setw(5), Witch::Main->Hp });//HP
+			MFont::fontS[FontType::BMP白].DrawExtend(UI::P体力 + UI::P差分[1], 2, 2, { 255, 60, 60 }, { std::setw(5), Witch::Main->Hp });//HP
 
             MIcon::UI[IconType::レベル].Draw(UI::P魔力);
-            MFont::BMP白.DrawExtend(UI::P魔力 + UI::P差分[1], 2, 2, { 255, 255, 0 }, { std::setw(5), (int)Witch::Main->Mp });//MP
+			MFont::fontS[FontType::BMP白].DrawExtend(UI::P魔力 + UI::P差分[1], 2, 2, { 255, 255, 0 }, { std::setw(5), (int)Witch::Main->Mp });//MP
 
             //設定ボタン
             MSystem::フレーム[3].Draw(UI::Rメニュー);
-            MFont::ゴシック中.DrawShadow(UI::Rメニュー.GetPoint() + UI::P差分[2], Color::Black, Color::Gray, "ポーズ");
+			MFont::fontS[FontType::ゴシック中].DrawShadow(UI::Rメニュー.GetPoint() + UI::P差分[2], Color::Black, Color::Gray, "ポーズ");
 
             MSystem::フレーム[3].Draw(UI::R大魔法);
-            MFont::ゴシック中.DrawShadow(UI::R大魔法.GetPoint() + UI::P差分[2], Color::Black, Color::Gray, "大魔法");
+			MFont::fontS[FontType::ゴシック中].DrawShadow(UI::R大魔法.GetPoint() + UI::P差分[2], Color::Black, Color::Gray, "大魔法");
 
             //魔法一覧の表示
             for (auto &&it : jobS)
@@ -1095,7 +1095,7 @@ namespace SDX_TD
                     SStage->Draw();
                     Screen::SetBright(Color::White);
                     //@todo 演出は仮
-                    MFont::ゴシック中.DrawRotate({ 800 - a * 6, 300 }, 5, 0, Color::White, Witch::Main->大魔法名);
+					MFont::fontS[FontType::ゴシック中].DrawRotate({ 800 - a * 6, 300 }, 5, 0, Color::White, Witch::Main->大魔法名);
                     System::Update();
                 }
             }

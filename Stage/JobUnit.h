@@ -35,8 +35,8 @@ namespace SDX_TD
 
 			//ユニットアイコンと残り数の表示
 			MUnit::魔女[st->職種][1]->DrawRotate(shape.GetPoint() + P差分[3], 1, 0);
-			MFont::BMP黒.DrawExtend(shape.GetPoint() + P差分[4], 2, 2, Color::White, { std::setw(2), Witch::強化回数[st->職種] });
-			MFont::BMP黒.Draw(shape.GetPoint() + P差分[5], Color::White, "×");
+			MFont::fontS[FontType::BMP黒].DrawExtend(shape.GetPoint() + P差分[4], 2, 2, Color::White, { std::setw(2), Witch::強化回数[st->職種] });
+			MFont::fontS[FontType::BMP黒].Draw(shape.GetPoint() + P差分[5], Color::White, "×");
 		}
 
 		void SetType(UnitType 職種)

@@ -104,7 +104,7 @@ namespace SDX_TD
 				int size = 2;
 				if (no >= 100){ size = 1; }
 
-				MFont::BMP黒.DrawExtend({ x , y + 4 }, size, size, Color::White, { std::setw(3), no + 1 });
+				MFont::fontS[FontType::BMP黒].DrawExtend({ x, y + 4 }, size, size, Color::White, { std::setw(3), no + 1 });
 
 				y += 80;
 				++no;

@@ -230,19 +230,13 @@ namespace SDX_TD
     {
 		Font fontS[5];
 
-        Font ゴシック小;
-        Font ゴシック中;
-        Font BMP黒;
-        Font BMP黒影;
-        Font BMP白;
-
-		Image BMPゴシック小;
-		Image BMPゴシック中;
         ImagePack 英語;
         ImagePack 英影;
         ImagePack 黒数字;
         ImagePack 黒影;
         ImagePack 白数字;
+		Image ゴシック12;
+		Image ゴシック16;
 
         static void Load()
         {
@@ -252,64 +246,36 @@ namespace SDX_TD
             黒影.Load("file/font/font_num_black.png", 10, 10, 1);
             黒数字.Load("file/font/font_num_black2.png", 10, 10, 1);
             白数字.Load("file/font/font_num_white.png", 10, 10, 1);
+			ゴシック12.Load("file/font/12.png");
+			ゴシック16.Load("file/font/16.png");
 
             //フォント幅調整_____a__b__c__d__e__f__g__h__i__j__k__l__m__n__o__p__q__r__s__t__u__v__w__x__y__z
             英語.AdjustWidth({ 1, 3, 2, 2, 3, 3, 1, 2, 4, 2, 3, 2, 0, 1, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 2, 2 });
             英影.AdjustWidth({ 1, 3, 2, 2, 3, 3, 1, 2, 4, 2, 3, 2, 0, 1, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 2, 2 });
 
-            //BMPフォントを利用
-            //AndroidだとFont生成が遅いのでほぼ必須
-            //BMPゴシック中.Load("file/font/ipa.png");
-            //BMPゴシック小.Load("file/font/ipa2.png");
-            //MFont::ゴシック小.LoadBMPFont(MFont::BMPゴシック小,"file/font/bmp_font_list.txt");
-            //MFont::ゴシック中.LoadBMPFont(MFont::BMPゴシック中,"file/font/bmp_font_list.txt");
-            ゴシック小.Load("file/font/ipag.ttf", 12, 0,false);
-            ゴシック中.Load("file/font/ipag.ttf", 16, 0,false);
-            BMP黒.Load("", 6,0);
-            BMP黒影.Load("", 7, 0);
-            BMP白.Load("", 6, 0);
+			fontS[FontType::ゴシック小].LoadBMPFont(ゴシック12, "file/font/bmp_font_list.txt");
+			fontS[FontType::ゴシック中].LoadBMPFont(ゴシック16, "file/font/bmp_font_list.txt");
+			fontS[FontType::BMP黒].Load("", 6, 0);
+			fontS[FontType::BMP黒影].Load("", 7, 0);
+			fontS[FontType::BMP白].Load("", 6, 0);
 
-            BMP黒.SetImageS("a", &英語, 26);
-            BMP黒.SetImageS("A", &英語, 26);
-            BMP黒.SetImageS("0", &黒数字, 10);
-            BMP黒.SetImage("×", 英語[26]);
-            BMP黒.SetImage("□", 英語[27]);
-            BMP黒.SetImage("○", 英語[28]);
-            BMP黒.SetImage("☆", 英語[29]);
+			fontS[FontType::BMP黒].SetImageS("a", &英語, 26);
+			fontS[FontType::BMP黒].SetImageS("A", &英語, 26);
+			fontS[FontType::BMP黒].SetImageS("0", &黒数字, 10);
+			fontS[FontType::BMP黒].SetImage("×", 英語[26]);
+			fontS[FontType::BMP黒].SetImage("□", 英語[27]);
+			fontS[FontType::BMP黒].SetImage("○", 英語[28]);
+			fontS[FontType::BMP黒].SetImage("☆", 英語[29]);
 
-            BMP黒影.SetImageS("a", &英影, 26);
-            BMP黒影.SetImageS("A", &英影, 26);
-            BMP黒影.SetImageS("0", &黒影, 10);
-            BMP黒影.SetImage("×", 英影[26]);
-            BMP黒影.SetImage("□", 英影[27]);
-            BMP黒影.SetImage("○", 英影[28]);
-            BMP黒影.SetImage("☆", 英影[29]);
+			fontS[FontType::BMP黒影].SetImageS("a", &英影, 26);
+			fontS[FontType::BMP黒影].SetImageS("A", &英影, 26);
+			fontS[FontType::BMP黒影].SetImageS("0", &黒影, 10);
+			fontS[FontType::BMP黒影].SetImage("×", 英影[26]);
+			fontS[FontType::BMP黒影].SetImage("□", 英影[27]);
+			fontS[FontType::BMP黒影].SetImage("○", 英影[28]);
+			fontS[FontType::BMP黒影].SetImage("☆", 英影[29]);
 
-            BMP白.SetImageS("0", &白数字, 10);
-
-			fontS[(int)FontType::ゴシック小].Load("file/font/ipag.ttf", 12, 0, false);
-			fontS[(int)FontType::ゴシック中].Load("file/font/ipag.ttf", 16, 0, false);
-			fontS[(int)FontType::BMP黒].Load("", 6, 0);
-			fontS[(int)FontType::BMP黒影].Load("", 7, 0);
-			fontS[(int)FontType::BMP白].Load("", 6, 0);
-
-			fontS[(int)FontType::BMP黒].SetImageS("a", &英語, 26);
-			fontS[(int)FontType::BMP黒].SetImageS("A", &英語, 26);
-			fontS[(int)FontType::BMP黒].SetImageS("0", &黒数字, 10);
-			fontS[(int)FontType::BMP黒].SetImage("×", 英語[26]);
-			fontS[(int)FontType::BMP黒].SetImage("□", 英語[27]);
-			fontS[(int)FontType::BMP黒].SetImage("○", 英語[28]);
-			fontS[(int)FontType::BMP黒].SetImage("☆", 英語[29]);
-
-			fontS[(int)FontType::BMP黒影].SetImageS("a", &英影, 26);
-			fontS[(int)FontType::BMP黒影].SetImageS("A", &英影, 26);
-			fontS[(int)FontType::BMP黒影].SetImageS("0", &黒影, 10);
-			fontS[(int)FontType::BMP黒影].SetImage("×", 英影[26]);
-			fontS[(int)FontType::BMP黒影].SetImage("□", 英影[27]);
-			fontS[(int)FontType::BMP黒影].SetImage("○", 英影[28]);
-			fontS[(int)FontType::BMP黒影].SetImage("☆", 英影[29]);
-
-			fontS[(int)FontType::BMP白].SetImageS("0", &白数字, 10);
+			fontS[FontType::BMP白].SetImageS("0", &白数字, 10);
 
         }
     }

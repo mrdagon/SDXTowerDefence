@@ -12,6 +12,7 @@
 #include "Scene/SceneReplay.h"
 #include "Scene/SceneStory.h"
 #include "Scene/SceneTitle.h"
+#include "SceneWitch.h"
 
 namespace SDX
 {
@@ -32,15 +33,15 @@ namespace SDX
 		SceneReplay sceneReplay;
 
 		//@Define
-		UI_Frame 全体枠 = { 99, {60,0,580,480} , 0.000000,0};
-		UI_Button Storyタグ = { 67, {0,0,60,60} , 0.000000,0};
-		UI_Button Questタグ = { 72, {0,60,60,60} , 0.000000,0};
-		UI_Button Freeタグ = { 73, {0,120,60,60} , 0.000000,0};
-		UI_Button Replayタグ = { 74, {0,300,60,60} , 0.000000,0};
-		UI_Button Archiveタグ = { 75, {0,240,60,60} , 0.000000,0};
-		UI_Button Skillタグ = { 76, {0,180,60,60} , 0.000000,0};
-		UI_Button Helpタグ = { 77, {0,360,60,60} , 0.000000,0};
-		UI_Button Configタグ = { 78, {0,420,60,60} , 0.000000,0};
+		UI_Frame 全体枠 = { 99, {0,0,640,480} , 0.000000,0};
+		UI_Button Storyタグ = { 67, {0,0,60,60} , 0.000000,1};
+		UI_Button Questタグ = { 72, {0,60,60,60} , 0.000000,1};
+		UI_Button Freeタグ = { 73, {0,120,60,60} , 0.000000,1};
+		UI_Button Replayタグ = { 74, {0,300,60,60} , 0.000000,1};
+		UI_Button Archiveタグ = { 75, {0,240,60,60} , 0.000000,1};
+		UI_Button Skillタグ = { 76, {0,180,60,60} , 0.000000,1};
+		UI_Button Helpタグ = { 77, {0,360,60,60} , 0.000000,1};
+		UI_Button Configタグ = { 78, {0,420,60,60} , 0.000000,1};
 		//@End
 
 		SceneMenu()
@@ -90,7 +91,7 @@ namespace SDX
 #endif
 			//枠部分の表示
 			//@Draw
-			//MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);
+			MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);
 			MSystem::frameS[Storyタグ.frameNo].Draw(Storyタグ.rect);
 			MSystem::frameS[Questタグ.frameNo].Draw(Questタグ.rect);
 			MSystem::frameS[Freeタグ.frameNo].Draw(Freeタグ.rect);

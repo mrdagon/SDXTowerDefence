@@ -246,11 +246,11 @@ namespace SDX_TD
 			//画像&名前
 			MSystem::フレーム[5].Draw(UI::R名前);
 			MUnit::敵[st->種族][1]->DrawRotate(UI::P画像, 2, 0);
-			MFont::ゴシック中.DrawShadow(UI::P名前, Color::White, Color::Gray, st->種族名);
+			MFont::fontS[(int)FontType::ゴシック中].DrawShadow(UI::P名前, Color::White, Color::Gray, st->種族名);
 
 			//説明文
 			MSystem::フレーム[5].Draw(UI::R説明);
-			MFont::ゴシック小.DrawShadow(UI::P説明, Color::White, Color::Gray, st->説明文);
+			MFont::fontS[FontType::ゴシック小].DrawShadow(UI::P説明, Color::White, Color::Gray, st->説明文);
 
 			//性能
 
@@ -281,7 +281,7 @@ namespace SDX_TD
 
 				MSystem::フレーム[5].Draw(UI::R性能[a], { 128, 128, 255 });
 				MIcon::UI[IconNo[a]].Draw(UI::P性能アイコン[a]);
-				MFont::BMP白.DrawExtend(UI::P性能[a], 2, 2, Color::White, { std::setw(10), Num[a] });
+				MFont::fontS[FontType::BMP白].DrawExtend(UI::P性能[a], 2, 2, Color::White, { std::setw(10), Num[a] });
 			}
 		}
 

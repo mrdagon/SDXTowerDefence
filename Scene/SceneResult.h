@@ -17,11 +17,11 @@ namespace SDX
 		bool isリプレイ保存済み = false;
 	public:
 		//@Define
-		UI_Button リプレイ保存 = { 83, {121,382,120,60} , 0.000000,0};
-		UI_Button リトライ = { 84, {258,384,120,60} , 0.000000,0};
-		UI_Button 終了 = { 85, {398,383,120,60} , 0.000000,0};
-		UI_Frame 全体枠 = { 86, {80,10,480,460} , 0.000000,0};
-		UI_Frame Result = { 87, {100,30,440,40} , 0.000000,0};
+		UI_Button リプレイ保存 = { 83, {121,382,120,60} , 0.000000,3};
+		UI_Button リトライ = { 84, {258,384,120,60} , 0.000000,3};
+		UI_Button 終了 = { 85, {398,383,120,60} , 0.000000,3};
+		UI_Frame 全体枠 = { 86, {80,10,480,460} , 0.000000,5};
+		UI_Frame Result = { 87, {100,30,440,40} , 0.000000,5};
 		UI_Text 最終スコア = { 151, {225,242,196,54} , 0.000000,0,"Score"};
 		UI_Text 撃破スコア = { 153, {253,83,146,32} , 0.000000,0,"撃破スコア"};
 		UI_Text 難易度補正 = { 154, {250,130,146,31} , 0.000000,0,"Difficulty Bonus"};
@@ -73,11 +73,11 @@ namespace SDX
 			MSystem::frameS[終了.frameNo].Draw(終了.rect);
 			MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);
 			MSystem::frameS[Result.frameNo].Draw(Result.rect);
-			MFont::fontS[最終スコア.fontNo].Draw(最終スコア.rect.GetPoint(),Color::White,最終スコア.text);
-			MFont::fontS[撃破スコア.fontNo].Draw(撃破スコア.rect.GetPoint(),Color::White,撃破スコア.text);
-			MFont::fontS[難易度補正.fontNo].Draw(難易度補正.rect.GetPoint(),Color::White,難易度補正.text);
-			MFont::fontS[体力補正.fontNo].Draw(体力補正.rect.GetPoint(),Color::White,体力補正.text);
-			MFont::fontS[獲得経験値.fontNo].Draw(獲得経験値.rect.GetPoint(),Color::White,獲得経験値.text);
+			MFont::fontS[最終スコア.fontNo].DrawRotate(最終スコア.rect.GetCenter(),1,0,Color::White,最終スコア.text);
+			MFont::fontS[撃破スコア.fontNo].DrawRotate(撃破スコア.rect.GetCenter(),1,0,Color::White,撃破スコア.text);
+			MFont::fontS[難易度補正.fontNo].DrawRotate(難易度補正.rect.GetCenter(),1,0,Color::White,難易度補正.text);
+			MFont::fontS[体力補正.fontNo].DrawRotate(体力補正.rect.GetCenter(),1,0,Color::White,体力補正.text);
+			MFont::fontS[獲得経験値.fontNo].DrawRotate(獲得経験値.rect.GetCenter(),1,0,Color::White,獲得経験値.text);
 			//@End
 		}
 

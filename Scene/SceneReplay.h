@@ -13,18 +13,18 @@ namespace SDX
 	{
 	public:
 		//@Define
-		UI_Frame リプレイ情報 = { 127, {364,321,275,95} , 0.000000,1};
-		UI_Button 開始 = { 128, {364,418,274,60} , 0.000000,0};
+		UI_Frame リプレイ情報 = { 127, {364,305,275,110} , 0.000000,5};
+		UI_Button 開始 = { 128, {364,418,274,60} , 0.000000,3};
 		UI_Text スコア = { 129, {484,382,146,24} , 0.000000,0,"score"};
-		UI_Button スクロールバー = { 132, {318,50,40,381} , 0.000000,0};
-		UI_Frame マップ情報 = { 133, {364,2,275,317} , 0.000000,1};
-		UI_Button リプレイ選択 = { 135, {65,6,248,40} , 0.000000,0};
+		UI_Button スクロールバー = { 132, {318,50,40,381} , 0.000000,3};
+		UI_Frame マップ情報 = { 133, {364,2,275,300} , 0.000000,5};
+		UI_Button リプレイ選択 = { 135, {65,6,248,40} , 0.000000,1};
 		UI_Text ウィッチ = { 139, {509,343,118,25} , 0.000000,0,"std::string"};
 		UI_Text 難易度 = { 142, {375,343,118,25} , 0.000000,0,"Difficulty"};
 		UI_Text 結果 = { 144, {375,383,97,22} , 0.000000,0,"Perfect"};
 		UI_Frame ステージ一覧 = { 145, {62,2,300,476} , 0.000000,1};
-		UI_Button 下スクロール = { 146, {318,434,40,40} , 0.000000,0};
-		UI_Button 上スクロール = { 148, {318,6,40,40} , 0.000000,0};
+		UI_Button 下スクロール = { 146, {318,434,40,40} , 0.000000,3};
+		UI_Button 上スクロール = { 148, {318,6,40,40} , 0.000000,3};
 		//@End
 
 		SceneReplay()
@@ -68,13 +68,13 @@ namespace SDX
 			//@Draw
 			MSystem::frameS[リプレイ情報.frameNo].Draw(リプレイ情報.rect);
 			MSystem::frameS[開始.frameNo].Draw(開始.rect);
-			MFont::fontS[スコア.fontNo].Draw(スコア.rect.GetPoint(),Color::White,スコア.text);
+			MFont::fontS[スコア.fontNo].DrawRotate(スコア.rect.GetCenter(),1,0,Color::White,スコア.text);
 			MSystem::frameS[スクロールバー.frameNo].Draw(スクロールバー.rect);
 			MSystem::frameS[マップ情報.frameNo].Draw(マップ情報.rect);
 			MSystem::frameS[リプレイ選択.frameNo].Draw(リプレイ選択.rect);
-			MFont::fontS[ウィッチ.fontNo].Draw(ウィッチ.rect.GetPoint(),Color::White,ウィッチ.text);
-			MFont::fontS[難易度.fontNo].Draw(難易度.rect.GetPoint(),Color::White,難易度.text);
-			MFont::fontS[結果.fontNo].Draw(結果.rect.GetPoint(),Color::White,結果.text);
+			MFont::fontS[ウィッチ.fontNo].DrawRotate(ウィッチ.rect.GetCenter(),1,0,Color::White,ウィッチ.text);
+			MFont::fontS[難易度.fontNo].DrawRotate(難易度.rect.GetCenter(),1,0,Color::White,難易度.text);
+			MFont::fontS[結果.fontNo].DrawRotate(結果.rect.GetCenter(),1,0,Color::White,結果.text);
 			MSystem::frameS[ステージ一覧.frameNo].Draw(ステージ一覧.rect);
 			MSystem::frameS[下スクロール.frameNo].Draw(下スクロール.rect);
 			MSystem::frameS[上スクロール.frameNo].Draw(上スクロール.rect);

@@ -50,7 +50,7 @@ namespace SDX
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
 			//@Draw
-			MFont::fontS[実装中～.fontNo].Draw(実装中～.rect.GetPoint(),Color::White,実装中～.text);
+			MFont::fontS[実装中～.fontNo].DrawRotate(実装中～.rect.GetCenter(),1,0,Color::White,実装中～.text);
 			//@End
 		}
 

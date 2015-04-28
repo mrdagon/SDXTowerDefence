@@ -67,13 +67,13 @@ namespace SDX_TD
 			{
 				//数値が増えていく
 				int Num = 99 - 残り強化時間 * 99 / 強化or売却長さ;
-				MFont::BMP黒.DrawExtend({ GetX() - 12, GetY() - 10 }, 2, 2, { 255, 120, 120 }, { std::setw(2), Num });
+				MFont::fontS[FontType::BMP黒].DrawExtend({ GetX() - 12, GetY() - 10 }, 2, 2, { 255, 120, 120 }, { std::setw(2), Num });
 			}
 			else if (残り売却時間 > 0)
 			{
 				//数値が減っていく
 				int Num = 残り売却時間 * 99 / 強化or売却長さ;
-				MFont::BMP黒.DrawExtend({ GetX() - 12, GetY() - 10 }, 2, 2, { 120, 120, 255 }, { std::setw(2), Num });
+				MFont::fontS[FontType::BMP黒].DrawExtend({ GetX() - 12, GetY() - 10 }, 2, 2, { 120, 120, 255 }, { std::setw(2), Num });
 			}
 			else
 			{
@@ -95,14 +95,14 @@ namespace SDX_TD
 			//画像&名前
 			MSystem::フレーム[5].Draw(UI::R名前);
 			MUnit::魔女[st->職種][1]->DrawRotate(UI::P画像, 2, 0);
-			MFont::ゴシック中.DrawShadow(UI::P名前, Color::White, Color::Gray, st->名前);
+			MFont::fontS[FontType::ゴシック中].DrawShadow(UI::P名前, Color::White, Color::Gray, st->名前);
 
 			//レベル
 			if (isジョブリスト)
 			{
 				//説明文
 				MSystem::フレーム[5].Draw(UI::R説明);
-				MFont::ゴシック小.DrawShadow(UI::P説明, Color::White, Color::Gray, st->説明文);
+				MFont::fontS[FontType::ゴシック小].DrawShadow(UI::P説明, Color::White, Color::Gray, st->説明文);
 			}
 			else
 			{
@@ -116,23 +116,23 @@ namespace SDX_TD
 
 				//強化
 				MSystem::フレーム[3].Draw(UI::R強化);
-				MFont::ゴシック中.DrawShadow(UI::P強化, { 255, 0, 0 }, Color::Gray, "強化");
-				MFont::ゴシック中.DrawExtend({ UI::P強化.x - 12, UI::P強化.y + 22 }, 1, 1, { 255, 128, 128 }, "－");
-				MFont::BMP黒.DrawExtend({ UI::P強化.x - 4, UI::P強化.y + 22 }, 2, 2, Color::White , { std::setw(4), 強化費 });
+				MFont::fontS[FontType::ゴシック中].DrawShadow(UI::P強化, { 255, 0, 0 }, Color::Gray, "強化");
+				MFont::fontS[FontType::ゴシック中].DrawExtend({ UI::P強化.x - 12, UI::P強化.y + 22 }, 1, 1, { 255, 128, 128 }, "－");
+				MFont::fontS[FontType::BMP黒].DrawExtend({ UI::P強化.x - 4, UI::P強化.y + 22 }, 2, 2, Color::White, { std::setw(4), 強化費 });
 
 				//売却or発動
 				MSystem::フレーム[3].Draw(UI::R回収);
 				if (st->is使い捨て)
 				{
 					//発動
-					MFont::ゴシック中.DrawShadow(UI::P回収, Color::Blue, Color::Gray, "発動");
+					MFont::fontS[FontType::ゴシック中].DrawShadow(UI::P回収, Color::Blue, Color::Gray, "発動");
 				}
 				else
 				{
 					//売却
-					MFont::ゴシック中.DrawShadow(UI::P回収, Color::Blue, Color::Gray, "回収");
-					MFont::ゴシック中.DrawExtend({ UI::P回収.x - 12, UI::P回収.y + 22 }, 1, 1, { 128, 128, 255 }, "+");
-					MFont::BMP黒.DrawExtend({ UI::P回収.x - 4, UI::P回収.y + 22 }, 2, 2, Color::White, { std::setw(4), 回収費 });
+					MFont::fontS[FontType::ゴシック中].DrawShadow(UI::P回収, Color::Blue, Color::Gray, "回収");
+					MFont::fontS[FontType::ゴシック中].DrawExtend({ UI::P回収.x - 12, UI::P回収.y + 22 }, 1, 1, { 128, 128, 255 }, "+");
+					MFont::fontS[FontType::BMP黒].DrawExtend({ UI::P回収.x - 4, UI::P回収.y + 22 }, 2, 2, Color::White, { std::setw(4), 回収費 });
 				}
 			}
 
@@ -197,12 +197,12 @@ namespace SDX_TD
 				int 桁数 = 5;
 				if (!変化量表示) 桁数 = 10;
 
-				MFont::BMP白.DrawExtend(UI::P性能[num], 2, 2, Color::White, { std::setw(桁数), 性能[a] });
+				MFont::fontS[FontType::BMP白].DrawExtend(UI::P性能[num], 2, 2, Color::White, { std::setw(桁数), 性能[a] });
 
 				if (変化量表示)
 				{
-					MFont::ゴシック中.Draw({ 565, UI::P性能アイコン[num].y + 8 }, Color::Yellow, "+");
-					MFont::BMP白.DrawExtend(UI::P性能[num], 2, 2, Color::Yellow, { std::setw(10), 次性能[a] - 性能[a] });
+					MFont::fontS[FontType::ゴシック中].Draw({ 565, UI::P性能アイコン[num].y + 8 }, Color::Yellow, "+");
+					MFont::fontS[FontType::BMP白].DrawExtend(UI::P性能[num], 2, 2, Color::Yellow, { std::setw(10), 次性能[a] - 性能[a] });
 				}
 
 				++num;
