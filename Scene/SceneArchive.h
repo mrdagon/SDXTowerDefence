@@ -13,7 +13,7 @@ namespace SDX
 	{
 	public:
 		//@Define
-		UI_Text 実装中～ = { 104, {204,181,295,105} , 0.000000,0,"実装中"};
+		UI_Text 実装中～ = { 104, {300,200,100,100} , 0.000000,1,"実装中"};
 		//@End
 
 		SceneArchive()
@@ -49,9 +49,9 @@ namespace SDX
 #ifdef _DEBUG			
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
-			//@Draw
-			MFont::fontS[実装中～.fontNo].DrawRotate(実装中～.rect.GetCenter(),1,0,Color::White,実装中～.text);
-			//@End
+			//Draw
+			MFont::fontS[実装中～.fontNo].DrawRotate(実装中～.rect.GetCenter(),1,0,Color::Black,実装中～.text);
+			//End
 		}
 
 		void LoadGUI() override

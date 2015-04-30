@@ -34,14 +34,14 @@ namespace SDX
 
 		//@Define
 		UI_Frame 全体枠 = { 99, {0,0,640,480} , 0.000000,0};
-		UI_Button Storyタグ = { 67, {0,0,60,60} , 0.000000,1};
-		UI_Button Questタグ = { 72, {0,60,60,60} , 0.000000,1};
-		UI_Button Freeタグ = { 73, {0,120,60,60} , 0.000000,1};
-		UI_Button Replayタグ = { 74, {0,300,60,60} , 0.000000,1};
-		UI_Button Archiveタグ = { 75, {0,240,60,60} , 0.000000,1};
-		UI_Button Skillタグ = { 76, {0,180,60,60} , 0.000000,1};
-		UI_Button Helpタグ = { 77, {0,360,60,60} , 0.000000,1};
-		UI_Button Configタグ = { 78, {0,420,60,60} , 0.000000,1};
+		UI_Button Storyタグ = { 67, {0,0,60,60} , 0.000000,0};
+		UI_Button Questタグ = { 72, {0,60,60,60} , 0.000000,0};
+		UI_Button Freeタグ = { 73, {0,120,60,60} , 0.000000,0};
+		UI_Button Replayタグ = { 74, {0,300,60,60} , 0.000000,0};
+		UI_Button Archiveタグ = { 75, {0,240,60,60} , 0.000000,0};
+		UI_Button Skillタグ = { 76, {0,180,60,60} , 0.000000,0};
+		UI_Button Helpタグ = { 77, {0,360,60,60} , 0.000000,0};
+		UI_Button Configタグ = { 78, {0,420,60,60} , 0.000000,0};
 		//@End
 
 		SceneMenu()
@@ -83,6 +83,12 @@ namespace SDX
 			}
 		}
 
+		void DrawTag(UI_Button &タグ, const char* 文字列 , bool isBig )
+		{
+			MIcon::UI[IconType::マナ].DrawRotate( タグ.rect.GetCenter(), 1+isBig, 0);
+			MFont::fontS[FontType::BMP黒].DrawRotate( タグ.rect.GetCenter() + Point(0,15) , 1 , 0, Color::White, 文字列);
+		}
+
 		//描画
 		void Draw() override
 		{
@@ -102,10 +108,14 @@ namespace SDX
 			MSystem::frameS[Configタグ.frameNo].Draw(Configタグ.rect);
 			//@End
 			//アイコンと文字の表示
-			MIcon::UI[IconType::マナ].DrawRotate(Storyタグ.rect.GetCenter(), 1, 0);
-			MFont::fontS[(int)FontType::ゴシック中].DrawRotate(Storyタグ.rect.GetCenter(), 1, 0, Color::White, "Story");
-
-
+			DrawTag(Storyタグ, "Story", activeScene == &sceneStory);
+			DrawTag(Questタグ, "Quest", activeScene == &sceneQuest);
+			DrawTag(Freeタグ, "Free", activeScene == &sceneFree);
+			DrawTag(Replayタグ, "Replay", activeScene == &sceneReplay);
+			DrawTag(Archiveタグ, "Archive", activeScene == &sceneArchive);
+			DrawTag(Skillタグ, "Skill", activeScene == &sceneSkill);
+			DrawTag(Helpタグ, "Help", activeScene == &sceneHelp);
+			DrawTag(Configタグ, "Config", activeScene == &sceneConfig);
 
 			if (activeScene)
 			{

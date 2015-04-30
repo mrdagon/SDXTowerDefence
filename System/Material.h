@@ -145,7 +145,7 @@ namespace SDX_TD
         ImagePack マップチップ;
         ImagePack 枠画像[14];
         BmpFrame  フレーム[14];
-		BmpFrame frameS[14];
+        BmpFrame frameS[14];
 
         ImagePack マーク;
 
@@ -172,7 +172,7 @@ namespace SDX_TD
             for (int a = 0; a < 14; ++a)
             {
                 フレーム[a].Make(&枠画像[a]);
-				frameS[a].Make(&枠画像[a]);
+                frameS[a].Make(&枠画像[a]);
             }
 
             背景.Load("file/system/back000.jpg");
@@ -228,54 +228,54 @@ namespace SDX_TD
     /**フォント.*/
     namespace MFont
     {
-		Font fontS[5];
+        Font fontS[5];
 
         ImagePack 英語;
         ImagePack 英影;
         ImagePack 黒数字;
         ImagePack 黒影;
         ImagePack 白数字;
-		Image ゴシック12;
-		Image ゴシック16;
+        Image ゴシック12;
+        Image ゴシック16;
 
         static void Load()
         {
-			//画像の読み込み
+            //画像の読み込み
             英語.Load("file/font/font2.png", 30, 10, 3);
             英影.Load("file/font/font.png", 30, 10, 3);
             黒影.Load("file/font/font_num_black.png", 10, 10, 1);
             黒数字.Load("file/font/font_num_black2.png", 10, 10, 1);
             白数字.Load("file/font/font_num_white.png", 10, 10, 1);
-			ゴシック12.Load("file/font/12.png");
-			ゴシック16.Load("file/font/16.png");
+            ゴシック12.Load("file/font/12.png");
+            ゴシック16.Load("file/font/16.png");
 
             //フォント幅調整_____a__b__c__d__e__f__g__h__i__j__k__l__m__n__o__p__q__r__s__t__u__v__w__x__y__z
             英語.AdjustWidth({ 1, 3, 2, 2, 3, 3, 1, 2, 4, 2, 3, 2, 0, 1, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 2, 2 });
             英影.AdjustWidth({ 1, 3, 2, 2, 3, 3, 1, 2, 4, 2, 3, 2, 0, 1, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 2, 2 });
 
-			fontS[FontType::ゴシック小].LoadBMPFont(ゴシック12, "file/font/bmp_font_list.txt");
-			fontS[FontType::ゴシック中].LoadBMPFont(ゴシック16, "file/font/bmp_font_list.txt");
-			fontS[FontType::BMP黒].Load("", 6, 0);
-			fontS[FontType::BMP黒影].Load("", 7, 0);
-			fontS[FontType::BMP白].Load("", 6, 0);
+            fontS[FontType::ゴシック小].LoadBMPFont(ゴシック12, "file/font/bmp_font_list.txt");
+            fontS[FontType::ゴシック中].LoadBMPFont(ゴシック16, "file/font/bmp_font_list.txt");
+            fontS[FontType::BMP黒].Load("", 6, 0);
+            fontS[FontType::BMP黒影].Load("", 7, 0);
+            fontS[FontType::BMP白].Load("", 6, 0);
 
-			fontS[FontType::BMP黒].SetImageS("a", &英語, 26);
-			fontS[FontType::BMP黒].SetImageS("A", &英語, 26);
-			fontS[FontType::BMP黒].SetImageS("0", &黒数字, 10);
-			fontS[FontType::BMP黒].SetImage("×", 英語[26]);
-			fontS[FontType::BMP黒].SetImage("□", 英語[27]);
-			fontS[FontType::BMP黒].SetImage("○", 英語[28]);
-			fontS[FontType::BMP黒].SetImage("☆", 英語[29]);
+            fontS[FontType::BMP黒].SetImageS("a", &英語, 26);
+            fontS[FontType::BMP黒].SetImageS("A", &英語, 26);
+            fontS[FontType::BMP黒].SetImageS("0", &黒数字, 10);
+            fontS[FontType::BMP黒].SetImage("×", 英語[26]);
+            fontS[FontType::BMP黒].SetImage("□", 英語[27]);
+            fontS[FontType::BMP黒].SetImage("○", 英語[28]);
+            fontS[FontType::BMP黒].SetImage("☆", 英語[29]);
 
-			fontS[FontType::BMP黒影].SetImageS("a", &英影, 26);
-			fontS[FontType::BMP黒影].SetImageS("A", &英影, 26);
-			fontS[FontType::BMP黒影].SetImageS("0", &黒影, 10);
-			fontS[FontType::BMP黒影].SetImage("×", 英影[26]);
-			fontS[FontType::BMP黒影].SetImage("□", 英影[27]);
-			fontS[FontType::BMP黒影].SetImage("○", 英影[28]);
-			fontS[FontType::BMP黒影].SetImage("☆", 英影[29]);
+            fontS[FontType::BMP黒影].SetImageS("a", &英影, 26);
+            fontS[FontType::BMP黒影].SetImageS("A", &英影, 26);
+            fontS[FontType::BMP黒影].SetImageS("0", &黒影, 10);
+            fontS[FontType::BMP黒影].SetImage("×", 英影[26]);
+            fontS[FontType::BMP黒影].SetImage("□", 英影[27]);
+            fontS[FontType::BMP黒影].SetImage("○", 英影[28]);
+            fontS[FontType::BMP黒影].SetImage("☆", 英影[29]);
 
-			fontS[FontType::BMP白].SetImageS("0", &白数字, 10);
+            fontS[FontType::BMP白].SetImageS("0", &白数字, 10);
 
         }
     }

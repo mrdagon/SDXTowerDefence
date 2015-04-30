@@ -55,7 +55,7 @@ namespace SDX_TD
 
 		file.ReadWrite(TDSystem::isタッチ);
 
-		file.ReadWrite(TDSystem::リプレイ保存);
+		file.ReadWrite(TDSystem::isリプレイ保存);
 
 		return true;
 	}

@@ -31,25 +31,19 @@ namespace SDX_TD
 		Difficulty 限界難易度;
 
 		//設定関連
-		double 効果音の音量;
-		double BGMの音量;
+		int 効果音の音量;
+		int BGMの音量;
 
 		bool isグリッド;//マスのグリッドと中央の薄い十字の表示
 		bool isHPゲージ = true;//敵Hpゲージの表示ON/OFF
 		bool is高速;//ゲーム速度を1,4,16,64倍速モードにする
 		bool isエフェクト;//死亡時エフェクト,大魔法カットインのON/OFF
+		bool is配置記録;//初期配置の記録を行なうかどうか
+		bool isリプレイ保存;//常にリプレイの自動保存フラグ
 
 		bool isタッチ;//タブレット用の操作スタイルフラグ
 
 		int 画面サイズ;
 
-		enum ReplaySaveType
-		{
-			クリア時保存,
-			更新時保存,
-			自動保存無し
-		};
-
-		ReplaySaveType リプレイ保存;//常にリプレイの自動保存フラグ
 	}
 }

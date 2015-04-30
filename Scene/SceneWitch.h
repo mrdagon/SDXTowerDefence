@@ -13,20 +13,20 @@ namespace SDX
 	{
 	public:
 		//@Define
-		UI_Frame Frame = { 210, {170,60,360,360} , 0.000000,int};
-		UI_Button 決定 = { 211, {195,80,140,40} , 0.000000,1};
-		UI_Button 決定 = { 212, {270,360,160,40} , 0.000000,3};
-		UI_Button 決定 = { 213, {195,124,140,40} , 0.000000,int};
-		UI_Button 決定 = { 216, {195,212,140,40} , 0.000000,int};
-		UI_Button 決定 = { 217, {195,168,140,40} , 0.000000,1};
-		UI_Button 決定 = { 218, {195,300,140,40} , 0.000000,int};
-		UI_Button 決定 = { 219, {195,256,140,40} , 0.000000,1};
-		UI_Button 決定 = { 220, {366,124,140,40} , 0.000000,int};
-		UI_Button 決定 = { 221, {366,168,140,40} , 0.000000,1};
-		UI_Button 決定 = { 222, {366,300,140,40} , 0.000000,int};
-		UI_Button 決定 = { 223, {366,212,140,40} , 0.000000,int};
-		UI_Button 決定 = { 224, {366,256,140,40} , 0.000000,1};
-		UI_Button 決定 = { 225, {367,80,140,40} , 0.000000,1};
+		UI_Frame 全体枠 = { 210, {170,60,360,360} , 0.000000,5};
+		UI_Button ライナ = { 211, {195,83,140,40} , 0.000000,1};
+		UI_Button 決定 = { 212, {270,363,160,40} , 0.000000,3};
+		UI_Button ルコウ = { 213, {195,127,140,40} , 0.000000,1};
+		UI_Button ロチエ = { 216, {195,215,140,40} , 0.000000,1};
+		UI_Button ミナエ = { 217, {195,171,140,40} , 0.000000,1};
+		UI_Button 委員長 = { 218, {195,303,140,40} , 0.000000,1};
+		UI_Button フィオナ = { 219, {195,259,140,40} , 0.000000,1};
+		UI_Button ディアネラ = { 220, {366,127,140,40} , 0.000000,1};
+		UI_Button トレニア = { 221, {366,171,140,40} , 0.000000,1};
+		UI_Button ミルラ = { 222, {366,303,140,40} , 0.000000,1};
+		UI_Button バロゥ = { 223, {366,215,140,40} , 0.000000,1};
+		UI_Button ナズナ = { 224, {366,259,140,40} , 0.000000,1};
+		UI_Button ナツメ = { 225, {367,83,140,40} , 0.000000,1};
 		//@End
 
 		SceneWitch()
@@ -53,19 +53,19 @@ namespace SDX
 		void Update() override
 		{
 			//@Update
+			if(ライナ.isClick()){}
 			if(決定.isClick()){}
-			if(決定.isClick()){}
-			if(決定.isClick()){}
-			if(決定.isClick()){}
-			if(決定.isClick()){}
-			if(決定.isClick()){}
-			if(決定.isClick()){}
-			if(決定.isClick()){}
-			if(決定.isClick()){}
-			if(決定.isClick()){}
-			if(決定.isClick()){}
-			if(決定.isClick()){}
-			if(決定.isClick()){}
+			if(ルコウ.isClick()){}
+			if(ロチエ.isClick()){}
+			if(ミナエ.isClick()){}
+			if(委員長.isClick()){}
+			if(フィオナ.isClick()){}
+			if(ディアネラ.isClick()){}
+			if(トレニア.isClick()){}
+			if(ミルラ.isClick()){}
+			if(バロゥ.isClick()){}
+			if(ナズナ.isClick()){}
+			if(ナツメ.isClick()){}
 			//@End
 		}
 
@@ -76,20 +76,20 @@ namespace SDX
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
 			//@Draw
-			MSystem::frameS[Frame.frameNo].Draw(Frame.rect);
+			MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);
+			MSystem::frameS[ライナ.frameNo].Draw(ライナ.rect);
 			MSystem::frameS[決定.frameNo].Draw(決定.rect);
-			MSystem::frameS[決定.frameNo].Draw(決定.rect);
-			MSystem::frameS[決定.frameNo].Draw(決定.rect);
-			MSystem::frameS[決定.frameNo].Draw(決定.rect);
-			MSystem::frameS[決定.frameNo].Draw(決定.rect);
-			MSystem::frameS[決定.frameNo].Draw(決定.rect);
-			MSystem::frameS[決定.frameNo].Draw(決定.rect);
-			MSystem::frameS[決定.frameNo].Draw(決定.rect);
-			MSystem::frameS[決定.frameNo].Draw(決定.rect);
-			MSystem::frameS[決定.frameNo].Draw(決定.rect);
-			MSystem::frameS[決定.frameNo].Draw(決定.rect);
-			MSystem::frameS[決定.frameNo].Draw(決定.rect);
-			MSystem::frameS[決定.frameNo].Draw(決定.rect);
+			MSystem::frameS[ルコウ.frameNo].Draw(ルコウ.rect);
+			MSystem::frameS[ロチエ.frameNo].Draw(ロチエ.rect);
+			MSystem::frameS[ミナエ.frameNo].Draw(ミナエ.rect);
+			MSystem::frameS[委員長.frameNo].Draw(委員長.rect);
+			MSystem::frameS[フィオナ.frameNo].Draw(フィオナ.rect);
+			MSystem::frameS[ディアネラ.frameNo].Draw(ディアネラ.rect);
+			MSystem::frameS[トレニア.frameNo].Draw(トレニア.rect);
+			MSystem::frameS[ミルラ.frameNo].Draw(ミルラ.rect);
+			MSystem::frameS[バロゥ.frameNo].Draw(バロゥ.rect);
+			MSystem::frameS[ナズナ.frameNo].Draw(ナズナ.rect);
+			MSystem::frameS[ナツメ.frameNo].Draw(ナツメ.rect);
 			//@End
 		}
 
@@ -101,20 +101,20 @@ namespace SDX
 			//@Load
 			SDX::GUIData guiData = SDX::TMXtoGUI( TMX_FILE_NAME , "SceneWitch", GUI_Factory);
 
-			Frame = *dynamic_cast<UI_Frame*>(guiData.dataS[0].get());
-			決定 = *dynamic_cast<UI_Button*>(guiData.dataS[1].get());
+			全体枠 = *dynamic_cast<UI_Frame*>(guiData.dataS[0].get());
+			ライナ = *dynamic_cast<UI_Button*>(guiData.dataS[1].get());
 			決定 = *dynamic_cast<UI_Button*>(guiData.dataS[2].get());
-			決定 = *dynamic_cast<UI_Button*>(guiData.dataS[3].get());
-			決定 = *dynamic_cast<UI_Button*>(guiData.dataS[4].get());
-			決定 = *dynamic_cast<UI_Button*>(guiData.dataS[5].get());
-			決定 = *dynamic_cast<UI_Button*>(guiData.dataS[6].get());
-			決定 = *dynamic_cast<UI_Button*>(guiData.dataS[7].get());
-			決定 = *dynamic_cast<UI_Button*>(guiData.dataS[8].get());
-			決定 = *dynamic_cast<UI_Button*>(guiData.dataS[9].get());
-			決定 = *dynamic_cast<UI_Button*>(guiData.dataS[10].get());
-			決定 = *dynamic_cast<UI_Button*>(guiData.dataS[11].get());
-			決定 = *dynamic_cast<UI_Button*>(guiData.dataS[12].get());
-			決定 = *dynamic_cast<UI_Button*>(guiData.dataS[13].get());
+			ルコウ = *dynamic_cast<UI_Button*>(guiData.dataS[3].get());
+			ロチエ = *dynamic_cast<UI_Button*>(guiData.dataS[4].get());
+			ミナエ = *dynamic_cast<UI_Button*>(guiData.dataS[5].get());
+			委員長 = *dynamic_cast<UI_Button*>(guiData.dataS[6].get());
+			フィオナ = *dynamic_cast<UI_Button*>(guiData.dataS[7].get());
+			ディアネラ = *dynamic_cast<UI_Button*>(guiData.dataS[8].get());
+			トレニア = *dynamic_cast<UI_Button*>(guiData.dataS[9].get());
+			ミルラ = *dynamic_cast<UI_Button*>(guiData.dataS[10].get());
+			バロゥ = *dynamic_cast<UI_Button*>(guiData.dataS[11].get());
+			ナズナ = *dynamic_cast<UI_Button*>(guiData.dataS[12].get());
+			ナツメ = *dynamic_cast<UI_Button*>(guiData.dataS[13].get());
 			//@End
 		}
 	};

@@ -84,7 +84,7 @@ namespace SDX
 #ifdef _DEBUG			
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
-			//@Draw
+			//Draw
 			MSystem::frameS[難易度情報.frameNo].Draw(難易度情報.rect);
 			MSystem::frameS[ステージ一覧.frameNo].Draw(ステージ一覧.rect);
 			MSystem::frameS[開始.frameNo].Draw(開始.rect);
@@ -109,8 +109,12 @@ namespace SDX
 			MFont::fontS[ウィッチ名.fontNo].DrawRotate(ウィッチ名.rect.GetCenter(),1,0,Color::White,ウィッチ名.text);
 			MFont::fontS[星.fontNo].DrawRotate(星.rect.GetCenter(),1,0,Color::White,星.text);
 			MFont::fontS[スコア.fontNo].DrawRotate(スコア.rect.GetCenter(),1,0,Color::White,スコア.text);
-			MFont::fontS[ハイスコア.fontNo].DrawRotate(ハイスコア.rect.GetCenter(),1,0,Color::White,ハイスコア.text);
-			//@End
+			MFont::fontS[ハイスコア.fontNo].DrawRotate(ハイスコア.rect.GetCenter(),2,0,Color::White,ハイスコア.text);
+			//End
+			//スコア一覧
+
+
+
 		}
 
 		void LoadGUI() override
