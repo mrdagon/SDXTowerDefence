@@ -6,7 +6,7 @@
 #include "GUI_Factory.h"
 #include "../Stage/IStage.h"
 
-namespace SDX
+namespace SDX_TD
 {
 	using namespace SDX;
 

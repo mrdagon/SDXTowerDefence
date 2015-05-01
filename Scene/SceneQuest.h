@@ -5,7 +5,7 @@
 #include <SDXFrameWork.h>
 #include "GUI_Factory.h"
 
-namespace SDX
+namespace SDX_TD
 {
 	using namespace SDX;
 

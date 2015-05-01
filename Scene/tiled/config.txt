@@ -3,4 +3,4 @@ class,tiled/ClassTemplate.h
 scene,tiled/SceneTemplate.h
 enum,tiled/EnumTemplate.h
 prefix,UI_
-namespace,SDX
+namespace,SDX_TD

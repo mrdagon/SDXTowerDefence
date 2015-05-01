@@ -26,7 +26,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup color="#ffffc8" name="SceneMenu" visible="0">
+ <objectgroup color="#ffffc8" name="SceneMenu">
   <object id="99" name="全体枠" type="Frame" x="0" y="0" width="640" height="480">
    <properties>
     <property name="frameNo" value="0"/>
@@ -321,14 +321,14 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneHelp" visible="0">
+ <objectgroup name="SceneHelp">
   <object id="125" name="クレジット" type="Button" x="233.5" y="226" width="196" height="48">
    <properties>
     <property name="frameNo" value="3"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneReplay">
+ <objectgroup name="SceneReplay" visible="0">
   <object id="127" name="リプレイ情報" type="Frame" x="364" y="305" width="275" height="110">
    <properties>
     <property name="frameNo" value="5"/>

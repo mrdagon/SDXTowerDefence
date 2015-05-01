@@ -14,7 +14,7 @@
 #include "Scene/SceneTitle.h"
 #include "SceneWitch.h"
 
-namespace SDX
+namespace SDX_TD
 {
 	using namespace SDX;
 

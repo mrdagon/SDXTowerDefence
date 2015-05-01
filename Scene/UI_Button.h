@@ -4,7 +4,7 @@
 #pragma once
 #include <Tiled/IGUI.h>
 
-namespace SDX
+namespace SDX_TD
 {
 	/** クラスの説明.*/
 	class UI_Button : public SDX::IGUI

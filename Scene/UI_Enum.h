@@ -3,7 +3,7 @@
 //[Contact]http://sourceforge.jp/projects/dxframework/
 #pragma once
 
-namespace SDX
+namespace SDX_TD
 {
 	enum ObjectID
 	{
