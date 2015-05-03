@@ -4,14 +4,14 @@
 #pragma once
 #include <SDXFrameWork.h>
 #include "GUI_Factory.h"
-#include "Scene/SceneArchive.h"
-#include "Scene/SceneConfig.h"
-#include "Scene/SceneHelp.h"
-#include "Scene/SceneQuest.h"
-#include "Scene/SceneSkill.h"
-#include "Scene/SceneReplay.h"
-#include "Scene/SceneStory.h"
-#include "Scene/SceneTitle.h"
+#include "SceneArchive.h"
+#include "SceneConfig.h"
+#include "SceneHelp.h"
+#include "SceneQuest.h"
+#include "SceneSkill.h"
+#include "SceneReplay.h"
+#include "SceneStory.h"
+#include "SceneTitle.h"
 #include "SceneWitch.h"
 
 namespace SDX_TD
@@ -76,7 +76,6 @@ namespace SDX_TD
 			if (Helpタグ.isClick()){ activeScene = &sceneHelp; }
 			if (Configタグ.isClick()){ activeScene = &sceneConfig; }
 
-
 			if (activeScene)
 			{
 				activeScene->Update();
@@ -121,7 +120,6 @@ namespace SDX_TD
 			{
 				activeScene->Draw();
 			}
-
 		}
 
 		void LoadGUI() override

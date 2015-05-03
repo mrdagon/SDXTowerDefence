@@ -3,7 +3,7 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include <SDXFramework.h>
-#include "../Struct/EnumType.h"
+#include "../System/EnumType.h"
 
 namespace SDX_TD
 {

@@ -2,7 +2,7 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
-#include "EnumType.h"
+#include "../System/EnumType.h"
 
 namespace SDX_TD
 {
@@ -15,6 +15,7 @@ namespace SDX_TD
 		Element 属性;
 
 		std::string 名前;
+		std::string 英名;
 		std::string 大魔法名;
 		std::string 魔導具名;
 		std::string 説明文;
@@ -79,6 +80,7 @@ namespace SDX_TD
 		}
 
 		WitchDataS[WitchType::ライナ].名前 = "ライナ";
+		WitchDataS[WitchType::ライナ].英名 = "Lina";
 		WitchDataS[WitchType::ライナ].大魔法名 = "フォルドアーカレイト";
 		WitchDataS[WitchType::ライナ].魔導具名 = "トルネルージュ";
 		WitchDataS[WitchType::ライナ].説明文 = "";
@@ -102,6 +104,7 @@ namespace SDX_TD
 		WitchDataS[WitchType::ライナ].職種[11] = UnitType::執事;
 
 		WitchDataS[WitchType::ナツメ].名前 = "ナツメ";
+		WitchDataS[WitchType::ナツメ].英名 = "Natsume";
 		WitchDataS[WitchType::ナツメ].大魔法名 = "グリンブルスティ";
 		WitchDataS[WitchType::ナツメ].魔導具名 = "ジャガーノート";
 		WitchDataS[WitchType::ナツメ].説明文 = "";
@@ -127,6 +130,7 @@ namespace SDX_TD
 
 		//
 		WitchDataS[WitchType::ルコウ].名前 = "ルコウ";
+		WitchDataS[WitchType::ルコウ].英名 = "Rukou";
 		WitchDataS[WitchType::ルコウ].大魔法名 = "御津之比良坂流『氷天攻華』";
 		WitchDataS[WitchType::ルコウ].魔導具名 = "雪風/空魂";
 		WitchDataS[WitchType::ルコウ].説明文 = "";
@@ -153,6 +157,7 @@ namespace SDX_TD
 
 		//
 		WitchDataS[WitchType::ディアネラ].名前 = "ディアネラ";
+		WitchDataS[WitchType::ディアネラ].英名 = "Dianella";
 		WitchDataS[WitchType::ディアネラ].大魔法名 = "レインマニエール";
 		WitchDataS[WitchType::ディアネラ].魔導具名 = "皇剣シルヴァウス";
 		WitchDataS[WitchType::ディアネラ].説明文 = "";
@@ -176,6 +181,7 @@ namespace SDX_TD
 
 		//
 		WitchDataS[WitchType::ミナエ].名前 = "ミナエ";
+		WitchDataS[WitchType::ミナエ].英名 = "Minae";
 		WitchDataS[WitchType::ミナエ].大魔法名 = "スーパーノヴァ";
 		WitchDataS[WitchType::ミナエ].魔導具名 = "カランコエ";
 		WitchDataS[WitchType::ミナエ].説明文 = "";
@@ -201,6 +207,7 @@ namespace SDX_TD
 
 		//
 		WitchDataS[WitchType::トレニア].名前 = "トレニア";
+		WitchDataS[WitchType::トレニア].英名 = "Torenia";
 		WitchDataS[WitchType::トレニア].大魔法名 = "超口径激滅レーザー";
 		WitchDataS[WitchType::トレニア].魔導具名 = "フォトンルーメン";
 		WitchDataS[WitchType::トレニア].説明文 = "";
@@ -224,6 +231,7 @@ namespace SDX_TD
 
 		//
 		WitchDataS[WitchType::ロチエ].名前 = "ロチエ";
+		WitchDataS[WitchType::ロチエ].英名 = "Rochie";
 		WitchDataS[WitchType::ロチエ].大魔法名 = "花曇流忍法『大山鳴動』";
 		WitchDataS[WitchType::ロチエ].魔導具名 = "紅蜂";
 		WitchDataS[WitchType::ロチエ].説明文 = "";
@@ -247,6 +255,7 @@ namespace SDX_TD
 
 		//
 		WitchDataS[WitchType::バロゥ].名前 = "バロゥ";
+		WitchDataS[WitchType::バロゥ].英名 = "Barrow";
 		WitchDataS[WitchType::バロゥ].大魔法名 = "バラーダ・イェブ";
 		WitchDataS[WitchType::バロゥ].魔導具名 = "クレメンス";
 		WitchDataS[WitchType::バロゥ].説明文 = "";
@@ -270,6 +279,7 @@ namespace SDX_TD
 
 		//
 		WitchDataS[WitchType::フィオナ].名前 = "フィオナ";
+		WitchDataS[WitchType::フィオナ].英名 = "Fiona";
 		WitchDataS[WitchType::フィオナ].大魔法名 = "セイオーヌ・ディエーヴ";
 		WitchDataS[WitchType::フィオナ].魔導具名 = "スヴァーズ";
 		WitchDataS[WitchType::フィオナ].説明文 = "";
@@ -295,6 +305,7 @@ namespace SDX_TD
 
 		//
 		WitchDataS[WitchType::ナズナ].名前 = "ナズナ";
+		WitchDataS[WitchType::ナズナ].英名 = "Nazuna";
 		WitchDataS[WitchType::ナズナ].大魔法名 = "さんくちゅあり";
 		WitchDataS[WitchType::ナズナ].魔導具名 = "プリティワンド";
 		WitchDataS[WitchType::ナズナ].説明文 = "";
@@ -318,6 +329,7 @@ namespace SDX_TD
 
 		//
 		WitchDataS[WitchType::委員長].名前 = "委員長";
+		WitchDataS[WitchType::委員長].英名 = "Chairwoman";
 		WitchDataS[WitchType::委員長].大魔法名 = "ローゼンクランツ";
 		WitchDataS[WitchType::委員長].魔導具名 = "チューベローズ";
 		WitchDataS[WitchType::委員長].説明文 = "";
@@ -343,6 +355,7 @@ namespace SDX_TD
 
 		//
 		WitchDataS[WitchType::ミルラ].名前 = "ミルラ";
+		WitchDataS[WitchType::ミルラ].英名 = "Myrra";
 		WitchDataS[WitchType::ミルラ].大魔法名 = "リーダーオンロート";
 		WitchDataS[WitchType::ミルラ].魔導具名 = "フィソステギア";
 		WitchDataS[WitchType::ミルラ].説明文 = "";

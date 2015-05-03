@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="241">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="245">
  <objectgroup color="#00ffff" name="TEMPLATE">
   <object id="16" name="Button" type="Button" x="202.5" y="502" width="57" height="54">
    <properties>
@@ -26,7 +26,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup color="#ffffc8" name="SceneMenu">
+ <objectgroup color="#ffffc8" name="SceneMenu" visible="0">
   <object id="99" name="全体枠" type="Frame" x="0" y="0" width="640" height="480">
    <properties>
     <property name="frameNo" value="0"/>
@@ -321,7 +321,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneHelp">
+ <objectgroup name="SceneHelp" visible="0">
   <object id="125" name="クレジット" type="Button" x="233.5" y="226" width="196" height="48">
    <properties>
     <property name="frameNo" value="3"/>
@@ -633,7 +633,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneWitch" visible="0">
+ <objectgroup name="SceneWitch">
   <object id="210" name="全体枠" type="Frame" x="170" y="60" width="360" height="360">
    <properties>
     <property name="frameNo" value="5"/>
@@ -644,7 +644,7 @@
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="212" name="決定" type="Button" x="270" y="363" width="160" height="40">
+  <object id="212" name="決定" type="Button" x="185" y="363" width="160" height="40">
    <properties>
     <property name="frameNo" value="3"/>
    </properties>
@@ -702,6 +702,11 @@
   <object id="225" name="ナツメ" type="Button" x="367.25" y="83" width="140" height="40">
    <properties>
     <property name="frameNo" value="1"/>
+   </properties>
+  </object>
+  <object id="244" name="キャンセル" type="Button" x="356" y="363" width="160" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
    </properties>
   </object>
  </objectgroup>

@@ -6,7 +6,7 @@
 #include "UI_Frame.h"
 #include "UI_Text.h"
 
-namespace SDX
+namespace SDX_TD
 {
 using namespace SDX;
 	void GUI_Factory(GUIData& data, std::string& type , int id , int gid, Rect rect, double zoomW , double zoomH , double angle, std::vector<std::string>& properties)

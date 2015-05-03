@@ -133,6 +133,7 @@ namespace SDX_TD
 		SceneWitch_バロゥ = 223,
 		SceneWitch_ナズナ = 224,
 		SceneWitch_ナツメ = 225,
+		SceneWitch_キャンセル = 244,
 	};
 
 	enum ResourceID

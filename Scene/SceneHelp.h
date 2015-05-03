@@ -15,10 +15,10 @@ namespace SDX_TD
     public:
         //@Define
         UI_Button クレジット = { 125, {233,226,196,48} , 0.000000,3};
+        //@End
         bool isヘルプ表示;
         Image* 表示画像;
         std::string 文章;
-        //@End
 
         SceneHelp()
         {
@@ -73,6 +73,7 @@ namespace SDX_TD
             }
 
             //@Update
+            if(クレジット.isClick()){}
             //@End
         }
 

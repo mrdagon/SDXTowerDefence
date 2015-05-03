@@ -1,0 +1,6 @@
+tmxfile,C:\Users\uemura\Documents\GitHub\SDXTowerDefence\Scene\Layout.tmx
+class,tiled/ClassTemplate.h
+scene,tiled/SceneTemplate.h
+enum,tiled/EnumTemplate.h
+prefix,UI_
+namespace,SDX_TD

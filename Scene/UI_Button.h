@@ -53,6 +53,12 @@ namespace SDX_TD
 			//@End
 		}
 
+		void DrawText(Font &font, const char* 文字列 , double 文字サイズ , const Color &描画色 = Color::White)
+		{
+			Draw();
+			font.DrawRotate(rect.GetCenter(), 文字サイズ , 0, 描画色, 文字列);
+		}
+
 		bool isClick()
 		{
 			return Input::mouse.Left.on && rect.Hit(&Input::mouse.GetPoint());

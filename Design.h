@@ -2,7 +2,7 @@
 //[License] GNU Affero General Public License, version 3
 #pragma once
 #include "Framework/Shape.h"
-#include "Struct/EnumType.h"
+#include "System/EnumType.h"
 #include "Utility/EnumArray.h"
 
 namespace SDX_TD
