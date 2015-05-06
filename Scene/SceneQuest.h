@@ -27,7 +27,7 @@ namespace SDX_TD
 		UI_Button ステージC = { 111, {115,388,195,40} , 0.000000,1};
 		UI_Button ステージD = { 112, {115,428,195,40} , 0.000000,1};
 		UI_Button 面数Plus = { 113, {317,308,40,160} , 0.000000,3};
-		UI_Text 難易度 = { 114, {417,310,167,40} , 0.000000,2,"Easy"};
+		UI_Frame 難易度 = { 114, {417,310,167,40} , 0.000000,5};
 		UI_Text Wave数 = { 115, {371,356,125,25} , 0.000000,1,"25 Wave"};
 		UI_Text 出現数 = { 116, {503,356,125,25} , 0.000000,1,"敵数 1.2倍"};
 		UI_Text HP補正 = { 117, {371,385,126,24} , 0.000000,1,"HP　1.2倍"};
@@ -71,7 +71,12 @@ namespace SDX_TD
 			//Update
 			if(開始.isClick())
 			{
-				SceneWitch::SelectWitch(TDSystem::isカップル);
+				if (SceneWitch::SelectWitch().isOK)
+				{
+
+					Director::AddScene(std::make_shared<Stage>());
+				}
+				
 				return;
 			}
 			if(難易度－.isClick())
@@ -106,6 +111,42 @@ namespace SDX_TD
 			//End
 		}
 
+		void DrawScore(int no)
+		{
+			WitchType 種類 = (WitchType)no;
+			Point buf = { 0, no * 18 };
+
+			MUnit::魔女[(UnitType)no][1]->DrawRotate(ウィッチアイコン.rect.GetCenter() + buf, 1, 0);
+			MFont::fontS[ウィッチ名.fontNo].DrawRotate(ウィッチ名.rect.GetCenter() + buf, 1, 0, Color::White, WitchDataS[種類].名前);
+			for (int a = 0; a < 6; ++a)
+			{
+				StageDataS[0].Getスコア().完勝[種類] = no / 2;
+				StageDataS[0].Getスコア().勝利[種類] = no;
+
+				if (StageDataS[0].Getスコア().完勝[種類] > a)
+				{
+					//金星
+					MFont::fontS[2].DrawRotate(星.rect.GetCenter() + buf + Point(10*a,0), 1, 0, Color::Yellow, "☆");
+				}
+				else if (StageDataS[0].Getスコア().勝利[種類] > a)
+				{
+					//銀星
+					MFont::fontS[2].DrawRotate(星.rect.GetCenter() + buf + Point(10 * a, 0), 1, 0, Color::Silver, "☆");
+				}
+				else
+				{
+					//黒星
+					MFont::fontS[2].DrawRotate(星.rect.GetCenter() + buf + Point(10 * a, 0), 1, 0, Color::Black, "☆");
+				}
+
+				StageDataS[0].Getスコア().スコア[種類] = no * no * no;
+			}
+			//MSystem::frameS[ウィッチアイコン.frameNo].Draw(ウィッチアイコン.rect);
+			//MFont::fontS[ウィッチ名.fontNo].DrawRotate(ウィッチ名.rect.GetCenter(), 1, 0, Color::White, ウィッチ名.text);
+			//MFont::fontS[星.fontNo].DrawRotate(星.rect.GetCenter(), 1, 0, Color::White, 星.text);
+			MFont::fontS[スコア.fontNo].DrawRotate(スコア.rect.GetCenter() + buf, 2, 0, Color::White, { std::setw(8) ,StageDataS[0].Getスコア().スコア[種類]});
+		}
+
 		//描画
 		void Draw() override
 		{
@@ -127,25 +168,24 @@ namespace SDX_TD
 			MSystem::frameS[ステージD.frameNo].Draw(ステージD.rect);
 			MSystem::frameS[面数Plus.frameNo].Draw(面数Plus.rect);
 			//難易度情報
-			MFont::fontS[難易度.fontNo].DrawRotate(難易度.rect.GetCenter(),2,0,Color::White,DifficultyDataS[TDSystem::難易度].名前);
-			MFont::fontS[Wave数.fontNo].DrawRotate(Wave数.rect.GetCenter(),1,0,Color::White,Wave数.text);
-			MFont::fontS[出現数.fontNo].DrawRotate(出現数.rect.GetCenter(),1,0,Color::White,出現数.text);
-			MFont::fontS[HP補正.fontNo].DrawRotate(HP補正.rect.GetCenter(),1,0,Color::White,HP補正.text);
-			MFont::fontS[Lv補正.fontNo].DrawRotate(Lv補正.rect.GetCenter(),1,0,Color::White,Lv補正.text);
+			DifficultyData &data = DifficultyDataS[TDSystem::難易度];
+
+			難易度.DrawText(MFont::fontS[2], data.名前.c_str() , 2);
+			MFont::fontS[Wave数.fontNo].DrawRotate(Wave数.rect.GetCenter(), 1, 0, Color::White, { "Wave" , std::setw(4) , data.Wave数[TDSystem::isトライアル] });
+			MFont::fontS[出現数.fontNo].DrawRotate(出現数.rect.GetCenter(), 1, 0, Color::White, { "Enemy ", data.雑魚召喚数[TDSystem::isトライアル] });
+			MFont::fontS[HP補正.fontNo].DrawRotate(HP補正.rect.GetCenter(), 1, 0, Color::White, { "Hp ", data.HP補正[TDSystem::isトライアル] * 100, "%" });
+			MFont::fontS[Lv補正.fontNo].DrawRotate(Lv補正.rect.GetCenter(), 1, 0, Color::White, { "Lv ", data.レベル補正[TDSystem::isトライアル] * 100, "%" });
 			MSystem::frameS[シングル_カップル.frameNo].Draw(シングル_カップル.rect);
 			MSystem::frameS[トライアル.frameNo].Draw(トライアル.rect);
-
+			//モードスイッチ
 			シングル_カップル.DrawText(MFont::fontS[2], (TDSystem::isカップル)?"Couple":"Single", 2);
 			トライアル.DrawText(MFont::fontS[2], (TDSystem::isトライアル)?"Trial":"Power", 2);
-
-			MSystem::frameS[ウィッチアイコン.frameNo].Draw(ウィッチアイコン.rect);
-			MFont::fontS[ウィッチ名.fontNo].DrawRotate(ウィッチ名.rect.GetCenter(),1,0,Color::White,ウィッチ名.text);
-			MFont::fontS[星.fontNo].DrawRotate(星.rect.GetCenter(),1,0,Color::White,星.text);
-			MFont::fontS[スコア.fontNo].DrawRotate(スコア.rect.GetCenter(),1,0,Color::White,スコア.text);
-			MFont::fontS[ハイスコア.fontNo].DrawRotate(ハイスコア.rect.GetCenter(),2,0,Color::White,ハイスコア.text);
-			//End
 			//スコア一覧
-
+			MFont::fontS[ハイスコア.fontNo].DrawRotate(ハイスコア.rect.GetCenter(), 2, 0, Color::White, ハイスコア.text);
+			for (int a = 0; a < (int)WitchType::COUNT; ++a)
+			{
+				DrawScore(a);
+			}
 		}
 
 		void LoadGUI() override
@@ -169,7 +209,7 @@ namespace SDX_TD
 			ステージC = *dynamic_cast<UI_Button*>(guiData.dataS[10].get());
 			ステージD = *dynamic_cast<UI_Button*>(guiData.dataS[11].get());
 			面数Plus = *dynamic_cast<UI_Button*>(guiData.dataS[12].get());
-			難易度 = *dynamic_cast<UI_Text*>(guiData.dataS[13].get());
+			難易度 = *dynamic_cast<UI_Frame*>(guiData.dataS[13].get());
 			Wave数 = *dynamic_cast<UI_Text*>(guiData.dataS[14].get());
 			出現数 = *dynamic_cast<UI_Text*>(guiData.dataS[15].get());
 			HP補正 = *dynamic_cast<UI_Text*>(guiData.dataS[16].get());

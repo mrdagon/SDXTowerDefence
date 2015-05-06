@@ -13,21 +13,21 @@ namespace SDX_TD
     /**ステージの情報.*/
     struct StageData
     {
+        //作者名は読み込まない
         std::string 名前;
         std::string 説明;
+        int Wave間隔;
 
         struct Score
         {
             EnumArray<int, WitchType> スコア;
-            EnumArray<Difficulty, WitchType> 達成度;
-            EnumArray<Difficulty, WitchType> 完勝;
+            EnumArray<int, WitchType> 勝利;
+            EnumArray<int, WitchType> 完勝;
         };
 
         //全体の最高スコア
         //[isトライアル][isカップル]
         Score ハイスコア[2][2];//レベル制限あり
-
-        int Wave間隔;
 
         EnemyType 敵種類[MAX_WAVE];
         bool	  isBoss[MAX_WAVE];
@@ -49,35 +49,74 @@ namespace SDX_TD
     };
 
     std::array<StageData,StageType::COUNT> StageDataS;//標準ステージ
-    std::map< std::string, StageData > FreeStageS;//追加ステージデータ
+    std::map< std::string, StageData > FreeStageS;//全部文字列で管理
 
     void LoadStageS()
     {
         //ソフト起動時のみ行う
-        //とりあえず暫定的に
-        StageDataS[0].名前 = "チュートリアル";
-        StageDataS[0].説明 = "テスト";
-        StageDataS[0].Wave間隔 = 1000;
+        bool isMap = false;
+        bool isEnemy = false;
+        int line = 0;
 
         for (StageData &it : StageDataS)
         {
-            File enemyS("file/map/enemy_001.csv", FileMode::Read, true);
-            auto data = enemyS.GetCsvToInt();
-
-            //敵情報読み込み
-            for (int a = 0; a < MAX_WAVE; ++a)
+            File file("file/map/map000.tmx", FileMode::Read, true);
+            auto strS = file.GetLineS();
+            
+            for (auto &str : strS)
             {
-                it.敵種類[a] = EnemyType(data[a] % 20);
-                it.isBoss[a] = (data[a] >= 20);
-            }
+                if (isMap || isEnemy )
+                {
+                    std::istringstream iss(str);
+                    std::string buf;
+                    int count = 0;
 
-            File landS("file/map/map_001.csv", FileMode::Read, true);
+                    while (std::getline(iss, buf, ','))
+                    {
+						if (line == -1){ break; }//data encoding="csv"を無視
 
-            auto landData = landS.GetCsvToInt();
+                        if (isEnemy)
+                        {
+							//@todo ここタイルチップ情報確認しておきたい
+							int num = (std::atoi(buf.c_str()) - 11);
 
-            for (int a = 0; a < MAP_SIZE * MAP_SIZE;++a)
-            {
-                it.地形[a % MAP_SIZE][a / MAP_SIZE] = ChipType(landData[a]);
+							StageDataS[0].敵種類[count + line * 10] = (EnemyType)(num % 20);
+							StageDataS[0].isBoss[count + line * 10] = (num >= 20);
+
+                            if (count == 9){ break; }
+                        }
+                        else
+                        {
+                            StageDataS[0].地形[count][line] = (ChipType)(std::atoi(buf.c_str())-1);
+                        }
+                        ++count;
+                    }
+                    ++line;
+                    if (isEnemy && line == 10){ isEnemy = false; }
+                    if (isMap && line == 32){ isMap = false; }
+                }
+                else if (str.find("Info") != std::string::npos)
+                {
+                    StageDataS[0].説明 = GetTag(str, "value=");
+                }
+                else if (str.find("Name") != std::string::npos)
+                {
+                    StageDataS[0].名前 = GetTag(str, "value=");
+                }
+                else if (str.find("WaveSpeed") != std::string::npos)
+                {
+                    StageDataS[0].Wave間隔 = std::atoi(GetTag(str, "value=").c_str());
+                }
+                else if (str.find("layer name=\"map\"") != std::string::npos)
+                {
+                    isMap = true;
+                    line = -1;
+                }
+                else if (str.find("layer name=\"enemy\"") != std::string::npos)
+                {
+                    isEnemy = true;
+                    line = -1;
+                }
             }
         }
     }

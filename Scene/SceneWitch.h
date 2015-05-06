@@ -16,21 +16,22 @@ namespace SDX_TD
 		WitchType first = WitchType::COUNT;
 		WitchType second = WitchType::COUNT;
 
-		bool isカップル;
 		bool isOK;//
 
-		static SceneWitch& SelectWitch(bool isカップル)
+		static SceneWitch& SelectWitch()
 		{
 			static SceneWitch single;
 			single.isEnd = false;
 			single.isOK = false;
-			single.isカップル = isカップル;
 
-			while (System::Update(true) && !single.isEnd)
+			do
 			{
 				single.Update();
 				single.Draw();
-			}
+			} while (System::Update(true) && !single.isEnd);
+
+			if(single.first != WitchType::COUNT )Witch::SetMain(single.first);
+			if (single.second != WitchType::COUNT)Witch::SetSub(single.second);
 
 			return single;
 		}
@@ -76,7 +77,7 @@ namespace SDX_TD
 
 		void ChangeWitch(WitchType 種類)
 		{
-			if ( !isカップル)
+			if ( !TDSystem::isカップル)
 			{
 				first = 種類;
 				return;
@@ -140,9 +141,9 @@ namespace SDX_TD
 				Screen::SetBright(Color::Red);
 				ボタン.Draw();
 				Screen::SetBright(Color::White);
-				if (isカップル){ MFont::fontS[2].Draw(ボタン.rect.GetPoint(), Color::White, "First"); }
+				if (TDSystem::isカップル){ MFont::fontS[2].Draw(ボタン.rect.GetPoint(), Color::White, "First"); }
 			}
-			else if (種類 == second && isカップル)
+			else if (種類 == second && TDSystem::isカップル)
 			{
 				Screen::SetBright(Color::Red);
 				ボタン.Draw();
@@ -174,7 +175,7 @@ namespace SDX_TD
 			//Draw
 			MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);
 			キャンセル.DrawText(MFont::fontS[2], "Cancel" , 2);
-			if (isカップル && second == WitchType::COUNT ){ Screen::SetBright(Color::Gray); }
+			if (TDSystem::isカップル && second == WitchType::COUNT){ Screen::SetBright(Color::Gray); }
 			決定.DrawText(MFont::fontS[2], "OK" , 2);
 			Screen::SetBright();
 			//End

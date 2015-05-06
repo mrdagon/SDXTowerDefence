@@ -139,31 +139,30 @@
     <property name="frameNo" value="3"/>
    </properties>
   </object>
-  <object id="114" name="難易度" type="Text" x="417.5" y="310" width="167" height="40">
+  <object id="114" name="難易度" type="Frame" x="417.5" y="310" width="167" height="40">
    <properties>
-    <property name="fontNo" value="2"/>
-    <property name="text" value="Easy"/>
+    <property name="frameNo" value="5"/>
    </properties>
   </object>
-  <object id="115" name="Wave数" type="Text" x="371.5" y="356" width="125" height="25">
+  <object id="115" name="Wave数" type="Text" x="375.5" y="385" width="60" height="25">
    <properties>
     <property name="fontNo" value="1"/>
     <property name="text" value="25 Wave"/>
    </properties>
   </object>
-  <object id="116" name="出現数" type="Text" x="503.5" y="356.5" width="125" height="25">
+  <object id="116" name="出現数" type="Text" x="448.5" y="385.5" width="60" height="25">
    <properties>
     <property name="fontNo" value="1"/>
     <property name="text" value="敵数 1.2倍"/>
    </properties>
   </object>
-  <object id="117" name="HP補正" type="Text" x="371.5" y="385.5" width="126" height="24">
+  <object id="117" name="HP補正" type="Text" x="511.5" y="385.5" width="60" height="24">
    <properties>
     <property name="fontNo" value="1"/>
     <property name="text" value="HP　1.2倍"/>
    </properties>
   </object>
-  <object id="118" name="Lv補正" type="Text" x="503" y="385" width="126" height="24">
+  <object id="118" name="Lv補正" type="Text" x="573" y="385" width="60" height="24">
    <properties>
     <property name="fontNo" value="1"/>
     <property name="text" value="LV 1.5倍"/>
@@ -174,12 +173,12 @@
     <property name="frameNo" value="0"/>
    </properties>
   </object>
-  <object id="31" name="シングル_カップル" type="Button" x="69" y="258" width="140" height="40">
+  <object id="31" name="シングル_カップル" type="Button" x="502" y="355" width="130" height="30">
    <properties>
     <property name="frameNo" value="3"/>
    </properties>
   </object>
-  <object id="59" name="トライアル" type="Button" x="216" y="258" width="140" height="40">
+  <object id="59" name="トライアル" type="Button" x="372" y="355" width="130" height="30">
    <properties>
     <property name="frameNo" value="3"/>
    </properties>
@@ -190,21 +189,21 @@
     <property name="text" value="std::string"/>
    </properties>
   </object>
-  <object id="122" name="星" type="Text" x="160" y="32" width="56" height="21">
+  <object id="122" name="星" type="Text" x="155" y="31" width="21" height="21">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="std::string"/>
    </properties>
   </object>
-  <object id="123" name="スコア" type="Text" x="226" y="32" width="126" height="22">
+  <object id="123" name="スコア" type="Text" x="289" y="32" width="30" height="22">
    <properties>
-    <property name="fontNo" value="0"/>
+    <property name="fontNo" value="2"/>
     <property name="text" value="std::string"/>
    </properties>
   </object>
-  <object id="240" name="ハイスコア" type="Text" x="64" y="4" width="126" height="22">
+  <object id="240" name="ハイスコア" type="Text" x="64" y="9" width="126" height="22">
    <properties>
-    <property name="fontNo" value="3"/>
+    <property name="fontNo" value="2"/>
     <property name="text" value="Hi Score"/>
    </properties>
   </object>
@@ -576,7 +575,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneResult" visible="0">
+ <objectgroup name="SceneResult">
   <object id="83" name="リプレイ保存" type="Button" x="121.5" y="384" width="120" height="60">
    <properties>
     <property name="frameNo" value="3"/>
@@ -633,7 +632,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneWitch">
+ <objectgroup name="SceneWitch" visible="0">
   <object id="210" name="全体枠" type="Frame" x="170" y="60" width="360" height="360">
    <properties>
     <property name="frameNo" value="5"/>

@@ -40,7 +40,7 @@ namespace SDX_TD
 
         Wave wave;
 
-		ReplayData replayData;//リプレイの保存or読み込んだデータ
+        ReplayData replayData;//リプレイの保存or読み込んだデータ
 
         IEnemy* 地上Top[MAP_SIZE][MAP_SIZE];
         IEnemy* 地上End[MAP_SIZE][MAP_SIZE];
@@ -54,6 +54,7 @@ namespace SDX_TD
         {
             timer = 0;
 
+            isReplay = false;
             wave.Init();
 
             backEffectS.Clear();
@@ -66,7 +67,7 @@ namespace SDX_TD
             shotS.Clear();
             unitS.Clear();
 
-			land.Init();
+            land.Init();
         }
 
         void AddChainList(Layer<IEnemy> &処理するレイヤ, IEnemy* 始点[MAP_SIZE][MAP_SIZE], IEnemy* 終点[MAP_SIZE][MAP_SIZE])
@@ -175,7 +176,7 @@ namespace SDX_TD
             //判定開始
             for (int a = 0; a < shotS.GetCount(); ++a)
             {
-				if ( !shotS[a]->isHitCheck ){ continue; }
+                if ( !shotS[a]->isHitCheck ){ continue; }
 
                 if (shotS[a]->is貫通)
                 {
@@ -272,22 +273,33 @@ namespace SDX_TD
             //ポーズ
             if (UI::Rメニュー.Hit(&point) && isClick)
             {
-                Director::AddScene(std::make_shared<ScenePause>());
+                int num = ScenePause::SelectPause();
+                switch (num)
+                {
+                case 0://あきらめる
+                    isEnd = true;
+                    return;
+                case 1://やり直す
+                    Init();
+                    return;
+                case 2://続ける
+                    break;
+                }
             }
 
             //ここより上はリプレイ時も共通
-			if (isReplay)
-			{
-				for (auto &it : replayData.commandS)
-				{
-					if (it.操作した時間 == timer)
-					{
-						DoCommand( it.種類,it.操作情報 ,it.マウス座標);
-					}
-				}
+            if (isReplay)
+            {
+                for (auto &it : replayData.commandS)
+                {
+                    if (it.操作した時間 == timer)
+                    {
+                        DoCommand( it.種類,it.操作情報 ,it.マウス座標);
+                    }
+                }
 
-				return;
-			}
+                return;
+            }
 
 
             //右クリックで解除
@@ -357,7 +369,7 @@ namespace SDX_TD
             //コマンド実行
             if (comType != Command::null)
             {
-				DoCommand(comType, comNo, Input::mouse.GetPoint());
+                DoCommand(comType, comNo, Input::mouse.GetPoint());
             }
         }
 
@@ -367,22 +379,22 @@ namespace SDX_TD
             //各種ショートカット
             if (Input::key.B.on)
             {
-				DoCommand(Command::大魔法発動, 0, Input::mouse.GetPoint());
+                DoCommand(Command::大魔法発動, 0, Input::mouse.GetPoint());
                 return true;
             }
             if (Input::key.N.on || Input::key.Space.hold)
             {
-				DoCommand(Command::Wave送り, 0, Input::mouse.GetPoint());
+                DoCommand(Command::Wave送り, 0, Input::mouse.GetPoint());
                 return true;
             }
             if (Input::key.U.on)
             {
-				DoCommand(Command::強化, 0, Input::mouse.GetPoint());
+                DoCommand(Command::強化, 0, Input::mouse.GetPoint());
                 return true;
             }
             if (Input::key.S.on)
             {
-				DoCommand(Command::売却, 0, Input::mouse.GetPoint());
+                DoCommand(Command::売却, 0, Input::mouse.GetPoint());
                 return true;
             }
             return false;
@@ -456,11 +468,11 @@ namespace SDX_TD
                 {
                     if (is地上)
                     {
-						DoCommand(Command::地上敵選択, a, Input::mouse.GetPoint());
+                        DoCommand(Command::地上敵選択, a, Input::mouse.GetPoint());
                     }
                     else
                     {
-						DoCommand(Command::空中敵選択, a, Input::mouse.GetPoint());
+                        DoCommand(Command::空中敵選択, a, Input::mouse.GetPoint());
                     }
                     return true;
                 }
@@ -471,11 +483,11 @@ namespace SDX_TD
         /**操作を実行.*/
         void DoCommand(Command 操作, int param , const Point& 座標)
         {
-			if ( !isReplay)
-			{
-				//コマンドの記録
-				replayData.commandS.push_back({操作,座標,param,timer});
-			}
+            if ( !isReplay)
+            {
+                //コマンドの記録
+                replayData.commandS.push_back({操作,座標,param,timer});
+            }
 
             switch (操作)
             {
@@ -500,8 +512,8 @@ namespace SDX_TD
                 if (wave.現在Wave == 0)
                 {
                     wave.isStop = false;
-					//非リプレイ時は初期配置を記憶			
-					SaveUnitS();
+                    //非リプレイ時は初期配置を記憶			
+                    SaveUnitS();
                 }
                 if( wave.最終Wave != wave.現在Wave )
                 {
@@ -526,36 +538,36 @@ namespace SDX_TD
             }
         }
 
-		/**初期配置を記憶.*/
-		void SaveUnitS()
-		{
-			if (!isReplay){ return; }
+        /**初期配置を記憶.*/
+        void SaveUnitS()
+        {
+            if (!isReplay){ return; }
 
-			auto &place = StageDataS[TDSystem::選択ステージ].初期配置[(int)Witch::Main->種類][TDSystem::isカップル];
+            auto &place = StageDataS[TDSystem::選択ステージ].初期配置[(int)Witch::Main->種類][TDSystem::isカップル];
 
-			place.clear();
+            place.clear();
 
-			for (int a = 0; a < unitS.GetCount(); ++a)
-			{
-				Point pt = { unitS[a]->GetX(), unitS[a]->GetY() };
-				place.push_back({ pt, unitS[0]->Lv, unitS[0]->st->職種 });
-			}
-		}
+            for (int a = 0; a < unitS.GetCount(); ++a)
+            {
+                Point pt = { unitS[a]->GetX(), unitS[a]->GetY() };
+                place.push_back({ pt, unitS[0]->Lv, unitS[0]->st->職種 });
+            }
+        }
 
-		/**初期配置を読み込む.*/
-		/**装備変更等でMp or 強化回数が不足すると途中で打ち切り*/
-		void LoadUnitS()
-		{
-			auto &place = StageDataS[TDSystem::選択ステージ].初期配置[(int)Witch::Main->種類][TDSystem::isカップル];
+        /**初期配置を読み込む.*/
+        /**装備変更等でMp or 強化回数が不足すると途中で打ち切り*/
+        void LoadUnitS()
+        {
+            auto &place = StageDataS[TDSystem::選択ステージ].初期配置[(int)Witch::Main->種類][TDSystem::isカップル];
 
-			for (auto & it : place)
-			{
-				if (Witch::Main->Mp < UnitDataS[it.職種].コスト[it.Lv]) { break; }
-				if (Witch::強化回数[it.職種] < it.Lv){ break; }
+            for (auto & it : place)
+            {
+                if (Witch::Main->Mp < UnitDataS[it.職種].コスト[it.Lv]) { break; }
+                if (Witch::強化回数[it.職種] < it.Lv){ break; }
 
-				Add(new Unit(it.職種, (int)it.座標.x, (int)it.座標.y, it.Lv));
-			}
-		}
+                Add(new Unit(it.職種, (int)it.座標.x, (int)it.座標.y, it.Lv));
+            }
+        }
 
         /**配置処理.*/
         void SetCheck(UnitType 職種 , const Point &座標)
@@ -568,7 +580,7 @@ namespace SDX_TD
                 return;
             }
             const int x = int( 座標.x - CHIP_SIZE / 2) / CHIP_SIZE;
-			const int y = int(座標.y - CHIP_SIZE / 2) / CHIP_SIZE;
+            const int y = int(座標.y - CHIP_SIZE / 2) / CHIP_SIZE;
 
             //敵の位置を更新
             LandUpdate();
@@ -595,13 +607,13 @@ namespace SDX_TD
 
             //スコアの表示
             MSystem::フレーム[5].Draw(UI::Rスコア);
-			MFont::fontS[FontType::BMP黒].Draw(UI::Pスコア + UI::P差分[0], Color::White, "SCORE");
-			MFont::fontS[FontType::BMP白].DrawExtend(UI::Pスコア, 2, 2, Color::White, { std::setw(10), score });
+            MFont::fontS[FontType::BMP黒].Draw(UI::Pスコア + UI::P差分[0], Color::White, "SCORE");
+            MFont::fontS[FontType::BMP白].DrawExtend(UI::Pスコア, 2, 2, Color::White, { std::setw(10), score });
 
             int 敵数 = skyEnemyS.GetCount() + groundEnemyS.GetCount();
             MSystem::フレーム[5].Draw(UI::R敵数);
-			MFont::fontS[FontType::BMP黒].Draw(UI::P敵数 + UI::P差分[0], Color::White, "ENEMY");
-			MFont::fontS[FontType::BMP白].DrawExtend(UI::P敵数, 2, 2, Color::White, { std::setw(5), 敵数 });
+            MFont::fontS[FontType::BMP黒].Draw(UI::P敵数 + UI::P差分[0], Color::White, "ENEMY");
+            MFont::fontS[FontType::BMP白].DrawExtend(UI::P敵数, 2, 2, Color::White, { std::setw(5), 敵数 });
 
             //ゲーム速度の表示
             int spd = 1;
@@ -618,8 +630,8 @@ namespace SDX_TD
                     MSystem::フレーム[3].Draw(UI::Rゲーム速度[a], Color::Gray);
                 }
                 
-				MFont::fontS[FontType::BMP黒].Draw(UI::Rゲーム速度[a].GetPoint() + UI::P差分[7], Color::White, "x");
-				MFont::fontS[FontType::BMP黒].DrawExtend(UI::Rゲーム速度[a].GetPoint() + UI::P差分[6], 2, 2, Color::White, { std::setw(2), spd });
+                MFont::fontS[FontType::BMP黒].Draw(UI::Rゲーム速度[a].GetPoint() + UI::P差分[7], Color::White, "x");
+                MFont::fontS[FontType::BMP黒].DrawExtend(UI::Rゲーム速度[a].GetPoint() + UI::P差分[6], 2, 2, Color::White, { std::setw(2), spd });
 
                 spd *= 2 + 2 * TDSystem::is高速;
             }
@@ -654,8 +666,8 @@ namespace SDX_TD
             }
 
             //モードと難易度
-			MFont::fontS[FontType::BMP黒].DrawExtend(UI::P難易度名, 1, 1, Color::White, DifficultyDataS[TDSystem::難易度].名前);
-			MFont::fontS[FontType::BMP黒].DrawExtend(UI::Pモード名, 1, 1, Color::White, { "single" });
+            MFont::fontS[FontType::BMP黒].DrawExtend(UI::P難易度名, 1, 1, Color::White, DifficultyDataS[TDSystem::難易度].名前);
+            MFont::fontS[FontType::BMP黒].DrawExtend(UI::Pモード名, 1, 1, Color::White, { "single" });
 
             //SP,HP,MPの表示
             if (Witch::Main->大魔法残り時間 > 0)
@@ -664,28 +676,28 @@ namespace SDX_TD
                 const int SP値 = int(Witch::Main->大魔法残り時間 * 100 / Witch::Main->大魔法時間);
 
                 MIcon::UI[IconType::マナ].Draw(UI::PＳＰ);
-				MFont::fontS[FontType::BMP白].DrawExtend(UI::PＳＰ + UI::P差分[1], 2, 2, color, { std::setw(5), SP値 });//大魔法チャージ量
+                MFont::fontS[FontType::BMP白].DrawExtend(UI::PＳＰ + UI::P差分[1], 2, 2, color, { std::setw(5), SP値 });//大魔法チャージ量
             }
             else
             {
                 const int SP値 = std::min(int(Witch::Main->Sp * 100 / Witch::Main->最大Sp), 100);
                 
                 MIcon::UI[IconType::マナ].Draw(UI::PＳＰ);
-				MFont::fontS[FontType::BMP白].DrawExtend(UI::PＳＰ + UI::P差分[1], 2, 2, { 128, 128, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
+                MFont::fontS[FontType::BMP白].DrawExtend(UI::PＳＰ + UI::P差分[1], 2, 2, { 128, 128, 255 }, { std::setw(5), SP値 });//大魔法チャージ量
             }
 
             MIcon::UI[IconType::ライフ].Draw(UI::P体力);
-			MFont::fontS[FontType::BMP白].DrawExtend(UI::P体力 + UI::P差分[1], 2, 2, { 255, 60, 60 }, { std::setw(5), Witch::Main->Hp });//HP
+            MFont::fontS[FontType::BMP白].DrawExtend(UI::P体力 + UI::P差分[1], 2, 2, { 255, 60, 60 }, { std::setw(5), Witch::Main->Hp });//HP
 
             MIcon::UI[IconType::レベル].Draw(UI::P魔力);
-			MFont::fontS[FontType::BMP白].DrawExtend(UI::P魔力 + UI::P差分[1], 2, 2, { 255, 255, 0 }, { std::setw(5), (int)Witch::Main->Mp });//MP
+            MFont::fontS[FontType::BMP白].DrawExtend(UI::P魔力 + UI::P差分[1], 2, 2, { 255, 255, 0 }, { std::setw(5), (int)Witch::Main->Mp });//MP
 
             //設定ボタン
             MSystem::フレーム[3].Draw(UI::Rメニュー);
-			MFont::fontS[FontType::ゴシック中].DrawShadow(UI::Rメニュー.GetPoint() + UI::P差分[2], Color::Black, Color::Gray, "ポーズ");
+            MFont::fontS[FontType::ゴシック中].DrawShadow(UI::Rメニュー.GetPoint() + UI::P差分[2], Color::Black, Color::Gray, "ポーズ");
 
             MSystem::フレーム[3].Draw(UI::R大魔法);
-			MFont::fontS[FontType::ゴシック中].DrawShadow(UI::R大魔法.GetPoint() + UI::P差分[2], Color::Black, Color::Gray, "大魔法");
+            MFont::fontS[FontType::ゴシック中].DrawShadow(UI::R大魔法.GetPoint() + UI::P差分[2], Color::Black, Color::Gray, "大魔法");
 
             //魔法一覧の表示
             for (auto &&it : jobS)
@@ -728,13 +740,13 @@ namespace SDX_TD
             land.Init();
 
             score = 0;
-			timer = 0;
+            timer = 0;
 
             //ウィッチ初期化
             Witch::InitAll();
 
-			//初期配置読み込み
-			LoadUnitS();
+            //初期配置読み込み
+            LoadUnitS();
 
             //BGM開始
             MMusic::通常.Play();
@@ -745,24 +757,24 @@ namespace SDX_TD
         {
             SStage = this;
 
-			if (wave.現在Wave != 0)
-			{
-				++timer;
-				Director::IsDraw() = (timer % gameSpeed == 0);
-			}
-			else
-			{
-				Director::IsDraw() = true;
-			}
+            if (wave.現在Wave != 0)
+            {
+                ++timer;
+                Director::IsDraw() = (timer % gameSpeed == 0);
+            }
+            else
+            {
+                Director::IsDraw() = true;
+            }
 
-			InputCheck();
+            InputCheck();
 
-			if (gameSpeed == 0)
-			{
-				Director::IsDraw() = true;
-				return;
-			}
-			//■停止中は処理ここまで■
+            if (gameSpeed == 0)
+            {
+                Director::IsDraw() = true;
+                return;
+            }
+            //■停止中は処理ここまで■
 
             NextWave();
 
@@ -815,25 +827,34 @@ namespace SDX_TD
             //終了判定
             if (Witch::Hp <= 0)
             {				
-				GameOver( false );//敗北
+                GameOver( false );//敗北
             }
             else if (groundEnemyS.GetCount() == 0 && skyEnemyS.GetCount() == 0 && (int)groundEnemyS.suspendS.size() == 0 && (int)skyEnemyS.suspendS.size() == 0 && wave.現在Wave == wave.最終Wave)
-			{
-				GameOver( true);//勝利
+            {
+                GameOver( true);//勝利
             }
         }
 
-		/**クリアor全滅処理.*/
-		void GameOver(bool is勝利)
-		{
-			Director::AddScene(std::make_shared<SceneResult>(is勝利));
-		}
+        /**クリアor全滅処理.*/
+        void GameOver(bool is勝利)
+        {
+            bool isRetry = SceneResult::CallResult(is勝利);
+            
+            if (isRetry)
+            {
+                Init();
+            }
+            else
+            {
+                isEnd = true;
+            }
+        }
 
-		/**リプレイ保存処理.*/
-		void SaveReplay()
-		{
+        /**リプレイ保存処理.*/
+        void SaveReplay()
+        {
 
-		}
+        }
 
         /**画面の描画.*/
         void Draw() override
@@ -969,58 +990,58 @@ namespace SDX_TD
             return 一番近い敵;
         }
         
-		/**十字射程内で一番近いEnemyを返す.*/
-		IEnemy* GetNearEnemyCloss(const IPosition* 比較対象, bool is地上, bool is空中 , int 幅 , double 射程) override
-		{
-			IEnemy* 一番近い敵 = nullptr;
-			double  最短距離 = 9999999999;//適当に大きな値
-			double  距離;
+        /**十字射程内で一番近いEnemyを返す.*/
+        IEnemy* GetNearEnemyCloss(const IPosition* 比較対象, bool is地上, bool is空中 , int 幅 , double 射程) override
+        {
+            IEnemy* 一番近い敵 = nullptr;
+            double  最短距離 = 9999999999;//適当に大きな値
+            double  距離;
 
-			if (is地上)
-			{
-				for (auto && it : groundEnemyS.objectS)
-				{
-					距離 = GetClossDistance(it.get(), 比較対象, 幅, 射程);
+            if (is地上)
+            {
+                for (auto && it : groundEnemyS.objectS)
+                {
+                    距離 = GetClossDistance(it.get(), 比較対象, 幅, 射程);
 
-					if (距離 >= 0 && 距離 < 最短距離)
-					{					
-						一番近い敵 = it.get();
-						最短距離 = 距離;
-					}
-				}
-			}
-			if (is空中)
-			{
-				for (auto && it : skyEnemyS.objectS)
-				{
-					距離 = GetClossDistance(it.get(), 比較対象, 幅, 射程);
+                    if (距離 >= 0 && 距離 < 最短距離)
+                    {					
+                        一番近い敵 = it.get();
+                        最短距離 = 距離;
+                    }
+                }
+            }
+            if (is空中)
+            {
+                for (auto && it : skyEnemyS.objectS)
+                {
+                    距離 = GetClossDistance(it.get(), 比較対象, 幅, 射程);
 
-					if (距離 >= 0 && 距離 < 最短距離)
-					{
-						一番近い敵 = it.get();
-						最短距離 = 距離;
-					}
-				}
-			}
+                    if (距離 >= 0 && 距離 < 最短距離)
+                    {
+                        一番近い敵 = it.get();
+                        最短距離 = 距離;
+                    }
+                }
+            }
 
-			return 一番近い敵;
-		}
+            return 一番近い敵;
+        }
 
-		/**AとBが十字射程内にあるなら距離を返す、いないなら-1を返す.*/
-		int GetClossDistance(const IPosition* 対象A, const IPosition* 対象B, int 幅, double 射程) override
-		{
-			const double xd = std::abs(対象A->GetX() - 対象B->GetX());
-			const double yd = std::abs(対象A->GetY() - 対象B->GetY());
+        /**AとBが十字射程内にあるなら距離を返す、いないなら-1を返す.*/
+        int GetClossDistance(const IPosition* 対象A, const IPosition* 対象B, int 幅, double 射程) override
+        {
+            const double xd = std::abs(対象A->GetX() - 対象B->GetX());
+            const double yd = std::abs(対象A->GetY() - 対象B->GetY());
 
-			if (
-				(xd <= 幅 && yd <= 射程) ||
-				(xd <= 射程 && yd <= 幅)
-				)
-			{
-				return int(xd * xd + yd * yd);
-			}
-			return -1;
-		}
+            if (
+                (xd <= 幅 && yd <= 射程) ||
+                (xd <= 射程 && yd <= 幅)
+                )
+            {
+                return int(xd * xd + yd * yd);
+            }
+            return -1;
+        }
 
         /**ユニットの支援再計算.*/
         void Support() override
@@ -1095,7 +1116,7 @@ namespace SDX_TD
                     SStage->Draw();
                     Screen::SetBright(Color::White);
                     //@todo 演出は仮
-					MFont::fontS[FontType::ゴシック中].DrawRotate({ 800 - a * 6, 300 }, 5, 0, Color::White, Witch::Main->大魔法名);
+                    MFont::fontS[FontType::ゴシック中].DrawRotate({ 800 - a * 6, 300 }, 5, 0, Color::White, Witch::Main->大魔法名);
                     System::Update();
                 }
             }

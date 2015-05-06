@@ -276,7 +276,6 @@ namespace SDX_TD
             fontS[FontType::BMP黒影].SetImage("☆", 英影[29]);
 
             fontS[FontType::BMP白].SetImageS("0", &白数字, 10);
-
         }
     }
 

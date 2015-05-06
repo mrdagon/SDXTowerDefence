@@ -14,7 +14,7 @@ namespace SDX_TD
     {
     public:
         //@Define
-        UI_Button クレジット = { 125, {233,226,196,48} , 0.000000,3};
+		UI_Button クレジット = { 125, {233,226,196,48} , 0.000000,3};
         //@End
         bool isヘルプ表示;
         Image* 表示画像;
@@ -73,7 +73,7 @@ namespace SDX_TD
             }
 
             //@Update
-            if(クレジット.isClick()){}
+			if(クレジット.isClick()){}
             //@End
         }
 
@@ -84,7 +84,7 @@ namespace SDX_TD
             if (Input::key.Return.on){ LoadGUI(); }
 #endif
             //@Draw
-            MSystem::frameS[クレジット.frameNo].Draw(クレジット.rect);
+			MSystem::frameS[クレジット.frameNo].Draw(クレジット.rect);
             //@End
             MFont::fontS[1].DrawRotate(クレジット.rect.GetCenter(),2,0, Color::Black, "Credit");
 
@@ -102,9 +102,9 @@ namespace SDX_TD
             return;
 #endif
             //@Load
-            SDX::GUIData guiData = SDX::TMXtoGUI( TMX_FILE_NAME , "SceneHelp", GUI_Factory);
+			SDX::GUIData guiData = SDX::TMXtoGUI( TMX_FILE_NAME , "SceneHelp", GUI_Factory);
 
-            クレジット = *dynamic_cast<UI_Button*>(guiData.dataS[0].get());
+			クレジット = *dynamic_cast<UI_Button*>(guiData.dataS[0].get());
             //@End
         }
     };

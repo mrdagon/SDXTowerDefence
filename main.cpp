@@ -45,6 +45,8 @@ int main(int argc, char* argv[])
 	Sound::SetMainVolume(0.0);
 	//Window::SetSize(960, 720);
 
+	TDSystem::限界難易度 = Difficulty::DeathMarch;
+
 	LoadUnitS();
 	LoadEnemyS();
 	LoadStageS();
@@ -53,6 +55,8 @@ int main(int argc, char* argv[])
 	LoadChipS();
 
 	LoadMaterial();
+
+	StageDataS[0];
 
 	while (1)
 	{

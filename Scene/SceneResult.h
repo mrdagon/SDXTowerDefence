@@ -29,36 +29,66 @@ namespace SDX_TD
 		UI_Text 獲得経験値 = { 156, {223,313,196,54} , 0.000000,0,"EXP"};
 		//@End
 
+		bool isRetry;
+
+		static bool CallResult(bool is勝利)
+		{
+			static SceneResult single(is勝利);
+			single.Init();
+			//スコア更新時にリプレイAutoSaveするかどうか
+			if (TDSystem::isリプレイ保存)
+			{
+
+			}
+
+			do
+			{
+				single.Update();
+				single.Draw();
+			} while (System::Update(true) && !single.isEnd);
+
+			return single.isRetry;
+		}
+
 		SceneResult(bool is勝利):
-			is勝利(is勝利),
-			isリプレイ保存済み(!SStage->isReplay)
+			is勝利(is勝利)
 		{
 			LoadGUI();
-			Init();
 		}
 
 		//初期化
 		void Init() override
 		{
-			//@Init
-			//@End
+			isEnd = false;
+			isリプレイ保存済み = false;
 		}
 
 		//終了時
 		void Final() override
 		{
-			//@Final
-			//@End
 		}
 
 		//更新
 		void Update() override
 		{
-			//@Update
-			if(リプレイ保存.isClick()){}
-			if(リトライ.isClick()){}
-			if(終了.isClick()){}
-			//@End
+			if(リプレイ保存.isClick())
+			{
+				if ( !isリプレイ保存済み)
+				{
+					SStage->SaveReplay();
+				}
+			}
+
+			if(リトライ.isClick())
+			{
+				isRetry = true;
+				isEnd = true;
+			}
+			if(終了.isClick())
+			{
+				isRetry = false;
+				isEnd = true;
+			}
 		}
 
 		//描画
@@ -67,6 +97,11 @@ namespace SDX_TD
 #ifdef _DEBUG			
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
+			Director::IsDraw() = true;
+			Screen::SetBright(Color::Gray);
+			Director::GetScene(0)->Draw();
+			Screen::SetBright(Color::White);
+
 			//@Draw
 			MSystem::frameS[リプレイ保存.frameNo].Draw(リプレイ保存.rect);
 			MSystem::frameS[リトライ.frameNo].Draw(リトライ.rect);

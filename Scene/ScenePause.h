@@ -9,6 +9,7 @@ namespace SDX_TD
 {
 	using namespace SDX;
 
+	/**サブウィンドウ的に呼び出す.*/
 	class ScenePause : public SDX::IScene
 	{
 	public:
@@ -17,6 +18,22 @@ namespace SDX_TD
 		UI_Button やり直す = { 80, {210,220,220,50} , 0.000000,3};
 		UI_Button 続ける = { 81, {210,140,220,50} , 0.000000,3};
 		//@End
+
+		int buttonNo;//0,1,2,あきらめ、やり直す、続ける
+
+		static int SelectPause()
+		{
+			static ScenePause single;
+			single.isEnd = false;
+
+			do
+			{
+				single.Update();
+				single.Draw();
+			} while (System::Update(true) && !single.isEnd);
+
+			return single.buttonNo;
+		}
 
 		ScenePause()
 		{
@@ -41,11 +58,21 @@ namespace SDX_TD
 		//更新
 		void Update() override
 		{
-			//@Update
-			if(あきらめる.isClick()){}
-			if(やり直す.isClick()){}
-			if(続ける.isClick()){}
-			//@End
+			if(あきらめる.isClick())			
+			{
+				buttonNo = 0;
+				isEnd = true;
+			}
+			if(やり直す.isClick())
+			{
+				buttonNo = 1;
+				isEnd = true;
+			}
+			if(続ける.isClick())
+			{
+				buttonNo = 2;
+				isEnd = true;
+			}
 		}
 
 		//描画
@@ -54,10 +81,18 @@ namespace SDX_TD
 #ifdef _DEBUG			
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
+			Screen::SetBright(Color::Gray);
+			Director::GetScene(0)->Draw();
+			Screen::SetBright(Color::White);
+
+			あきらめる.DrawText(MFont::fontS[1], "あきらめる", 2 , Color::Black);
+			やり直す.DrawText(MFont::fontS[1], "やり直す", 2, Color::Black);
+			続ける.DrawText(MFont::fontS[1], "続ける", 2, Color::Black);
+
 			//@Draw
-			MSystem::frameS[あきらめる.frameNo].Draw(あきらめる.rect);
-			MSystem::frameS[やり直す.frameNo].Draw(やり直す.rect);
-			MSystem::frameS[続ける.frameNo].Draw(続ける.rect);
+			//MSystem::frameS[あきらめる.frameNo].Draw(あきらめる.rect);
+			//MSystem::frameS[やり直す.frameNo].Draw(やり直す.rect);
+			//MSystem::frameS[続ける.frameNo].Draw(続ける.rect);
 			//@End
 		}
 
