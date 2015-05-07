@@ -49,11 +49,11 @@ namespace SDX_TD
 		DifficultyDataS[Difficulty::Hell].Set(80, 32, 2, 2.00, 1.40, true);
 		DifficultyDataS[Difficulty::DeathMarch].Set(100, 44, 2, 2.50, 1.50, true);
 
-		DifficultyDataS[Difficulty::Easy].Set(25, 24, 3, 1.00, 1.00, false);
-		DifficultyDataS[Difficulty::Normal].Set(50, 24, 3, 1.30, 1.20, false);
-		DifficultyDataS[Difficulty::Hard].Set(75, 24, 3, 1.60, 1.40, false);
+		DifficultyDataS[Difficulty::Easy].Set(25, 24, 2, 1.00, 1.00, false);
+		DifficultyDataS[Difficulty::Normal].Set(50, 24, 2, 1.30, 1.20, false);
+		DifficultyDataS[Difficulty::Hard].Set(75, 24, 2, 1.60, 1.40, false);
 		DifficultyDataS[Difficulty::Maniac].Set(100, 32, 4, 2.00, 1.60, false);
 		DifficultyDataS[Difficulty::Hell].Set(300, 32, 4, 3.00, 1.80, false);
-		DifficultyDataS[Difficulty::DeathMarch].Set(1000, 40, 5, 5.00, 2.00, false);
+		DifficultyDataS[Difficulty::DeathMarch].Set(1000, 40, 6, 5.00, 2.00, false);
 	}
 }

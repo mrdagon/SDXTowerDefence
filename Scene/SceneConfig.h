@@ -66,7 +66,7 @@ namespace SDX_TD
 			if (BGM－.isClick()){ TDSystem::BGMの音量--; }
 			if (BGM＋.isClick()){ TDSystem::BGMの音量++; }
 			if (グリッドChk.isClick()){ TDSystem::isグリッド = !TDSystem::isグリッド; }
-			if (敵HPChk.isClick()){ TDSystem::isHPゲージ = !TDSystem::isグリッド; }
+			if (敵HPChk.isClick()){ TDSystem::isHPゲージ = !TDSystem::isHPゲージ; }
 			if (エフェクト表示Chk.isClick()){ TDSystem::isエフェクト = !TDSystem::isエフェクト; }
 			if (リプレイ保存Chk.isClick()){ TDSystem::isリプレイ保存 = !TDSystem::isリプレイ保存; }
 			if (タッチ操作Chk.isClick()){ TDSystem::isタッチ = !TDSystem::isタッチ; }
@@ -93,7 +93,7 @@ namespace SDX_TD
 #ifdef _DEBUG			
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
-			//@Draw
+			//Draw
 			MSystem::frameS[効果音＋.frameNo].Draw(効果音＋.rect);
 			MSystem::frameS[効果音－.frameNo].Draw(効果音－.rect);
 			MSystem::frameS[BGM－.frameNo].Draw(BGM－.rect);
@@ -103,7 +103,7 @@ namespace SDX_TD
 			MSystem::frameS[エフェクト表示.frameNo].Draw(エフェクト表示.rect);
 			MSystem::frameS[タッチ操作.frameNo].Draw(タッチ操作.rect);
 			MSystem::frameS[リプレイ保存.frameNo].Draw(リプレイ保存.rect);
-			MFont::fontS[効果音.fontNo].DrawRotate(効果音.rect.GetCenter(),1,0,Color::White,効果音.text);
+			MFont::fontS[効果音.fontNo].DrawRotate(効果音.rect.GetCenter(),2,0,Color::White,効果音.text);
 			MSystem::frameS[BGMゲージ.frameNo].Draw(BGMゲージ.rect);
 			MSystem::frameS[効果音ゲージ.frameNo].Draw(効果音ゲージ.rect);
 			MSystem::frameS[初期配置.frameNo].Draw(初期配置.rect);
@@ -113,8 +113,8 @@ namespace SDX_TD
 			MSystem::frameS[リプレイ保存Chk.frameNo].Draw(リプレイ保存Chk.rect);
 			MSystem::frameS[タッチ操作Chk.frameNo].Draw(タッチ操作Chk.rect);
 			MSystem::frameS[初期配置Chk.frameNo].Draw(初期配置Chk.rect);
-			MFont::fontS[BGM.fontNo].DrawRotate(BGM.rect.GetCenter(),1,0,Color::White,BGM.text);
-			//@End
+			MFont::fontS[BGM.fontNo].DrawRotate(BGM.rect.GetCenter(),2,0,Color::White,BGM.text);
+			//End
 			//音量ゲージ
 			Rect rect = { 効果音ゲージ.rect.GetX()+5, 効果音ゲージ.rect.GetY()+50, 18,5};
 			for (int a = 0; a < TDSystem::効果音の音量; ++a )

@@ -21,9 +21,6 @@ namespace SDX_TD
 		std::string 説明文;
 
 		//外部に保存
-		int Lv;
-		int 経験値;
-		static int 最大スキルLv;
 		static EnumArray<int, SkillType> スキルLv;
 
 		double 攻撃補正 = 1.0;
@@ -52,7 +49,7 @@ namespace SDX_TD
 
 		//ステージ開始時しか参照しないパラメータ
 		int    追加Hp = 0;
-		int    初期Mp = 50;
+		int    追加Mp = 0;
 
 		double 強化回数補正 = 1.0;
 
@@ -68,7 +65,6 @@ namespace SDX_TD
 	};
 
 	EnumArray<WitchData, WitchType> WitchDataS;//基本性能
-	int WitchData::最大スキルLv;
 	EnumArray<int, SkillType> WitchData::スキルLv;
 
 	void LoadWitchS()

@@ -15,7 +15,6 @@ namespace SDX_TD
 	{
 	private:
 		//固定パラメータ
-		static Witch witchS[2];
 
 		WitchData *st;//レベル上昇や大魔法発動補正前のステータス
 
@@ -150,7 +149,7 @@ namespace SDX_TD
 			逆境補正 = st->逆境補正;
 
 			追加Hp = st->追加Hp;
-			初期Mp = st->初期Mp;
+			追加Mp = st->追加Mp;
 
 			is継続ダメージ = false;//鈍足or麻痺状態のスリップダメージ
 			is速度支援 = false;//速度も強化するかどうか
@@ -208,7 +207,7 @@ namespace SDX_TD
 				{
 					//レベル100で105%上昇
 					//レベル100以降は+0.1%される
-					pt = 1.05 + (スキルLv[type] - 100) * 0.01;
+					pt = 1.05 + (スキルLv[type] - 100) * 0.001;
 				}
 
 				switch (type)
@@ -226,8 +225,12 @@ namespace SDX_TD
 					case SkillType::強化:強化速度 *= (1.0 + pt); break;
 					case SkillType::逆境:逆境補正 *= (1.0 + pt); break;
 					case SkillType::節約:MP消費 /= (1.0 + pt); break;
-					case SkillType::体力:追加Hp +=スキルLv[type]; break;
-					case SkillType::魔力:初期Mp += スキルLv[type] * 5; break;
+					case SkillType::体力:
+                        if (this == Main){ 追加Hp += スキルLv[type];}
+                        break;
+					case SkillType::魔力:
+                        if (this == Main){ 追加Mp += スキルLv[type] * 5; }
+                        break;
 					case SkillType::必殺:獲得SP *= (1.0 + pt); break;
 					case SkillType::対竜:種族特攻[SubEnemyType::竜] *= (1.0 + pt); break;
 					case SkillType::対獣:種族特攻[SubEnemyType::獣] *= (1.0 + pt); break;
@@ -236,33 +239,33 @@ namespace SDX_TD
 					case SkillType::対水:種族特攻[SubEnemyType::水棲] *= (1.0 + pt); break;
 					case SkillType::対樹:種族特攻[SubEnemyType::自然] *= (1.0 + pt); break;
 					case SkillType::試練:break;
-					case SkillType::幸運:スコア補正 *= 1 + 0.02*スキルLv[type]; break;
+					case SkillType::幸運:スコア補正 *= 1.0 + pt; break;
 				}
 			}
 		}
 
 	public:
+        static Witch witchS[2];
 		static Witch* Main;
 		static Witch* Sub;
 
 		//変動パラメータ
 		static const int 基本Hp = 20;
+        static const int 基本Mp = 50;
 		static int 最大Hp;//共通
 		static int Hp;//共通
-		static EnumArray<int, UnitType> 配置回数;
+        static double Mp;//共通
+        static double Sp;//共通
+        static double 最大Sp;
+        static int 大魔法残り時間;
+
+		static EnumArray<int, UnitType> 配置回数;//実質的に無意味
 		static EnumArray<int, UnitType> 強化回数;
 
 		bool is継続ダメージ = false;//鈍足or麻痺状態のスリップダメージ
 		bool is速度支援 = false;//速度も強化するかどうか
 		bool is射程支援 = false;//射程も強化するかどうか
 		int 炸裂加算 = 0;//範囲攻撃追加
-
-		double Mp = 50;
-		double Sp = 0;
-		double 最大Sp = 1000;
-		int 大魔法残り時間 = 0;
-		EnumArray<bool, UnitType> is使用可能;
-
 		double スコア補正;
 		EnumArray<double, SubEnemyType> 種族特攻;
 
@@ -271,14 +274,9 @@ namespace SDX_TD
 		{
 			Hp = 基本Hp;
 			最大Hp = 基本Hp;
-
-			if (Sub)
-			{
-				Sub->補正計算();
-			}
+            Mp = 基本Mp;
 			Main->補正計算();
 
-			
 			//ウィッチは1回、他は無制限に配置可能
 			for (int a = 0; a < (int)UnitType::COUNT; ++a)
 			{
@@ -292,6 +290,8 @@ namespace SDX_TD
 				}
 			}
 
+            //強化回数再計算
+            //初期MPとHP再計算
 			for (auto & it : 強化回数)
 			{
 				it = 0;
@@ -314,19 +314,9 @@ namespace SDX_TD
 
 			Main->st = &WitchDataS[ウィッチ種];
 
-			//特殊ステージはここで代入する職種を変える
 			for (int a = 0; a < 12; ++a)
 			{
 				Main->職種[a] = WitchDataS[ウィッチ種].職種[a];
-			}
-
-			for (auto &it : Main->is使用可能)
-			{
-				it = false;
-			}
-			for (auto &it : Main->職種)
-			{
-				Main->is使用可能[it] = true;
 			}
 		}
 
@@ -336,24 +326,18 @@ namespace SDX_TD
 
 			Sub->st = &WitchDataS[ウィッチ種];
 
-			for (auto &it : Main->is使用可能)
-			{
-				it = false;
-			}
-
-			for (auto &it : Main->職種)
-			{
-				Main->is使用可能[it] = true;
-			}
+            for (int a = 0; a < 12; ++a)
+            {
+                Sub->職種[a] = WitchDataS[ウィッチ種].職種[a];
+            }
 		}
 
 		/**戦闘開始時の初期化処理.*/
 		/**@todo パワーかどうかで処理変化*/
 		void Init()
 		{
-
 			Hp += 追加Hp;
-			Mp = 初期Mp;
+			Mp += 追加Mp;
 
 			Sp = 0;
 			大魔法残り時間 = 0;
@@ -409,8 +393,6 @@ namespace SDX_TD
 			AddSp(最大Sp / 20);
 			//被ダメ補正は最大で20まで
 			Hp = std::max(0, Hp - ダメージ量);
-
-
 		}
 
 		/**大魔法発動時の性能計算、効果処理.*/
@@ -434,5 +416,9 @@ namespace SDX_TD
 	EnumArray<int, UnitType> Witch::配置回数;
 	EnumArray<int, UnitType> Witch::強化回数;
 	int Witch::最大Hp;
-	int	Witch::Hp;
+    int	Witch::Hp;
+    double Witch::Mp;//共通
+    double Witch::Sp = 0;//共通
+    double Witch::最大Sp = 1000;
+    int Witch::大魔法残り時間 = 0;
 }

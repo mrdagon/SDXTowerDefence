@@ -53,10 +53,10 @@ namespace SDX_TD
 			//@End
 		}
 
-		void DrawText(Font &font, const char* 文字列, double 文字サイズ, const Color &描画色 = Color::White)
+		void DrawText(Font &font, const VariadicStream &文字列, double 文字サイズ, const Color &描画色 = Color::White)
 		{
 			Draw();
-			font.DrawRotate(rect.GetCenter(), 文字サイズ, 0, 描画色, 文字列);
+			font.DrawRotate(rect.GetCenter(), 文字サイズ, 0, 描画色, 文字列.StringS[0].c_str());
 		}
 	};
 }

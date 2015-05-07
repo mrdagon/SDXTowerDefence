@@ -216,12 +216,13 @@ namespace SDX_TD
             MSound::Wave.Play();
             lv = int((wave.現在Wave + 1) * DifficultyDataS[TDSystem::難易度].レベル補正[TDSystem::isトライアル]);
 
-            if (wave.isBoss[waveNo]){ enemyCount = DifficultyDataS[TDSystem::難易度].ボス召喚数[TDSystem::isトライアル]; }
-            else { enemyCount = DifficultyDataS[TDSystem::難易度].雑魚召喚数[TDSystem::isトライアル]; }
-
-            if (wave.敵種類[waveNo] == EnemyType::ゴブリン)
+            if (wave.isBoss[waveNo])
             {
-                enemyCount *= 2;
+                enemyCount = int(DifficultyDataS[TDSystem::難易度].ボス召喚数[TDSystem::isトライアル] * EnemyDataS[wave.敵種類[waveNo]].出現数);
+            }
+            else
+            {
+                enemyCount = int(DifficultyDataS[TDSystem::難易度].雑魚召喚数[TDSystem::isトライアル] * EnemyDataS[wave.敵種類[waveNo]].出現数);
             }
 
             for (int a = 0; a < enemyCount; ++a)			
@@ -901,9 +902,12 @@ namespace SDX_TD
         void ResetJobList() override
         {
             //ウィッチリスト12種初期化
-            for (int a = 0; a < 12; ++a)
+            jobS[0].SetType((UnitType)Witch::Main->種類);
+            jobS[0].shape = UI_Stage::R魔法一覧[0];
+
+            for (int a = 1; a < 12; ++a)
             {
-                jobS[a].SetType(Witch::Main->職種[a]);
+                jobS[a].SetType(Witch::witchS[0].職種[a]);
                 jobS[a].shape = UI_Stage::R魔法一覧[a];
             }
         }
@@ -1104,7 +1108,7 @@ namespace SDX_TD
                 MMusic::通常.Play();//BGMを元に戻す
                 return;
             }
-            else
+            else if ( TDSystem::isエフェクト )
             {
                 //開始時処理
                 MMusic::大魔法.Play();
@@ -1180,7 +1184,7 @@ namespace SDX_TD
             case WitchType::フィオナ:
                 //HP+5
                 //残りHPに応じて攻撃
-                Witch::Hp += 5;		
+                Witch::Hp += 5;
                 break;
             case WitchType::ナズナ:
                 //MP+20%

@@ -327,7 +327,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneReplay" visible="0">
+ <objectgroup name="SceneReplay">
   <object id="127" name="リプレイ情報" type="Frame" x="364" y="305" width="275" height="110">
    <properties>
     <property name="frameNo" value="5"/>
@@ -575,7 +575,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneResult">
+ <objectgroup name="SceneResult" visible="0">
   <object id="83" name="リプレイ保存" type="Button" x="121.5" y="384" width="120" height="60">
    <properties>
     <property name="frameNo" value="3"/>

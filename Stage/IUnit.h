@@ -284,7 +284,6 @@ namespace SDX_TD
 				Lv >= 5 ||
 				残り強化時間 > 0 ||
 				残り売却時間 > 0 ||
-				!Witch::Main->is使用可能[st->職種] ||
 				!Witch::強化回数[st->職種]
 				)
 			{ 

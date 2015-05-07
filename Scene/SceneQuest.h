@@ -120,9 +120,6 @@ namespace SDX_TD
 			MFont::fontS[ウィッチ名.fontNo].DrawRotate(ウィッチ名.rect.GetCenter() + buf, 1, 0, Color::White, WitchDataS[種類].名前);
 			for (int a = 0; a < 6; ++a)
 			{
-				StageDataS[0].Getスコア().完勝[種類] = no / 2;
-				StageDataS[0].Getスコア().勝利[種類] = no;
-
 				if (StageDataS[0].Getスコア().完勝[種類] > a)
 				{
 					//金星
@@ -138,8 +135,6 @@ namespace SDX_TD
 					//黒星
 					MFont::fontS[2].DrawRotate(星.rect.GetCenter() + buf + Point(10 * a, 0), 1, 0, Color::Black, "☆");
 				}
-
-				StageDataS[0].Getスコア().スコア[種類] = no * no * no;
 			}
 			//MSystem::frameS[ウィッチアイコン.frameNo].Draw(ウィッチアイコン.rect);
 			//MFont::fontS[ウィッチ名.fontNo].DrawRotate(ウィッチ名.rect.GetCenter(), 1, 0, Color::White, ウィッチ名.text);
@@ -178,8 +173,8 @@ namespace SDX_TD
 			MSystem::frameS[シングル_カップル.frameNo].Draw(シングル_カップル.rect);
 			MSystem::frameS[トライアル.frameNo].Draw(トライアル.rect);
 			//モードスイッチ
-			シングル_カップル.DrawText(MFont::fontS[2], (TDSystem::isカップル)?"Couple":"Single", 2);
-			トライアル.DrawText(MFont::fontS[2], (TDSystem::isトライアル)?"Trial":"Power", 2);
+			シングル_カップル.DrawText(MFont::fontS[2], (TDSystem::isカップル)?"○ Couple":"× Couple", 2);
+			トライアル.DrawText(MFont::fontS[2], (TDSystem::isトライアル)?"○ Trial":"× Trial", 2);
 			//スコア一覧
 			MFont::fontS[ハイスコア.fontNo].DrawRotate(ハイスコア.rect.GetCenter(), 2, 0, Color::White, ハイスコア.text);
 			for (int a = 0; a < (int)WitchType::COUNT; ++a)

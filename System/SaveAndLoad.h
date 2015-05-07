@@ -9,54 +9,75 @@
 
 namespace SDX_TD
 {
-	using namespace SDX;
+    using namespace SDX;
 
-	bool SaveAndLoad(FileMode 保存or読み込み)
-	{
-		//バイナリ形式で保存
-		File file("file/save/save.dat", 保存or読み込み, false);
+    bool SaveAndLoad(FileMode 保存or読み込み)
+    {
+        //バイナリ形式で保存
+        File file("file/save/save.dat", 保存or読み込み, false);
 
-		if (file.GetFileMode() == FileMode::None){return false;}
+        if (file.GetFileMode() == FileMode::None){return false;}
 
-		//古いバージョンのセーブデータを読み込む時のなんちゃら用
-		file.ReadWrite(TDSystem::バージョン);
+        //古いバージョンのセーブデータを読み込む時のなんちゃら用
+        file.ReadWrite(TDSystem::バージョン);
 
-		for (auto &it : WitchDataS)
-		{
-			file.ReadWrite(it.Lv);
-			file.ReadWrite(it.経験値);
-		}
+        file.ReadWrite(WitchData::スキルLv);
 
-		file.ReadWrite(WitchData::最大スキルLv);
-		file.ReadWrite(WitchData::スキルLv);
+        file.ReadWrite(TDSystem::限界難易度);
 
-		for (auto &it : StageDataS)
-		{
-			file.ReadWrite(it.ハイスコア,4);
-			
-			for (int a = 0; a < 24; ++a)
-			{
-				file.ReadWrite(it.初期配置[a/2][a%12]);
-			}			
-		}
+        file.ReadWrite(TDSystem::最大スキルポイント);
+        file.ReadWrite(TDSystem::残りスキルポイント);
+        file.ReadWrite(TDSystem::経験値);
 
-		file.ReadWrite(TDSystem::限界難易度);
+        file.ReadWrite(TDSystem::効果音の音量);
+        file.ReadWrite(TDSystem::BGMの音量);
 
-		file.ReadWrite(TDSystem::資金);
-		file.ReadWrite(TDSystem::素材数,4);
+        file.ReadWrite(TDSystem::isグリッド);
+        file.ReadWrite(TDSystem::isHPゲージ);
+        file.ReadWrite(TDSystem::is高速);
+        file.ReadWrite(TDSystem::isエフェクト);
 
-		file.ReadWrite(TDSystem::効果音の音量);
-		file.ReadWrite(TDSystem::BGMの音量);
+        file.ReadWrite(TDSystem::isタッチ);
 
-		file.ReadWrite(TDSystem::isグリッド);
-		file.ReadWrite(TDSystem::isHPゲージ);
-		file.ReadWrite(TDSystem::is高速);
-		file.ReadWrite(TDSystem::isエフェクト);
+        file.ReadWrite(TDSystem::isリプレイ保存);
 
-		file.ReadWrite(TDSystem::isタッチ);
+        if (保存or読み込み == FileMode::Write)
+        {
+            for (auto &it : StageDataS)
+            {
+                //ファイル名を入れる
+                file.Write(it.first);
 
-		file.ReadWrite(TDSystem::isリプレイ保存);
+                file.ReadWrite(it.second.成績, 4);
 
-		return true;
-	}
+                for (int a = 0; a < 24; ++a)
+                {
+                    int num = it.second.初期配置[a / 2][a % 12].size();
+                    file.Write(num);
+                    file.ReadWrite(it.second.初期配置[a / 2][a % 12]);
+                }
+            }
+        }
+        else
+        {
+            while ( !file.CheckEOF())
+            {
+                std::string fileName;
+                file.Read(fileName);
+
+                file.ReadWrite(StageDataS[fileName].成績, 4);
+
+                for (int a = 0; a < 24; ++a)
+                {
+                    int num;
+                    file.Read( num);
+                    StageDataS[fileName].初期配置[a / 2][a % 12].resize(num);
+                    file.ReadWrite(StageDataS[fileName].初期配置[a / 2][a % 12]);
+                }
+            }
+        }
+
+
+        return true;
+    }
 }

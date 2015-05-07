@@ -27,7 +27,7 @@ namespace SDX_TD
 
         //全体の最高スコア
         //[isトライアル][isカップル]
-        Score ハイスコア[2][2];//レベル制限あり
+        Score 成績[2][2];
 
         EnemyType 敵種類[MAX_WAVE];
         bool	  isBoss[MAX_WAVE];
@@ -35,7 +35,7 @@ namespace SDX_TD
 
         Score& Getスコア()
         {
-            return ハイスコア[TDSystem::isトライアル][TDSystem::isカップル];
+            return 成績[TDSystem::isトライアル][TDSystem::isカップル];
         }
 
         //メインウィッチ種、トライアルorパワー
@@ -48,16 +48,87 @@ namespace SDX_TD
 
     };
 
-    std::array<StageData,StageType::COUNT> StageDataS;//標準ステージ
-    std::map< std::string, StageData > FreeStageS;//全部文字列で管理
+    //std::array<StageData,StageType::COUNT> StageDataS;//標準ステージ
+    std::map< std::string, StageData > StageDataS;//全部文字列で管理
 
     void LoadStageS()
     {
+        //ディレクトリ内のファイルを列挙
+        auto fileS = Directory::GetFileName("file/map");
+
         //ソフト起動時のみ行う
         bool isMap = false;
         bool isEnemy = false;
         int line = 0;
 
+        for (auto it : fileS)
+        {
+            //tmxファイル以外は無視
+            if (it.find(".tmx") == std::string::npos){ continue; }
+
+            File file(it.c_str(), FileMode::Read, true);
+            StageData& data = StageDataS[it];
+            auto strS = file.GetLineS();
+
+            for (auto &str : strS)
+            {
+                if (isMap || isEnemy)
+                {
+                    std::istringstream iss(str);
+                    std::string buf;
+                    int count = 0;
+
+                    while (std::getline(iss, buf, ','))
+                    {
+                        if (line == -1){ break; }//data encoding="csv"を無視
+
+                        if (isEnemy)
+                        {
+                            //@todo ここタイルチップ情報確認しておきたい
+                            int num = (std::atoi(buf.c_str()) - 11);
+
+                            data.敵種類[count + line * 10] = (EnemyType)(num % 20);
+                            data.isBoss[count + line * 10] = (num >= 20);
+
+                            if (count == 9){ break; }
+                        }
+                        else
+                        {
+                            data.地形[count][line] = (ChipType)(std::atoi(buf.c_str()) - 1);
+                        }
+                        ++count;
+                    }
+                    ++line;
+                    if (isEnemy && line == 10){ isEnemy = false; }
+                    if (isMap && line == 32){ isMap = false; }
+                }
+                else if (str.find("Info") != std::string::npos)
+                {
+                    data.説明 = GetTag(str, "value=");
+                }
+                else if (str.find("Name") != std::string::npos)
+                {
+                    data.名前 = GetTag(str, "value=");
+                }
+                else if (str.find("WaveSpeed") != std::string::npos)
+                {
+                    data.Wave間隔 = std::atoi(GetTag(str, "value=").c_str());
+                }
+                else if (str.find("layer name=\"map\"") != std::string::npos)
+                {
+                    isMap = true;
+                    line = -1;
+                }
+                else if (str.find("layer name=\"enemy\"") != std::string::npos)
+                {
+                    isEnemy = true;
+                    line = -1;
+                }
+            }
+        }
+
+        return;
+        /*
         for (StageData &it : StageDataS)
         {
             File file("file/map/map000.tmx", FileMode::Read, true);
@@ -119,6 +190,7 @@ namespace SDX_TD
                 }
             }
         }
+        */
     }
 
 }
