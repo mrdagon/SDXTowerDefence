@@ -73,15 +73,15 @@ namespace SDX_TD
 
                     while (std::getline(iss, buf, ','))
                     {
-						if (line == -1){ break; }//data encoding="csv"を無視
+                        if (line == -1){ break; }//data encoding="csv"を無視
 
                         if (isEnemy)
                         {
-							//@todo ここタイルチップ情報確認しておきたい
-							int num = (std::atoi(buf.c_str()) - 11);
+                            //@todo ここタイルチップ情報確認しておきたい
+                            int num = (std::atoi(buf.c_str()) - 11);
 
-							StageDataS[0].敵種類[count + line * 10] = (EnemyType)(num % 20);
-							StageDataS[0].isBoss[count + line * 10] = (num >= 20);
+                            StageDataS[0].敵種類[count + line * 10] = (EnemyType)(num % 20);
+                            StageDataS[0].isBoss[count + line * 10] = (num >= 20);
 
                             if (count == 9){ break; }
                         }
