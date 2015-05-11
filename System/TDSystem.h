@@ -15,7 +15,7 @@ namespace SDX_TD
     {
         //この4つはStageSelectとStageで共通なのでグローバル変数
         Difficulty 難易度;
-        std::string 選択ステージ = "";
+        std::string 選択ステージ = StageType::Quest[0];
         bool isトライアル = true;//notならアンリミテッド
         bool isカップル = true;//notならシングル
         int バージョン = 102;//
@@ -25,6 +25,9 @@ namespace SDX_TD
         int 残りスキルポイント;
         int 経験値;
         //ランダムステージの状況
+
+        //フリーステージ数
+        int リプレイファイル数 = 0;
 
         //実績関連
         Difficulty 限界難易度;
@@ -41,6 +44,7 @@ namespace SDX_TD
         bool isリプレイ保存;//常にリプレイの自動保存フラグ
 
         bool isタッチ;//タブレット用の操作スタイルフラグ
+        bool isフルスクリーン;//フルスクリーンフラグ
 
         int 画面サイズ;
 

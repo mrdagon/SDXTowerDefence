@@ -146,8 +146,11 @@ namespace SDX_TD
         ImagePack 枠画像[14];
         BmpFrame  フレーム[14];
         BmpFrame frameS[14];
+        Image 矢印[4];
 
         ImagePack マーク;
+
+        Image チェック;
 
         Image 背景;
 
@@ -168,6 +171,13 @@ namespace SDX_TD
             枠画像[11].Load("file/system/frame011.png", 9, 3, 3);
             枠画像[12].Load("file/system/frame012.png", 9, 3, 3);
             枠画像[13].Load("file/system/frame013.png", 9, 3, 3);
+
+            矢印[0].Load("file/system/tri0.png");
+            矢印[1].Load("file/system/tri1.png");
+            矢印[2].Load("file/system/tri2.png");
+            矢印[3].Load("file/system/tri3.png");
+
+            チェック.Load("file/system/tick.png");
 
             for (int a = 0; a < 14; ++a)
             {

@@ -178,7 +178,34 @@ namespace SDX_TD
 	/**ステージの種類.*/
 	namespace StageType
 	{
-		static const int COUNT = 24;
+        static std::vector<std::string> Free;
+        static std::string Quest[24] =
+        {
+            "map00.tmx",
+            "map01.tmx",
+            "map02.tmx",
+            "map03.tmx",
+            "map04.tmx",
+            "map05.tmx",
+            "map06.tmx",
+            "map07.tmx",
+            "map08.tmx",
+            "map09.tmx",
+            "map10.tmx",
+            "map11.tmx",
+            "map12.tmx",
+            "map13.tmx",
+            "map14.tmx",
+            "map15.tmx",
+            "map16.tmx",
+            "map17.tmx",
+            "map18.tmx",
+            "map19.tmx",
+            "map20.tmx",
+            "map21.tmx",
+            "map22.tmx",
+            "map23.tmx"
+        };
 	}
 
 	enum class RangeType
@@ -285,7 +312,7 @@ namespace SDX_TD
 		強化,//委員長
 		逆境,//ライナ
 
-		節約,//ディアネラ
+		集中,//ディアネラ
 		体力,//フィオナ
 		魔力,//ナズナ
 		必殺,//バロゥ

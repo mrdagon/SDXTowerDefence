@@ -89,11 +89,6 @@ namespace SDX_TD
 			やり直す.DrawText(MFont::fontS[1], "やり直す", 2, Color::Black);
 			続ける.DrawText(MFont::fontS[1], "続ける", 2, Color::Black);
 
-			//@Draw
-			//MSystem::frameS[あきらめる.frameNo].Draw(あきらめる.rect);
-			//MSystem::frameS[やり直す.frameNo].Draw(やり直す.rect);
-			//MSystem::frameS[続ける.frameNo].Draw(続ける.rect);
-			//@End
 		}
 
 		void LoadGUI() override

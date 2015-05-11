@@ -48,19 +48,17 @@ namespace SDX_TD
         int バージョン;
 
         //使用ウィッチ、サブウィッチ
-        std::string ステージ名;//自作マップにも対応
+        std::string ファイル名;
+        std::string ステージ名;//自作マップにも対応、ファイル名
         WitchType メイン;
         WitchType サブ;
         bool isトライアル;
         bool isカップル;
-        EnumArray<int, SkillType> スキルLv;
-
-        //自作マップリプレイはとりあえず非実装
-        int StageNo;//初期マップ用		
-
         Difficulty 難易度;
-        int 残りHP;
         int スコア;
+        int 結果;//0 Lose,1 Win,2 Perfect
+
+        EnumArray<int, SkillType> スキルLv;
 
         //■内部情報
         //初期配置データ
@@ -69,6 +67,11 @@ namespace SDX_TD
         int 乱数初期化子;
         //操作データ一覧
         std::vector<CommandData> commandS;
+
+        void Load(const char* ファイル名)
+        {
+
+        }
 
         void AddCommand(Command 種類 , const Point& 座標 , int 操作情報 , int timer)
         {

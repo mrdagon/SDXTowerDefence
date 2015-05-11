@@ -54,7 +54,6 @@ namespace SDX_TD
         {
             timer = 0;
 
-            isReplay = false;
             wave.Init();
 
             backEffectS.Clear();
@@ -719,8 +718,10 @@ namespace SDX_TD
         int timer = 0;//フレームスキップ用のタイマー
         int gameSpeed = 1;
 
-        Stage()
+        Stage(bool isReplay = false)
         {
+            IStage::isReplay = isReplay;
+
             Init();
         }
 

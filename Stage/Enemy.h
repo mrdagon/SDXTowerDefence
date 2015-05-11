@@ -515,16 +515,7 @@ namespace SDX_TD
 			}
 
 			//MP&SP&スコア増
-			if (TDSystem::isカップル)
-			{
-				Witch::Main->Mp += スコア*0.07;
-				Witch::Sub->Mp += スコア*0.03;
-			}
-			else
-			{
-				Witch::Main->Mp += スコア *0.1;
-			}
-
+			Witch::Mp += スコア *0.1 * Witch::Main->MP獲得;
 			Witch::Main->AddSp(st->スコア);
 
 			//ダメージに応じてスコアが低下する

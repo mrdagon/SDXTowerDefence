@@ -64,7 +64,6 @@ namespace SDX_TD
             //@End
         }
 
-
         void PushSB(UI_Button &ボタン , SkillType スキル種)
         {
             if (ボタン.rect.Hit(&Input::mouse.GetPoint()) )
@@ -92,28 +91,55 @@ namespace SDX_TD
                     pt2 = 0.1;
                 }
 
-                TDSystem::最大スキルポイント = 100;
-
                 //説明文更新
                 switch (スキル種)
                 {
-                case SkillType::攻撃:説明文 = "攻撃＋\n\nユニットが与えるダメージが上昇する\n\n";break;
-                default:
-                    説明文 = "";
-                    break;
+                case SkillType::攻撃:説明文 = "攻撃＋\n\n与えるダメージが上昇";break;
+                case SkillType::連射:説明文 = "連射＋\n\n攻撃回数が増加"; break;
+                case SkillType::射程:説明文 = "射程＋\n\n補足範囲が広がる"; break;
+                case SkillType::支援:説明文 = "支援＋\n\n支援効果が上昇"; break;
+                case SkillType::拡散:説明文 = "拡散＋\n\n範囲攻撃が広がる"; break;
+                case SkillType::麻痺:説明文 = "麻痺＋\n\n麻痺効果が上昇"; break;
+                case SkillType::鈍足:説明文 = "鈍足＋\n\n鈍足効果が上昇"; break;
+                case SkillType::吹飛:説明文 = "吹飛＋\n\n吹飛効果が上昇"; break;
+                case SkillType::防壊:説明文 = "防壊＋\n\n防御低下効果が上昇"; break;
+                case SkillType::回収:説明文 = "回収＋\n\n回収時間を短縮"; break;
+                case SkillType::強化:説明文 = "強化＋\n\n強化時間を短縮"; break;
+                case SkillType::逆境:説明文 = "逆境＋\n\n体力減少による攻撃上昇率が増加"; break;
+                case SkillType::集中:説明文 = "集中＋\n\nMP獲得量が上昇"; break;
+                case SkillType::体力:説明文 = "体力＋\n\n初期体力が増加"; break;
+                case SkillType::魔力:説明文 = "魔力＋\n\n初期魔力が増加"; break;
+                case SkillType::必殺:説明文 = "必殺＋\n\nSP獲得量が上昇"; break;
+                case SkillType::対獣:説明文 = "対獣＋\n\nケットシー、ケルベロス、グリフィンに与えるダメージが上昇"; break;
+                case SkillType::対人:説明文 = "対人＋\n\nゴブリン、コボルド、オーガに与えるダメージが上昇"; break;
+                case SkillType::対水:説明文 = "対水＋\n\nゼリー、ゼリー王、マーマンに与えるダメージが上昇"; break;
+                case SkillType::対樹:説明文 = "対樹＋\n\nゴーレム、トレントに与えるダメージが上昇"; break;
+                case SkillType::対闇:説明文 = "対闇＋\n\nシャーマン、スケルトン、インプに与えるダメージが上昇"; break;
+                case SkillType::対竜:説明文 = "対竜＋\n\nドラゴンに与えるダメージが上昇"; break;
+                case SkillType::幸運:説明文 = "幸運＋\n\n獲得スコアが増加"; break;
+                case SkillType::試練:説明文 = "試練＋\n\n最大Wave数が増加"; break;
+                default:説明文 = "";break;
                 }
+                説明文 += "\n\n";
 
-                if (スキル種 != SkillType::試練)
-                {
-                    説明文 += VariadicStream({ "[Lv ", Witch::スキルLv[スキル種], "] ", pt, "% + ", pt2 ,"%"}).StringS[0];
-                }
-                else
+                if (スキル種 == SkillType::試練)
                 {
                     説明文 += VariadicStream({ "[Lv ", Witch::スキルLv[スキル種], "] +", Witch::スキルLv[スキル種], "Wave + 1Wave" }).StringS[0];
                 }
+                else if (スキル種 == SkillType::体力)
+                {
+                    説明文 += VariadicStream({ "[Lv ", Witch::スキルLv[スキル種], "] +", Witch::スキルLv[スキル種], " + 1" }).StringS[0];
+                }
+                else if (スキル種 == SkillType::魔力)
+                {
+                    説明文 += VariadicStream({ "[Lv ", Witch::スキルLv[スキル種], "] +", Witch::スキルLv[スキル種]*5, " + 5" }).StringS[0];
+                }
+                else
+                {
+                    説明文 += VariadicStream({ "[Lv ", Witch::スキルLv[スキル種], "] ", pt, "% + ", pt2, "%" }).StringS[0];
+                }
 
                 if (!Input::mouse.Left.on){ return; }
-
 
                 if (Input::mouse.GetPoint().y < ボタン.rect.GetCenter().GetY())
                 {
@@ -151,7 +177,7 @@ namespace SDX_TD
             PushSB(攻撃,SkillType::攻撃);
             PushSB(拡散, SkillType::拡散);
             PushSB(防壊, SkillType::防壊);
-            PushSB(節約, SkillType::節約);
+            PushSB(節約, SkillType::集中);
             PushSB(対獣, SkillType::対獣);
             PushSB(対闇, SkillType::対闇);
             PushSB(対人, SkillType::対人);
@@ -185,8 +211,8 @@ namespace SDX_TD
             //現在レベル
             MFont::fontS[1].DrawRotate(ボタン.rect.GetCenter() + Point(0, 10), 1, 0, Color::Black, { "Lv ", Witch::スキルLv[スキル種] });
             //▲▼マーク
-           
-
+            MSystem::矢印[2].DrawRotate(ボタン.rect.GetCenter() - Point(0,26), 1, 0);
+            MSystem::矢印[3].DrawRotate(ボタン.rect.GetCenter() + Point(0, 26), 1, 0);
         }
 
         //描画
@@ -198,7 +224,7 @@ namespace SDX_TD
             DrawSB(攻撃, "攻撃", SkillType::攻撃);
             DrawSB(拡散, "拡散", SkillType::拡散);
             DrawSB(防壊, "防壊", SkillType::防壊);
-            DrawSB(節約, "節約", SkillType::節約);
+            DrawSB(節約, "集中", SkillType::集中);
             DrawSB(対獣, "対獣", SkillType::対獣);
             DrawSB(対闇, "対闇", SkillType::対闇);
             DrawSB(対人, "対人", SkillType::対人);

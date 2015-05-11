@@ -5,6 +5,7 @@
 #include "../System/EnumType.h"
 #include "PlaceData.h"
 #include "../System/TDSystem.h"
+#include "../System/Material.h"
 
 namespace SDX_TD
 {
@@ -20,6 +21,13 @@ namespace SDX_TD
 
         struct Score
         {
+            Score()
+            {
+                for (auto &it : スコア){ it = 0; }
+                for (auto &it : 勝利){ it = 0; }
+                for (auto &it : スコア){ it = 0; }
+            }
+
             EnumArray<int, WitchType> スコア;
             EnumArray<int, WitchType> 勝利;
             EnumArray<int, WitchType> 完勝;
@@ -41,32 +49,50 @@ namespace SDX_TD
         //メインウィッチ種、トライアルorパワー
         std::vector<Place> 初期配置[(int)WitchType::COUNT][2];
 
-        void DrawMinimap()
+        void DrawMinimap(const Point &基準座標)
         {
+            if (名前 == "") { return; }
 
+            for (int x = 2; x < MAP_SIZE - 2;++x)
+            {
+                for (int y = 2; y < MAP_SIZE - 2; ++y)
+                {
+                    MSystem::マップチップ[(int)地形[x][y]]->DrawRotate( 基準座標 + Point( x * 8, y * 8 ) , 0.5, 0);
+                }
+            }
         }
 
     };
 
-    //std::array<StageData,StageType::COUNT> StageDataS;//標準ステージ
     std::map< std::string, StageData > StageDataS;//全部文字列で管理
 
     void LoadStageS()
     {
         //ディレクトリ内のファイルを列挙
         auto fileS = Directory::GetFileName("file/map");
+        auto freeS = Directory::GetFileName("file/map/free");
+
+        for (auto &it : freeS)
+        {
+            //tmxファイル以外は無視
+            if (it.find(".tmx") == std::string::npos){ continue; }           
+            fileS.push_back( std::string("free/") + it );
+            StageType::Free.push_back( std::string("free/") + it);
+        }
 
         //ソフト起動時のみ行う
         bool isMap = false;
         bool isEnemy = false;
         int line = 0;
+        int chipEnemy;
+        int chipMap;
 
         for (auto it : fileS)
         {
             //tmxファイル以外は無視
             if (it.find(".tmx") == std::string::npos){ continue; }
 
-            File file(it.c_str(), FileMode::Read, true);
+            File file( (std::string("file/map/") + it).c_str(), FileMode::Read, true);
             StageData& data = StageDataS[it];
             auto strS = file.GetLineS();
 
@@ -85,7 +111,7 @@ namespace SDX_TD
                         if (isEnemy)
                         {
                             //@todo ここタイルチップ情報確認しておきたい
-                            int num = (std::atoi(buf.c_str()) - 11);
+                            int num = (std::atoi(buf.c_str()) - chipEnemy);
 
                             data.敵種類[count + line * 10] = (EnemyType)(num % 20);
                             data.isBoss[count + line * 10] = (num >= 20);
@@ -94,13 +120,21 @@ namespace SDX_TD
                         }
                         else
                         {
-                            data.地形[count][line] = (ChipType)(std::atoi(buf.c_str()) - 1);
+                            data.地形[count][line] = (ChipType)(std::atoi(buf.c_str()) - chipMap);
                         }
                         ++count;
                     }
                     ++line;
                     if (isEnemy && line == 10){ isEnemy = false; }
                     if (isMap && line == 32){ isMap = false; }
+                }
+                else if (str.find("enemy") != std::string::npos && str.find("tileset") != std::string::npos)
+                {
+                    chipEnemy = std::atoi(GetTag(str, "firstgid=").c_str());
+                }
+                else if (str.find("mapchip") != std::string::npos && str.find("tileset") != std::string::npos)
+                {
+                    chipMap = std::atoi(GetTag(str, "firstgid=").c_str());
                 }
                 else if (str.find("Info") != std::string::npos)
                 {
