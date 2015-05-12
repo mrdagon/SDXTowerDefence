@@ -86,6 +86,12 @@ namespace SDX_TD
             {
                 activeScene->Update();
             }
+
+            if (Input::key.Escape.on)
+            {
+                this->isEnd = true;
+            }
+
         }
 
         void DrawTag(UI_Button &タグ, const char* 文字列 , bool isBig )

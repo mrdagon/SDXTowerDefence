@@ -518,16 +518,8 @@ namespace SDX_TD
 			Witch::Mp += スコア *0.1 * Witch::Main->MP獲得;
 			Witch::Main->AddSp(st->スコア);
 
-			//ダメージに応じてスコアが低下する
-			if (Witch::Hp < Witch::最大Hp)
-			{
-				SStage->score += int(スコア * Witch::Main->スコア補正 * Witch::Hp / Witch::最大Hp);
-			}
-			else
-			{
-				SStage->score += int(スコア * Witch::Main->スコア補正);
-			}
-
+			SStage->score += int(スコア * Witch::Main->スコア補正);
+			
 			MSound::撃破.Play();
 
 			isRemove = true;

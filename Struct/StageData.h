@@ -49,16 +49,26 @@ namespace SDX_TD
         //メインウィッチ種、トライアルorパワー
         std::vector<Place> 初期配置[(int)WitchType::COUNT][2];
 
-        void DrawMinimap(const Point &基準座標)
+        /*ミニマップを表示する.*/
+        /* 基準には中央座標を入れる*/
+        void DrawMinimap(const Point &基準座標 , bool isステージ名 = true)
         {
             if (名前 == "") { return; }
 
-            for (int x = 2; x < MAP_SIZE - 2;++x)
+            Point dif = { -(MAP_SIZE-1) * CHIP_SIZE / 4 , -(MAP_SIZE-1) * CHIP_SIZE / 4};
+
+            for (int x = 2; x < MAP_SIZE - 2; ++x)
             {
                 for (int y = 2; y < MAP_SIZE - 2; ++y)
                 {
-                    MSystem::マップチップ[(int)地形[x][y]]->DrawRotate( 基準座標 + Point( x * 8, y * 8 ) , 0.5, 0);
+                    MSystem::マップチップ[(int)地形[x][y]]->DrawRotate(基準座標 + Point(x * CHIP_SIZE / 2, y * CHIP_SIZE / 2) + dif, 0.5, 0);
                 }
+            }
+
+            //ステージ名も表示
+            if (isステージ名)
+            {
+                MFont::fontS[1].DrawRotate(基準座標 + Point(0, MAP_SIZE * CHIP_SIZE / 4 + 10 ),1,0,Color::White, 名前);
             }
         }
 

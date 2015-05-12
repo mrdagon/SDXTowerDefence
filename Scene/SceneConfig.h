@@ -15,30 +15,30 @@ namespace SDX_TD
     {
     public:
         //@Define
-        UI_Button 効果音＋ = { 90, {555,25,60,60} , 0.000000,3};
-        UI_Button 効果音－ = { 91, {286,25,60,60} , 0.000000,3};
-        UI_Button BGM－ = { 92, {286,125,60,60} , 0.000000,3};
-        UI_Button BGM＋ = { 93, {555,126,60,60} , 0.000000,3};
-        UI_Frame グリッド = { 94, {95,210,240,50} , 0.000000,5};
-        UI_Frame 敵HP = { 95, {365,210,240,50} , 0.000000,5};
-        UI_Frame エフェクト表示 = { 96, {365,280,240,50} , 0.000000,5};
-        UI_Frame タッチ操作 = { 97, {95,280,240,50} , 0.000000,5};
-        UI_Frame リプレイ保存 = { 98, {365,350,240,50} , 0.000000,5};
-        UI_Text 効果音 = { 100, {114,40,120,30} , 0.000000,3,"Sound Volume"};
-        UI_Frame BGMゲージ = { 102, {350,126,200,61} , 0.000000,1};
-        UI_Frame 効果音ゲージ = { 103, {350,24,200,60} , 0.000000,1};
-        UI_Frame 初期配置 = { 124, {95,350,240,50} , 0.000000,5};
-        UI_Button グリッドChk = { 227, {100,215,40,40} , 0.000000,3};
-        UI_Button 敵HPChk = { 229, {370,215,40,40} , 0.000000,3};
-        UI_Button エフェクト表示Chk = { 230, {370,285,40,40} , 0.000000,3};
-        UI_Button リプレイ保存Chk = { 231, {370,355,40,40} , 0.000000,3};
-        UI_Button タッチ操作Chk = { 232, {100,285,40,40} , 0.000000,3};
-        UI_Button 初期配置Chk = { 233, {100,355,40,40} , 0.000000,3};
-        UI_Text BGM = { 234, {126,140,100,30} , 0.000000,3,"BGM Volume"};
-        UI_Frame 画面サイズ = { 251, {95,420,240,50} , 0.000000,5};
-        UI_Button 画面サイズChk = { 252, {100,425,40,40} , 0.000000,3};
-        UI_Button おまけChk = { 254, {370,425,40,40} , 0.000000,3};
-        UI_Frame おまけ = { 255, {365,420,240,50} , 0.000000,5};
+		UI_Button 効果音＋ = { 90, {555,25,60,60} , 0.000000,3};
+		UI_Button 効果音－ = { 91, {286,25,60,60} , 0.000000,3};
+		UI_Button BGM－ = { 92, {286,125,60,60} , 0.000000,3};
+		UI_Button BGM＋ = { 93, {555,126,60,60} , 0.000000,3};
+		UI_Frame グリッド = { 94, {95,210,240,50} , 0.000000,5};
+		UI_Frame 敵HP = { 95, {365,210,240,50} , 0.000000,5};
+		UI_Frame エフェクト表示 = { 96, {365,280,240,50} , 0.000000,5};
+		UI_Frame タッチ操作 = { 97, {95,280,240,50} , 0.000000,5};
+		UI_Frame リプレイ保存 = { 98, {365,350,240,50} , 0.000000,5};
+		UI_Text 効果音 = { 100, {114,40,120,30} , 0.000000,3,"Sound Volume"};
+		UI_Frame BGMゲージ = { 102, {350,126,200,61} , 0.000000,1};
+		UI_Frame 効果音ゲージ = { 103, {350,24,200,60} , 0.000000,1};
+		UI_Frame 初期配置 = { 124, {95,350,240,50} , 0.000000,5};
+		UI_Button グリッドChk = { 227, {100,215,40,40} , 0.000000,3};
+		UI_Button 敵HPChk = { 229, {370,215,40,40} , 0.000000,3};
+		UI_Button エフェクト表示Chk = { 230, {370,285,40,40} , 0.000000,3};
+		UI_Button リプレイ保存Chk = { 231, {370,355,40,40} , 0.000000,3};
+		UI_Button タッチ操作Chk = { 232, {100,285,40,40} , 0.000000,3};
+		UI_Button 初期配置Chk = { 233, {100,355,40,40} , 0.000000,3};
+		UI_Text BGM = { 234, {126,140,100,30} , 0.000000,3,"BGM Volume"};
+		UI_Frame 画面サイズ = { 251, {95,420,240,50} , 0.000000,5};
+		UI_Button 画面サイズChk = { 252, {100,425,40,40} , 0.000000,3};
+		UI_Button おまけChk = { 254, {370,425,40,40} , 0.000000,3};
+		UI_Frame おまけ = { 255, {365,420,240,50} , 0.000000,5};
         //@End
 
         SceneConfig()
@@ -148,32 +148,32 @@ namespace SDX_TD
             return;
 #endif
             //@Load
-            SDX::GUIData guiData = SDX::TMXtoGUI( TMX_FILE_NAME , "SceneConfig", GUI_Factory);
+			SDX::GUIData guiData = SDX::TMXtoGUI( TMX_FILE_NAME , "SceneConfig", GUI_Factory);
 
-            効果音＋ = *dynamic_cast<UI_Button*>(guiData.dataS[0].get());
-            効果音－ = *dynamic_cast<UI_Button*>(guiData.dataS[1].get());
-            BGM－ = *dynamic_cast<UI_Button*>(guiData.dataS[2].get());
-            BGM＋ = *dynamic_cast<UI_Button*>(guiData.dataS[3].get());
-            グリッド = *dynamic_cast<UI_Frame*>(guiData.dataS[4].get());
-            敵HP = *dynamic_cast<UI_Frame*>(guiData.dataS[5].get());
-            エフェクト表示 = *dynamic_cast<UI_Frame*>(guiData.dataS[6].get());
-            タッチ操作 = *dynamic_cast<UI_Frame*>(guiData.dataS[7].get());
-            リプレイ保存 = *dynamic_cast<UI_Frame*>(guiData.dataS[8].get());
-            効果音 = *dynamic_cast<UI_Text*>(guiData.dataS[9].get());
-            BGMゲージ = *dynamic_cast<UI_Frame*>(guiData.dataS[10].get());
-            効果音ゲージ = *dynamic_cast<UI_Frame*>(guiData.dataS[11].get());
-            初期配置 = *dynamic_cast<UI_Frame*>(guiData.dataS[12].get());
-            グリッドChk = *dynamic_cast<UI_Button*>(guiData.dataS[13].get());
-            敵HPChk = *dynamic_cast<UI_Button*>(guiData.dataS[14].get());
-            エフェクト表示Chk = *dynamic_cast<UI_Button*>(guiData.dataS[15].get());
-            リプレイ保存Chk = *dynamic_cast<UI_Button*>(guiData.dataS[16].get());
-            タッチ操作Chk = *dynamic_cast<UI_Button*>(guiData.dataS[17].get());
-            初期配置Chk = *dynamic_cast<UI_Button*>(guiData.dataS[18].get());
-            BGM = *dynamic_cast<UI_Text*>(guiData.dataS[19].get());
-            画面サイズ = *dynamic_cast<UI_Frame*>(guiData.dataS[20].get());
-            画面サイズChk = *dynamic_cast<UI_Button*>(guiData.dataS[21].get());
-            おまけChk = *dynamic_cast<UI_Button*>(guiData.dataS[22].get());
-            おまけ = *dynamic_cast<UI_Frame*>(guiData.dataS[23].get());
+			効果音＋ = *dynamic_cast<UI_Button*>(guiData.dataS[0].get());
+			効果音－ = *dynamic_cast<UI_Button*>(guiData.dataS[1].get());
+			BGM－ = *dynamic_cast<UI_Button*>(guiData.dataS[2].get());
+			BGM＋ = *dynamic_cast<UI_Button*>(guiData.dataS[3].get());
+			グリッド = *dynamic_cast<UI_Frame*>(guiData.dataS[4].get());
+			敵HP = *dynamic_cast<UI_Frame*>(guiData.dataS[5].get());
+			エフェクト表示 = *dynamic_cast<UI_Frame*>(guiData.dataS[6].get());
+			タッチ操作 = *dynamic_cast<UI_Frame*>(guiData.dataS[7].get());
+			リプレイ保存 = *dynamic_cast<UI_Frame*>(guiData.dataS[8].get());
+			効果音 = *dynamic_cast<UI_Text*>(guiData.dataS[9].get());
+			BGMゲージ = *dynamic_cast<UI_Frame*>(guiData.dataS[10].get());
+			効果音ゲージ = *dynamic_cast<UI_Frame*>(guiData.dataS[11].get());
+			初期配置 = *dynamic_cast<UI_Frame*>(guiData.dataS[12].get());
+			グリッドChk = *dynamic_cast<UI_Button*>(guiData.dataS[13].get());
+			敵HPChk = *dynamic_cast<UI_Button*>(guiData.dataS[14].get());
+			エフェクト表示Chk = *dynamic_cast<UI_Button*>(guiData.dataS[15].get());
+			リプレイ保存Chk = *dynamic_cast<UI_Button*>(guiData.dataS[16].get());
+			タッチ操作Chk = *dynamic_cast<UI_Button*>(guiData.dataS[17].get());
+			初期配置Chk = *dynamic_cast<UI_Button*>(guiData.dataS[18].get());
+			BGM = *dynamic_cast<UI_Text*>(guiData.dataS[19].get());
+			画面サイズ = *dynamic_cast<UI_Frame*>(guiData.dataS[20].get());
+			画面サイズChk = *dynamic_cast<UI_Button*>(guiData.dataS[21].get());
+			おまけChk = *dynamic_cast<UI_Button*>(guiData.dataS[22].get());
+			おまけ = *dynamic_cast<UI_Frame*>(guiData.dataS[23].get());
             //@End
         }
     };

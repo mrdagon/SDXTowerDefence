@@ -16,6 +16,7 @@ namespace SDX_TD
         //バイナリ形式で保存
         File file("file/save/save.dat", 保存or読み込み, false);
 
+        //ファイルが無いのに読み込もうとしたら失敗
         if (file.GetFileMode() == FileMode::None){return false;}
 
         //古いバージョンのセーブデータを読み込む時のなんちゃら用
@@ -38,11 +39,16 @@ namespace SDX_TD
         file.ReadWrite(TDSystem::isエフェクト);
 
         file.ReadWrite(TDSystem::isタッチ);
+        file.ReadWrite(TDSystem::isフルスクリーン);
+        file.ReadWrite(TDSystem::is配置記録);
 
         file.ReadWrite(TDSystem::isリプレイ保存);
 
         if (保存or読み込み == FileMode::Write)
         {
+            int num = StageDataS.size();
+            file.Write( num );
+
             for (auto &it : StageDataS)
             {
                 //ファイル名を入れる
@@ -52,15 +58,16 @@ namespace SDX_TD
 
                 for (int a = 0; a < 24; ++a)
                 {
-                    int num = it.second.初期配置[a / 2][a % 12].size();
-                    file.Write(num);
-                    file.ReadWrite(it.second.初期配置[a / 2][a % 12]);
+                    file.Write(it.second.初期配置[a % 12][a / 12]);
                 }
             }
         }
         else
         {
-            while ( !file.CheckEOF())
+            int num;
+            file.Read( num);
+
+            for (int a = 0; a < num;++a)
             {
                 std::string fileName;
                 file.Read(fileName);
@@ -69,10 +76,7 @@ namespace SDX_TD
 
                 for (int a = 0; a < 24; ++a)
                 {
-                    int num;
-                    file.Read( num);
-                    StageDataS[fileName].初期配置[a / 2][a % 12].resize(num);
-                    file.ReadWrite(StageDataS[fileName].初期配置[a / 2][a % 12]);
+                    file.Read(StageDataS[fileName].初期配置[a % 12][a / 12]);
                 }
             }
         }

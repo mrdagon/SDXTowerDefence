@@ -58,6 +58,8 @@ namespace SDX_TD
         int スコア;
         int 結果;//0 Lose,1 Win,2 Perfect
 
+        static std::string 結果名[3];
+
         EnumArray<int, SkillType> スキルLv;
 
         //■内部情報
@@ -79,5 +81,7 @@ namespace SDX_TD
         }
 
     };
+
+    std::string ReplayData::結果名[3] = {"Lose", "Win", "Perfect"};
 
 }

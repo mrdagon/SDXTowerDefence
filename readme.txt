@@ -46,6 +46,7 @@ http://sourceforge.jp/projects/dxframework/
 【ソースコード以外のライセンス(txt、png、datファイル等)】
 　画像ファイル、効果音の殆どはフリー素材として配られているのでそれぞれの配布元の規約を確認して配布元から入手して下さい。
 Documentフォルダ内のtxtファイルは無断で再配布しないで下さい。
+　何らかの理由で配布したい場合は連絡を下さい。
 
 [ドットワールド]
 http://whss.biz/~tsukasa/main.html
@@ -78,5 +79,5 @@ http://ipafont.ipa.go.jp/ipafont/download.html
 本作はグランシールウィッチーズの所謂二次創作です
 http://whitecafe.sakura.ne.jp/graches/top.html
 
-　一応許可はとっていますが、公式ではありません。
-原作者の方には迷惑をかけたり変な問い合わせはしないようお願いします。
+　一応許可はとっていますが、公式作品でも公認作品でもない感じです。
+原作者の方に変な問い合わせ等はしないようお願いします。

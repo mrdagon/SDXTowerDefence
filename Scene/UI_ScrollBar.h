@@ -60,7 +60,7 @@ namespace SDX_TD
                         scrBox.y = rect.GetBottom() - scrBox.GetH();
                     }
 
-                    scrIndex = (scrBox.y - rect.y) / scrSize;
+                    scrIndex = int((scrBox.y - rect.y) / scrSize);
                 }
                 else
                 {
@@ -82,7 +82,7 @@ namespace SDX_TD
                         scrBox.y = rect.GetBottom() - scrBox.GetH();
                     }
 
-                    scrIndex = (scrBox.y - rect.y) / scrSize;
+                    scrIndex = int((scrBox.y - rect.y) / scrSize);
                 }
                 isGrip = true;
             }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="257">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="263">
  <objectgroup color="#00ffff" name="TEMPLATE">
   <object id="16" name="ScrollBar" type="ScrollBar" x="306.5" y="496" width="57" height="54">
    <properties>
@@ -355,17 +355,17 @@
   </object>
  </objectgroup>
  <objectgroup name="SceneReplay">
-  <object id="127" name="リプレイ情報" type="Frame" x="364" y="305" width="275" height="110">
+  <object id="127" name="リプレイ情報" type="Frame" x="362" y="302" width="276" height="110">
    <properties>
     <property name="frameNo" value="5"/>
    </properties>
   </object>
-  <object id="128" name="開始" type="Button" x="364" y="418" width="274" height="60">
+  <object id="128" name="開始" type="Button" x="365" y="414" width="272" height="60">
    <properties>
     <property name="frameNo" value="3"/>
    </properties>
   </object>
-  <object id="129" name="スコア" type="Text" x="484" y="382" width="146" height="24">
+  <object id="129" name="スコア" type="Text" x="484" y="380" width="140" height="25">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="score"/>
@@ -376,7 +376,7 @@
     <property name="frameNo" value="4"/>
    </properties>
   </object>
-  <object id="133" name="マップ情報" type="Frame" x="364" y="2" width="275" height="300">
+  <object id="133" name="マップ情報" type="Frame" x="362" y="2" width="276" height="300">
    <properties>
     <property name="frameNo" value="5"/>
    </properties>
@@ -386,19 +386,19 @@
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="139" name="ウィッチ" type="Text" x="510" y="343.5" width="118" height="25">
+  <object id="139" name="ウィッチ" type="Text" x="484" y="345.5" width="100" height="25">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="std::string"/>
    </properties>
   </object>
-  <object id="142" name="トライアル" type="Text" x="374" y="310" width="118" height="25">
+  <object id="142" name="トライアル" type="Text" x="374" y="310" width="100" height="25">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="Difficulty"/>
    </properties>
   </object>
-  <object id="144" name="結果" type="Text" x="375" y="383" width="97" height="22">
+  <object id="144" name="結果" type="Text" x="387" y="380" width="80" height="25">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="Perfect"/>
@@ -419,13 +419,13 @@
     <property name="frameNo" value="3"/>
    </properties>
   </object>
-  <object id="246" name="難易度" type="Text" x="374" y="343.5" width="118" height="25">
+  <object id="246" name="難易度" type="Text" x="387" y="345" width="80" height="25">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="Difficulty"/>
    </properties>
   </object>
-  <object id="248" name="カップル" type="Text" x="510" y="311.5" width="118" height="25">
+  <object id="248" name="カップル" type="Text" x="510" y="310" width="100" height="25">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="Difficulty"/>
