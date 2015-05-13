@@ -1,8 +1,14 @@
 ﻿//©(´･@･) http://tacoika.blog87.fc2.com/
 //[License] GNU Affero General Public License, version 3
+
 #include "stdafx.h"
 
-static const int version = 102;
+#include "Utility/Memory.h"
+
+namespace SDX_TD
+{
+    static const int version = 102;
+}
 
 #ifndef __WINDOWS__
 
@@ -34,6 +40,12 @@ int main(int argc, char* argv[])
     using namespace SDX;
     using namespace SDX_TD;
 
+    LoadUnitS();
+    LoadEnemyS();
+    LoadStageS();
+    LoadWitchS();
+    LoadDifficultyS();
+    LoadChipS();
     SaveAndLoad(FileMode::Read);
 
     System::Initialise("GTD ver0.02α", 640, 480);//ライブラリの初期化
@@ -41,15 +53,6 @@ int main(int argc, char* argv[])
 
     Music::SetMainVolume( (TDSystem::BGMの音量*TDSystem::BGMの音量 ) / 100.0);
     Sound::SetMainVolume( (TDSystem::BGMの音量*TDSystem::BGMの音量) / 100.0);
-
-    //TDSystem::限界難易度 = Difficulty::DeathMarch;
-
-    LoadUnitS();
-    LoadEnemyS();
-    LoadStageS();
-    LoadWitchS();
-    LoadDifficultyS();
-    LoadChipS();
 
     LoadMaterial();
 

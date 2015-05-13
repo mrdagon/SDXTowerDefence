@@ -29,16 +29,24 @@ namespace SDX_TD
         UI_Text 獲得経験値 = { 156, {223,313,196,54} , 0.000000,0,"EXP"};
         //@End
 
-        bool isRetry;
+        bool isRetry;//どのボタンでResult画面を抜けたか
+        int baseScore;
+        double bonusRate;
+        double diffRate;
+        double lifeBonus;
+        int totalScore;
+        int getEXP;
 
-        static bool CallResult(bool is勝利)
+        static bool Call(bool is勝利)
         {
             static SceneResult single(is勝利);
             single.Init();
-            //スコア更新時にリプレイAutoSaveするかどうか
-            if (TDSystem::isリプレイ保存)
-            {
 
+            //クリア時にリプレイAutoSave
+            if (TDSystem::isリプレイ保存 && is勝利 == true)
+            {
+                SStage->SaveReplay();
+                single.isリプレイ保存済み = true;
             }
 
             do
@@ -61,6 +69,40 @@ namespace SDX_TD
         {
             isEnd = false;
             isリプレイ保存済み = false;
+
+            diffRate = 1 + DifficultyDataS[TDSystem::難易度].スコア補正;
+            bonusRate = std::min( Witch::Hp / Witch::最大Hp + 1.0 , 2.0);
+
+            if (Witch::Hp == Witch::最大Hp)
+            {
+                bonusRate = 3;
+            }
+            else if ( Witch::Hp <= 0)
+            {
+                //敗北時はボーナス半減
+                bonusRate = 0.5;
+            }
+
+            baseScore = SStage->score;
+            totalScore = int(SStage->score * diffRate * bonusRate);
+
+            //スコアの更新と経験値の獲得
+            //5% + 更新分
+            getEXP = totalScore / 20;//5%
+
+            //現在のスコア
+            if (totalScore > StageDataS[TDSystem::選択ステージ].Getスコア().スコア[Witch::Main->種類])
+            {
+                getEXP += totalScore - StageDataS[TDSystem::選択ステージ].Getスコア().スコア[Witch::Main->種類];
+                StageDataS[TDSystem::選択ステージ].Getスコア().スコア[Witch::Main->種類] = totalScore;
+            }
+            else if (TDSystem::isカップル && totalScore > StageDataS[TDSystem::選択ステージ].Getスコア().スコア[Witch::Sub->種類])
+            {
+                getEXP += totalScore - StageDataS[TDSystem::選択ステージ].Getスコア().スコア[Witch::Sub->種類];
+                StageDataS[TDSystem::選択ステージ].Getスコア().スコア[Witch::Sub->種類] = totalScore;
+            }
+
+            TDSystem::経験値 += getEXP;
         }
 
         //終了時
@@ -99,10 +141,12 @@ namespace SDX_TD
 #endif
             Director::IsDraw() = true;
             Screen::SetBright(Color::Gray);
-            Director::GetScene(0)->Draw();
+            SStage->Draw();
             Screen::SetBright(Color::White);
 
-            //@Draw
+            //とりあえず一気に表示、演出は修正するかも
+
+            //Draw
             MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);
             
             if (isリプレイ保存済み)
@@ -118,14 +162,21 @@ namespace SDX_TD
             リトライ.DrawText(MFont::fontS[1], "リトライ", 1, Color::Black);
             終了.DrawText(MFont::fontS[1], "終了", 1, Color::Black);
 
-            Result.DrawText(MFont::fontS[2], (is勝利) ? "Win" : "Lose", 2);
+            if (Witch::Hp >= Witch::最大Hp)
+            {
+                Result.DrawText(MFont::fontS[2], "Perfect", 2);
+            }
+            else
+            {
+                Result.DrawText(MFont::fontS[2], (is勝利) ? "Win" : "Lose", 2);
+            }
 
             MFont::fontS[最終スコア.fontNo].DrawRotate(最終スコア.rect.GetCenter(),1,0,Color::White,最終スコア.text);
             MFont::fontS[撃破スコア.fontNo].DrawRotate(撃破スコア.rect.GetCenter(),1,0,Color::White,撃破スコア.text);
             MFont::fontS[難易度補正.fontNo].DrawRotate(難易度補正.rect.GetCenter(),1,0,Color::White,難易度補正.text);
             MFont::fontS[体力補正.fontNo].DrawRotate(体力補正.rect.GetCenter(),1,0,Color::White,体力補正.text);
             MFont::fontS[獲得経験値.fontNo].DrawRotate(獲得経験値.rect.GetCenter(),1,0,Color::White,獲得経験値.text);
-            //@End
+            //End
         }
 
         void LoadGUI() override

@@ -41,6 +41,9 @@ namespace SDX_TD
         Wave wave;
 
         ReplayData replayData;//リプレイの保存or読み込んだデータ
+        int 乱数初期化子;
+        std::vector<Place> 初期配置;
+        std::vector<CommandData> commandS;
 
         IEnemy* 地上Top[MAP_SIZE][MAP_SIZE];
         IEnemy* 地上End[MAP_SIZE][MAP_SIZE];
@@ -273,7 +276,7 @@ namespace SDX_TD
             //ポーズ
             if (UI::Rメニュー.Hit(&point) && isClick)
             {
-                int num = ScenePause::SelectPause();
+                int num = ScenePause::Call();
                 switch (num)
                 {
                 case 0://あきらめる
@@ -718,6 +721,27 @@ namespace SDX_TD
         int timer = 0;//フレームスキップ用のタイマー
         int gameSpeed = 1;
 
+        static Stage& Call( bool isReplay , const char* リプレイファイル名 = "")
+        {
+            static Stage single;
+            single.isReplay = isReplay;
+
+            if (isReplay)
+            {
+                single.replayData.SaveOrLoad(リプレイファイル名 , false , FileMode::Read);
+            }
+
+            single.Init();
+
+            do
+            {
+                single.Update();
+                if (Director::IsDraw()){ single.Draw(); }
+            } while (System::Update(Director::IsDraw()) && !single.isEnd);
+
+            return single;
+        }
+
         Stage(bool isReplay = false)
         {
             IStage::isReplay = isReplay;
@@ -752,6 +776,10 @@ namespace SDX_TD
 
             //BGM開始
             MMusic::通常.Play();
+
+            //乱数初期化
+            replayData.乱数初期化子 = 0;
+            Rand::Reset(0);
         }
 
         /**毎フレーム実行される更新処理.*/
@@ -840,7 +868,7 @@ namespace SDX_TD
         /**クリアor全滅処理.*/
         void GameOver(bool is勝利)
         {
-            bool isRetry = SceneResult::CallResult(is勝利);
+            bool isRetry = SceneResult::Call(is勝利);
             
             if (isRetry)
             {

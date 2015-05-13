@@ -354,7 +354,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneReplay">
+ <objectgroup name="SceneReplay" visible="0">
   <object id="127" name="リプレイ情報" type="Frame" x="362" y="302" width="276" height="110">
    <properties>
     <property name="frameNo" value="5"/>
@@ -365,7 +365,7 @@
     <property name="frameNo" value="3"/>
    </properties>
   </object>
-  <object id="129" name="スコア" type="Text" x="484" y="380" width="140" height="25">
+  <object id="129" name="スコア" type="Text" x="510" y="390" width="100" height="15">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="score"/>
@@ -386,19 +386,19 @@
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="139" name="ウィッチ" type="Text" x="484" y="345.5" width="100" height="25">
+  <object id="139" name="ウィッチ" type="Text" x="535" y="330.5" width="50" height="15">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="std::string"/>
    </properties>
   </object>
-  <object id="142" name="トライアル" type="Text" x="374" y="310" width="100" height="25">
+  <object id="142" name="トライアル" type="Text" x="510" y="310" width="50" height="15">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="Difficulty"/>
    </properties>
   </object>
-  <object id="144" name="結果" type="Text" x="387" y="380" width="80" height="25">
+  <object id="144" name="結果" type="Text" x="510" y="370" width="100" height="15">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="Perfect"/>
@@ -419,13 +419,13 @@
     <property name="frameNo" value="3"/>
    </properties>
   </object>
-  <object id="246" name="難易度" type="Text" x="387" y="345" width="80" height="25">
+  <object id="246" name="難易度" type="Text" x="510" y="350" width="100" height="15">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="Difficulty"/>
    </properties>
   </object>
-  <object id="248" name="カップル" type="Text" x="510" y="310" width="100" height="25">
+  <object id="248" name="カップル" type="Text" x="560" y="310" width="50" height="15">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="Difficulty"/>
@@ -614,7 +614,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneResult" visible="0">
+ <objectgroup name="SceneResult">
   <object id="83" name="リプレイ保存" type="Button" x="121.5" y="384" width="120" height="60">
    <properties>
     <property name="frameNo" value="3"/>
@@ -643,7 +643,7 @@
   <object id="151" name="最終スコア" type="Text" x="225.5" y="242" width="196" height="54">
    <properties>
     <property name="fontNo" value="0"/>
-    <property name="text" value="Score"/>
+    <property name="text" value="Total Score"/>
    </properties>
   </object>
   <object id="153" name="撃破スコア" type="Text" x="253" y="83" width="146" height="32">
@@ -667,7 +667,7 @@
   <object id="156" name="獲得経験値" type="Text" x="223" y="313" width="196" height="54">
    <properties>
     <property name="fontNo" value="0"/>
-    <property name="text" value="EXP"/>
+    <property name="text" value="Get EXP"/>
    </properties>
   </object>
  </objectgroup>

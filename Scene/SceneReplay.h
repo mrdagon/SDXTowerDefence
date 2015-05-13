@@ -32,6 +32,8 @@ namespace SDX_TD
         unsigned int replayNo = 0;
         std::vector<ReplayData> replayS;
 
+        const static std::string 項目名[5];
+
         /**リプレイデータ一覧の再読み込み.*/
         void LoadReplay()
         {
@@ -47,8 +49,8 @@ namespace SDX_TD
                 replayS[a].スコア = 123456789;
                 replayS[a].難易度 = (Difficulty)(a%6);
                 replayS[a].結果 = a % 3;
-                replayS[a].isカップル = a % 2;
-                replayS[a].isトライアル = a % 3;
+                replayS[a].isカップル = (a != 1);
+                replayS[a].isトライアル = (a != 2);
             }
 
             スクロールバー.SetSize(replayS.size(), 11);
@@ -86,7 +88,7 @@ namespace SDX_TD
             //Update
             if(開始.isClick())
             {
-                SceneResult::CallResult(true);
+                SceneResult::Call(true);
                 return;
 
                 //リプレイ選択中、マップデータ有、バージョン適合を確認
@@ -138,19 +140,28 @@ namespace SDX_TD
             {
                 ReplayData &buf = replayS[replayNo];
 
-                MFont::fontS[2].DrawRotate(スコア.rect.GetCenter(), 2, 0, Color::White, { std::setw(8) , buf.スコア });
-
-                MUnit::魔女[(UnitType)buf.メイン][1]->DrawRotate(ウィッチ.rect.GetCenter(), 2, 0);
-                if (buf.isカップル)
-                {                    
-                    MUnit::魔女[(UnitType)buf.サブ][1]->DrawRotate(ウィッチ.rect.GetCenter() + Point(40, 0), 2, 0);
+                for (int a = 0; a < 5; ++a)
+                {
+                    MFont::fontS[2].DrawRotate(トライアル.rect.GetCenter() + Point(-100, a * 20), 1, 0, Color::White, 項目名[a]);
                 }
 
-                MFont::fontS[2].DrawRotate(難易度.rect.GetCenter(), 2, 0, Color::White, DifficultyDataS[buf.難易度].名前);
+                MFont::fontS[2].DrawRotate(スコア.rect.GetCenter(), 1, 0, Color::White, { std::setw(8) , buf.スコア });
 
-                MFont::fontS[2].DrawRotate(結果.rect.GetCenter(), 2, 0, Color::White, ReplayData::結果名[buf.結果]);
-                MFont::fontS[2].DrawRotate(カップル.rect.GetCenter(), 2, 0, Color::White, (buf.isカップル)?"○Couple":"×Couple");
-                MFont::fontS[2].DrawRotate(トライアル.rect.GetCenter(), 2, 0, Color::White, (buf.isトライアル) ? "○Trial" : "×Trial");
+                if (buf.isカップル)
+                {                    
+                    MUnit::魔女[(UnitType)buf.メイン][1]->DrawRotate(ウィッチ.rect.GetCenter() - Point(10,0), 1, 0);
+                    MUnit::魔女[(UnitType)buf.サブ][1]->DrawRotate(ウィッチ.rect.GetCenter() + Point(10, 0), 1, 0);
+                }
+                else
+                {
+                    MUnit::魔女[(UnitType)buf.メイン][1]->DrawRotate(ウィッチ.rect.GetCenter(), 1, 0);
+                }
+
+                MFont::fontS[2].DrawRotate(難易度.rect.GetCenter(), 1, 0, Color::White, DifficultyDataS[buf.難易度].名前);
+
+                MFont::fontS[2].DrawRotate(結果.rect.GetCenter(), 1, 0, Color::White, ReplayData::結果名[buf.結果]);
+                MFont::fontS[2].DrawRotate(カップル.rect.GetCenter(), 1, 0, Color::White, (buf.isカップル)?"○Couple":"×Couple");
+                MFont::fontS[2].DrawRotate(トライアル.rect.GetCenter(), 1, 0, Color::White, (buf.isトライアル) ? "○Trial" : "×Trial");
                 
                 if (StageDataS.count( buf.ステージ名))
                 {
@@ -207,4 +218,14 @@ namespace SDX_TD
             スクロールバー.SetSize(replayS.size(), 11);
         }
     };
+
+    const std::string SceneReplay::項目名[5] =
+    {
+        "Mode",
+        "Witch",
+        "Difficulty",
+        "Result",
+        "Score"
+    };
+
 }

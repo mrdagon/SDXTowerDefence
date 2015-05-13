@@ -21,7 +21,7 @@ namespace SDX_TD
 
 		int buttonNo;//0,1,2,あきらめ、やり直す、続ける
 
-		static int SelectPause()
+		static int Call()
 		{
 			static ScenePause single;
 			single.isEnd = false;
@@ -82,7 +82,7 @@ namespace SDX_TD
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
 			Screen::SetBright(Color::Gray);
-			Director::GetScene(0)->Draw();
+			SStage->Draw();
 			Screen::SetBright(Color::White);
 
 			あきらめる.DrawText(MFont::fontS[1], "あきらめる", 2 , Color::Black);

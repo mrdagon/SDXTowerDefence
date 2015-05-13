@@ -25,7 +25,7 @@ namespace SDX_TD
             {
                 for (auto &it : スコア){ it = 0; }
                 for (auto &it : 勝利){ it = 0; }
-                for (auto &it : スコア){ it = 0; }
+                for (auto &it : 完勝){ it = 0; }
             }
 
             EnumArray<int, WitchType> スコア;
@@ -120,7 +120,6 @@ namespace SDX_TD
 
                         if (isEnemy)
                         {
-                            //@todo ここタイルチップ情報確認しておきたい
                             int num = (std::atoi(buf.c_str()) - chipEnemy);
 
                             data.敵種類[count + line * 10] = (EnemyType)(num % 20);
@@ -171,70 +170,6 @@ namespace SDX_TD
             }
         }
 
-        return;
-        /*
-        for (StageData &it : StageDataS)
-        {
-            File file("file/map/map000.tmx", FileMode::Read, true);
-            auto strS = file.GetLineS();
-            
-            for (auto &str : strS)
-            {
-                if (isMap || isEnemy )
-                {
-                    std::istringstream iss(str);
-                    std::string buf;
-                    int count = 0;
-
-                    while (std::getline(iss, buf, ','))
-                    {
-                        if (line == -1){ break; }//data encoding="csv"を無視
-
-                        if (isEnemy)
-                        {
-                            //@todo ここタイルチップ情報確認しておきたい
-                            int num = (std::atoi(buf.c_str()) - 11);
-
-                            StageDataS[0].敵種類[count + line * 10] = (EnemyType)(num % 20);
-                            StageDataS[0].isBoss[count + line * 10] = (num >= 20);
-
-                            if (count == 9){ break; }
-                        }
-                        else
-                        {
-                            StageDataS[0].地形[count][line] = (ChipType)(std::atoi(buf.c_str())-1);
-                        }
-                        ++count;
-                    }
-                    ++line;
-                    if (isEnemy && line == 10){ isEnemy = false; }
-                    if (isMap && line == 32){ isMap = false; }
-                }
-                else if (str.find("Info") != std::string::npos)
-                {
-                    StageDataS[0].説明 = GetTag(str, "value=");
-                }
-                else if (str.find("Name") != std::string::npos)
-                {
-                    StageDataS[0].名前 = GetTag(str, "value=");
-                }
-                else if (str.find("WaveSpeed") != std::string::npos)
-                {
-                    StageDataS[0].Wave間隔 = std::atoi(GetTag(str, "value=").c_str());
-                }
-                else if (str.find("layer name=\"map\"") != std::string::npos)
-                {
-                    isMap = true;
-                    line = -1;
-                }
-                else if (str.find("layer name=\"enemy\"") != std::string::npos)
-                {
-                    isEnemy = true;
-                    line = -1;
-                }
-            }
-        }
-        */
     }
 
 }

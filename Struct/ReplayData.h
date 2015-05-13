@@ -3,6 +3,7 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include "PlaceData.h"
+#include "../Stage/Witch.h"
 
 namespace SDX_TD
 {
@@ -32,6 +33,8 @@ namespace SDX_TD
         int 操作情報;//種類別のパラメータ
         int 操作した時間;
 
+        CommandData() = default;
+
         CommandData(Command 種類,const Point &マウス座標,int 操作情報,int 操作した時間) :
             種類(種類),
             マウス座標(マウス座標),
@@ -48,8 +51,8 @@ namespace SDX_TD
         int バージョン;
 
         //使用ウィッチ、サブウィッチ
-        std::string ファイル名;
-        std::string ステージ名;//自作マップにも対応、ファイル名
+        std::string ファイル名;//リプレイファイル名
+        std::string ステージ名;//自作マップにも対応、ステージファイル名
         WitchType メイン;
         WitchType サブ;
         bool isトライアル;
@@ -60,19 +63,50 @@ namespace SDX_TD
 
         static std::string 結果名[3];
 
-        EnumArray<int, SkillType> スキルLv;
-
-        //■内部情報
         //初期配置データ
-        std::vector<Place> 初期配置;
+        static std::vector<Place> 初期配置;
 
-        int 乱数初期化子;
+        static int 乱数初期化子;
         //操作データ一覧
-        std::vector<CommandData> commandS;
+        static std::vector<CommandData> commandS;
 
-        void Load(const char* ファイル名)
+        void SaveOrLoad(const char* リプレイファイル名 , bool isTag , FileMode 保存or読み込み , int result = 0 , int score = 0)
         {
+            File file(リプレイファイル名, 保存or読み込み, true);
 
+            bool flag = (保存or読み込み == FileMode::Read);
+
+            if (isTag)
+            {
+                file.ReadWrite(バージョン);
+                file.ReadWrite(ファイル名);
+                file.ReadWrite(ステージ名);
+                file.ReadWrite(メイン);
+                file.ReadWrite(サブ);
+                file.ReadWrite(isトライアル);
+                file.ReadWrite(isカップル);
+                file.ReadWrite(難易度);
+                file.ReadWrite(スコア);
+                file.ReadWrite(結果);
+                return;
+            }
+            this->ファイル名 = ファイル名;
+            バージョン = version;
+            file.ReadWrite( バージョン );
+            file.ReadWrite( ファイル名);
+            file.ReadWrite( TDSystem::選択ステージ);
+            file.ReadWrite( Witch::Main->種類 );
+            file.ReadWrite( Witch::Sub->種類);
+            file.ReadWrite( TDSystem::isトライアル);
+            file.ReadWrite( TDSystem::isカップル);
+            file.ReadWrite( TDSystem::難易度);
+            file.ReadWrite(score);
+            file.ReadWrite( result );
+
+            file.ReadWrite(乱数初期化子);
+            file.ReadWrite(初期配置);
+            file.ReadWrite(commandS);
+            file.ReadWrite(Witch::スキルLv);
         }
 
         void AddCommand(Command 種類 , const Point& 座標 , int 操作情報 , int timer)
@@ -83,5 +117,11 @@ namespace SDX_TD
     };
 
     std::string ReplayData::結果名[3] = {"Lose", "Win", "Perfect"};
+
+    std::vector<Place> ReplayData::初期配置;
+
+    int ReplayData::乱数初期化子;
+    //操作データ一覧
+    std::vector<CommandData> ReplayData::commandS;
 
 }
