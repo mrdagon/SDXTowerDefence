@@ -59,27 +59,33 @@ namespace SDX_TD
         bool isカップル;
         Difficulty 難易度;
         int スコア;
-        int 結果;//0 Lose,1 Win,2 Perfect
+        ResultType 結果;
 
         static std::string 結果名[3];
 
         //初期配置データ
-        static std::vector<Place> 初期配置;
-
         static int 乱数初期化子;
         //操作データ一覧
         static std::vector<CommandData> commandS;
+		
+		static std::vector<Place> 初期配置;
 
-        void SaveOrLoad(const char* リプレイファイル名 , bool isTag , FileMode 保存or読み込み , int result = 0 , int score = 0)
+        bool SaveOrLoad(const char* リプレイファイル名 , bool isTag , FileMode 保存or読み込み , ResultType result = ResultType::Lose , int score = 0)
         {
             File file(リプレイファイル名, 保存or読み込み, true);
 
             bool flag = (保存or読み込み == FileMode::Read);
 
+			if (file.GetFileMode() == FileMode::None)
+			{
+				return false;
+			}
+
+			ファイル名 = リプレイファイル名;
+
             if (isTag)
             {
                 file.ReadWrite(バージョン);
-                file.ReadWrite(ファイル名);
                 file.ReadWrite(ステージ名);
                 file.ReadWrite(メイン);
                 file.ReadWrite(サブ);
@@ -88,40 +94,34 @@ namespace SDX_TD
                 file.ReadWrite(難易度);
                 file.ReadWrite(スコア);
                 file.ReadWrite(結果);
-                return;
+                return true;
             }
-            this->ファイル名 = ファイル名;
-            バージョン = version;
+
+            バージョン = TDSystem::バージョン;
             file.ReadWrite( バージョン );
-            file.ReadWrite( ファイル名);
             file.ReadWrite( TDSystem::選択ステージ);
             file.ReadWrite( Witch::Main->種類 );
             file.ReadWrite( Witch::Sub->種類);
             file.ReadWrite( TDSystem::isトライアル);
             file.ReadWrite( TDSystem::isカップル);
             file.ReadWrite( TDSystem::難易度);
-            file.ReadWrite(score);
+            file.ReadWrite( score );
             file.ReadWrite( result );
 
-            file.ReadWrite(乱数初期化子);
-            file.ReadWrite(初期配置);
-            file.ReadWrite(commandS);
-            file.ReadWrite(Witch::スキルLv);
+            file.ReadWrite( 乱数初期化子 );
+            file.ReadWrite( commandS );
+            file.ReadWrite( Witch::スキルLv );
+			file.ReadWrite( 初期配置 );
+
+			return true;
         }
-
-        void AddCommand(Command 種類 , const Point& 座標 , int 操作情報 , int timer)
-        {
-
-        }
-
     };
 
     std::string ReplayData::結果名[3] = {"Lose", "Win", "Perfect"};
 
-    std::vector<Place> ReplayData::初期配置;
-
-    int ReplayData::乱数初期化子;
+    int ReplayData::乱数初期化子 = 0;
     //操作データ一覧
     std::vector<CommandData> ReplayData::commandS;
 
+	std::vector<Place> ReplayData::初期配置;
 }

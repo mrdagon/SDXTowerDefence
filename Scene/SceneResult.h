@@ -5,6 +5,7 @@
 #include <SDXFrameWork.h>
 #include "GUI_Factory.h"
 #include "../Stage/IStage.h"
+#include "../Struct/ReplayData.h"
 
 namespace SDX_TD
 {
@@ -36,18 +37,13 @@ namespace SDX_TD
         double lifeBonus;
         int totalScore;
         int getEXP;
+		int Lv上昇量;
+        ResultType 結果;
 
-        static bool Call(bool is勝利)
+        static bool Call()
         {
-            static SceneResult single(is勝利);
+            static SceneResult single;
             single.Init();
-
-            //クリア時にリプレイAutoSave
-            if (TDSystem::isリプレイ保存 && is勝利 == true)
-            {
-                SStage->SaveReplay();
-                single.isリプレイ保存済み = true;
-            }
 
             do
             {
@@ -58,8 +54,7 @@ namespace SDX_TD
             return single.isRetry;
         }
 
-        SceneResult(bool is勝利):
-            is勝利(is勝利)
+        SceneResult()
         {
             LoadGUI();
         }
@@ -73,9 +68,26 @@ namespace SDX_TD
             diffRate = 1 + DifficultyDataS[TDSystem::難易度].スコア補正;
             bonusRate = std::min( Witch::Hp / Witch::最大Hp + 1.0 , 2.0);
 
+
+			if (Witch::Hp >= Witch::最大Hp)
+			{
+				結果 = ResultType::Perfect;
+				is勝利 = true;
+			}
+			else if (Witch::Hp > 0)
+			{
+				結果 = ResultType::Win;
+				is勝利 = true;
+			}
+			else
+			{
+				結果 = ResultType::Lose;
+				is勝利 = false;
+			}
+
             if (Witch::Hp == Witch::最大Hp)
             {
-                bonusRate = 3;
+                bonusRate = 3.0;
             }
             else if ( Witch::Hp <= 0)
             {
@@ -89,20 +101,21 @@ namespace SDX_TD
             //スコアの更新と経験値の獲得
             //5% + 更新分
             getEXP = totalScore / 20;//5%
-
-            //現在のスコア
-            if (totalScore > StageDataS[TDSystem::選択ステージ].Getスコア().スコア[Witch::Main->種類])
-            {
-                getEXP += totalScore - StageDataS[TDSystem::選択ステージ].Getスコア().スコア[Witch::Main->種類];
-                StageDataS[TDSystem::選択ステージ].Getスコア().スコア[Witch::Main->種類] = totalScore;
-            }
-            else if (TDSystem::isカップル && totalScore > StageDataS[TDSystem::選択ステージ].Getスコア().スコア[Witch::Sub->種類])
-            {
-                getEXP += totalScore - StageDataS[TDSystem::選択ステージ].Getスコア().スコア[Witch::Sub->種類];
-                StageDataS[TDSystem::選択ステージ].Getスコア().スコア[Witch::Sub->種類] = totalScore;
-            }
-
+			getEXP += StageDataS[TDSystem::選択ステージ].Update(Witch::Main->種類 , totalScore , 結果);
+			if (TDSystem::isカップル)
+			{
+				getEXP += StageDataS[TDSystem::選択ステージ].Update(Witch::Main->種類, totalScore, 結果);
+			}
             TDSystem::経験値 += getEXP;
+
+			Lv上昇量 = TDSystem::CheckLVUp();
+
+			//クリア時にリプレイAutoSave
+			if (TDSystem::isリプレイ保存 && is勝利 == true)
+			{
+				SStage->SaveReplay(結果, totalScore);
+				isリプレイ保存済み = true;
+			}
         }
 
         //終了時
@@ -117,7 +130,7 @@ namespace SDX_TD
             {
                 if ( !isリプレイ保存済み)
                 {
-                    SStage->SaveReplay();
+                    SStage->SaveReplay(結果, totalScore);
                 }
             }
 
@@ -144,7 +157,7 @@ namespace SDX_TD
             SStage->Draw();
             Screen::SetBright(Color::White);
 
-            //とりあえず一気に表示、演出は修正するかも
+            //@todo とりあえず一気に表示、演出は修正するかも
 
             //Draw
             MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);
@@ -162,20 +175,19 @@ namespace SDX_TD
             リトライ.DrawText(MFont::fontS[1], "リトライ", 1, Color::Black);
             終了.DrawText(MFont::fontS[1], "終了", 1, Color::Black);
 
-            if (Witch::Hp >= Witch::最大Hp)
-            {
-                Result.DrawText(MFont::fontS[2], "Perfect", 2);
-            }
-            else
-            {
-                Result.DrawText(MFont::fontS[2], (is勝利) ? "Win" : "Lose", 2);
-            }
+            Result.DrawText(MFont::fontS[2], ReplayData::結果名[(int)結果], 2);
 
-            MFont::fontS[最終スコア.fontNo].DrawRotate(最終スコア.rect.GetCenter(),1,0,Color::White,最終スコア.text);
-            MFont::fontS[撃破スコア.fontNo].DrawRotate(撃破スコア.rect.GetCenter(),1,0,Color::White,撃破スコア.text);
-            MFont::fontS[難易度補正.fontNo].DrawRotate(難易度補正.rect.GetCenter(),1,0,Color::White,難易度補正.text);
-            MFont::fontS[体力補正.fontNo].DrawRotate(体力補正.rect.GetCenter(),1,0,Color::White,体力補正.text);
-            MFont::fontS[獲得経験値.fontNo].DrawRotate(獲得経験値.rect.GetCenter(),1,0,Color::White,獲得経験値.text);
+			MFont::fontS[最終スコア.fontNo].DrawRotate(最終スコア.rect.GetCenter(), 1, 0, Color::White, { 最終スコア.text ,std::setw(10), totalScore});
+			MFont::fontS[撃破スコア.fontNo].DrawRotate(撃破スコア.rect.GetCenter(), 1, 0, Color::White, { 撃破スコア.text, std::setw(10) , baseScore});
+			MFont::fontS[難易度補正.fontNo].DrawRotate(難易度補正.rect.GetCenter(), 1, 0, Color::White, { 難易度補正.text , " x " , diffRate });
+			MFont::fontS[体力補正.fontNo].DrawRotate(体力補正.rect.GetCenter(), 1, 0, Color::White, { 体力補正.text , " x " , bonusRate });
+			MFont::fontS[獲得経験値.fontNo].DrawRotate(獲得経験値.rect.GetCenter(), 1, 0, Color::White, { 獲得経験値.text  , std::setw(10) , getEXP});
+
+			if (Lv上昇量 > 0)
+			{
+				MFont::fontS[獲得経験値.fontNo].DrawRotate(獲得経験値.rect.GetCenter() + Point(0,20), 1, 0, Color::White, "Lv Up");
+			}
+
             //End
         }
 

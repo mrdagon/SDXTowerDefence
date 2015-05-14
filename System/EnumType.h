@@ -179,7 +179,7 @@ namespace SDX_TD
     namespace StageType
     {
         static std::vector<std::string> Free;
-        static std::string Quest[24] =
+        static const std::string Quest[24] =
         {
             "map00.tmx",
             "map01.tmx",
@@ -256,6 +256,14 @@ namespace SDX_TD
             BMP白
         };
     }
+
+    enum class ResultType
+    {
+        Lose,
+        Win,
+        Perfect,
+        COUNT
+    };
 
     /**アーティファクトの種類.*/
     enum class ArtifactType

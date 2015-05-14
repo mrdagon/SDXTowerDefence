@@ -119,10 +119,13 @@ namespace SDX_TD
 			if (ナズナ.isClick()){ ChangeWitch(WitchType::ナズナ); }
 			if (ナツメ.isClick()){ ChangeWitch(WitchType::ナツメ); }
 
-			if( 決定.isClick() && first != WitchType::COUNT )
+			if( 決定.isClick() )
 			{
-				isOK = true;
-				isEnd = true;
+				if (first != WitchType::COUNT && (!TDSystem::isカップル || second != WitchType::COUNT))
+				{
+					isOK = true;
+					isEnd = true;
+				}
 			}
 			if( キャンセル.isClick() )
 			{
@@ -175,7 +178,7 @@ namespace SDX_TD
 			//Draw
 			MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);
 			キャンセル.DrawText(MFont::fontS[2], "Cancel" , 2);
-			if (TDSystem::isカップル && second == WitchType::COUNT){ Screen::SetBright(Color::Gray); }
+			if ( first == WitchType::COUNT || (TDSystem::isカップル && second == WitchType::COUNT)){ Screen::SetBright(Color::Gray); }
 			決定.DrawText(MFont::fontS[2], "OK" , 2);
 			Screen::SetBright();
 			//End

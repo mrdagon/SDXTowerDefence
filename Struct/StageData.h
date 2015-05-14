@@ -72,6 +72,29 @@ namespace SDX_TD
             }
         }
 
+		int Update(WitchType 種類, int スコア , ResultType 結果)
+		{
+			int exp = 0;
+
+			if (スコア > Getスコア().スコア[種類])
+			{
+				exp = スコア - Getスコア().スコア[種類];
+				Getスコア().スコア[種類] = スコア;
+			}
+
+			switch (結果)
+			{
+			case ResultType::Perfect:
+				Getスコア().完勝[種類] = std::max(Getスコア().完勝[種類], (int)TDSystem::難易度);
+			case ResultType::Win:
+				Getスコア().勝利[種類] = std::max(Getスコア().勝利[種類], (int)TDSystem::難易度);
+				break;
+			default:
+				break;
+			}
+
+			return exp;
+		}
     };
 
     std::map< std::string, StageData > StageDataS;//全部文字列で管理

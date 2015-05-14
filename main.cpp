@@ -5,11 +5,6 @@
 
 #include "Utility/Memory.h"
 
-namespace SDX_TD
-{
-    static const int version = 102;
-}
-
 #ifndef __WINDOWS__
 
 #include "PreCompile.cpp"
@@ -40,6 +35,7 @@ int main(int argc, char* argv[])
     using namespace SDX;
     using namespace SDX_TD;
 
+	UI_Reset();
     LoadUnitS();
     LoadEnemyS();
     LoadStageS();

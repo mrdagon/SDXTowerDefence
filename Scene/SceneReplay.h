@@ -38,6 +38,19 @@ namespace SDX_TD
         void LoadReplay()
         {
             replayS.clear();
+
+			auto strS = Directory::GetFileName( "file/replay" );
+			std::string pass = "file/replay/";
+
+			//リプレイ一覧の読み込み
+			for ( auto &it : strS )
+			{
+				ReplayData buf;
+				buf.SaveOrLoad( (pass + it).c_str(), true, FileMode::Read);
+				replayS.push_back( buf );
+			}
+
+			//@todo テスト用のコード
             for (int a = 0; a < 20; ++a)
             {
                 replayS.push_back(ReplayData());
@@ -48,7 +61,7 @@ namespace SDX_TD
                 replayS[a].サブ = WitchType::ディアネラ;
                 replayS[a].スコア = 123456789;
                 replayS[a].難易度 = (Difficulty)(a%6);
-                replayS[a].結果 = a % 3;
+                replayS[a].結果 = (ResultType)(a % 3);
                 replayS[a].isカップル = (a != 1);
                 replayS[a].isトライアル = (a != 2);
             }
@@ -86,15 +99,14 @@ namespace SDX_TD
         void Update() override
         {
             //Update
-            if(開始.isClick())
+			if (開始.isClick() && StageDataS.count(replayS[replayNo].ステージ名))
             {
-                SceneResult::Call(true);
-                return;
-
-                //リプレイ選択中、マップデータ有、バージョン適合を確認
                 auto buf = Witch::スキルLv;
-                Director::AddScene(std::make_shared<Stage>(true));
-                Witch::スキルLv = buf;
+				if (replayS[replayNo].SaveOrLoad(replayS[replayNo].ファイル名.c_str(), false, FileMode::Read))
+				{
+					Director::AddScene(std::make_shared<Stage>(true));
+					Witch::スキルLv = buf;
+				}
             }
             if (replayS.size() )
             {
@@ -159,7 +171,7 @@ namespace SDX_TD
 
                 MFont::fontS[2].DrawRotate(難易度.rect.GetCenter(), 1, 0, Color::White, DifficultyDataS[buf.難易度].名前);
 
-                MFont::fontS[2].DrawRotate(結果.rect.GetCenter(), 1, 0, Color::White, ReplayData::結果名[buf.結果]);
+                MFont::fontS[2].DrawRotate(結果.rect.GetCenter(), 1, 0, Color::White, ReplayData::結果名[(int)buf.結果]);
                 MFont::fontS[2].DrawRotate(カップル.rect.GetCenter(), 1, 0, Color::White, (buf.isカップル)?"○Couple":"×Couple");
                 MFont::fontS[2].DrawRotate(トライアル.rect.GetCenter(), 1, 0, Color::White, (buf.isトライアル) ? "○Trial" : "×Trial");
                 

@@ -14,27 +14,25 @@ namespace SDX_TD
     namespace TDSystem
     {
         //この4つはStageSelectとStageで共通なのでグローバル変数
-        Difficulty 難易度;
+        Difficulty 難易度 = Difficulty::Easy;
         std::string 選択ステージ = StageType::Quest[0];
         bool isトライアル = true;//notならアンリミテッド
         bool isカップル = true;//notならシングル
         int バージョン = 102;//
 
         //アイテム関連
-        int 最大スキルポイント;
-        int 残りスキルポイント;
-        int 経験値;
+		int レベル = 1;
+        int 最大スキルポイント = 5;
+        int 残りスキルポイント = 5;
+        int 経験値 = 0;
         //ランダムステージの状況
-
-        //フリーステージ数
-        int リプレイファイル数 = 0;
 
         //実績関連
         Difficulty 限界難易度;
 
         //設定関連
-        int 効果音の音量;
-        int BGMの音量;
+        int 効果音の音量;//0～10
+        int BGMの音量;//0～10
 
         bool isグリッド;//マスのグリッドと中央の薄い十字の表示
         bool isHPゲージ = true;//敵Hpゲージの表示ON/OFF
@@ -46,7 +44,21 @@ namespace SDX_TD
         bool isタッチ;//タブレット用の操作スタイルフラグ
         bool isフルスクリーン;//フルスクリーンフラグ
 
-        int 画面サイズ;
+		//Lvアップ判定処理
+		int CheckLVUp()
+		{
+			int num = 0;
+
+			while ( 経験値 >= レベル * 10000)
+			{
+				経験値 -= レベル * 10000;
+				++レベル;
+				++最大スキルポイント;
+				++残りスキルポイント;
+			}
+
+			return num;
+		}
 
     }
 }

@@ -92,6 +92,7 @@ namespace SDX_TD
         /**ユニット性能補正.*/
         void ユニット補正()
         {
+			//@todo 配置可能ユニット+ウィッチ用だけで良さそう
             for (int a = 0; a < int(UnitType::COUNT); ++a)
             {
                 ユニット補正(UnitType(a));
@@ -104,17 +105,15 @@ namespace SDX_TD
             for (int a = 0; a < UnitData::最大強化; ++a)
             {
                 //メインの補正のみ有効
-                UnitDataS[type].コスト[a] = UnitDataS[type].コスト[a] - int(DefUnitDataS[type].コスト[a] * (1.0 - MP消費) );
+                UnitDataS[type].コスト[a] = DefUnitDataS[type].コスト[a] - int(DefUnitDataS[type].コスト[a] * (1.0 - MP消費) );
                 UnitDataS[type].攻撃力[a] = int(DefUnitDataS[type].攻撃力[a] * 攻撃補正);
                 UnitDataS[type].連射[a] = int(DefUnitDataS[type].連射[a] * 連射補正);
                 UnitDataS[type].射程[a] = int(DefUnitDataS[type].射程[a] * 射程補正);
                 UnitDataS[type].弾速[a] = DefUnitDataS[type].弾速[a] * 弾速補正;
                 UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * 支援補正;
                 UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正) + 炸裂加算;
-                UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[UnitDataS[type].デバフ種]);
+                UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[DefUnitDataS[type].デバフ種]);
             }
-
-            return;
         }
 
         /**通常時の性能計算.*/
@@ -177,6 +176,7 @@ namespace SDX_TD
             //逆境補正
             if (Hp < 最大Hp)
             {
+				//Hp = 0で 1+逆境補正になる
                 攻撃補正 *= 1 + (逆境補正 * (1 - double(Hp) / 最大Hp));
             }
 
@@ -252,11 +252,12 @@ namespace SDX_TD
         //変動パラメータ
         static const int 基本Hp = 20;
         static const int 基本Mp = 50;
-        static int 最大Hp;//共通
-        static int Hp;//共通
+		static const int 基本Sp = 1000;
+		static int 最大Hp;//共通
+		static int Hp;//共通
         static double Mp;//共通
         static double Sp;//共通
-        static double 最大Sp;
+        static double 最大Sp;//共通
         static int 大魔法残り時間;
 
         static EnumArray<int, UnitType> 配置回数;//実質的に無意味
@@ -277,6 +278,8 @@ namespace SDX_TD
 
             Hp = 基本Hp;
             最大Hp = 基本Hp;
+			Sp = 0;
+			最大Sp = 基本Sp;
             Mp = 基本Mp;
             Main->補正計算();
 
@@ -365,9 +368,10 @@ namespace SDX_TD
             {
                 //効果終了時処理
                 SStage->大魔法効果(false);
-                Sp = 0;
+				Sp = 0;
             }
-            補正計算();//速度気にするなら毎回補正を計算しなおさない。
+			//@todo 大魔法開始/終了、非ダメージ時、初期化時だけ補正計算すれば良さそう
+            補正計算();
         }
 
         /**Sp上昇処理.*/
@@ -394,11 +398,11 @@ namespace SDX_TD
 
             //SPが増加し、逆境補正がかかる
             AddSp(最大Sp / 20);
-            //被ダメ補正は最大で20まで
             Hp = std::max(0, Hp - ダメージ量);
         }
 
         /**大魔法発動時の性能計算、効果処理.*/
+		/** 実際の処理はStage.hで殆ど実装*/
         void 大魔法発動()
         {
             //使用可能かどうか判定
@@ -408,6 +412,7 @@ namespace SDX_TD
             }
 
             大魔法残り時間 = 大魔法時間;
+			最大Sp *= 2;
             SStage->大魔法効果(true);
         }
     };

@@ -177,6 +177,7 @@ namespace SDX_TD
         Rリトライ = { 320, 380, 100, 25, 100, 25 };
     }
 
+	/**StageのUI位置を修正.*/
     void UI_Reset()
     {
         UI_Stage::Reset();

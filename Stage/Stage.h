@@ -28,22 +28,19 @@ namespace SDX_TD
     private:
         JobUnit jobS[12];
 
-        Layer<IObject> backEffectS;
+        Layer<IObject> backEffectS;//ここは数が少ないしこのままでもよさそう
         Layer<IObject> midEffectS;
         Layer<IObject> frontEffectS;
 
-        Layer<IEnemy> skyEnemyS;
+        Layer<IEnemy> skyEnemyS;//Enemyにして静的確保で良さそう
         Layer<IEnemy> groundEnemyS;
 
-        Layer<IShot> shotS;
-        Layer<IUnit> unitS;
+        Layer<IShot> shotS;//Shotは型によってサイズが違うので、工夫が必要
+        Layer<IUnit> unitS;//Unitにして静的確保で良さそう
 
         Wave wave;
 
         ReplayData replayData;//リプレイの保存or読み込んだデータ
-        int 乱数初期化子;
-        std::vector<Place> 初期配置;
-        std::vector<CommandData> commandS;
 
         IEnemy* 地上Top[MAP_SIZE][MAP_SIZE];
         IEnemy* 地上End[MAP_SIZE][MAP_SIZE];
@@ -248,6 +245,7 @@ namespace SDX_TD
             const Point point = { Input::mouse.x , Input::mouse.y };
             //タブレットでは指を離した時、デスクトップはクリック時に操作
             bool isClick = Input::mouse.Left.on;
+
             if (TDSystem::isタッチ)
             {
                 isClick = Input::mouse.Left.off;
@@ -288,22 +286,15 @@ namespace SDX_TD
                 case 2://続ける
                     break;
                 }
+				if (!isReplay){ return; }
             }
 
             //ここより上はリプレイ時も共通
             if (isReplay)
             {
-                for (auto &it : replayData.commandS)
-                {
-                    if (it.操作した時間 == timer)
-                    {
-                        DoCommand( it.種類,it.操作情報 ,it.マウス座標);
-                    }
-                }
-
+                DoReplay();
                 return;
             }
-
 
             //右クリックで解除
             if (Input::mouse.Right.on)
@@ -373,6 +364,23 @@ namespace SDX_TD
             if (comType != Command::null)
             {
                 DoCommand(comType, comNo, Input::mouse.GetPoint());
+            }
+        }
+
+        //リプレイの再生処理
+        void DoReplay()
+        {
+			//@todo すでに実行した部分飛ばせば処理をやや改善出来そう
+            for (auto &it : replayData.commandS)
+            {
+                if (it.操作した時間 == timer)
+                {
+                    DoCommand(it.種類, it.操作情報, it.マウス座標);
+                }
+				else
+				{
+					break;
+				}
             }
         }
 
@@ -486,10 +494,10 @@ namespace SDX_TD
         /**操作を実行.*/
         void DoCommand(Command 操作, int param , const Point& 座標)
         {
-            if ( !isReplay)
+            //コマンドの記録
+            if ( !isReplay && (timer != 0 || 操作 == Command::Wave送り))
             {
-                //コマンドの記録
-                replayData.commandS.push_back({操作,座標,param,timer});
+				replayData.commandS.push_back({ 操作, 座標, param, timer });
             }
 
             switch (操作)
@@ -515,8 +523,7 @@ namespace SDX_TD
                 if (wave.現在Wave == 0)
                 {
                     wave.isStop = false;
-                    //非リプレイ時は初期配置を記憶			
-                    SaveUnitS();
+					SaveUnitS();
                 }
                 if( wave.最終Wave != wave.現在Wave )
                 {
@@ -544,16 +551,15 @@ namespace SDX_TD
         /**初期配置を記憶.*/
         void SaveUnitS()
         {
-            if (!isReplay){ return; }
+			if (isReplay){ return; }
 
-            auto &place = StageDataS[TDSystem::選択ステージ].初期配置[(int)Witch::Main->種類][TDSystem::isカップル];
-
-            place.clear();
+            auto* place = &StageDataS[TDSystem::選択ステージ].初期配置[(int)Witch::Main->種類][TDSystem::isカップル];
+            place->clear();
 
             for (int a = 0; a < unitS.GetCount(); ++a)
             {
                 Point pt = { unitS[a]->GetX(), unitS[a]->GetY() };
-                place.push_back({ pt, unitS[0]->Lv, unitS[0]->st->職種 });
+                place->push_back({ pt, unitS[a]->Lv, unitS[a]->st->職種 });
             }
         }
 
@@ -561,9 +567,16 @@ namespace SDX_TD
         /**装備変更等でMp or 強化回数が不足すると途中で打ち切り*/
         void LoadUnitS()
         {
-            auto &place = StageDataS[TDSystem::選択ステージ].初期配置[(int)Witch::Main->種類][TDSystem::isカップル];
+			if ( !isReplay && !TDSystem::is配置記録){ return; }
 
-            for (auto & it : place)
+			auto* place = &StageDataS[TDSystem::選択ステージ].初期配置[(int)Witch::Main->種類][TDSystem::isカップル];
+
+			if (isReplay)
+			{
+				place = &replayData.初期配置;
+			}
+            
+            for (auto & it : *place)
             {
                 if (Witch::Main->Mp < UnitDataS[it.職種].コスト[it.Lv]) { break; }
                 if (Witch::強化回数[it.職種] < it.Lv){ break; }
@@ -721,15 +734,10 @@ namespace SDX_TD
         int timer = 0;//フレームスキップ用のタイマー
         int gameSpeed = 1;
 
-        static Stage& Call( bool isReplay , const char* リプレイファイル名 = "")
+        static Stage& Call( bool isReplay)
         {
             static Stage single;
             single.isReplay = isReplay;
-
-            if (isReplay)
-            {
-                single.replayData.SaveOrLoad(リプレイファイル名 , false , FileMode::Read);
-            }
 
             single.Init();
 
@@ -777,9 +785,14 @@ namespace SDX_TD
             //BGM開始
             MMusic::通常.Play();
 
-            //乱数初期化
-            replayData.乱数初期化子 = 0;
-            Rand::Reset(0);
+            //非リプレイモード
+			if ( !isReplay )
+			{
+				replayData.commandS.clear();
+				replayData.乱数初期化子 = 0;//@todo とりあえず固定				
+			}
+
+			Rand::Reset(replayData.乱数初期化子);
         }
 
         /**毎フレーム実行される更新処理.*/
@@ -868,7 +881,7 @@ namespace SDX_TD
         /**クリアor全滅処理.*/
         void GameOver(bool is勝利)
         {
-            bool isRetry = SceneResult::Call(is勝利);
+            bool isRetry = SceneResult::Call();
             
             if (isRetry)
             {
@@ -881,9 +894,15 @@ namespace SDX_TD
         }
 
         /**リプレイ保存処理.*/
-        void SaveReplay()
+        void SaveReplay( ResultType 結果, int スコア )
         {
+            auto time = Time::GetDateString();
+            time += ".rep";
 
+			replayData.初期配置.clear();
+
+
+            replayData.SaveOrLoad( time.c_str() , false, FileMode::Write, 結果, スコア);
         }
 
         /**画面の描画.*/
