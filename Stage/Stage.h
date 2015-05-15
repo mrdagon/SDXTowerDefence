@@ -731,7 +731,7 @@ namespace SDX_TD
         }
 
     public:
-        int timer = 0;//フレームスキップ用のタイマー
+        int timer = 0;//フレームスキップとリプレイ管理用のカウンタ
         int gameSpeed = 1;
 
         static Stage& Call( bool isReplay)

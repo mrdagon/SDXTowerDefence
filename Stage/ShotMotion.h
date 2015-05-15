@@ -3,7 +3,6 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #include "Utility/IMotion.h"
 #include "IStage.h"
-#include "Shot.h"
 #include "Enemy.h"
 
 namespace SDX

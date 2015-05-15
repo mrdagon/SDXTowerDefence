@@ -153,6 +153,8 @@ namespace SDX_TD
             sprite.SetZoom(10.0 / 32, 10.0 / 32);
         }
 
+		~Shot() = default;
+
         void Act() override
         {
             motion.Update( this );

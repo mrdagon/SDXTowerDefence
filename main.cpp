@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 
-#include "Utility/Memory.h"
+//#include "Utility/Memory.h"
 
 #ifndef __WINDOWS__
 
@@ -23,10 +23,6 @@ static const char* TMX_FILE_NAME = "Layout.tmx";
 #include "Stage/Stage.h"
 #include "System/Material.h"
 #include "Scene/SceneMenu.h"
-
-//#include "Scene/SceneStage.h"
-//#include "Scene/ScenePause.h"
-//#include "Scene/SceneResult.h"
 
 #include "System/SaveAndLoad.h"
 

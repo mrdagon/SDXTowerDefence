@@ -42,6 +42,37 @@ namespace SDX_TD
 		using S回転 = Shot < Circle, SpImage, MOTION::回転 > ;
 		using S追跡 = Shot < Circle, SpImage, MOTION::追跡 > ;
 
+		//VS2015以降用テスト
+		class UniShot
+		{
+		public:
+			IShot* iShot;
+
+			union ShotSub
+			{
+				//S勇者 s勇者;
+			}uShot;
+
+			UniShot() = default;
+			~UniShot() = default;
+
+			template<class T>
+			UniShot(const T&& TShot)
+			{
+				switch (typeid(TShot))
+				{
+				case S勇者:
+					//uShot.s勇者 = TShot;
+					break;
+				default:
+					break;
+				}
+				iShot = &TShot;
+			}
+		};
+
+		UniShot test;
+
 		void Shoot(IEnemy *対象)
 		{
 			const double 速度 = st->弾速[Lv];
