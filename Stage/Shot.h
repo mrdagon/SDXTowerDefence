@@ -14,7 +14,7 @@ namespace SDX_TD
     class IShot : public IObject
     {
     public:
-        UnitData *st;
+		const UnitData *st;
         int Lv;
         double 支援補正;
         double 攻撃力;
@@ -31,8 +31,7 @@ namespace SDX_TD
         virtual ~IShot() = default;
 
         /**弾の生成.*/
-        IShot(IShape &図形, ISprite &描画方法, double 角度, UnitData *st, int レベル , double 支援補正 ) :
-            IObject(図形, 描画方法),
+        IShot(double 角度, const UnitData *st, int レベル , double 支援補正 ) :
             st(st),
             Lv(レベル),
             支援補正(支援補正)
@@ -46,22 +45,22 @@ namespace SDX_TD
 
             炸裂半径 = st->炸裂範囲[レベル];
         }
-
     };
 
     class Bomm : public IShot
     {
     public:
         Circle circle;
-        SpNull spNull;
 
-        Bomm(const Circle &範囲 , UnitData* st , int Lv , double 支援補正):
-            IShot( circle , spNull , 0 , st , Lv , 支援補正),
+        Bomm(const Circle &範囲 , const UnitData* st , int Lv , double 支援補正):
+            IShot( 0 , st , Lv , 支援補正),
             circle(範囲)
         {
             isArea = true;
             is貫通 = true;
         }
+
+		const IShape& GetShape() const { return circle; }
 
         void Draw() const override
         {
@@ -88,18 +87,19 @@ namespace SDX_TD
     {
     public:
         Line line;
-        SpNull spNull;
         int ヒット数;
         int 透明度 = 255;
 
-        Beam(const Line &範囲, UnitData* st, int Lv, double 支援補正 , int ヒット数) :
-            IShot(line, spNull, 0, st, Lv, 支援補正),
+        Beam(const Line &範囲, const UnitData* st, int Lv, double 支援補正 , int ヒット数) :
+            IShot( 0, st, Lv, 支援補正),
             line(範囲),
             ヒット数(ヒット数 - 1)
         {
             isArea = true;
             is貫通 = true;
         }
+
+		const IShape& GetShape() const { return line; }
 
         void Draw() const override
         {
@@ -134,6 +134,7 @@ namespace SDX_TD
     };
 
     /**弾のテンプレート.*/
+	/**TShapeは固定でも良さそう.*/
     template <class TShape, class TSprite, class TMotion>
     class Shot : public IShot
     {
@@ -142,9 +143,12 @@ namespace SDX_TD
         TSprite sprite;
         TMotion motion;
 
+		const IShape& GetShape() const { return shape; }
+		const ISprite& GetSprite() const { return sprite; }
+
         /** α版は弾画像一種類.*/
-        Shot(TSprite &&描画方法, TMotion &&移動方法 , TShape &&図形, UnitData *基礎性能, int Lv, double 角度 , double 支援補正) :
-            IShot(shape, sprite, 角度, 基礎性能 , Lv , 支援補正),
+        Shot(TSprite &&描画方法, TMotion &&移動方法 , TShape &&図形, const UnitData *基礎性能, int Lv, double 角度 , double 支援補正) :
+            IShot( 角度, 基礎性能 , Lv , 支援補正),
             shape(図形),
             sprite(描画方法),
             motion(移動方法)

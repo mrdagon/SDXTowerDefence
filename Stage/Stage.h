@@ -4,15 +4,13 @@
 #include <SDXFramework.h>
 #include <Framework/IScene.h>
 #include "Land.h"
-#include "Layer.h"
 #include "IStage.h"
-//#include "Pause.h"
-//#include "Result.h"
 
 #include "Enemy.h"
 #include "Unit.h"
 #include "Shot.h"
 #include "Wave.h"
+#include "Layer.h"
 #include "../Scene/ScenePause.h"
 #include "../Scene/SceneResult.h"
 
@@ -32,20 +30,22 @@ namespace SDX_TD
         Layer<IObject> midEffectS;
         Layer<IObject> frontEffectS;
 
-        Layer<IEnemy> skyEnemyS;//Enemyにして静的確保で良さそう
-        Layer<IEnemy> groundEnemyS;
+		Layer<Enemy> skyEnemyS;//Enemyにして静的確保で良さそう
+		Layer<Enemy> groundEnemyS;
 
-        Layer<IShot> shotS;//Shotは型によってサイズが違うので、工夫が必要
-        Layer<IUnit> unitS;//Unitにして静的確保で良さそう
+        Layer<IShot> shotS;//Shotは型によってサイズが違うので、unionLayerにする
+        StaticLayer<Unit> unitS;//静的確保
+
+		UnionLayer<ShotUnion> uniShotS;
 
         Wave wave;
 
         ReplayData replayData;//リプレイの保存or読み込んだデータ
 
-        IEnemy* 地上Top[MAP_SIZE][MAP_SIZE];
-        IEnemy* 地上End[MAP_SIZE][MAP_SIZE];
-        IEnemy* 空中Top[MAP_SIZE][MAP_SIZE];
-        IEnemy* 空中End[MAP_SIZE][MAP_SIZE];
+        Enemy* 地上Top[MAP_SIZE][MAP_SIZE];
+        Enemy* 地上End[MAP_SIZE][MAP_SIZE];
+        Enemy* 空中Top[MAP_SIZE][MAP_SIZE];
+        Enemy* 空中End[MAP_SIZE][MAP_SIZE];
 
         double 攻撃補正[MAP_SIZE][MAP_SIZE];
 
@@ -67,9 +67,11 @@ namespace SDX_TD
             unitS.Clear();
 
             land.Init();
+
+			//あらかじめメモリを確保しておく
         }
 
-        void AddChainList(Layer<IEnemy> &処理するレイヤ, IEnemy* 始点[MAP_SIZE][MAP_SIZE], IEnemy* 終点[MAP_SIZE][MAP_SIZE])
+        void AddChainList(Layer<Enemy> &処理するレイヤ, Enemy* 始点[MAP_SIZE][MAP_SIZE], Enemy* 終点[MAP_SIZE][MAP_SIZE])
         {
             for (auto &&it : 処理するレイヤ.objectS)
             {
@@ -89,7 +91,7 @@ namespace SDX_TD
             }
         }
 
-        bool HitShotEnemy(IShot* 弾, IEnemy* 敵)
+        bool HitShotEnemy(IShot* 弾, Enemy* 敵)
         {
             while (敵)
             {
@@ -108,7 +110,7 @@ namespace SDX_TD
         }
 
         /**貫通弾の判定.*/	
-        void HitArea(IShot* 弾, IEnemy* 始点[MAP_SIZE][MAP_SIZE])
+        void HitArea(IShot* 弾, Enemy* 始点[MAP_SIZE][MAP_SIZE])
         {
             //大雑把な分割処理をしない
             for (int x = 0; x < MAP_SIZE; ++x){
@@ -120,7 +122,7 @@ namespace SDX_TD
         }
 
         /**通常弾の判定.*/
-        void HitSingle(IShot* 弾, IEnemy* 始点[MAP_SIZE][MAP_SIZE])
+        void HitSingle(IShot* 弾, Enemy* 始点[MAP_SIZE][MAP_SIZE])
         {
             //大雑把に分割してから判定を行う
             const int xa = (int)(弾->GetX() - CHIP_SIZE / 2) / CHIP_SIZE;
@@ -329,7 +331,7 @@ namespace SDX_TD
             {
                 for (int a = 0; a < unitS.GetCount(); ++a)
                 {
-                    if (unitS[a]->Hit(&point))
+                    if (unitS[a].Hit(&point))
                     {
                         comType = Command::ユニット選択;
                         comNo = a;
@@ -448,7 +450,7 @@ namespace SDX_TD
         bool InputCheckEnemyS(bool is地上 ,const Point *マウス座標, bool 検査位置判定)
         {
             int index = 0;
-            Layer<IEnemy> *enemyS;
+            Layer<Enemy> *enemyS;
             if ( is地上)
             {
                 enemyS = &groundEnemyS;
@@ -465,7 +467,7 @@ namespace SDX_TD
                 {
                     if (a == enemyS->GetCount() - 1){ return false; }
 
-                    if (enemyS[0][a] == SStage->selectEnemy )
+                    if ( enemyS[0][a] == SStage->selectEnemy )
                     {
                         index = a + 1;						
                         break;
@@ -508,13 +510,13 @@ namespace SDX_TD
                 selectUnit = nullptr;
                 break;
             case Command::ユニット選択:
-                SetSelect(unitS[param]);
+                SetSelect( &unitS[param]);
                 break;
             case Command::地上敵選択:
-                SetSelect(groundEnemyS[param]);
+                SetSelect( groundEnemyS[param]);
                 break;
             case Command::空中敵選択:
-                SetSelect(skyEnemyS[param]);
+                SetSelect( skyEnemyS[param]);
                 break;
             case Command::大魔法発動:
                 Witch::Main->大魔法発動();
@@ -558,8 +560,8 @@ namespace SDX_TD
 
             for (int a = 0; a < unitS.GetCount(); ++a)
             {
-                Point pt = { unitS[a]->GetX(), unitS[a]->GetY() };
-                place->push_back({ pt, unitS[a]->Lv, unitS[a]->st->職種 });
+                Point pt = { unitS[a].GetX(), unitS[a].GetY() };
+                place->push_back({ pt, unitS[a].Lv, unitS[a].st->職種 });
             }
         }
 
@@ -581,7 +583,7 @@ namespace SDX_TD
                 if (Witch::Main->Mp < UnitDataS[it.職種].コスト[it.Lv]) { break; }
                 if (Witch::強化回数[it.職種] < it.Lv){ break; }
 
-                Add(new Unit(it.職種, (int)it.座標.x, (int)it.座標.y, it.Lv));
+                Add(new Unit((int)it.座標.x, (int)it.座標.y, it.職種, false, it.Lv));
             }
         }
 
@@ -604,7 +606,7 @@ namespace SDX_TD
             //配置可能かチェック
             if (SStage->land.SetUnit(x, y, 2))
             {
-                Add(new Unit(職種,(x+1) * CHIP_SIZE , (y+1) * CHIP_SIZE ));
+                Add(new Unit((x+1) * CHIP_SIZE , (y+1) * CHIP_SIZE , 職種 , false , 0));
             }
         }
 
@@ -775,6 +777,7 @@ namespace SDX_TD
 
             score = 0;
             timer = 0;
+			isEnd = false;
 
             //ウィッチ初期化
             Witch::InitAll();
@@ -932,14 +935,14 @@ namespace SDX_TD
             DrawUI();
         }
 
-        void SetSelect(IEnemy* 選択した敵)
+        void SetSelect(Enemy* 選択した敵)
         {
             selected = 選択した敵;
             selectEnemy = 選択した敵;
             selectUnit = nullptr;
         }
 
-        void SetSelect(IUnit* 選択したユニット)
+        void SetSelect(Unit* 選択したユニット)
         {
             selected = 選択したユニット;
             selectEnemy = nullptr;
@@ -966,7 +969,7 @@ namespace SDX_TD
             midEffectS.Add(追加するオブジェクト, 待機時間);
         }
         /**敵を追加.*/
-        void Add(IEnemy* 追加するオブジェクト, int 待機時間 = 0) override
+        void Add( Enemy *追加するオブジェクト, int 待機時間 = 0) override
         {
             switch (追加するオブジェクト->移動種)
             {
@@ -979,9 +982,9 @@ namespace SDX_TD
             }
         }
         /**ユニットを追加.*/
-        void Add(IUnit* 追加するオブジェクト, int 待機時間 = 0) override
+        void Add( const Unit &追加するオブジェクト, int 待機時間 = 0) override
         {
-            unitS.Add(追加するオブジェクト, 待機時間);
+            unitS.Add( std::move(追加するオブジェクト), 待機時間);
         }
         /**自弾を追加.*/
         void Add(IShot* 追加するオブジェクト, int 待機時間 = 0) override
@@ -1002,9 +1005,9 @@ namespace SDX_TD
         }
 
         /**一番近いEnemyを返す.*/
-        IEnemy* GetNearEnemy(const IPosition* 比較対象 , bool is地上 , bool is空中) override
+        Enemy* GetNearEnemy(const IPosition* 比較対象 , bool is地上 , bool is空中) override
         {
-            IEnemy* 一番近い敵 = nullptr;
+            Enemy* 一番近い敵 = nullptr;
             double  最短距離 = 9999999999;//適当に大きな値
             double  距離;
 
@@ -1012,8 +1015,8 @@ namespace SDX_TD
             {
                 for (auto && it : groundEnemyS.objectS)
                 {
-                    const double xd = it.get()->GetX() - 比較対象->GetX();
-                    const double yd = it.get()->GetY() - 比較対象->GetY();
+                    const double xd = it->GetX() - 比較対象->GetX();
+                    const double yd = it->GetY() - 比較対象->GetY();
                     距離 = xd * xd + yd * yd;
 
                     if (距離 < 最短距離)
@@ -1027,8 +1030,8 @@ namespace SDX_TD
             {
                 for (auto && it : skyEnemyS.objectS)
                 {
-                    const double xd = it.get()->GetX() - 比較対象->GetX();
-                    const double yd = it.get()->GetY() - 比較対象->GetY();
+                    const double xd = it->GetX() - 比較対象->GetX();
+                    const double yd = it->GetY() - 比較対象->GetY();
                     距離 = xd * xd + yd * yd;
 
                     if (距離 < 最短距離)
@@ -1043,9 +1046,9 @@ namespace SDX_TD
         }
         
         /**十字射程内で一番近いEnemyを返す.*/
-        IEnemy* GetNearEnemyCloss(const IPosition* 比較対象, bool is地上, bool is空中 , int 幅 , double 射程) override
+        Enemy* GetNearEnemyCloss(const IPosition* 比較対象, bool is地上, bool is空中 , int 幅 , double 射程) override
         {
-            IEnemy* 一番近い敵 = nullptr;
+            Enemy* 一番近い敵 = nullptr;
             double  最短距離 = 9999999999;//適当に大きな値
             double  距離;
 
@@ -1053,7 +1056,7 @@ namespace SDX_TD
             {
                 for (auto && it : groundEnemyS.objectS)
                 {
-                    距離 = GetClossDistance(it.get(), 比較対象, 幅, 射程);
+                    距離 = GetClossDistance( it.get() , 比較対象, 幅, 射程);
 
                     if (距離 >= 0 && 距離 < 最短距離)
                     {					
@@ -1066,7 +1069,7 @@ namespace SDX_TD
             {
                 for (auto && it : skyEnemyS.objectS)
                 {
-                    距離 = GetClossDistance(it.get(), 比較対象, 幅, 射程);
+                    距離 = GetClossDistance( it.get(), 比較対象, 幅, 射程);
 
                     if (距離 >= 0 && 距離 < 最短距離)
                     {
@@ -1103,12 +1106,12 @@ namespace SDX_TD
             //初期値に戻す
             for (int a = 0; a < Max; ++a)
             {
-                unitS[a]->支援補正 = 1.0;
+                unitS[a].支援補正 = 1.0;
             }
 
             for (int a = 0; a < Max ; ++a)
             {
-                const double 支援 = unitS[a]->st->支援効果[unitS[a]->Lv];
+                const double 支援 = unitS[a].st->支援効果[unitS[a].Lv];
                 if (支援 <= 0)
                 {
                     continue;
@@ -1122,11 +1125,11 @@ namespace SDX_TD
                     }
 
                     if ( 
-                        std::abs(unitS[a]->GetX() - unitS[b]->GetX()) <= CHIP_SIZE * 2 &&
-                        std::abs(unitS[a]->GetY() - unitS[b]->GetY()) <= CHIP_SIZE * 2
+                        std::abs(unitS[a].GetX() - unitS[b].GetX()) <= CHIP_SIZE * 2 &&
+                        std::abs(unitS[a].GetY() - unitS[b].GetY()) <= CHIP_SIZE * 2
                         )
                     {
-                        unitS[b]->支援補正 += 支援;
+                        unitS[b].支援補正 += 支援;
                     }
                 }
             }
@@ -1243,8 +1246,8 @@ namespace SDX_TD
                 //即強化＆回収
                 for (auto && it : unitS)
                 {
-                    if (it->残り強化時間 > 0){ it->残り強化時間 = 1; }
-                    if (it->残り売却時間 > 0){ it->残り売却時間 = 1; }
+                    if (it.残り強化時間 > 0){ it.残り強化時間 = 1; }
+                    if (it.残り売却時間 > 0){ it.残り売却時間 = 1; }
                 }
                 break;
             case WitchType::ミルラ:

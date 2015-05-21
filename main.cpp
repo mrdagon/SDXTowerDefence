@@ -3,14 +3,14 @@
 
 #include "stdafx.h"
 
-//#include "Utility/Memory.h"
-
 #ifndef __WINDOWS__
 
 #include "PreCompile.cpp"
 #include "Design.cpp"
 
 #endif
+
+//#include <Utility/Pool.h>
 
 //配布時は相対パス、デバッグ時は絶対パス
 #ifdef _DEBUG
@@ -26,10 +26,16 @@ static const char* TMX_FILE_NAME = "Layout.tmx";
 
 #include "System/SaveAndLoad.h"
 
+#include <Sample/Sample.h>
+
+
 int main(int argc, char* argv[])
 {
     using namespace SDX;
     using namespace SDX_TD;
+
+	SampleTime();
+	return 1;
 
 	UI_Reset();
     LoadUnitS();

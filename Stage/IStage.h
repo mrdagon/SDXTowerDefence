@@ -14,14 +14,16 @@ namespace SDX_TD
 	class IShot;
 	class Wave;
 	class Land;
+	class Unit;
+	class Enemy;
 
 	/**.*/
 	class IStage : public IScene
 	{
 	public:
 		IObject* selected = nullptr;//選択中のオブジェクト
-		IEnemy* selectEnemy = nullptr;//選択中の敵
-		IUnit* selectUnit = nullptr;//選択中の魔法
+		Enemy* selectEnemy = nullptr;//選択中の敵
+		Unit* selectUnit = nullptr;//選択中の魔法
 		Land land;//
 		bool isReplay;
 		int score;
@@ -39,13 +41,13 @@ namespace SDX_TD
 
 		virtual void ResetJobList() = 0;
 		virtual void Add(IObject *追加するオブジェクト, int 待機時間 = 0) = 0;
-		virtual void Add(IUnit *追加するオブジェクト, int 待機時間 = 0) = 0;
-		virtual void Add(IEnemy *追加するオブジェクト, int 待機時間 = 0) = 0;
+		virtual void Add(const Unit &追加するオブジェクト, int 待機時間 = 0) = 0;
+		virtual void Add(Enemy *追加するオブジェクト, int 待機時間 = 0) = 0;
 		virtual void Add(IShot *追加するオブジェクト, int 待機時間 = 0) = 0;
 		virtual void AddFront(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
 		virtual void AddBack(IObject* 追加するオブジェクト, int 待機時間 = 0) = 0;
-		virtual IEnemy* GetNearEnemy(const IPosition* 比較対象, bool is地上, bool is空中) = 0;
-		virtual IEnemy* GetNearEnemyCloss(const IPosition* 比較対象, bool is地上, bool is空中 , int 幅 , double 射程) = 0;
+		virtual Enemy* GetNearEnemy(const IPosition* 比較対象, bool is地上, bool is空中) = 0;
+		virtual Enemy* GetNearEnemyCloss(const IPosition* 比較対象, bool is地上, bool is空中 , int 幅 , double 射程) = 0;
 		virtual int GetClossDistance(const IPosition* 対象A, const IPosition* 対象B, int 幅, double 射程) = 0;
 
 		virtual void Support() = 0;

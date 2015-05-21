@@ -2,7 +2,7 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
-#include "IUnit.h"
+#include "Unit.h"
 #include "Design.h"
 
 namespace SDX_TD
@@ -10,16 +10,13 @@ namespace SDX_TD
 	using namespace SDX;
 
 	/**ユニット一覧用 .*/
-	class JobUnit : public IUnit
+	class JobUnit : public Unit
 	{
 	public:
-		Rect shape;
-		SpNull sprite;
 
 		//配置位置
 		JobUnit() :
-			IUnit(shape, sprite, UnitType::ライナ , true , 0),
-			shape({0,0,0,0})
+			Unit(0 , 0, UnitType::ライナ , true , 0)
 		{}
 
 		void Draw() const override

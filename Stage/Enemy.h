@@ -11,15 +11,18 @@
 namespace SDX_TD
 {
 	using namespace SDX;
-	class IEnemy :public IObject
+	class Enemy :public IObject
 	{
 	public:
 		const static int 判定大きさ = 14;
 		const static int ボスダメージ = 2;
-
 		const EnemyData *st;
+
+		Rect shape;
+		SpNull sprite;
+
 		MoveType 移動種;
-		IEnemy*		next;//当たり判定チェイン用
+		Enemy   *next;//当たり判定チェイン用
 		int		レベル = 0;
 		int		方向 = 5;
 		double	最大HP = 0;
@@ -36,10 +39,10 @@ namespace SDX_TD
 
 		int     スコア;
 
-		IEnemy(IShape &図形, ISprite &描画方法, EnemyData* st, int Lv, bool isBoss) :
-			IObject(図形, 描画方法),
+		Enemy(double X座標, double Y座標, EnemyType type, int Lv, bool isBoss) :
+			shape((X座標 + 0.5)*CHIP_SIZE, (Y座標 + 0.5)*CHIP_SIZE, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2),
 			isBoss(isBoss),
-			st(st),
+			st( &EnemyDataS[type]),
 			レベル(Lv),
 			移動種(st->移動種)
 		{
@@ -52,15 +55,15 @@ namespace SDX_TD
 				スコア *= 16;
 				最大HP *= 16;
 				防御力 *= 2;
+				shape.SetZoom(2, 2);
 			}
 
 			残りHP = 最大HP;
 		}
 
-		virtual ~IEnemy(){}
+		const IShape& GetShape() const { return shape; }
 
-		/**死亡時、基本処理.*/
-		virtual void Dead() = 0;
+		virtual ~Enemy(){}
 
 		void 方向更新()
 		{
@@ -378,24 +381,6 @@ namespace SDX_TD
 			防御力 = std::max(0, 防御力 - 衝突相手->デバフ効果);
 		}
 
-	};
-
-	class Enemy : public IEnemy
-	{
-	public:
-		Rect shape;
-		SpNull sprite;
-
-		Enemy(double X座標, double Y座標, EnemyType 敵種類, int Lv, bool isBoss) :
-			IEnemy(shape, sprite, &EnemyDataS[敵種類], Lv, isBoss),
-			shape((X座標 + 0.5)*CHIP_SIZE, (Y座標 + 0.5)*CHIP_SIZE, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2)
-		{
-			if (isBoss)
-			{
-				shape.SetZoom(2, 2);
-			}
-		}
-
 		/** 更新処理.*/
 		/**@todo 飛行タイプは移動方法変えるかも？*/
 		void Act() override
@@ -409,7 +394,7 @@ namespace SDX_TD
 			//シャーマン/召喚/10秒に1回/ボスは1秒に1回
 			if (st->種族 == EnemyType::シャーマン && timer % 60 + 540 * !isBoss == 0)
 			{
-				auto enemy = new Enemy(GetX(), GetY(), EnemyType::ゼリー, レベル,false);
+				auto enemy = new Enemy(GetX(), GetY() , EnemyType::ゼリー, レベル, false);
 				double r = Rand::Get(PAI);
 				enemy->最大HP /= 16;
 				enemy->残りHP /= 16;
@@ -455,7 +440,7 @@ namespace SDX_TD
 			//方向を更新
 			方向更新();
 
-			if (isBoss){ speed *= 0.66; }
+			if (isBoss) { speed *= 0.66; }
 
 			//異常補正
 			if (麻痺時間 > 0)
@@ -494,7 +479,7 @@ namespace SDX_TD
 		}
 
 		/**死亡時、基本処理.*/
-		void Dead() override
+		void Dead()
 		{
 			//分裂
 			if (st->種族 == EnemyType::ゼリー王)
@@ -502,7 +487,7 @@ namespace SDX_TD
 				for (int a = 0; a < 4; ++a)
 				{
 					auto enemy = new Enemy(GetX(), GetY(), EnemyType::ゼリー, レベル, isBoss);
-					double r = Rand::Get(PAI/2) + PAI * a / 2;
+					double r = Rand::Get(PAI / 2) + PAI * a / 2;
 					enemy->最大HP /= 8;
 					enemy->残りHP /= 8;
 					enemy->スコア /= 8;
@@ -519,7 +504,7 @@ namespace SDX_TD
 			Witch::Main->AddSp(st->スコア);
 
 			SStage->score += int(スコア * Witch::Main->スコア補正);
-			
+
 			MSound::撃破.Play();
 
 			isRemove = true;

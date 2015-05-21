@@ -329,7 +329,7 @@ namespace SDX_TD
         static void SetSub(WitchType ウィッチ種)
         {
             Sub = &witchS[1];
-
+			
             Sub->st = &WitchDataS[ウィッチ種];
 
             for (int a = 0; a < 12; ++a)
@@ -352,6 +352,7 @@ namespace SDX_TD
             大魔法名 = st->大魔法名;
             魔導具名 = st->魔導具名;
             説明文 = st->説明文;
+			種類 = st->種類;
 
             for (int a = 0; a < 12; ++a)
             {

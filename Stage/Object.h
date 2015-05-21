@@ -19,12 +19,10 @@ namespace SDX_TD
 		bool isSelect = false;
 
 		/**.*/
-		IObject(IShape &図形, ISprite &描画方法) :
-			IModel(図形, 描画方法)
-		{}
+		IObject(){}
 
 		/**.*/
-		virtual ~IObject(){}
+		virtual ~IObject() = default;
 
 		/**消滅判定を行い、消滅している場合消滅処理を行う.*/
 		virtual bool RemoveCheck()
@@ -40,7 +38,7 @@ namespace SDX_TD
 		}
 
 		/**経過フレームを取得.*/
-		int GetTimer()
+		int GetTimer() const
 		{
 			return timer;
 		}
@@ -55,7 +53,7 @@ namespace SDX_TD
 		virtual void Update() final
 		{
 			timer++;
-			iSprite.Update();
+			GetSprite().Update();
 			Act();
 		}
 
