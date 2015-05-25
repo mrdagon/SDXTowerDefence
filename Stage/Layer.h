@@ -500,5 +500,10 @@ namespace SDX_TD
 		{
 			return objectS.end();
 		}
+
+#undef U_TYPE
+#undef U_DEST
+#undef U_CONST
+#undef U_GET
 	};
 }

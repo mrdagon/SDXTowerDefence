@@ -10,6 +10,7 @@
 
 #endif
 
+#include <cassert>
 //#include <Utility/Pool.h>
 
 //配布時は相対パス、デバッグ時は絶対パス
@@ -26,6 +27,7 @@ static const char* TMX_FILE_NAME = "Layout.tmx";
 
 #include "System/SaveAndLoad.h"
 
+#include <Utility/UnionTest.h>
 #include <Sample/Sample.h>
 
 
