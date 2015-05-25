@@ -30,14 +30,10 @@ static const char* TMX_FILE_NAME = "Layout.tmx";
 #include <Utility/UnionTest.h>
 #include <Sample/Sample.h>
 
-
 int main(int argc, char* argv[])
 {
     using namespace SDX;
     using namespace SDX_TD;
-
-	SampleTime();
-	return 1;
 
 	UI_Reset();
     LoadUnitS();

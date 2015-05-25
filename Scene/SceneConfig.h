@@ -71,7 +71,7 @@ namespace SDX_TD
             if (BGM＋.isClick()){ TDSystem::BGMの音量++; Music::SetMainVolume(double(TDSystem::効果音の音量 * TDSystem::効果音の音量) / 100); }
             if (グリッドChk.isClick()){ TDSystem::isグリッド = !TDSystem::isグリッド; }
             if (敵HPChk.isClick()){ TDSystem::isHPゲージ = !TDSystem::isHPゲージ; }
-            if (エフェクト表示Chk.isClick()){ TDSystem::isエフェクト = !TDSystem::isエフェクト; }
+			if (エフェクト表示Chk.isClick()){ TDSystem::isエフェクト省略 = !TDSystem::isエフェクト省略; }
             if (リプレイ保存Chk.isClick()){ TDSystem::isリプレイ保存 = !TDSystem::isリプレイ保存; }
             if (タッチ操作Chk.isClick()){ TDSystem::isタッチ = !TDSystem::isタッチ; }
             if (初期配置Chk.isClick()){ TDSystem::is配置記録 = !TDSystem::is配置記録; }
@@ -135,7 +135,7 @@ namespace SDX_TD
             DrawCheck(敵HP, 敵HPChk, "体力ゲージ表示", TDSystem::isHPゲージ);
             DrawCheck(初期配置, 初期配置Chk, "初期配置記録", TDSystem::is配置記録);
             DrawCheck(タッチ操作, タッチ操作Chk, "タッチ操作モード", TDSystem::isタッチ);
-            DrawCheck(エフェクト表示, エフェクト表示Chk, "エフェクト簡略化", TDSystem::isエフェクト);
+			DrawCheck(エフェクト表示, エフェクト表示Chk, "エフェクト簡略化", TDSystem::isエフェクト省略);
             DrawCheck(リプレイ保存, リプレイ保存Chk, "更新時リプレイ保存", TDSystem::isリプレイ保存);
             DrawCheck(画面サイズ, 画面サイズChk, "フルスクリーン", TDSystem::isフルスクリーン);
 
