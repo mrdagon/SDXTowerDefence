@@ -51,6 +51,7 @@ namespace SDX_TD
 			}
 
 			//@todo テスト用のコード
+			/*
             for (int a = 0; a < 20; ++a)
             {
                 replayS.push_back(ReplayData());
@@ -65,6 +66,7 @@ namespace SDX_TD
                 replayS[a].isカップル = (a != 1);
                 replayS[a].isトライアル = (a != 2);
             }
+			*/
 
             スクロールバー.SetSize(replayS.size(), 11);
             
@@ -148,7 +150,7 @@ namespace SDX_TD
             MSystem::frameS[リプレイ情報.frameNo].Draw(リプレイ情報.rect);
             開始.DrawText(MFont::fontS[2], "Start", 2);
 
-            if (StageDataS.size() > 0)
+            if ( replayS.size() > 0)
             {
                 ReplayData &buf = replayS[replayNo];
 

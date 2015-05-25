@@ -108,7 +108,7 @@ namespace SDX_TD
                 scrBox.heightDown = rect.heightDown * pageSize / size;
             }
 
-            scrSize = rect.heightDown / size;
+            scrSize = rect.heightDown / std::max(size,1);
         }
 
         void AddIndex(int 値)

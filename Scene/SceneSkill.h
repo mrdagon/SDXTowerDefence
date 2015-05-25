@@ -64,6 +64,29 @@ namespace SDX_TD
             //@End
         }
 
+		/*+1 or -1のみ*/
+		void SkillUpDown(SkillType スキル種, int 変化量)
+		{
+			if ( 変化量 > 0)
+			{
+				//Lv+1
+				if (TDSystem::残りスキルポイント > 0)
+				{
+					Witch::スキルLv[スキル種]++;
+					TDSystem::残りスキルポイント--;
+				}
+			}
+			else
+			{
+				//Lv-1
+				if (Witch::スキルLv[スキル種] > 0)
+				{
+					Witch::スキルLv[スキル種]--;
+					TDSystem::残りスキルポイント++;
+				}
+			}
+		}
+
         void PushSB(UI_Button &ボタン , SkillType スキル種)
         {
             if (ボタン.rect.Hit(&Input::mouse.GetPoint()) )
@@ -139,25 +162,24 @@ namespace SDX_TD
                     説明文 += VariadicStream({ "[Lv ", Witch::スキルLv[スキル種], "] ", pt, "% + ", pt2, "%" }).StringS[0];
                 }
 
+				if (Input::mouse.Whell > 0)
+				{
+					SkillUpDown(スキル種, +1);
+				}
+				else if (Input::mouse.Whell < 0)
+				{
+					SkillUpDown(スキル種, -1);
+				}
+
                 if (!Input::mouse.Left.on){ return; }
 
                 if (Input::mouse.GetPoint().y < ボタン.rect.GetCenter().GetY())
-                {
-                    //Lv+1
-                    if (TDSystem::残りスキルポイント > 0)
-                    {
-                        Witch::スキルLv[スキル種]++;
-                        TDSystem::残りスキルポイント--;
-                    }
-                }
-                else
-                {
-                    //Lv-1
-                    if (Witch::スキルLv[スキル種] > 0)
-                    {
-                        Witch::スキルLv[スキル種]--;
-                        TDSystem::残りスキルポイント++;
-                    }
+				{
+					SkillUpDown(スキル種, +1);
+				}
+				else
+				{
+					SkillUpDown(スキル種, -1);
                 }
             }
         }

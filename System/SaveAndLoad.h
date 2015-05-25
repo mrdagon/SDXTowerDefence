@@ -36,7 +36,7 @@ namespace SDX_TD
         file.ReadWrite(TDSystem::isグリッド);
         file.ReadWrite(TDSystem::isHPゲージ);
         file.ReadWrite(TDSystem::is高速);
-        file.ReadWrite(TDSystem::isエフェクト);
+		file.ReadWrite(TDSystem::isエフェクト省略);
 
         file.ReadWrite(TDSystem::isタッチ);
         file.ReadWrite(TDSystem::isフルスクリーン);

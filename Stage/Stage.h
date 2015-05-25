@@ -36,8 +36,6 @@ namespace SDX_TD
         Layer<IShot> shotS;//Shotは型によってサイズが違うので、unionLayerにする
         StaticLayer<Unit> unitS;//静的確保
 
-		UnionLayer<ShotUnion> uniShotS;
-
         Wave wave;
 
         ReplayData replayData;//リプレイの保存or読み込んだデータ
@@ -583,7 +581,7 @@ namespace SDX_TD
                 if (Witch::Main->Mp < UnitDataS[it.職種].コスト[it.Lv]) { break; }
                 if (Witch::強化回数[it.職種] < it.Lv){ break; }
 
-                Add(new Unit((int)it.座標.x, (int)it.座標.y, it.職種, false, it.Lv));
+                Add(Unit((int)it.座標.x, (int)it.座標.y, it.職種, false, it.Lv));
             }
         }
 
@@ -606,7 +604,7 @@ namespace SDX_TD
             //配置可能かチェック
             if (SStage->land.SetUnit(x, y, 2))
             {
-                Add(new Unit((x+1) * CHIP_SIZE , (y+1) * CHIP_SIZE , 職種 , false , 0));
+                Add( Unit((x+1) * CHIP_SIZE , (y+1) * CHIP_SIZE , 職種 , false , 0));
             }
         }
 
@@ -1159,7 +1157,7 @@ namespace SDX_TD
                 MMusic::通常.Play();//BGMを元に戻す
                 return;
             }
-            else if ( TDSystem::isエフェクト )
+            else if ( !TDSystem::isエフェクト省略 )
             {
                 //開始時処理
                 MMusic::大魔法.Play();

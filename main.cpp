@@ -26,16 +26,12 @@ static const char* TMX_FILE_NAME = "Layout.tmx";
 
 #include "System/SaveAndLoad.h"
 
-#include <Sample/Sample.h>
-
+//#include <Sample/Sample.h>
 
 int main(int argc, char* argv[])
 {
     using namespace SDX;
     using namespace SDX_TD;
-
-	SampleTime();
-	return 1;
 
 	UI_Reset();
     LoadUnitS();
