@@ -869,6 +869,11 @@ namespace SDX_TD
             Support();
 
             //終了判定
+			if (Input::key.A.on)
+			{
+				Witch::Hp = 0;
+			}
+			
             if (Witch::Hp <= 0)
             {				
                 GameOver( false );//敗北

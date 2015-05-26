@@ -68,7 +68,6 @@ namespace SDX_TD
             diffRate = 1 + DifficultyDataS[TDSystem::難易度].スコア補正;
             bonusRate = std::min( Witch::Hp / Witch::最大Hp + 1.0 , 2.0);
 
-
 			if (Witch::Hp >= Witch::最大Hp)
 			{
 				結果 = ResultType::Perfect;
@@ -106,6 +105,12 @@ namespace SDX_TD
 			{
 				getEXP += StageDataS[TDSystem::選択ステージ].Update(Witch::Main->種類, totalScore, 結果);
 			}
+
+			if ( SStage->isReplay )
+			{ 
+				getEXP = 0;
+			}
+
             TDSystem::経験値 += getEXP;
 
 			Lv上昇量 = TDSystem::CheckLVUp();

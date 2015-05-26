@@ -52,9 +52,13 @@ namespace SDX_TD
             for (auto &it : StageDataS)
             {
                 //ファイル名を入れる
+				//if (it.first == ""){ continue; }
                 file.Write(it.first);
-
-                file.ReadWrite(it.second.成績, 4);
+				
+                file.Write(it.second.成績[0][0]);
+				file.Write(it.second.成績[1][0]);
+				file.Write(it.second.成績[0][1]);
+				file.Write(it.second.成績[1][1]);
 
                 for (int a = 0; a < 24; ++a)
                 {
@@ -64,15 +68,18 @@ namespace SDX_TD
         }
         else
         {
-            int num;
-            file.Read( num);
+            int num = 4;
+            file.Read( num );
 
             for (int a = 0; a < num;++a)
             {
                 std::string fileName;
                 file.Read(fileName);
 
-                file.ReadWrite(StageDataS[fileName].成績, 4);
+				file.Read(StageDataS[fileName].成績[0][0]);
+				file.Read(StageDataS[fileName].成績[1][0]);
+				file.Read(StageDataS[fileName].成績[0][1]);
+				file.Read(StageDataS[fileName].成績[1][1]);
 
                 for (int a = 0; a < 24; ++a)
                 {
