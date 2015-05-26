@@ -26,8 +26,6 @@ static const char* TMX_FILE_NAME = "Layout.tmx";
 #include "Scene/SceneMenu.h"
 
 #include "System/SaveAndLoad.h"
-
-#include <Utility/UnionTest.h>
 #include <Sample/Sample.h>
 
 int main(int argc, char* argv[])
@@ -35,6 +33,8 @@ int main(int argc, char* argv[])
     using namespace SDX;
     using namespace SDX_TD;
 
+	SampleTime();
+	return 0;
 	UI_Reset();
     LoadUnitS();
     LoadEnemyS();
