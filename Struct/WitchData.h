@@ -45,7 +45,7 @@ namespace SDX_TD
 		double 獲得SP = 1.0;//溜まり易さ
 
 
-		double 逆境補正 = 0.01;//ライフ-1につき1%攻撃力が上がる
+		double 逆境補正 = 0.30;//ライフ0で30%攻撃力が上がる
 
 		//ステージ開始時しか参照しないパラメータ
 		int    追加Hp = 0;
@@ -84,7 +84,7 @@ namespace SDX_TD
 		WitchDataS[WitchType::ライナ].属性 = Element::炎;
 		WitchDataS[WitchType::ライナ].攻撃補正 = 1.05;
 		WitchDataS[WitchType::ライナ].連射補正 = 1.05;
-		WitchDataS[WitchType::ライナ].逆境補正 = 0.03;//通常の三倍
+		WitchDataS[WitchType::ライナ].逆境補正 = 0.90;//通常の３倍
 
 		WitchDataS[WitchType::ライナ].職種[0] = UnitType::ライナ;
 		WitchDataS[WitchType::ライナ].職種[1] = UnitType::兵士;
