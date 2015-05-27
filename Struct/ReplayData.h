@@ -72,16 +72,15 @@ namespace SDX_TD
 
         bool SaveOrLoad(const char* リプレイファイル名 , bool isTag , FileMode 保存or読み込み , ResultType result = ResultType::Lose , int score = 0)
         {
-            File file(リプレイファイル名, 保存or読み込み, true);
+			std::string folderName = "replay/";
+			ファイル名 = リプレイファイル名;
 
-            bool flag = (保存or読み込み == FileMode::Read);
+            File file( (folderName + リプレイファイル名).c_str() , 保存or読み込み, true);
 
 			if (file.GetFileMode() == FileMode::None)
 			{
 				return false;
 			}
-
-			ファイル名 = リプレイファイル名;
 
             if (isTag)
             {
@@ -99,9 +98,19 @@ namespace SDX_TD
 
             バージョン = TDSystem::バージョン;
             file.ReadWrite( バージョン );
-            file.ReadWrite( TDSystem::選択ステージ);
-            file.ReadWrite( Witch::Main->種類 );
-            file.ReadWrite( Witch::Sub->種類);
+			file.ReadWrite(TDSystem::選択ステージ);
+			if (保存or読み込み == FileMode::Read)
+			{
+				file.ReadWrite(メイン);
+				file.ReadWrite(サブ);
+				Witch::SetMain(メイン);
+				Witch::SetSub(サブ);
+			}
+			else
+			{
+				file.ReadWrite( Witch::Main->種類 );
+				file.ReadWrite( Witch::Sub->種類 );
+			}
             file.ReadWrite( TDSystem::isトライアル);
             file.ReadWrite( TDSystem::isカップル);
             file.ReadWrite( TDSystem::難易度);

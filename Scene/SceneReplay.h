@@ -39,14 +39,13 @@ namespace SDX_TD
         {
             replayS.clear();
 
-			auto strS = Directory::GetFileName( "file/replay" );
-			std::string pass = "file/replay/";
+			auto strS = Directory::GetFileName( "replay" );
 
 			//リプレイ一覧の読み込み
 			for ( auto &it : strS )
 			{
 				ReplayData buf;
-				buf.SaveOrLoad( (pass + it).c_str(), true, FileMode::Read);
+				buf.SaveOrLoad( it.c_str(), true, FileMode::Read);
 				replayS.push_back( buf );
 			}
 
@@ -106,7 +105,7 @@ namespace SDX_TD
                 auto buf = Witch::スキルLv;
 				if (replayS[replayNo].SaveOrLoad(replayS[replayNo].ファイル名.c_str(), false, FileMode::Read))
 				{
-					Director::AddScene(std::make_shared<Stage>(true));
+					Stage::Call(true, &replayS[replayNo]);
 					Witch::スキルLv = buf;
 				}
             }

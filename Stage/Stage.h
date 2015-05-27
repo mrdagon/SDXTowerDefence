@@ -561,6 +561,8 @@ namespace SDX_TD
                 Point pt = { unitS[a].GetX(), unitS[a].GetY() };
                 place->push_back({ pt, unitS[a].Lv, unitS[a].st->職種 });
             }
+
+			replayData.初期配置 = StageDataS[TDSystem::選択ステージ].初期配置[(int)Witch::Main->種類][TDSystem::isカップル];
         }
 
         /**初期配置を読み込む.*/
@@ -734,10 +736,15 @@ namespace SDX_TD
         int timer = 0;//フレームスキップとリプレイ管理用のカウンタ
         int gameSpeed = 1;
 
-        static Stage& Call( bool isReplay)
+        static Stage& Call( bool isReplay , ReplayData* replayData = nullptr)
         {
             static Stage single;
             single.isReplay = isReplay;
+			if (isReplay)
+			{
+				single.replayData.commandS = replayData->commandS;
+				single.replayData.初期配置 = replayData->初期配置;
+			}
 
             single.Init();
 
@@ -904,10 +911,6 @@ namespace SDX_TD
         {
             auto time = Time::GetDateString();
             time += ".rep";
-
-			replayData.初期配置.clear();
-
-
             replayData.SaveOrLoad( time.c_str() , false, FileMode::Write, 結果, スコア);
         }
 

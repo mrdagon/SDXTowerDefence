@@ -96,22 +96,21 @@ namespace SDX_TD
 
             baseScore = SStage->score;
             totalScore = int(SStage->score * diffRate * bonusRate);
+			Lv上昇量 = 0;
+			getEXP = 0;
 
-            //スコアの更新と経験値の獲得
-            //5% + 更新分
-            getEXP = totalScore / 20;//5%
+			//以降の処理は非リプレイ時のみ
+			if (SStage->isReplay){ return; }
+			//スコアの更新と経験値の獲得
+			//5% + 更新分
+	        getEXP = totalScore / 20;//5%
 			getEXP += StageDataS[TDSystem::選択ステージ].Update(Witch::Main->種類 , totalScore , 結果);
 			if (TDSystem::isカップル)
 			{
-				getEXP += StageDataS[TDSystem::選択ステージ].Update(Witch::Main->種類, totalScore, 結果);
+				getEXP += StageDataS[TDSystem::選択ステージ].Update(Witch::Sub->種類, totalScore, 結果);
 			}
 
-			if ( SStage->isReplay )
-			{ 
-				getEXP = 0;
-			}
-
-            TDSystem::経験値 += getEXP;
+			TDSystem::経験値 += getEXP;
 
 			Lv上昇量 = TDSystem::CheckLVUp();
 
@@ -133,9 +132,10 @@ namespace SDX_TD
         {
             if(リプレイ保存.isClick())
             {
-                if ( !isリプレイ保存済み)
+                if ( !isリプレイ保存済み )
                 {
                     SStage->SaveReplay(結果, totalScore);
+					isリプレイ保存済み = true;
                 }
             }
 
