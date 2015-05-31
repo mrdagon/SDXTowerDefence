@@ -11,7 +11,7 @@ namespace SDX_TD
     {
     public:
         //@メンバー宣言
-        int frameNo;
+		int frameNo;
         //@End
         int scrIndex;//スクロール位置 0～size - barSize
         int size;//全体、分割数
@@ -21,17 +21,17 @@ namespace SDX_TD
         bool isGrip = false;
 
         //@コンストラクタ
-        UI_ScrollBar( int id , const Rect& rect, double angle,int frameNo):
-            frameNo(frameNo),
-            IGUI(id,rect,angle)
-        {}
+		UI_ScrollBar( int id , const Rect& rect, double angle,int frameNo):
+			frameNo(frameNo),
+			IGUI(id,rect,angle)
+		{}
         //@End
 
         //初期化
         void Init() override
         {
             //@Init
-            
+			
             //@End
         }
 
@@ -39,7 +39,7 @@ namespace SDX_TD
         void Final() override
         {
             //@Final
-            
+			
             //@End
         }
 

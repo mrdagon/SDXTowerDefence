@@ -19,16 +19,16 @@ namespace SDX_TD
         bool isリプレイ保存済み = false;
     public:
         //@Define
-        UI_Button リプレイ保存 = { 83, {121,384,120,60} , 0.000000,3};
-        UI_Button リトライ = { 84, {258,384,120,60} , 0.000000,3};
-        UI_Button 終了 = { 85, {398,384,120,60} , 0.000000,3};
-        UI_Frame 全体枠 = { 86, {80,10,480,460} , 0.000000,5};
-        UI_Frame Result = { 87, {100,30,440,40} , 0.000000,5};
-        UI_Text 最終スコア = { 151, {225,242,196,54} , 0.000000,0,"Score"};
-        UI_Text 撃破スコア = { 153, {253,83,146,32} , 0.000000,0,"Score"};
-        UI_Text 難易度補正 = { 154, {250,130,146,31} , 0.000000,0,"Difficulty Bonus"};
-        UI_Text 体力補正 = { 155, {249,175,146,31} , 0.000000,0,"Life Bonus"};
-        UI_Text 獲得経験値 = { 156, {223,313,196,54} , 0.000000,0,"EXP"};
+		UI_Button リプレイ保存 = { 83, {121,384,120,60} , 0.000000,3};
+		UI_Button リトライ = { 84, {258,384,120,60} , 0.000000,3};
+		UI_Button 終了 = { 85, {398,384,120,60} , 0.000000,3};
+		UI_Frame 全体枠 = { 86, {80,10,480,460} , 0.000000,5};
+		UI_Frame Result = { 87, {100,30,440,40} , 0.000000,5};
+		UI_Text 最終スコア = { 151, {225,242,196,54} , 0.000000,0,"Total Score"};
+		UI_Text 撃破スコア = { 153, {253,83,146,32} , 0.000000,0,"Score"};
+		UI_Text 難易度補正 = { 154, {250,130,146,31} , 0.000000,0,"Difficulty Bonus"};
+		UI_Text 体力補正 = { 155, {249,175,146,31} , 0.000000,0,"Life Bonus"};
+		UI_Text 獲得経験値 = { 156, {223,313,196,54} , 0.000000,0,"Get EXP"};
         //@End
 
         bool isRetry;//どのボタンでResult画面を抜けたか
@@ -175,57 +175,19 @@ namespace SDX_TD
             Screen::SetBright(Color::White);
 
             //@todo とりあえず一気に表示、演出は修正するかも
-
-            //Draw
-            MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);
-            
-            if (isリプレイ保存済み)
-            {
-                Screen::SetBright(Color::Gray);
-                リプレイ保存.DrawText(MFont::fontS[1], "保存済み", 1, Color::Red);
-                Screen::SetBright();
-            }
-            else
-            {
-                リプレイ保存.DrawText(MFont::fontS[1], "リプレイ保存", 1, Color::Black);
-            }
-            リトライ.DrawText(MFont::fontS[1], "リトライ", 1, Color::Black);
-            終了.DrawText(MFont::fontS[1], "終了", 1, Color::Black);
-
-            Result.DrawText(MFont::fontS[2], ReplayData::結果名[(int)結果], 2);
-
-			MFont::fontS[最終スコア.fontNo].DrawRotate(最終スコア.rect.GetCenter(), 1, 0, Color::White, { 最終スコア.text ,std::setw(10), totalScore});
-			MFont::fontS[撃破スコア.fontNo].DrawRotate(撃破スコア.rect.GetCenter(), 1, 0, Color::White, { 撃破スコア.text, std::setw(10) , baseScore});
-			MFont::fontS[難易度補正.fontNo].DrawRotate(難易度補正.rect.GetCenter(), 1, 0, Color::White, { 難易度補正.text , " x " , diffRate });
-			MFont::fontS[体力補正.fontNo].DrawRotate(体力補正.rect.GetCenter(), 1, 0, Color::White, { 体力補正.text , " x " , bonusRate });
-			MFont::fontS[獲得経験値.fontNo].DrawRotate(獲得経験値.rect.GetCenter(), 1, 0, Color::White, { 獲得経験値.text  , std::setw(10) , getEXP});
-
-			if (Lv上昇量 > 0)
-			{
-				MFont::fontS[獲得経験値.fontNo].DrawRotate(獲得経験値.rect.GetCenter() + Point(0,20), 1, 0, Color::White, "Lv Up");
-			}
-
-            //End
-        }
-
-        void LoadGUI() override
-        {
-#ifndef _DEBUG
-            return;
-#endif
             //@Load
-            SDX::GUIData guiData = SDX::TMXtoGUI( TMX_FILE_NAME , "SceneResult", GUI_Factory);
+			SDX::GUIData guiData = SDX::TMXtoGUI( TMX_FILE_NAME , "SceneResult", GUI_Factory);
 
-            リプレイ保存 = *dynamic_cast<UI_Button*>(guiData.dataS[0].get());
-            リトライ = *dynamic_cast<UI_Button*>(guiData.dataS[1].get());
-            終了 = *dynamic_cast<UI_Button*>(guiData.dataS[2].get());
-            全体枠 = *dynamic_cast<UI_Frame*>(guiData.dataS[3].get());
-            Result = *dynamic_cast<UI_Frame*>(guiData.dataS[4].get());
-            最終スコア = *dynamic_cast<UI_Text*>(guiData.dataS[5].get());
-            撃破スコア = *dynamic_cast<UI_Text*>(guiData.dataS[6].get());
-            難易度補正 = *dynamic_cast<UI_Text*>(guiData.dataS[7].get());
-            体力補正 = *dynamic_cast<UI_Text*>(guiData.dataS[8].get());
-            獲得経験値 = *dynamic_cast<UI_Text*>(guiData.dataS[9].get());
+			リプレイ保存 = *dynamic_cast<UI_Button*>(guiData.dataS[0].get());
+			リトライ = *dynamic_cast<UI_Button*>(guiData.dataS[1].get());
+			終了 = *dynamic_cast<UI_Button*>(guiData.dataS[2].get());
+			全体枠 = *dynamic_cast<UI_Frame*>(guiData.dataS[3].get());
+			Result = *dynamic_cast<UI_Frame*>(guiData.dataS[4].get());
+			最終スコア = *dynamic_cast<UI_Text*>(guiData.dataS[5].get());
+			撃破スコア = *dynamic_cast<UI_Text*>(guiData.dataS[6].get());
+			難易度補正 = *dynamic_cast<UI_Text*>(guiData.dataS[7].get());
+			体力補正 = *dynamic_cast<UI_Text*>(guiData.dataS[8].get());
+			獲得経験値 = *dynamic_cast<UI_Text*>(guiData.dataS[9].get());
             //@End
         }
     };

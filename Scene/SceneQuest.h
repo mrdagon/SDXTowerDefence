@@ -14,31 +14,31 @@ namespace SDX_TD
     {
     public:
         //@Define
-        UI_Frame 難易度情報 = { 65, {362,302,276,110} , 0.000000,5};
-        UI_Frame ステージ一覧 = { 29, {62,302,300,172} , 0.000000,5};
-        UI_Button 開始 = { 30, {365,414,272,60} , 0.000000,3};
-        UI_Button 難易度－ = { 60, {372,310,40,40} , 0.000000,3};
-        UI_Button 難易度＋ = { 61, {591,310,40,40} , 0.000000,3};
-        UI_Frame ウィッチ一覧 = { 63, {62,2,300,300} , 0.000000,5};
-        UI_Frame マップ情報 = { 64, {362,2,276,300} , 0.000000,5};
-        UI_Button 面数Minus = { 107, {68,308,40,160} , 0.000000,3};
-        UI_Button ステージA = { 109, {115,308,195,40} , 0.000000,1};
-        UI_Button ステージB = { 110, {115,348,195,40} , 0.000000,1};
-        UI_Button ステージC = { 111, {115,388,195,40} , 0.000000,1};
-        UI_Button ステージD = { 112, {115,428,195,40} , 0.000000,1};
-        UI_Button 面数Plus = { 113, {317,308,40,160} , 0.000000,3};
-        UI_Frame 難易度 = { 114, {417,310,167,40} , 0.000000,5};
-        UI_Text Wave数 = { 115, {375,385,60,25} , 0.000000,1,"25 Wave"};
-        UI_Text 出現数 = { 116, {448,385,60,25} , 0.000000,1,"敵数 1.2倍"};
-        UI_Text HP補正 = { 117, {511,385,60,24} , 0.000000,1,"HP　1.2倍"};
-        UI_Text Lv補正 = { 118, {573,385,60,24} , 0.000000,1,"LV 1.5倍"};
-        UI_Frame ウィッチアイコン = { 119, {68,32,20,20} , 0.000000,0};
-        UI_Button シングル_カップル = { 31, {502,355,130,30} , 0.000000,3};
-        UI_Button トライアル = { 59, {372,355,130,30} , 0.000000,3};
-        UI_Text ウィッチ名 = { 121, {96,32,56,20} , 0.000000,0,"std::string"};
-        UI_Text 星 = { 122, {155,31,21,21} , 0.000000,0,"std::string"};
-        UI_Text スコア = { 123, {278,32,30,22} , 0.000000,2,"std::string"};
-        UI_Text ハイスコア = { 240, {64,9,126,22} , 0.000000,2,"Hi Score"};
+		UI_Frame 難易度情報 = { 65, {62,258,300,216} , 0.000000,5};
+		UI_Frame ステージ一覧 = { 29, {362,258,276,154} , 0.000000,5};
+		UI_Button 開始 = { 30, {365,414,272,60} , 0.000000,3};
+		UI_Button 難易度－ = { 60, {83,266,40,40} , 0.000000,3};
+		UI_Button 難易度＋ = { 61, {302,266,40,40} , 0.000000,3};
+		UI_Frame ウィッチ一覧 = { 63, {62,2,300,256} , 0.000000,5};
+		UI_Frame マップ情報 = { 64, {362,2,276,256} , 0.000000,5};
+		UI_Button 面数Minus = { 107, {368,263,40,144} , 0.000000,3};
+		UI_Button ステージA = { 109, {415,264,170,36} , 0.000000,1};
+		UI_Button ステージB = { 110, {415,300,170,36} , 0.000000,1};
+		UI_Button ステージC = { 111, {415,336,170,36} , 0.000000,1};
+		UI_Button ステージD = { 112, {415,372,170,36} , 0.000000,1};
+		UI_Button 面数Plus = { 113, {592,263,40,144} , 0.000000,3};
+		UI_Frame 難易度 = { 114, {128,266,167,40} , 0.000000,5};
+		UI_Text Wave数 = { 115, {250,349,60,25} , 0.000000,1,"25 Wave"};
+		UI_Text 出現数 = { 116, {251,379,60,25} , 0.000000,1,"敵数 1.2倍"};
+		UI_Text HP補正 = { 117, {251,409,60,24} , 0.000000,1,"HP　1.2倍"};
+		UI_Text Lv補正 = { 118, {252,439,60,24} , 0.000000,1,"LV 1.5倍"};
+		UI_Frame ウィッチアイコン = { 119, {68,32,20,20} , 0.000000,0};
+		UI_Button シングル_カップル = { 31, {213,311,130,30} , 0.000000,3};
+		UI_Button トライアル = { 59, {83,311,130,30} , 0.000000,3};
+		UI_Text ウィッチ名 = { 121, {96,32,56,20} , 0.000000,0,"std::string"};
+		UI_Text 星 = { 122, {155,31,21,21} , 0.000000,0,"std::string"};
+		UI_Text スコア = { 123, {278,32,30,22} , 0.000000,2,"std::string"};
+		UI_Text ハイスコア = { 240, {64,9,126,22} , 0.000000,2,"Hi Score"};
         //@End
         bool isQuest = true;//クエスト用 or フリー用
         int ページ数 = 0;
@@ -243,33 +243,33 @@ namespace SDX_TD
             return;
 #endif
             //@Load
-            SDX::GUIData guiData = SDX::TMXtoGUI( TMX_FILE_NAME , "SceneQuest", GUI_Factory);
+			SDX::GUIData guiData = SDX::TMXtoGUI( TMX_FILE_NAME , "SceneQuest", GUI_Factory);
 
-            難易度情報 = *dynamic_cast<UI_Frame*>(guiData.dataS[0].get());
-            ステージ一覧 = *dynamic_cast<UI_Frame*>(guiData.dataS[1].get());
-            開始 = *dynamic_cast<UI_Button*>(guiData.dataS[2].get());
-            難易度－ = *dynamic_cast<UI_Button*>(guiData.dataS[3].get());
-            難易度＋ = *dynamic_cast<UI_Button*>(guiData.dataS[4].get());
-            ウィッチ一覧 = *dynamic_cast<UI_Frame*>(guiData.dataS[5].get());
-            マップ情報 = *dynamic_cast<UI_Frame*>(guiData.dataS[6].get());
-            面数Minus = *dynamic_cast<UI_Button*>(guiData.dataS[7].get());
-            ステージA = *dynamic_cast<UI_Button*>(guiData.dataS[8].get());
-            ステージB = *dynamic_cast<UI_Button*>(guiData.dataS[9].get());
-            ステージC = *dynamic_cast<UI_Button*>(guiData.dataS[10].get());
-            ステージD = *dynamic_cast<UI_Button*>(guiData.dataS[11].get());
-            面数Plus = *dynamic_cast<UI_Button*>(guiData.dataS[12].get());
-            難易度 = *dynamic_cast<UI_Frame*>(guiData.dataS[13].get());
-            Wave数 = *dynamic_cast<UI_Text*>(guiData.dataS[14].get());
-            出現数 = *dynamic_cast<UI_Text*>(guiData.dataS[15].get());
-            HP補正 = *dynamic_cast<UI_Text*>(guiData.dataS[16].get());
-            Lv補正 = *dynamic_cast<UI_Text*>(guiData.dataS[17].get());
-            ウィッチアイコン = *dynamic_cast<UI_Frame*>(guiData.dataS[18].get());
-            シングル_カップル = *dynamic_cast<UI_Button*>(guiData.dataS[19].get());
-            トライアル = *dynamic_cast<UI_Button*>(guiData.dataS[20].get());
-            ウィッチ名 = *dynamic_cast<UI_Text*>(guiData.dataS[21].get());
-            星 = *dynamic_cast<UI_Text*>(guiData.dataS[22].get());
-            スコア = *dynamic_cast<UI_Text*>(guiData.dataS[23].get());
-            ハイスコア = *dynamic_cast<UI_Text*>(guiData.dataS[24].get());
+			難易度情報 = *dynamic_cast<UI_Frame*>(guiData.dataS[0].get());
+			ステージ一覧 = *dynamic_cast<UI_Frame*>(guiData.dataS[1].get());
+			開始 = *dynamic_cast<UI_Button*>(guiData.dataS[2].get());
+			難易度－ = *dynamic_cast<UI_Button*>(guiData.dataS[3].get());
+			難易度＋ = *dynamic_cast<UI_Button*>(guiData.dataS[4].get());
+			ウィッチ一覧 = *dynamic_cast<UI_Frame*>(guiData.dataS[5].get());
+			マップ情報 = *dynamic_cast<UI_Frame*>(guiData.dataS[6].get());
+			面数Minus = *dynamic_cast<UI_Button*>(guiData.dataS[7].get());
+			ステージA = *dynamic_cast<UI_Button*>(guiData.dataS[8].get());
+			ステージB = *dynamic_cast<UI_Button*>(guiData.dataS[9].get());
+			ステージC = *dynamic_cast<UI_Button*>(guiData.dataS[10].get());
+			ステージD = *dynamic_cast<UI_Button*>(guiData.dataS[11].get());
+			面数Plus = *dynamic_cast<UI_Button*>(guiData.dataS[12].get());
+			難易度 = *dynamic_cast<UI_Frame*>(guiData.dataS[13].get());
+			Wave数 = *dynamic_cast<UI_Text*>(guiData.dataS[14].get());
+			出現数 = *dynamic_cast<UI_Text*>(guiData.dataS[15].get());
+			HP補正 = *dynamic_cast<UI_Text*>(guiData.dataS[16].get());
+			Lv補正 = *dynamic_cast<UI_Text*>(guiData.dataS[17].get());
+			ウィッチアイコン = *dynamic_cast<UI_Frame*>(guiData.dataS[18].get());
+			シングル_カップル = *dynamic_cast<UI_Button*>(guiData.dataS[19].get());
+			トライアル = *dynamic_cast<UI_Button*>(guiData.dataS[20].get());
+			ウィッチ名 = *dynamic_cast<UI_Text*>(guiData.dataS[21].get());
+			星 = *dynamic_cast<UI_Text*>(guiData.dataS[22].get());
+			スコア = *dynamic_cast<UI_Text*>(guiData.dataS[23].get());
+			ハイスコア = *dynamic_cast<UI_Text*>(guiData.dataS[24].get());
             //@End
         }
     };
