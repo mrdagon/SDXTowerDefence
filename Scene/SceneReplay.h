@@ -49,7 +49,6 @@ namespace SDX_TD
 				replayS.push_back( buf );
 			}
 
-			//@todo テスト用のコード
 			/*
             for (int a = 0; a < 20; ++a)
             {

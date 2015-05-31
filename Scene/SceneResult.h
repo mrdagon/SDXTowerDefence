@@ -174,8 +174,6 @@ namespace SDX_TD
             SStage->Draw();
             Screen::SetBright(Color::White);
 
-            //@todo とりあえず一気に表示、演出は修正するかも
-
             //Draw
             MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);
             
