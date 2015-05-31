@@ -255,10 +255,20 @@ namespace SDX_TD
             int comNo = 0;
 
             //速度変更
-            if (Input::mouse.Whell > 0){ gameSpeed *= 2; }
-            if (Input::mouse.Whell < 0){ gameSpeed /= 2; }
-            gameSpeed = std::min(gameSpeed, 8);
-            gameSpeed = std::max(gameSpeed, 1);
+			if (isReplay)
+			{
+				if (Input::mouse.Whell > 0){ gameSpeed *= 4; }
+				if (Input::mouse.Whell < 0){ gameSpeed /= 4; }
+				gameSpeed = std::min(gameSpeed, 64);
+				gameSpeed = std::max(gameSpeed, 1);
+			}
+			else
+			{
+				if (Input::mouse.Whell > 0){ gameSpeed *= 2; }
+				if (Input::mouse.Whell < 0){ gameSpeed /= 2; }
+				gameSpeed = std::min(gameSpeed, 8);
+				gameSpeed = std::max(gameSpeed, 1);
+			}
 
             int sp = 1;
 
@@ -268,7 +278,7 @@ namespace SDX_TD
                 {
                     gameSpeed = sp;
                 }
-                sp *= 2;
+                sp *= 2 + isReplay*2;
             }
 
             //ポーズ
@@ -377,10 +387,6 @@ namespace SDX_TD
                 {
                     DoCommand(it.種類, it.操作情報, it.マウス座標);
                 }
-				else
-				{
-					break;
-				}
             }
         }
 
@@ -637,8 +643,6 @@ namespace SDX_TD
             int spd = 1;
             for (int a = 0; a < 4; ++a)
             {
-                //const int SIZE = 2;
-
                 if (spd == gameSpeed)
                 {
                     MSystem::フレーム[3].Draw(UI::Rゲーム速度[a], Color::White);
@@ -651,7 +655,7 @@ namespace SDX_TD
                 MFont::fontS[FontType::BMP黒].Draw(UI::Rゲーム速度[a].GetPoint() + UI::P差分[7], Color::White, "x");
                 MFont::fontS[FontType::BMP黒].DrawExtend(UI::Rゲーム速度[a].GetPoint() + UI::P差分[6], 2, 2, Color::White, { std::setw(2), spd });
 
-                spd *= 2 + 2 * TDSystem::is高速;
+                spd *= 2 + 2 * isReplay;
             }
 
             //全体枠
@@ -740,6 +744,7 @@ namespace SDX_TD
         {
             static Stage single;
             single.isReplay = isReplay;
+
 			if (isReplay)
 			{
 				single.replayData.commandS = replayData->commandS;
@@ -757,11 +762,8 @@ namespace SDX_TD
             return single;
         }
 
-        Stage(bool isReplay = false)
+        Stage()
         {
-            IStage::isReplay = isReplay;
-
-            Init();
         }
 
         virtual ~Stage(){}

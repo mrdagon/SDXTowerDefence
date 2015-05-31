@@ -3,6 +3,7 @@
 //[Contact]
 #pragma once
 #include <SDXFrameWork.h>
+#include "../System/SaveAndLoad.h"
 #include "GUI_Factory.h"
 #include "../Stage/IStage.h"
 #include "../Struct/ReplayData.h"
@@ -100,7 +101,12 @@ namespace SDX_TD
 			getEXP = 0;
 
 			//以降の処理は非リプレイ時のみ
-			if (SStage->isReplay){ return; }
+			if (SStage->isReplay)
+			{
+				isリプレイ保存済み = true;
+				return; 
+			}
+
 			//スコアの更新と経験値の獲得
 			//5% + 更新分
 	        getEXP = totalScore / 20;//5%
@@ -109,9 +115,7 @@ namespace SDX_TD
 			{
 				getEXP += StageDataS[TDSystem::選択ステージ].Update(Witch::Sub->種類, totalScore, 結果);
 			}
-
 			TDSystem::経験値 += getEXP;
-
 			Lv上昇量 = TDSystem::CheckLVUp();
 
 			//クリア時にリプレイAutoSave
@@ -120,6 +124,14 @@ namespace SDX_TD
 				SStage->SaveReplay(結果, totalScore);
 				isリプレイ保存済み = true;
 			}
+			//最高難易度更新
+			if (TDSystem::限界難易度 == TDSystem::難易度 && TDSystem::限界難易度 != Difficulty::DeathMarch )
+			{
+				TDSystem::限界難易度 = Difficulty(int(TDSystem::限界難易度) + 1);
+			}
+			//データ保存
+			
+			SDX_TD::SaveAndLoad(FileMode::Write);
         }
 
         //終了時

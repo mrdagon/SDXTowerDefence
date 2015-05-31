@@ -31,6 +31,11 @@ namespace SDX_TD
 
 			最終Wave = DifficultyDataS[TDSystem::難易度].Wave数[TDSystem::isトライアル];
 
+			if ( !TDSystem::isトライアル)
+			{
+				最終Wave += Witch::スキルLv[SkillType::逆境];
+			}
+
 			for (int a = 0; a < MAX_WAVE; ++a)
 			{
 				敵種類[a] = StageDataS[TDSystem::選択ステージ].敵種類[a];

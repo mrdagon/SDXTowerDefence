@@ -25,15 +25,11 @@ namespace SDX_TD
 		//初期化
 		void Init() override
 		{
-			//@Init
-			//@End
 		}
 
 		//終了時
 		void Final() override
 		{
-			//@Final
-			//@End
 		}
 
 		//更新
@@ -49,9 +45,7 @@ namespace SDX_TD
 #ifdef _DEBUG			
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
-			//Draw
 			MFont::fontS[実装中～.fontNo].DrawRotate(実装中～.rect.GetCenter(),1,0,Color::Black,実装中～.text);
-			//End
 		}
 
 		void LoadGUI() override

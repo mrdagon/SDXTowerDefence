@@ -23,20 +23,6 @@ namespace SDX_TD
 			Init();
 		}
 
-		//初期化
-		void Init() override
-		{
-			//@Init
-			//@End
-		}
-
-		//終了時
-		void Final() override
-		{
-			//@Final
-			//@End
-		}
-
 		//更新
 		void Update() override
 		{

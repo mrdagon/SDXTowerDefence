@@ -50,20 +50,6 @@ namespace SDX_TD
             Init();
         }
 
-        //初期化
-        void Init() override
-        {
-            //@Init
-            //@End
-        }
-
-        //終了時
-        void Final() override
-        {
-            //@Final
-            //@End
-        }
-
         //更新
         void Update() override
         {
@@ -195,7 +181,9 @@ namespace SDX_TD
                 MFont::fontS[2].DrawRotate( 難易度.rect.GetCenter() + Point(10 * a - 5 * (int)TDSystem::難易度, 10), 1, 0, Color::Yellow, "☆");
             }
 
-            MFont::fontS[Wave数.fontNo].DrawRotate(Wave数.rect.GetCenter(), 1, 0, Color::White, { "Wave" , std::setw(4) , data.Wave数[TDSystem::isトライアル] });
+			int waveCount = data.Wave数[TDSystem::isトライアル] + !TDSystem::isトライアル * Witch::スキルLv[SkillType::逆境];
+
+            MFont::fontS[Wave数.fontNo].DrawRotate(Wave数.rect.GetCenter(), 1, 0, Color::White, { "Wave" , std::setw(4) , waveCount });
             MFont::fontS[出現数.fontNo].DrawRotate(出現数.rect.GetCenter(), 1, 0, Color::White, { "Enemy ", data.雑魚召喚数[TDSystem::isトライアル] });
             MFont::fontS[HP補正.fontNo].DrawRotate(HP補正.rect.GetCenter(), 1, 0, Color::White, { "Hp ", data.HP補正[TDSystem::isトライアル] * 100, "%" });
             MFont::fontS[Lv補正.fontNo].DrawRotate(Lv補正.rect.GetCenter(), 1, 0, Color::White, { "Lv ", data.レベル補正[TDSystem::isトライアル] * 100, "%" });

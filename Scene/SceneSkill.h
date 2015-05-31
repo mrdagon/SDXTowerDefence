@@ -50,20 +50,6 @@ namespace SDX_TD
             Init();
         }
 
-        //初期化
-        void Init() override
-        {
-            //@Init
-            //@End
-        }
-
-        //終了時
-        void Final() override
-        {
-            //@Final
-            //@End
-        }
-
 		/*+1 or -1のみ*/
 		void SkillUpDown(SkillType スキル種, int 変化量)
 		{
