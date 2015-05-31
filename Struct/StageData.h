@@ -24,8 +24,8 @@ namespace SDX_TD
             Score()
             {
                 for (auto &it : スコア){ it = 0; }
-                for (auto &it : 勝利){ it = 0; }
-                for (auto &it : 完勝){ it = 0; }
+                for (auto &it : 勝利){ it = -1; }
+                for (auto &it : 完勝){ it = -1; }
             }
 
             EnumArray<int, WitchType> スコア;

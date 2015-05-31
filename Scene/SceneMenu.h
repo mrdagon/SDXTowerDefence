@@ -48,6 +48,8 @@ namespace SDX_TD
         {
             sceneFree.isQuest = false;
 
+			MMusic::メニュー.Play();
+
             LoadGUI();
             Init();
         }

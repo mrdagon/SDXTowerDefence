@@ -40,7 +40,7 @@ namespace SDX_TD
 		int     スコア;
 
 		Enemy(double X座標, double Y座標, EnemyType type, int Lv, bool isBoss) :
-			shape((X座標 + 0.5)*CHIP_SIZE, (Y座標 + 0.5)*CHIP_SIZE, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2),
+			shape(X座標 ,Y座標, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2, 判定大きさ / 2),
 			isBoss(isBoss),
 			st( &EnemyDataS[type]),
 			レベル(Lv),
@@ -401,8 +401,8 @@ namespace SDX_TD
 				enemy->スコア = 0;
 				enemy->再生力 = 0;
 				enemy->麻痺時間 = 120;
-				enemy->吹き飛びX = std::sin(PAI) * 16 * (1 + isBoss);
-				enemy->吹き飛びY = std::cos(PAI) * 16 * (1 + isBoss);
+				//enemy->吹き飛びX = std::sin(PAI) * 16 * (1 + isBoss);
+				//enemy->吹き飛びY = std::cos(PAI) * 16 * (1 + isBoss);
 
 				SStage->Add(enemy);
 			}
@@ -491,9 +491,9 @@ namespace SDX_TD
 					enemy->最大HP /= 8;
 					enemy->残りHP /= 8;
 					enemy->スコア /= 8;
-					enemy->麻痺時間 = 30;
-					enemy->吹き飛びX = std::sin(PAI) * 16 * (1 + isBoss);
-					enemy->吹き飛びY = std::cos(PAI) * 16 * (1 + isBoss);
+					enemy->麻痺時間 = 60 * (1 + isBoss);
+					//enemy->吹き飛びX = std::sin(r) * 32 * (1 + isBoss);
+					//enemy->吹き飛びY = std::cos(r) * 32 * (1 + isBoss);
 
 					SStage->Add(enemy);
 				}

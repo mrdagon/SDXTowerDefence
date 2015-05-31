@@ -33,7 +33,7 @@ namespace SDX_TD
 
 			if ( !TDSystem::isトライアル)
 			{
-				最終Wave += Witch::スキルLv[SkillType::逆境];
+				最終Wave += Witch::スキルLv[SkillType::試練];
 			}
 
 			for (int a = 0; a < MAX_WAVE; ++a)

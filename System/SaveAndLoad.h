@@ -24,6 +24,7 @@ namespace SDX_TD
 
         file.ReadWrite(WitchData::スキルLv);
 
+		file.ReadWrite(TDSystem::レベル);
         file.ReadWrite(TDSystem::限界難易度);
 
         file.ReadWrite(TDSystem::最大スキルポイント);

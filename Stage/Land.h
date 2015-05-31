@@ -342,12 +342,6 @@ namespace SDX_TD
 		/**地形の描画.*/
 		void Draw() const
 		{
-			//罫線の表示
-			for (int a = 0; a <= MAP_SIZE*CHIP_SIZE; a += CHIP_SIZE)
-			{
-				Drawing::Line({ (double)a, 0 }, { (double)a, MAP_SIZE * CHIP_SIZE }, Color::White, 1);
-				Drawing::Line({ 0, (double)a }, { MAP_SIZE*CHIP_SIZE, (double)a }, Color::White, 1);
-			}
 
 			//地形の表示
 			for (int a = 0; a < MAP_SIZE; ++a){
@@ -355,7 +349,6 @@ namespace SDX_TD
 				{
 					Rect 位置(a * CHIP_SIZE + CHIP_SIZE / 2, b * CHIP_SIZE + CHIP_SIZE / 2, CHIP_SIZE, CHIP_SIZE);
 					MSystem::マップチップ[(int)地形[a][b]]->DrawExtend({ a * CHIP_SIZE, b * CHIP_SIZE, CHIP_SIZE, CHIP_SIZE });
-
 					//デバッグ用
 					//if (地形[a][b] != ChipType::草)  Drawing::Rect(位置, Color::Blue, true);
 					//if (地形[a][b] == ChipType::畑)  Drawing::Rect(位置, Color::Red, true);
@@ -364,6 +357,19 @@ namespace SDX_TD
 					//if (is水敵[a][b])              Drawing::Rect(位置, Color::Purple, true);
 				}
 			}
+
+			if ( !TDSystem::isグリッド ){ return; }
+
+			//罫線の表示
+			for (int a = 0; a <= MAP_SIZE*CHIP_SIZE; a += CHIP_SIZE)
+			{
+				Drawing::Line({ (double)a, 0 }, { (double)a, MAP_SIZE * CHIP_SIZE }, Color::White, 1);
+				Drawing::Line({ 0, (double)a }, { MAP_SIZE*CHIP_SIZE, (double)a }, Color::White, 1);
+			}
+			//真ん中の十字
+			Drawing::Line({ (double)MAP_SIZE*CHIP_SIZE / 2 - CHIP_SIZE * 2, (double)MAP_SIZE*CHIP_SIZE / 2 }, { (double)MAP_SIZE*CHIP_SIZE / 2 + CHIP_SIZE * 2, (double)MAP_SIZE*CHIP_SIZE / 2 }, Color::White, 4);
+			Drawing::Line({ (double)MAP_SIZE*CHIP_SIZE / 2, (double)MAP_SIZE*CHIP_SIZE / 2 - CHIP_SIZE * 2 }, { (double)MAP_SIZE*CHIP_SIZE / 2, (double)MAP_SIZE*CHIP_SIZE / 2 + CHIP_SIZE * 2 }, Color::White, 4);
+
 		}
 
 		/**配置先の表示.*/

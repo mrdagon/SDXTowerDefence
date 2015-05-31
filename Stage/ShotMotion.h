@@ -189,8 +189,26 @@ namespace SDX
 				}
 				else if (timer > 120)
 				{
-					center.x += std::sin(移動対象->GetAngle()) * speed;
-					center.y += std::cos(移動対象->GetAngle()) * speed;
+					IPosition *対象 = nullptr;
+
+					if (SStage->selectEnemy)
+					{
+						対象 = SStage->selectEnemy;
+					}
+					else
+					{
+						対象 = SStage->GetNearEnemy(&center, true, true);
+					}
+
+					if (対象)
+					{
+						移動対象->GetDirect(対象);
+					}
+
+					center.MoveA(speed, 移動対象->GetAngle());
+
+					//center.x += std::sin(移動対象->GetAngle()) * speed;
+					//center.y += std::cos(移動対象->GetAngle()) * speed;
 				}
 
 				angle += DEG * 32;

@@ -196,11 +196,17 @@ namespace SDX_TD
     {
         Music 通常;
         Music 大魔法;
+		Music メニュー;
+		Music 勝利;
+		Music 敗北;
 
         static void Load()
         {
-            通常.Load("file/music/sentou.mp3",0.5);
-            大魔法.Load("file/music/brave.mp3",0.5);
+            通常.Load("file/music/sentou.mp3");
+			大魔法.Load("file/music/brave.mp3");
+			メニュー.Load("file/music/menu.mp3");
+			勝利.Load("file/music/syouri.mp3");
+			敗北.Load("file/music/haiboku.mp3");
 
             通常.SetFadeInTime(1000);
             通常.SetFadeOutTime(1000);

@@ -55,6 +55,7 @@ namespace SDX_TD
 				++レベル;
 				++最大スキルポイント;
 				++残りスキルポイント;
+				++num;
 			}
 
 			return num;

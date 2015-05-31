@@ -25,6 +25,7 @@ namespace SDX_TD
 		{
 			static ScenePause single;
 			single.isEnd = false;
+			Director::IsDraw() = true;
 
 			do
 			{
@@ -46,11 +47,13 @@ namespace SDX_TD
 		{
 			if(あきらめる.isClick())			
 			{
+				MMusic::メニュー.Play();
 				buttonNo = 0;
 				isEnd = true;
 			}
 			if(やり直す.isClick())
 			{
+				MMusic::通常.Play();
 				buttonNo = 1;
 				isEnd = true;
 			}

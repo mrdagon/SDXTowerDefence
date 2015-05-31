@@ -228,8 +228,8 @@ namespace SDX_TD
             {
                 //@todo この辺り偏らないようにする
                 const int no = Rand::Get((int)SStage->land.穴の位置.size() - 1);
-                const int x = SStage->land.穴の位置[no] % MAP_SIZE;
-                const int y = SStage->land.穴の位置[no] / MAP_SIZE;
+                const int x = int((SStage->land.穴の位置[no] % MAP_SIZE + 0.5 ) * CHIP_SIZE);
+				const int y = int((SStage->land.穴の位置[no] / MAP_SIZE + 0.5) * CHIP_SIZE);
                 //発生感覚 旧作だと40～80
                 Add(new Enemy(x, y, wave.敵種類[waveNo], lv, wave.isBoss[waveNo]), a * 60);
             }
@@ -589,7 +589,8 @@ namespace SDX_TD
                 if (Witch::Main->Mp < UnitDataS[it.職種].コスト[it.Lv]) { break; }
                 if (Witch::強化回数[it.職種] < it.Lv){ break; }
 
-                Add(Unit((int)it.座標.x, (int)it.座標.y, it.職種, false, it.Lv));
+				SStage->land.SetUnit( int(it.座標.x / CHIP_SIZE) - 1, int(it.座標.y / CHIP_SIZE) - 1, 2);
+                Add(Unit((int)it.座標.x, (int)it.座標.y, it.職種, false, it.Lv));				
             }
         }
 
@@ -789,9 +790,6 @@ namespace SDX_TD
             //ウィッチ初期化
             Witch::InitAll();
 
-            //初期配置読み込み
-            LoadUnitS();
-
             //BGM開始
             MMusic::通常.Play();
 
@@ -803,6 +801,9 @@ namespace SDX_TD
 			}
 
 			Rand::Reset(replayData.乱数初期化子);
+
+			//初期配置読み込み
+			LoadUnitS();
         }
 
         /**毎フレーム実行される更新処理.*/
@@ -877,12 +878,6 @@ namespace SDX_TD
             //補正計算
             Support();
 
-            //終了判定
-			if (Input::key.A.on)
-			{
-				Witch::Hp = 0;
-			}
-			
             if (Witch::Hp <= 0)
             {				
                 GameOver( false );//敗北

@@ -47,8 +47,8 @@ namespace SDX_TD
 
         void SetInfo(const char* 種族名, const char* 説明文)
         {
-            種族名 = 種族名;
-            説明文 = 説明文;
+            this->種族名 = 種族名;
+			this->説明文 = 説明文;
         }
     };
 
@@ -76,7 +76,7 @@ namespace SDX_TD
         EnemyDataS[EnemyType::ドラゴン].Set(MoveType::陸, SubEnemyType::竜, Element::炎, 140, 50, 20);
         EnemyDataS[EnemyType::ゼリー王].Set(MoveType::陸, SubEnemyType::水棲, Element::氷, 30, 20, 40);
         EnemyDataS[EnemyType::マーマン].Set(MoveType::水, SubEnemyType::水棲, Element::氷, 60, 15, 50);
-        EnemyDataS[EnemyType::トレント].Set(MoveType::空, SubEnemyType::自然, Element::氷, 60, 20, 15);
+        EnemyDataS[EnemyType::トレント].Set(MoveType::陸, SubEnemyType::自然, Element::氷, 60, 20, 15);
 
         EnemyDataS[EnemyType::マーマン].防御力 = 0.5;
         EnemyDataS[EnemyType::ゴーレム].防御力 = 1;
@@ -95,5 +95,24 @@ namespace SDX_TD
 
         EnemyDataS[EnemyType::ゴブリン].出現数 = 2;
         EnemyDataS[EnemyType::ドラゴン].出現数 = 0.5;
+		//説明文
+
+		EnemyDataS[EnemyType::ゼリー].SetInfo("ゼリー", "");
+		EnemyDataS[EnemyType::ゴブリン].SetInfo("ゴブリン", "");
+		EnemyDataS[EnemyType::オーガ].SetInfo("オーガ", "");
+		EnemyDataS[EnemyType::コボルド].SetInfo("コボルド", "");
+		EnemyDataS[EnemyType::ケットシー].SetInfo("ケットシー", "");
+		EnemyDataS[EnemyType::シャーマン].SetInfo("シャーマン", "");
+		EnemyDataS[EnemyType::スケルトン].SetInfo("スケルトン", "");
+		EnemyDataS[EnemyType::インプ].SetInfo("インプ", "");
+		EnemyDataS[EnemyType::グリフィン].SetInfo("グリフィン", "");
+		EnemyDataS[EnemyType::ケルベロス].SetInfo("ケルベロス", "");
+		EnemyDataS[EnemyType::ゴーレム].SetInfo("ゴーレム", "");
+		EnemyDataS[EnemyType::ドラゴン].SetInfo("ドラゴン", "");
+		EnemyDataS[EnemyType::ゼリー王].SetInfo("ゼリー王", "");
+		EnemyDataS[EnemyType::マーマン].SetInfo("マーマン", "");
+		EnemyDataS[EnemyType::トレント].SetInfo("トレント", "");
+
+
     }
 }

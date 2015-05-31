@@ -14,20 +14,20 @@ namespace SDX_TD
     {
     public:
         //@Define
-        UI_Frame リプレイ情報 = { 127, {362,302,276,110} , 0.000000,5};
-        UI_Button 開始 = { 128, {365,414,272,60} , 0.000000,3};
-        UI_Text スコア = { 129, {484,382,146,24} , 0.000000,0,"score"};
-        UI_ScrollBar スクロールバー = { 132, {320,52,36,374} , 0.000000,4};
-        UI_Frame マップ情報 = { 133, {362,2,276,300} , 0.000000,5};
-        UI_Button リプレイ選択 = { 135, {67,9,248,40} , 0.000000,1};
-        UI_Text ウィッチ = { 139, {548,343,30,30} , 0.000000,0,"std::string"};
-        UI_Text トライアル = { 142, {374,310,118,25} , 0.000000,0,"Difficulty"};
-        UI_Text 結果 = { 144, {375,383,97,22} , 0.000000,0,"Perfect"};
-        UI_Frame ステージ一覧 = { 145, {62,2,300,476} , 0.000000,5};
-        UI_Button 下スクロール = { 146, {318,434,40,40} , 0.000000,3};
-        UI_Button 上スクロール = { 148, {318,6,40,40} , 0.000000,3};
-        UI_Text 難易度 = { 246, {374,343,118,25} , 0.000000,0,"Difficulty"};
-        UI_Text カップル = { 248, {510,311,118,25} , 0.000000,0,"Difficulty"};
+		UI_Frame リプレイ情報 = { 127, {362,302,276,110} , 0.000000,5};
+		UI_Button 開始 = { 128, {365,414,272,60} , 0.000000,3};
+		UI_Text スコア = { 129, {510,390,100,15} , 0.000000,0,"score"};
+		UI_ScrollBar スクロールバー = { 132, {320,52,36,374} , 0.000000,4};
+		UI_Frame マップ情報 = { 133, {362,2,276,300} , 0.000000,5};
+		UI_Button リプレイ選択 = { 135, {67,9,248,40} , 0.000000,1};
+		UI_Text ウィッチ = { 139, {535,330,50,15} , 0.000000,0,"std::string"};
+		UI_Text トライアル = { 142, {510,310,50,15} , 0.000000,0,"Difficulty"};
+		UI_Text 結果 = { 144, {510,370,100,15} , 0.000000,0,"Perfect"};
+		UI_Frame ステージ一覧 = { 145, {62,2,300,476} , 0.000000,5};
+		UI_Button 下スクロール = { 146, {318,434,40,40} , 0.000000,3};
+		UI_Button 上スクロール = { 148, {318,6,40,40} , 0.000000,3};
+		UI_Text 難易度 = { 246, {510,350,100,15} , 0.000000,0,"Difficulty"};
+		UI_Text カップル = { 248, {560,310,50,15} , 0.000000,0,"Difficulty"};
         //@End
         unsigned int replayNo = 0;
         std::vector<ReplayData> replayS;
@@ -48,23 +48,6 @@ namespace SDX_TD
 				buf.SaveOrLoad( it.c_str(), true, FileMode::Read);
 				replayS.push_back( buf );
 			}
-
-			/*
-            for (int a = 0; a < 20; ++a)
-            {
-                replayS.push_back(ReplayData());
-                replayS[a].ファイル名 = "Data:";
-                replayS[a].ファイル名 += std::to_string(a+1);
-                replayS[a].ステージ名 = "map00.tmx";
-                replayS[a].メイン = WitchType::トレニア;
-                replayS[a].サブ = WitchType::ディアネラ;
-                replayS[a].スコア = 123456789;
-                replayS[a].難易度 = (Difficulty)(a%6);
-                replayS[a].結果 = (ResultType)(a % 3);
-                replayS[a].isカップル = (a != 1);
-                replayS[a].isトライアル = (a != 2);
-            }
-			*/
 
             スクロールバー.SetSize(replayS.size(), 11);
             
@@ -195,22 +178,22 @@ namespace SDX_TD
             return;
 #endif
             //@Load
-            SDX::GUIData guiData = SDX::TMXtoGUI( TMX_FILE_NAME , "SceneReplay", GUI_Factory);
+			SDX::GUIData guiData = SDX::TMXtoGUI( TMX_FILE_NAME , "SceneReplay", GUI_Factory);
 
-            リプレイ情報 = *dynamic_cast<UI_Frame*>(guiData.dataS[0].get());
-            開始 = *dynamic_cast<UI_Button*>(guiData.dataS[1].get());
-            スコア = *dynamic_cast<UI_Text*>(guiData.dataS[2].get());
-            スクロールバー = *dynamic_cast<UI_ScrollBar*>(guiData.dataS[3].get());
-            マップ情報 = *dynamic_cast<UI_Frame*>(guiData.dataS[4].get());
-            リプレイ選択 = *dynamic_cast<UI_Button*>(guiData.dataS[5].get());
-            ウィッチ = *dynamic_cast<UI_Text*>(guiData.dataS[6].get());
-            トライアル = *dynamic_cast<UI_Text*>(guiData.dataS[7].get());
-            結果 = *dynamic_cast<UI_Text*>(guiData.dataS[8].get());
-            ステージ一覧 = *dynamic_cast<UI_Frame*>(guiData.dataS[9].get());
-            下スクロール = *dynamic_cast<UI_Button*>(guiData.dataS[10].get());
-            上スクロール = *dynamic_cast<UI_Button*>(guiData.dataS[11].get());
-            難易度 = *dynamic_cast<UI_Text*>(guiData.dataS[12].get());
-            カップル = *dynamic_cast<UI_Text*>(guiData.dataS[13].get());
+			リプレイ情報 = *dynamic_cast<UI_Frame*>(guiData.dataS[0].get());
+			開始 = *dynamic_cast<UI_Button*>(guiData.dataS[1].get());
+			スコア = *dynamic_cast<UI_Text*>(guiData.dataS[2].get());
+			スクロールバー = *dynamic_cast<UI_ScrollBar*>(guiData.dataS[3].get());
+			マップ情報 = *dynamic_cast<UI_Frame*>(guiData.dataS[4].get());
+			リプレイ選択 = *dynamic_cast<UI_Button*>(guiData.dataS[5].get());
+			ウィッチ = *dynamic_cast<UI_Text*>(guiData.dataS[6].get());
+			トライアル = *dynamic_cast<UI_Text*>(guiData.dataS[7].get());
+			結果 = *dynamic_cast<UI_Text*>(guiData.dataS[8].get());
+			ステージ一覧 = *dynamic_cast<UI_Frame*>(guiData.dataS[9].get());
+			下スクロール = *dynamic_cast<UI_Button*>(guiData.dataS[10].get());
+			上スクロール = *dynamic_cast<UI_Button*>(guiData.dataS[11].get());
+			難易度 = *dynamic_cast<UI_Text*>(guiData.dataS[12].get());
+			カップル = *dynamic_cast<UI_Text*>(guiData.dataS[13].get());
             //@End
 
             スクロールバー.SetSize(replayS.size(), 11);

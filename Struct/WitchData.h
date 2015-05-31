@@ -284,7 +284,7 @@ namespace SDX_TD
 		WitchDataS[WitchType::フィオナ].射程補正 = 1.1;
 		WitchDataS[WitchType::フィオナ].特殊補正[DebuffType::吹飛] = 1.5;
 		WitchDataS[WitchType::フィオナ].特殊補正[DebuffType::鈍足] = 0.5;
-		WitchDataS[WitchType::フィオナ].逆境補正 = 0;//通常の三倍
+		WitchDataS[WitchType::フィオナ].逆境補正 = 0;
 
 		WitchDataS[WitchType::フィオナ].職種[0] = UnitType::フィオナ;
 		WitchDataS[WitchType::フィオナ].職種[1] = UnitType::兵士;
