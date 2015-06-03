@@ -63,7 +63,7 @@ namespace SDX_TD
 
         //HP スコア 移動速度,防御,回避
         EnemyDataS[EnemyType::ゼリー].Set(MoveType::陸,SubEnemyType::水棲, Element::氷, 50, 15, 40);
-        EnemyDataS[EnemyType::ゴブリン].Set(MoveType::陸, SubEnemyType::亜人, Element::樹, 80, 10, 50);
+        EnemyDataS[EnemyType::ゴブリン].Set(MoveType::陸, SubEnemyType::亜人, Element::樹, 40, 10, 50);
         EnemyDataS[EnemyType::オーガ].Set(MoveType::陸, SubEnemyType::亜人, Element::炎, 130, 20, 15);
         EnemyDataS[EnemyType::コボルド].Set(MoveType::陸, SubEnemyType::亜人, Element::樹, 40, 15, 70);
         EnemyDataS[EnemyType::ケットシー].Set(MoveType::陸, SubEnemyType::獣, Element::空, 30, 15, 120);
@@ -73,7 +73,7 @@ namespace SDX_TD
         EnemyDataS[EnemyType::グリフィン].Set(MoveType::陸, SubEnemyType::獣, Element::空, 90, 20, 25);
         EnemyDataS[EnemyType::ケルベロス].Set(MoveType::陸, SubEnemyType::獣, Element::炎, 60, 20, 60);
         EnemyDataS[EnemyType::ゴーレム].Set(MoveType::陸, SubEnemyType::自然, Element::樹, 60, 20, 20);
-        EnemyDataS[EnemyType::ドラゴン].Set(MoveType::陸, SubEnemyType::竜, Element::炎, 140, 50, 20);
+        EnemyDataS[EnemyType::ドラゴン].Set(MoveType::陸, SubEnemyType::竜, Element::炎, 180, 50, 20);
         EnemyDataS[EnemyType::ゼリー王].Set(MoveType::陸, SubEnemyType::水棲, Element::氷, 30, 20, 40);
         EnemyDataS[EnemyType::マーマン].Set(MoveType::水, SubEnemyType::水棲, Element::氷, 60, 15, 50);
         EnemyDataS[EnemyType::トレント].Set(MoveType::陸, SubEnemyType::自然, Element::氷, 60, 20, 15);

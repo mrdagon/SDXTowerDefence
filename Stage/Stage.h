@@ -1132,7 +1132,7 @@ namespace SDX_TD
                         std::abs(unitS[a].GetY() - unitS[b].GetY()) <= CHIP_SIZE * 2
                         )
                     {
-                        unitS[b].支援補正 += 支援;
+						unitS[b].支援補正 = std::max(支援, unitS[b].支援補正);
                     }
                 }
             }
