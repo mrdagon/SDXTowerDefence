@@ -108,8 +108,8 @@ namespace SDX_TD
 			}
 			else
 			{
-				file.ReadWrite( Witch::Main->種類 );
-				file.ReadWrite( Witch::Sub->種類 );
+				file.ReadWrite( Witch::witchS[0].種類 );
+				file.ReadWrite( Witch::witchS[1].種類);
 			}
             file.ReadWrite( TDSystem::isトライアル);
             file.ReadWrite( TDSystem::isカップル);

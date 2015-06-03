@@ -222,8 +222,8 @@ namespace SDX_TD
                     case SkillType::鈍足:特殊補正[DebuffType::鈍足] *= (1.0 + pt);
                     case SkillType::吹飛:特殊補正[DebuffType::吹飛] *= (1.0 + pt);
                     case SkillType::防壊:特殊補正[DebuffType::防壊] *= (1.0 + pt);
-                    case SkillType::回収:回収速度 *= (1.0 + pt); break;
-                    case SkillType::強化:強化速度 *= (1.0 + pt); break;
+                    case SkillType::回収:回収速度 /= (1.0 + pt); break;
+                    case SkillType::強化:強化速度 /= (1.0 + pt); break;
                     case SkillType::逆境:逆境補正 *= (1.0 + pt); break;
                     case SkillType::集中:MP獲得 *= (1.0 + pt); break;
                     case SkillType::体力:

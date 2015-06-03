@@ -44,6 +44,8 @@ namespace SDX_TD
 			//リプレイ一覧の読み込み
 			for ( auto &it : strS )
 			{
+				if (it.find(".rep") == std::string::npos) { continue; }
+
 				ReplayData buf;
 				buf.SaveOrLoad( it.c_str(), true, FileMode::Read);
 				replayS.push_back( buf );
