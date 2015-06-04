@@ -202,7 +202,7 @@ namespace SDX_TD
             //性能、現在値&次レベル値
             for (int a = 0; a < 5; ++a)
             {
-                if (a >= 3 && 性能[a] <= 0) continue;
+                if (a >= 3 && 性能[a] <= 0 && 次性能[a] <= 0) continue;
 
                 MSystem::フレーム[5].Draw(UI::R性能[num], { 128, 128, 255 });
 
