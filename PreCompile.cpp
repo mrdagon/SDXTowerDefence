@@ -3,4 +3,4 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 
 #include "stdafx.h"
-#include <Multimedia/SDXafx.h>
+#include <SDXafx.h>

@@ -3,6 +3,7 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include <SDXFramework.h>
+#include <Framework/IModel.h>
 #include "Land.h"
 #include "../System/EnumType.h"
 

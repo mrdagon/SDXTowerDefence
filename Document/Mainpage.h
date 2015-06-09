@@ -9,7 +9,7 @@
 \n
 @section 外部リンク
 <B>開発フォーラム</B>\n
-<a href="https://sourceforge.jp/projects/grachestd/" target="_blank"><B>SorceForge</B></a>\n
+<a href="https://sourceforge.jp/projects/grachestd/" target="_blank"><B>OSDN</B></a>\n
 <B>Github</B>\n
 <a href="https://github.com/mrdagon/SDXTowerDefence" target="_blank"><B>Github</B></a>\n
 <B>作者ブログ</B>\n
