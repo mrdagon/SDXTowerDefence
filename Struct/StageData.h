@@ -28,7 +28,7 @@ namespace SDX_TD
                 for (auto &it : 完勝){ it = -1; }
             }
 
-            EnumArray<int, WitchType> スコア;
+            EnumArray<double, WitchType> スコア;
             EnumArray<int, WitchType> 勝利;
             EnumArray<int, WitchType> 完勝;
         };
@@ -72,9 +72,9 @@ namespace SDX_TD
             }
         }
 
-		int Update(WitchType 種類, int スコア , ResultType 結果)
+		double Update(WitchType 種類, double スコア , ResultType 結果)
 		{
-			int exp = 0;
+			double exp = 0;
 
 			if (スコア > Getスコア().スコア[種類])
 			{

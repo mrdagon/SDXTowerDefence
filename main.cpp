@@ -11,9 +11,8 @@
 #endif
 
 #include <cassert>
-//#include <Utility/Pool.h>
 
-//配布時は相対パス、デバッグ時は絶対パス
+//配布時は相対パス(というかコード埋め込み)、デバッグ時は絶対パス
 #ifdef _DEBUG
 static const char* TMX_FILE_NAME = "C:/Users/Uemura/Documents/GitHub/SDXTowerDefence/Scene/Layout.tmx";
 #else
@@ -26,7 +25,6 @@ static const char* TMX_FILE_NAME = "Layout.tmx";
 #include "Scene/SceneMenu.h"
 
 #include "System/SaveAndLoad.h"
-//#include <Sample/Sample.h>
 
 int main(int argc, char* argv[])
 {

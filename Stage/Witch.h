@@ -344,6 +344,7 @@ namespace SDX_TD
         void Init()
         {
             Hp += 追加Hp;
+			最大Hp += 追加Hp;
             Mp += 追加Mp;
 
             Sp = 0;

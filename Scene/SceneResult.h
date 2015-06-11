@@ -32,13 +32,13 @@ namespace SDX_TD
         //@End
 
         bool isRetry;//どのボタンでResult画面を抜けたか
-        int baseScore;
+		double baseScore;
         double bonusRate;
         double diffRate;
         double lifeBonus;
-        int totalScore;
-        int getEXP;
-		int Lv上昇量;
+		double totalScore;
+		double getEXP;
+		double Lv上昇量;
         ResultType 結果;
 
         static bool Call()
@@ -74,6 +74,7 @@ namespace SDX_TD
 				結果 = ResultType::Perfect;
 				MMusic::勝利.Play();
 				is勝利 = true;
+				bonusRate = 3.0;
 			}
 			else if (Witch::Hp > 0)
 			{
@@ -86,20 +87,11 @@ namespace SDX_TD
 				結果 = ResultType::Lose;
 				MMusic::敗北.Play();
 				is勝利 = false;
+				bonusRate = 0.5;
 			}
 
-            if (Witch::Hp == Witch::最大Hp)
-            {
-                bonusRate = 3.0;
-            }
-            else if ( Witch::Hp <= 0)
-            {
-                //敗北時はボーナス半減
-                bonusRate = 0.5;
-            }
-
             baseScore = SStage->score;
-            totalScore = int(SStage->score * diffRate * bonusRate);
+            totalScore = std::ceil(SStage->score * diffRate * bonusRate);//小数点切り下げ
 			Lv上昇量 = 0;
 			getEXP = 0;
 

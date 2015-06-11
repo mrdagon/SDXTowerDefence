@@ -55,7 +55,7 @@ namespace SDX_TD
 
 		virtual void 大魔法効果(bool is発動) = 0;
 
-		virtual void SaveReplay(ResultType 結果 , int スコア) = 0;
+		virtual void SaveReplay(ResultType 結果 , double スコア) = 0;
 	};
 
 	/**アクティブなStage.*/

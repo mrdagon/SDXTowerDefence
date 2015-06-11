@@ -58,7 +58,7 @@ namespace SDX_TD
         bool isトライアル;
         bool isカップル;
         Difficulty 難易度;
-        int スコア;
+		double スコア;
         ResultType 結果;
 
         static std::string 結果名[3];
@@ -70,7 +70,7 @@ namespace SDX_TD
 		
 		static std::vector<Place> 初期配置;
 
-        bool SaveOrLoad(const char* リプレイファイル名 , bool isTag , FileMode 保存or読み込み , ResultType result = ResultType::Lose , int score = 0)
+        bool SaveOrLoad(const char* リプレイファイル名 , bool isTag , FileMode 保存or読み込み , ResultType result = ResultType::Lose , double score = 0)
         {
 			std::string folderName = "replay/";
 			ファイル名 = リプレイファイル名;

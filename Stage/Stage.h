@@ -904,7 +904,7 @@ namespace SDX_TD
         }
 
         /**リプレイ保存処理.*/
-        void SaveReplay( ResultType 結果, int スコア )
+        void SaveReplay( ResultType 結果, double スコア )
         {
             auto time = Time::GetDateString();
             time += ".rep";
