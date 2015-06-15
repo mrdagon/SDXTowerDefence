@@ -47,7 +47,7 @@ namespace SDX_TD
 			移動種(st->移動種)
 		{
 			スコア = int(st->スコア * (1.0 + (double)レベル / 30 ));
-			最大HP = st->最大HP * (1.0 + (レベル)* 0.2 + (レベル) * (レベル) * 0.06) * DifficultyDataS[TDSystem::難易度].HP補正[TDSystem::isトライアル];
+			最大HP = st->最大HP * (1.0 + (レベル)* 0.2 + (レベル) * (レベル) * 0.06) * DifficultyDataS[TDSystem::難易度].HP補正[TDSystem::isスキル];
 			防御力 = int(st->防御力 * レベル);
 
 			if (isBoss)
@@ -84,8 +84,8 @@ namespace SDX_TD
 		/**特殊地形による移動量補正.*/
 		void 地形処理(double &移動量X, double &移動量Y)
 		{
-			//飛んでる敵は影響無し
-			if (移動種 == MoveType::空) return;
+			//飛んでる敵と水系は影響無し
+			if (移動種 != MoveType::陸 ) return;
 
 			int x = (int)(GetX() / CHIP_SIZE);
 			int y = (int)(GetY() / CHIP_SIZE);
@@ -104,53 +104,76 @@ namespace SDX_TD
 		}
 
 		/**移動不可マスへのめり込み回避.*/
-		void 地形衝突()
+		void 吹き飛び処理()
 		{
-			//はみ出ている量
-			const int X差 = (int)GetX() % CHIP_SIZE - 判定大きさ / 2;
-			const int Y差 = (int)GetY() % CHIP_SIZE - 判定大きさ / 2;
+			int pushX = int(吹き飛びX / 8);
+			int pushY = int(吹き飛びY / 8);	
+			
+			//吹き飛び量が少ないなら処理しない
+			if (pushX == 0 && pushY == 0){return;}
+
+			吹き飛びX = std::min(std::max( pushX, -8), 8);
+			吹き飛びX = std::min(std::max(pushY, -8), 8);
+			吹き飛びX -= pushX;
+			吹き飛びY -= pushY;
+
+			//ブロック内での位置
+			const int posX = (int)GetX() % CHIP_SIZE;
+			const int posY = (int)GetY() % CHIP_SIZE;
+
+			//各方向で衝突チェック
+			const bool is上 = (posY + pushY <= 5);
+			const bool is下 = (posY + pushY >= 10);
+			const bool is左 = (posX + pushX >= 10);
+			const bool is右 = (posX + pushX <= 5);
 
 			//各方向にはみ出ているか
-			const bool is上 = Y差 < 0;
-			const bool is下 = Y差 > 0;
-			const bool is左 = X差 < 0;
-			const bool is右 = X差 > 0;
+			bool 衝突[9] = {false};
 
-			bool 衝突[9] = {};
-
-			//平面にめりこみ
-			if (is上) { 衝突[1] = SStage->land.Check地形(GetX(), GetY() - 6, 移動種); }
-			if (is左) { 衝突[3] = SStage->land.Check地形(GetX() - 6, GetY(), 移動種); }
-			if (is右) { 衝突[5] = SStage->land.Check地形(GetX() + 6, GetY(), 移動種); }
-			if (is下) { 衝突[7] = SStage->land.Check地形(GetX() - 6, GetY() + 6, 移動種); }
-
-			//角にめりこみ
-			if (is上 && is左){ 衝突[0] = SStage->land.Check地形(GetX() - 6, GetY() - 6, 移動種); }
-			if (is上 && is右){ 衝突[2] = SStage->land.Check地形(GetX() + 6, GetY() - 6, 移動種); }
-			if (is下 && is左){ 衝突[6] = SStage->land.Check地形(GetX() - 6, GetY() + 6, 移動種); }
-			if (is下 && is右){ 衝突[8] = SStage->land.Check地形(GetX() + 6, GetY() + 6, 移動種); }
-
-			//現在のマスが移動不可能
-			if (SStage->land.Check地形(GetX(), GetY(), 移動種))
+			//角以外のめりこみ
+			if (is上 && !SStage->land.Check地形(GetX(), GetY() - 12, 移動種))
+			{ 
+				衝突[1] = true;
+				pushY = 5 - posY;
+			}
+			if (is下 && !SStage->land.Check地形(GetX(), GetY() + 12, 移動種))
 			{
-				Move(Rand::Get(-1, 1), Rand::Get(-1, 1));
-				return;
+				衝突[7] = true;
+				pushY = 10 - posY;
 			}
 
-			double x = 0, y = 0;
+			if (is右 && !SStage->land.Check地形(GetX() - 12, GetY(), 移動種))
+			{
+				衝突[3] = true;
+				pushX = 5 - posX;
+				
+			}
+			if (is左 && !SStage->land.Check地形(GetX() + 12, GetY(), 移動種))
+			{
+				衝突[5] = true;
+				pushX = 10 - posX;
+			}
 
-			//斜め衝突
-			//めり込みを減らす量が少ない？
-			if (衝突[0] && 衝突[1] == 衝突[3]){ x = 1; y = 1; }
-			if (衝突[2] && 衝突[1] == 衝突[5]){ x = -1;y = 1; }
-			if (衝突[6] && 衝突[3] == 衝突[7]){ x = 1; y = -1; }
-			if (衝突[8] && 衝突[5] == 衝突[7]){ x = -1;y= -1; }
-			if (衝突[1]){ y = 1; }
-			if (衝突[3]){ x = 1; }
-			if (衝突[5]){ x = -1; }
-			if (衝突[7]){ y = -1; }
+			//角にめりこみ
+			if (is上 && is左 && !衝突[1] && !衝突[3] && !SStage->land.Check地形(GetX() - 12, GetY() - 12, 移動種))
+			{
+				if (posX >= posY)
+				{
 
-			Move(x, y);
+				}
+			}
+			if (is上 && is右 && !衝突[1] && !衝突[5] && !SStage->land.Check地形(GetX() + 12, GetY() - 12, 移動種))
+			{
+
+			}
+			if (is下 && is左 && !衝突[3] && !衝突[7] && !SStage->land.Check地形(GetX() - 12, GetY() + 12, 移動種))
+			{
+			}
+			if (is下 && is右 && !衝突[5] && !衝突[7] && !SStage->land.Check地形(GetX() + 12, GetY() + 12, 移動種))
+			{
+			}
+
+			Move(pushX, pushY);
 		}
 
 		/**@todo 乱数使用がリプレイ機能に影響.*/
@@ -402,8 +425,8 @@ namespace SDX_TD
 				enemy->スコア = 0;
 				enemy->再生力 = 0;
 				enemy->麻痺時間 = 120;
-				//enemy->吹き飛びX = std::sin(PAI) * 16 * (1 + isBoss);
-				//enemy->吹き飛びY = std::cos(PAI) * 16 * (1 + isBoss);
+				enemy->吹き飛びX = std::sin(PAI) * 16 * (1 + isBoss);
+				enemy->吹き飛びY = std::cos(PAI) * 16 * (1 + isBoss);
 
 				SStage->Add(enemy);
 			}
@@ -437,6 +460,9 @@ namespace SDX_TD
 			double speed = st->移動速度;
 			const int x = (int)(GetX() / CHIP_SIZE);
 			const int y = (int)(GetY() / CHIP_SIZE);
+			//吹き飛び処理
+			吹き飛び処理();
+
 
 			//方向を更新
 			方向更新();
@@ -468,15 +494,9 @@ namespace SDX_TD
 			double mx = (方向 % 3 - 1) * speed;
 			double my = (方向 / 3 - 1) * speed;
 
-			//吹き飛び処理
-			mx += 吹き飛びX / 8;
-			吹き飛びX -= 吹き飛びX / 8;
-			my += 吹き飛びY / 8;
-			吹き飛びY -= 吹き飛びY / 8;
 
 			地形処理(mx, my);
 			Move(mx, my);
-			地形衝突();
 		}
 
 		/**死亡時、基本処理.*/
@@ -493,8 +513,8 @@ namespace SDX_TD
 					enemy->残りHP /= 8;
 					enemy->スコア /= 8;
 					enemy->麻痺時間 = 60 * (1 + isBoss);
-					//enemy->吹き飛びX = std::sin(r) * 32 * (1 + isBoss);
-					//enemy->吹き飛びY = std::cos(r) * 32 * (1 + isBoss);
+					enemy->吹き飛びX = std::sin(r) * 32 * (1 + isBoss);
+					enemy->吹き飛びY = std::cos(r) * 32 * (1 + isBoss);
 
 					SStage->Add(enemy);
 				}

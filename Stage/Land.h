@@ -390,7 +390,7 @@ namespace SDX_TD
 			}
 		}
 
-		/**敵が地形と衝突しているかチェック.*/
+		/**現在の地形が通行可能かどうか.*/
 		bool Check地形(double X座標, double Y座標, MoveType 移動種)
 		{
 			int x = (int)X座標 / CHIP_SIZE;
@@ -398,17 +398,17 @@ namespace SDX_TD
 
 			if (x < 0 || x >= MAP_SIZE || y < 0 || y >= MAP_SIZE) return false;
 
-			//trueなら通行不可
+			//falseなら通行不可
 			switch (移動種)
 			{
 			case SDX_TD::MoveType::空:
-				return !空路.is通行[x][y];
+				return 空路.is通行[x][y];
 				break;
 			case SDX_TD::MoveType::陸:
-				return !陸路.is通行[x][y];
+				return 陸路.is通行[x][y];
 				break;
 			case SDX_TD::MoveType::水:
-				return !水路.is通行[x][y];
+				return 水路.is通行[x][y];
 				break;
 			default:
 				return false;

@@ -111,7 +111,7 @@ namespace SDX_TD
 				file.ReadWrite( Witch::witchS[0].種類 );
 				file.ReadWrite( Witch::witchS[1].種類);
 			}
-            file.ReadWrite( TDSystem::isトライアル);
+            file.ReadWrite( TDSystem::isスキル);
             file.ReadWrite( TDSystem::isカップル);
             file.ReadWrite( TDSystem::難易度);
             file.ReadWrite( score );

@@ -61,10 +61,10 @@ namespace SDX_TD
         void Update() override
         {
             //Update
-			if (効果音＋.isClick()){ TDSystem::効果音の音量++; Sound::SetMainVolume(std::pow(TDSystem::効果音の音量, 2) / 100); MSound::設置.Play(); }
-			if (効果音－.isClick()){ TDSystem::効果音の音量--; Sound::SetMainVolume(std::pow(TDSystem::効果音の音量, 2) / 100); MSound::設置.Play(); }
-            if (BGM－.isClick()){ TDSystem::BGMの音量--; Music::SetMainVolume( std::pow(TDSystem::BGMの音量, 2) / 100); }
-            if (BGM＋.isClick()){ TDSystem::BGMの音量++; Music::SetMainVolume( std::pow(TDSystem::BGMの音量, 2) / 100); }
+			if (効果音＋.isClick()){ TDSystem::効果音の音量++; Sound::SetMainVolume(std::pow(TDSystem::効果音の音量, 2) / 100 + 0.01); MSound::設置.Play(); }
+			if (効果音－.isClick()){ TDSystem::効果音の音量--; Sound::SetMainVolume(std::pow(TDSystem::効果音の音量, 2) / 100 + 0.01); MSound::設置.Play(); }
+			if (BGM－.isClick()){ TDSystem::BGMの音量--; Music::SetMainVolume(std::pow(TDSystem::BGMの音量, 2) / 100 + 0.01); }
+            if (BGM＋.isClick()){ TDSystem::BGMの音量++; Music::SetMainVolume( std::pow(TDSystem::BGMの音量, 2) / 100 + 0.01); }
             if (グリッドChk.isClick()){ TDSystem::isグリッド = !TDSystem::isグリッド; }
             if (敵HPChk.isClick()){ TDSystem::isHPゲージ = !TDSystem::isHPゲージ; }
 			if (エフェクト表示Chk.isClick()){ TDSystem::isエフェクト省略 = !TDSystem::isエフェクト省略; }

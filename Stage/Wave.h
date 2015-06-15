@@ -29,9 +29,9 @@ namespace SDX_TD
 			待ち時間 = 0;
 			Wave間隔 = StageDataS[TDSystem::選択ステージ].Wave間隔;
 
-			最終Wave = DifficultyDataS[TDSystem::難易度].Wave数[TDSystem::isトライアル];
+			最終Wave = DifficultyDataS[TDSystem::難易度].Wave数[TDSystem::isスキル];
 
-			if ( !TDSystem::isトライアル)
+			if ( TDSystem::isスキル)
 			{
 				最終Wave += Witch::スキルLv[SkillType::試練];
 			}
@@ -81,7 +81,8 @@ namespace SDX_TD
 				if (isBoss[no % 100])
 				{
 					if (no < 現在Wave)
-					{ 
+					{
+						//出現済みのWave
 						MSystem::枠画像[4].SetColor({128,64,64});
 					}
 					else
@@ -106,10 +107,15 @@ namespace SDX_TD
 				MSystem::枠画像[4].SetColor(Color::White);
 
 				//Wave数
-				int size = 2;
-				if (no >= 100){ size = 1; }
+				if (no >= 100)
+				{ 
+					MFont::fontS[FontType::BMP黒].DrawExtend({ x, y + 4 }, 1, 1, Color::White, { std::setw(5), no + 1 });
+				}
+				else
+				{
+					MFont::fontS[FontType::BMP黒].DrawExtend({ x, y + 4 }, 2, 2, Color::White, { std::setw(3), no + 1 });
+				}
 
-				MFont::fontS[FontType::BMP黒].DrawExtend({ x, y + 4 }, size, size, Color::White, { std::setw(3), no + 1 });
 
 				y += 80;
 				++no;

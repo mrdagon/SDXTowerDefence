@@ -34,7 +34,7 @@ namespace SDX_TD
 		UI_Text Lv補正 = { 118, {252,439,60,24} , 0.000000,1,"LV 1.5倍"};
 		UI_Frame ウィッチアイコン = { 119, {68,32,20,20} , 0.000000,0};
 		UI_Button シングル_カップル = { 31, {213,311,130,30} , 0.000000,3};
-		UI_Button トライアル = { 59, {83,311,130,30} , 0.000000,3};
+		UI_Button スキル = { 59, {83,311,130,30} , 0.000000,3};
 		UI_Text ウィッチ名 = { 121, {96,32,56,20} , 0.000000,0,"std::string"};
 		UI_Text 星 = { 122, {155,31,21,21} , 0.000000,0,"std::string"};
 		UI_Text スコア = { 123, {278,32,30,22} , 0.000000,2,"std::string"};
@@ -84,10 +84,10 @@ namespace SDX_TD
             if (ページ数 < 0){ ページ数 = maxPage; }
             if (ページ数 > maxPage){ ページ数 = 0; }
 
-            if (ステージA.isClick()){ 現在ステージ = ページ数 * 4; }
-            if (ステージB.isClick()){ 現在ステージ = ページ数 * 4 + 1; }
-            if (ステージC.isClick()){ 現在ステージ = ページ数 * 4 + 2; }
-            if (ステージD.isClick()){ 現在ステージ = ページ数 * 4 + 3; }
+			if (ステージA.isClick() && (!isQuest || TDSystem::isクエスト開放[ページ数 * 4])){ 現在ステージ = ページ数 * 4; }
+			if (ステージB.isClick() && (!isQuest || TDSystem::isクエスト開放[ページ数 * 4+1])){ 現在ステージ = ページ数 * 4 + 1; }
+			if (ステージC.isClick() && (!isQuest || TDSystem::isクエスト開放[ページ数 * 4+2])){ 現在ステージ = ページ数 * 4 + 2; }
+			if (ステージD.isClick() && (!isQuest || TDSystem::isクエスト開放[ページ数 * 4+3])){ 現在ステージ = ページ数 * 4 + 3; }
 
             if (isQuest)
             {
@@ -109,9 +109,9 @@ namespace SDX_TD
             {
                 TDSystem::isカップル = !TDSystem::isカップル;
             }
-            if(トライアル.isClick())
+            if(スキル.isClick())
             {
-                TDSystem::isトライアル = !TDSystem::isトライアル;
+                TDSystem::isスキル = !TDSystem::isスキル;
             }
             //End
         }
@@ -178,7 +178,7 @@ namespace SDX_TD
                 MFont::fontS[2].DrawRotate( 難易度.rect.GetCenter() + Point(10 * a - 5 * (int)TDSystem::難易度, 10), 1, 0, Color::Yellow, "☆");
             }
 
-			int waveCount = data.Wave数[TDSystem::isトライアル] + !TDSystem::isトライアル * Witch::スキルLv[SkillType::試練];
+			int waveCount = data.Wave数[TDSystem::isスキル] + TDSystem::isスキル * Witch::スキルLv[SkillType::試練];
 
 			MFont::fontS[2].DrawRotate(Wave数.rect.GetCenter() - Point(100, 0), 2, 0, Color::White, { "Wave" });
 			MFont::fontS[2].DrawRotate(出現数.rect.GetCenter() - Point(100, 0), 2, 0, Color::White, { "Enemy " });
@@ -186,16 +186,16 @@ namespace SDX_TD
 			MFont::fontS[2].DrawRotate(Lv補正.rect.GetCenter() - Point(100, 0), 2, 0, Color::White, { "Lv " });
 
 			MFont::fontS[FontType::ゴシック中].DrawRotate(Wave数.rect.GetCenter() , 1, 0, Color::White, { waveCount });
-			MFont::fontS[FontType::ゴシック中].DrawRotate(出現数.rect.GetCenter() , 1, 0, Color::White, { data.雑魚召喚数[TDSystem::isトライアル] });
-			MFont::fontS[FontType::ゴシック中].DrawRotate(HP補正.rect.GetCenter() , 1, 0, Color::White, { data.HP補正[TDSystem::isトライアル] * 100, "%" });
-			MFont::fontS[FontType::ゴシック中].DrawRotate(Lv補正.rect.GetCenter() , 1, 0, Color::White, { data.レベル補正[TDSystem::isトライアル] * 100, "%" });
+			MFont::fontS[FontType::ゴシック中].DrawRotate(出現数.rect.GetCenter() , 1, 0, Color::White, { data.雑魚召喚数[TDSystem::isスキル] });
+			MFont::fontS[FontType::ゴシック中].DrawRotate(HP補正.rect.GetCenter() , 1, 0, Color::White, { data.HP補正[TDSystem::isスキル] * 100, "%" });
+			MFont::fontS[FontType::ゴシック中].DrawRotate(Lv補正.rect.GetCenter() , 1, 0, Color::White, { data.レベル補正[TDSystem::isスキル] * 100, "%" });
 
 
             MSystem::frameS[シングル_カップル.frameNo].Draw(シングル_カップル.rect);
-            MSystem::frameS[トライアル.frameNo].Draw(トライアル.rect);
+            MSystem::frameS[スキル.frameNo].Draw(スキル.rect);
             //モードスイッチ
             シングル_カップル.DrawText(MFont::fontS[2], (TDSystem::isカップル)?"○ Couple":"× Couple", 2);
-            トライアル.DrawText(MFont::fontS[2], (TDSystem::isトライアル)?"○ Trial":"× Trial", 2);
+            スキル.DrawText(MFont::fontS[2], (TDSystem::isスキル)?"○ Skill":"× Skill", 2);
             //スコア一覧
             MFont::fontS[ハイスコア.fontNo].DrawRotate(ハイスコア.rect.GetCenter(), 2, 0, Color::White, ハイスコア.text);
             for (int a = 0; a < (int)WitchType::COUNT; ++a)
@@ -223,10 +223,20 @@ namespace SDX_TD
                 {
                     Screen::SetBright(Color::Red);
                 }
+
                 if (isQuest)
                 {
-                    buf->DrawText(MFont::fontS[1], StageDataS[StageType::Quest[ページ数 * 4 + a]].名前.c_str(), 1);
-                }else{
+					if ( TDSystem::isクエスト開放[ページ数 * 4 + a] )
+					{
+						buf->DrawText(MFont::fontS[1], StageDataS[StageType::Quest[ページ数 * 4 + a]].名前.c_str(), 1);
+					}
+					else
+					{
+						buf->DrawText(MFont::fontS[1], "？？？？", 1);
+					}
+                }
+				else
+				{
                     if (ページ数 * 4 + a < (int)StageType::Free.size())
                     {
                         buf->DrawText(MFont::fontS[1], StageDataS[StageType::Free[ページ数 * 4 + a]].名前.c_str(), 1);
@@ -269,7 +279,7 @@ namespace SDX_TD
 			Lv補正 = *dynamic_cast<UI_Text*>(guiData.dataS[17].get());
 			ウィッチアイコン = *dynamic_cast<UI_Frame*>(guiData.dataS[18].get());
 			シングル_カップル = *dynamic_cast<UI_Button*>(guiData.dataS[19].get());
-			トライアル = *dynamic_cast<UI_Button*>(guiData.dataS[20].get());
+			スキル = *dynamic_cast<UI_Button*>(guiData.dataS[20].get());
 			ウィッチ名 = *dynamic_cast<UI_Text*>(guiData.dataS[21].get());
 			星 = *dynamic_cast<UI_Text*>(guiData.dataS[22].get());
 			スコア = *dynamic_cast<UI_Text*>(guiData.dataS[23].get());

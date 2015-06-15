@@ -43,7 +43,7 @@ namespace SDX_TD
 
         Score& Getスコア()
         {
-            return 成績[TDSystem::isトライアル][TDSystem::isカップル];
+            return 成績[TDSystem::isスキル][TDSystem::isカップル];
         }
 
         //メインウィッチ種、トライアルorパワー

@@ -95,10 +95,14 @@ namespace SDX_TD
             }
 
             //レベル表示
+			if (Lv == 5){Screen::SetBright({ 255, 128, 128 });}
+
             for (int a = 0; a < Lv; ++a)
             {
                 MSystem::マーク[3]->DrawRotate({ GetX() + 6 * a - 12, GetY() + 12 }, 1, 0);
             }
+
+			if (Lv == 5){ Screen::SetBright(); }
         }
 
         /**画面右の情報.*/

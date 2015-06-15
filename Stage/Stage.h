@@ -213,15 +213,15 @@ namespace SDX_TD
             int lv;
 
             MSound::Wave.Play();
-            lv = int((wave.現在Wave + 1) * DifficultyDataS[TDSystem::難易度].レベル補正[TDSystem::isトライアル]);
+            lv = int((wave.現在Wave + 1) * DifficultyDataS[TDSystem::難易度].レベル補正[TDSystem::isスキル]);
 
             if (wave.isBoss[waveNo])
             {
-                enemyCount = int(DifficultyDataS[TDSystem::難易度].ボス召喚数[TDSystem::isトライアル] * EnemyDataS[wave.敵種類[waveNo]].出現数);
+                enemyCount = int(DifficultyDataS[TDSystem::難易度].ボス召喚数[TDSystem::isスキル] * EnemyDataS[wave.敵種類[waveNo]].出現数);
             }
             else
             {
-                enemyCount = int(DifficultyDataS[TDSystem::難易度].雑魚召喚数[TDSystem::isトライアル] * EnemyDataS[wave.敵種類[waveNo]].出現数);
+                enemyCount = int(DifficultyDataS[TDSystem::難易度].雑魚召喚数[TDSystem::isスキル] * EnemyDataS[wave.敵種類[waveNo]].出現数);
             }
 
             for (int a = 0; a < enemyCount; ++a)			
@@ -1166,6 +1166,7 @@ namespace SDX_TD
             {
                 //開始時処理
                 MMusic::大魔法.Play();
+				Director::IsDraw() = true;
 
                 //演出
                 for (int a = 0; a < 250; ++a)
@@ -1223,12 +1224,12 @@ namespace SDX_TD
                 for (auto it : groundEnemyS)
                 {
                     it->鈍足時間 = Witch::Main->大魔法時間;
-                    it->鈍足率 = std::max(it->鈍足率,4.0);
+                    it->鈍足率 = std::min(it->鈍足率,0.25);
                 }
                 for (auto it : skyEnemyS)
                 {
                     it->鈍足時間 = Witch::Main->大魔法時間;
-                    it->鈍足率 = std::max(it->鈍足率, 4.0);
+					it->鈍足率 = std::min(it->鈍足率, 0.25);
                 }
                 break;
             case WitchType::バロゥ:

@@ -70,7 +70,7 @@ namespace SDX_TD
         void Update() override
         {
             //Update
-			if ( replayNo < replayS.size() && 開始.isClick() && StageDataS.count(replayS[replayNo].ステージ名))
+			if ( replayNo < replayS.size() && 開始.isClick() && StageDataS.count(replayS[replayNo].ステージ名) && replayS[replayNo].バージョン == TDSystem::バージョン )
             {
                 auto buf = Witch::スキルLv;
 				if (replayS[replayNo].SaveOrLoad(replayS[replayNo].ファイル名.c_str(), false, FileMode::Read))

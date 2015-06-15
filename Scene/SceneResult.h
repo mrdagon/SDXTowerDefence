@@ -67,25 +67,25 @@ namespace SDX_TD
             isリプレイ保存済み = false;
 
             diffRate = 1 + DifficultyDataS[TDSystem::難易度].スコア補正;
-            bonusRate = double(Witch::Hp) / Witch::最大Hp + 1.0;
+            bonusRate = std::ceil(double(Witch::Hp) * 100 / Witch::最大Hp) / 100 + 1.0;
 
 			if (Witch::Hp >= Witch::最大Hp)
 			{
 				結果 = ResultType::Perfect;
-				MMusic::勝利.Play();
+				MMusic::勝利.Play(false);
 				is勝利 = true;
 				bonusRate = 3.0;
 			}
 			else if (Witch::Hp > 0)
 			{
 				結果 = ResultType::Win;
-				MMusic::勝利.Play();
+				MMusic::勝利.Play(false);
 				is勝利 = true;
 			}
 			else
 			{
 				結果 = ResultType::Lose;
-				MMusic::敗北.Play();
+				MMusic::敗北.Play(false);
 				is勝利 = false;
 				bonusRate = 0.5;
 			}
@@ -104,7 +104,7 @@ namespace SDX_TD
 
 			//スコアの更新と経験値の獲得
 			//5% + 更新分
-	        getEXP = totalScore / 20;//5%
+	        getEXP = std::ceil(totalScore / 20);//5%
 			getEXP += StageDataS[TDSystem::選択ステージ].Update(Witch::Main->種類 , totalScore , 結果);
 			if (TDSystem::isカップル)
 			{

@@ -169,7 +169,7 @@ namespace SDX_TD
             }
 
             //成長補正の有無
-            if (!TDSystem::isトライアル)
+            if ( TDSystem::isスキル )
             {
                 スキル補正();
             }
@@ -233,14 +233,14 @@ namespace SDX_TD
                         if (this == Main){ 追加Mp += スキルLv[type] * 5; }
                         break;
                     case SkillType::必殺:獲得SP *= (1.0 + pt); break;
-                    case SkillType::対竜:種族特攻[SubEnemyType::竜] *= (1.0 + pt); break;
-                    case SkillType::対獣:種族特攻[SubEnemyType::獣] *= (1.0 + pt); break;
-                    case SkillType::対人:種族特攻[SubEnemyType::亜人] *= (1.0 + pt); break;
-                    case SkillType::対闇:種族特攻[SubEnemyType::闇] *= (1.0 + pt); break;
-                    case SkillType::対水:種族特攻[SubEnemyType::水棲] *= (1.0 + pt); break;
-                    case SkillType::対樹:種族特攻[SubEnemyType::自然] *= (1.0 + pt); break;
+                    case SkillType::対竜:種族特攻[SubEnemyType::竜] *= (1.0 + pt*2); break;
+                    case SkillType::対獣:種族特攻[SubEnemyType::獣] *= (1.0 + pt*2); break;
+                    case SkillType::対人:種族特攻[SubEnemyType::亜人] *= (1.0 + pt*2); break;
+                    case SkillType::対闇:種族特攻[SubEnemyType::闇] *= (1.0 + pt*2); break;
+                    case SkillType::対水:種族特攻[SubEnemyType::水棲] *= (1.0 + pt*2); break;
+                    case SkillType::対樹:種族特攻[SubEnemyType::自然] *= (1.0 + pt*2); break;
                     case SkillType::試練:break;
-                    case SkillType::幸運:スコア補正 *= 1.0 + pt; break;
+					case SkillType::幸運:スコア補正 *= 1.0 + スキルLv[type]*0.02; break;
                 }
             }
         }

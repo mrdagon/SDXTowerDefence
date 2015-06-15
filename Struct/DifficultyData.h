@@ -50,18 +50,18 @@ namespace SDX_TD
         DifficultyDataS[Difficulty::DeathMarch].スコア補正 = 5;
 
         //Wave数,雑魚数,ボス数,HP補正,Lv補正
-        DifficultyDataS[Difficulty::Easy].Set(20, 16, 2, 1.00, 1.00,true);
-        DifficultyDataS[Difficulty::Normal].Set(30, 20, 2, 1.25, 1.10, true);
-        DifficultyDataS[Difficulty::Hard].Set(40, 24, 2, 1.50, 1.20, true);
-        DifficultyDataS[Difficulty::Maniac].Set(60, 28, 2, 1.75, 1.30, true);
-        DifficultyDataS[Difficulty::Hell].Set(80, 32, 2, 2.00, 1.40, true);
-        DifficultyDataS[Difficulty::DeathMarch].Set(100, 44, 2, 2.50, 1.50, true);
+        DifficultyDataS[Difficulty::Easy].Set(20, 16, 2, 1.00, 1.00,false);
+        DifficultyDataS[Difficulty::Normal].Set(30, 20, 2, 1.25, 1.10, false);
+        DifficultyDataS[Difficulty::Hard].Set(40, 24, 2, 1.50, 1.20, false);
+        DifficultyDataS[Difficulty::Maniac].Set(60, 28, 2, 1.75, 1.30, false);
+        DifficultyDataS[Difficulty::Hell].Set(80, 32, 2, 2.00, 1.40, false);
+        DifficultyDataS[Difficulty::DeathMarch].Set(100, 44, 2, 2.50, 1.50, false);
 
-        DifficultyDataS[Difficulty::Easy].Set(25, 24, 2, 1.00, 1.00, false);
-        DifficultyDataS[Difficulty::Normal].Set(50, 24, 2, 1.30, 1.20, false);
-        DifficultyDataS[Difficulty::Hard].Set(75, 24, 2, 1.60, 1.40, false);
-        DifficultyDataS[Difficulty::Maniac].Set(100, 32, 4, 2.00, 1.60, false);
-        DifficultyDataS[Difficulty::Hell].Set(300, 32, 4, 3.00, 1.80, false);
-        DifficultyDataS[Difficulty::DeathMarch].Set(1000, 40, 6, 5.00, 2.00, false);
+        DifficultyDataS[Difficulty::Easy].Set(25, 24, 2, 1.00, 1.00, true);
+        DifficultyDataS[Difficulty::Normal].Set(50, 24, 2, 1.30, 1.20, true);
+        DifficultyDataS[Difficulty::Hard].Set(75, 24, 2, 1.60, 1.40, true);
+        DifficultyDataS[Difficulty::Maniac].Set(100, 32, 4, 2.00, 1.60, true);
+        DifficultyDataS[Difficulty::Hell].Set(300, 32, 4, 3.00, 1.80, true);
+        DifficultyDataS[Difficulty::DeathMarch].Set(1000, 40, 6, 5.00, 2.00, true);
     }
 }

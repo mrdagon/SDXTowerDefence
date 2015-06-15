@@ -16,16 +16,31 @@ namespace SDX_TD
         //バイナリ形式で保存
         File file("file/save/save.dat", 保存or読み込み, false);
 
-        //ファイルが無いのに読み込もうとしたら失敗
-        if (file.GetFileMode() == FileMode::None){return false;}
+        //ファイルが無いのに読み込もうとしたら初期データにする
+        if (file.GetFileMode() == FileMode::None)
+		{
+			return false;
+		}
 
         //古いバージョンのセーブデータを読み込む時のなんちゃら用
-        file.ReadWrite(TDSystem::バージョン);
+		int version = TDSystem::バージョン;
+        file.ReadWrite( version );
+
+		//version 103以下は無効
+		if (version <= 103)
+		{
+			return false;
+		}
 
         file.ReadWrite(WitchData::スキルLv);
 
 		file.ReadWrite(TDSystem::レベル);
         file.ReadWrite(TDSystem::限界難易度);
+
+		for (int a = 0; a < 24; ++a)
+		{
+			file.ReadWrite(TDSystem::isクエスト開放[a]);
+		}
 
         file.ReadWrite(TDSystem::最大スキルポイント);
         file.ReadWrite(TDSystem::残りスキルポイント);

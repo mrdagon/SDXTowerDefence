@@ -4,10 +4,8 @@
 #include "stdafx.h"
 
 #ifndef __WINDOWS__
-
 #include "PreCompile.cpp"
 #include "Design.cpp"
-
 #endif
 
 #include <cassert>
@@ -43,8 +41,8 @@ int main(int argc, char* argv[])
     System::Initialise("GTD ver0.03β", 640, 480);//ライブラリの初期化
     Window::SetLogicalSize(640, 480);
 
-    Music::SetMainVolume( (TDSystem::BGMの音量*TDSystem::BGMの音量 ) / 100.0);
-    Sound::SetMainVolume( (TDSystem::BGMの音量*TDSystem::BGMの音量) / 100.0);
+    Music::SetMainVolume( (TDSystem::BGMの音量*TDSystem::BGMの音量 ) / 100.0 + 0.01);
+	Sound::SetMainVolume((TDSystem::BGMの音量*TDSystem::BGMの音量) / 100.0 + 0.01);
 
     LoadMaterial();
 

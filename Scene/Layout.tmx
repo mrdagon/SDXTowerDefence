@@ -185,7 +185,7 @@
     <property name="frameNo" value="3"/>
    </properties>
   </object>
-  <object id="59" name="トライアル" type="Button" x="83" y="311" width="130" height="30">
+  <object id="59" name="スキル" type="Button" x="83" y="311" width="130" height="30">
    <properties>
     <property name="frameNo" value="3"/>
    </properties>
@@ -640,7 +640,7 @@
     <property name="frameNo" value="5"/>
    </properties>
   </object>
-  <object id="151" name="最終スコア" type="Text" x="225.5" y="242" width="196" height="30">
+  <object id="151" name="最終スコア" type="Text" x="225.5" y="237" width="196" height="30">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="Total Score"/>
@@ -664,7 +664,7 @@
     <property name="text" value="Life Bonus"/>
    </properties>
   </object>
-  <object id="156" name="獲得経験値" type="Text" x="224" y="302" width="196" height="30">
+  <object id="156" name="獲得経験値" type="Text" x="224" y="286" width="196" height="30">
    <properties>
     <property name="fontNo" value="0"/>
     <property name="text" value="Get EXP"/>
