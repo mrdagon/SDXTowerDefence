@@ -1243,7 +1243,7 @@ namespace SDX_TD
                 break;
             case WitchType::ナズナ:
                 //MP+20%
-                Witch::Main->Mp *= 1.2;
+                Witch::Main->Mp += int(Witch::Main->Mp * 0.2);
                 break;
             case WitchType::委員長:
                 //アクティブ攻撃

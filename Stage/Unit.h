@@ -381,7 +381,7 @@ namespace SDX_TD
             if (残り売却時間 == 0 )
             {
                 MSound::売却.Play();
-                Witch::Main->Mp += st->コスト[Lv] * Witch::Main->回収率;
+                Witch::Main->Mp += int(st->コスト[Lv] * Witch::Main->回収率);
                 isRemove = true;
 
                 //ウィッチは配置数が回復する

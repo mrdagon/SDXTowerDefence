@@ -113,6 +113,10 @@ namespace SDX_TD
                 UnitDataS[type].支援効果[a] = DefUnitDataS[type].支援効果[a] * 支援補正;
                 UnitDataS[type].炸裂範囲[a] = int(DefUnitDataS[type].炸裂範囲[a] * 炸裂補正) + 炸裂加算;
                 UnitDataS[type].デバフ効果[a] = int(DefUnitDataS[type].デバフ効果[a] * 特殊補正[DefUnitDataS[type].デバフ種]);
+				if (UnitDataS[type].デバフ種 == DebuffType::鈍足)
+				{
+					UnitDataS[type].デバフ率[a] = DefUnitDataS[type].デバフ率[a] * 特殊補正[DefUnitDataS[type].デバフ種];
+				}
             }
         }
 
@@ -256,7 +260,7 @@ namespace SDX_TD
 		static const int 基本Sp = 1000;
 		static int 最大Hp;//共通
 		static int Hp;//共通
-        static double Mp;//共通
+        static int Mp;//共通
         static double Sp;//共通
         static double 最大Sp;//共通
         static int 大魔法残り時間;
@@ -428,7 +432,7 @@ namespace SDX_TD
     EnumArray<int, UnitType> Witch::強化回数;
     int Witch::最大Hp;
     int	Witch::Hp;
-    double Witch::Mp;//共通
+    int Witch::Mp;//共通
     double Witch::Sp = 0;//共通
     double Witch::最大Sp = 1000;
     int Witch::大魔法残り時間 = 0;

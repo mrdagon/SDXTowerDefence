@@ -112,8 +112,8 @@ namespace SDX_TD
 			//吹き飛び量が少ないなら処理しない
 			if (pushX == 0 && pushY == 0){return;}
 
-			吹き飛びX = std::min(std::max( pushX, -8), 8);
-			吹き飛びX = std::min(std::max(pushY, -8), 8);
+			pushX = std::min(std::max( pushX, -8), 8);
+			pushY = std::min(std::max(pushY, -8), 8);
 			吹き飛びX -= pushX;
 			吹き飛びY -= pushY;
 
@@ -127,53 +127,48 @@ namespace SDX_TD
 			const bool is左 = (posX + pushX >= 10);
 			const bool is右 = (posX + pushX <= 5);
 
-			//各方向にはみ出ているか
-			bool 衝突[9] = {false};
-
-			//角以外のめりこみ
-			if (is上 && !SStage->land.Check地形(GetX(), GetY() - 12, 移動種))
-			{ 
-				衝突[1] = true;
-				pushY = 5 - posY;
-			}
-			if (is下 && !SStage->land.Check地形(GetX(), GetY() + 12, 移動種))
+			//吹き飛び方向は8種で
+			if (is上 )
 			{
-				衝突[7] = true;
-				pushY = 10 - posY;
-			}
-
-			if (is右 && !SStage->land.Check地形(GetX() - 12, GetY(), 移動種))
-			{
-				衝突[3] = true;
-				pushX = 5 - posX;
-				
-			}
-			if (is左 && !SStage->land.Check地形(GetX() + 12, GetY(), 移動種))
-			{
-				衝突[5] = true;
-				pushX = 10 - posX;
-			}
-
-			//角にめりこみ
-			if (is上 && is左 && !衝突[1] && !衝突[3] && !SStage->land.Check地形(GetX() - 12, GetY() - 12, 移動種))
-			{
-				if (posX >= posY)
+				if (is左)
 				{
 
 				}
+				else if (is右)
+				{
+
+				}
+				else
+				{
+					//真上
+				}
 			}
-			if (is上 && is右 && !衝突[1] && !衝突[5] && !SStage->land.Check地形(GetX() + 12, GetY() - 12, 移動種))
+			else if (is下)
 			{
+				if (is左)
+				{
+
+				}
+				else if (is右)
+				{
+
+				}
+				else
+				{
+					//真下
+				}
+			}
+			else if (is左)
+			{
+				//真左
 
 			}
-			if (is下 && is左 && !衝突[3] && !衝突[7] && !SStage->land.Check地形(GetX() - 12, GetY() + 12, 移動種))
+			else if (is右)
 			{
-			}
-			if (is下 && is右 && !衝突[5] && !衝突[7] && !SStage->land.Check地形(GetX() + 12, GetY() + 12, 移動種))
-			{
+				//真右
+
 			}
 
-			Move(pushX, pushY);
 		}
 
 		/**@todo 乱数使用がリプレイ機能に影響.*/
@@ -521,7 +516,7 @@ namespace SDX_TD
 			}
 
 			//MP&SP&スコア増
-			Witch::Mp += スコア *0.1 * Witch::Main->MP獲得;
+			Witch::Mp += int(スコア *0.1 * Witch::Main->MP獲得);
 			Witch::Main->AddSp(st->スコア);
 
 			SStage->score += int(スコア * Witch::Main->スコア補正);
