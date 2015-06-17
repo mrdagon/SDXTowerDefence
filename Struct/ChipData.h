@@ -30,12 +30,12 @@ namespace SDX_TD
 		ChipDataS[ChipType::草].Set(true, true, true);
 		ChipDataS[ChipType::沼].Set(true, true, true);
 		ChipDataS[ChipType::森].Set(true, false, false);
+		ChipDataS[ChipType::砂].Set(false, true, true);
 		ChipDataS[ChipType::道].Set(false, true, true);
-		ChipDataS[ChipType::橋].Set(false, true, true);
 		ChipDataS[ChipType::山].Set(false, false, false);
 		ChipDataS[ChipType::水].Set(false, false, true);
 		ChipDataS[ChipType::穴].Set(false, true, true);
 		ChipDataS[ChipType::畑].Set(false, true, true);
-		ChipDataS[ChipType::高山].Set(false, false, false);
+		ChipDataS[ChipType::星].Set(false, false, false);
 	}
 }

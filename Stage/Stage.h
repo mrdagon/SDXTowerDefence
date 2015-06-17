@@ -75,6 +75,9 @@ namespace SDX_TD
             {
                 const int x = (int)it->GetX() / CHIP_SIZE;
                 const int y = (int)it->GetY() / CHIP_SIZE;
+
+				if (x < 0 || y < 0 || x >= MAP_SIZE || y >= MAP_SIZE){ continue; }
+
                 if (始点[x][y] == nullptr)
                 {
                     始点[x][y] = it.get();

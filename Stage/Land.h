@@ -391,7 +391,7 @@ namespace SDX_TD
 		}
 
 		/**現在の地形が通行可能かどうか.*/
-		bool Check地形(double X座標, double Y座標, MoveType 移動種)
+		bool Check移動不可(double X座標, double Y座標, MoveType 移動種)
 		{
 			int x = (int)X座標 / CHIP_SIZE;
 			int y = (int)Y座標 / CHIP_SIZE;
@@ -402,13 +402,13 @@ namespace SDX_TD
 			switch (移動種)
 			{
 			case SDX_TD::MoveType::空:
-				return 空路.is通行[x][y];
+				return !空路.is通行[x][y];
 				break;
 			case SDX_TD::MoveType::陸:
-				return 陸路.is通行[x][y];
+				return !陸路.is通行[x][y] || is魔法[x][y];
 				break;
 			case SDX_TD::MoveType::水:
-				return 水路.is通行[x][y];
+				return !水路.is通行[x][y] || is魔法[x][y];
 				break;
 			default:
 				return false;

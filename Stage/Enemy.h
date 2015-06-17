@@ -89,6 +89,8 @@ namespace SDX_TD
 
 			int x = (int)(GetX() / CHIP_SIZE);
 			int y = (int)(GetY() / CHIP_SIZE);
+			if (x < 0 || x >= MAP_SIZE || y < 0 || y >= MAP_SIZE) return;
+
 			auto 地形種 = SStage->land.地形[x][y];
 
 			switch (地形種)
@@ -117,6 +119,12 @@ namespace SDX_TD
 			吹き飛びX -= pushX;
 			吹き飛びY -= pushY;
 
+			if (移動種 == MoveType::空)
+			{
+				Move(pushX, pushY);
+				return;
+			}
+
 			//ブロック内での位置
 			const int posX = (int)GetX() % CHIP_SIZE;
 			const int posY = (int)GetY() % CHIP_SIZE;
@@ -124,51 +132,33 @@ namespace SDX_TD
 			//各方向で衝突チェック
 			const bool is上 = (posY + pushY <= 5);
 			const bool is下 = (posY + pushY >= 10);
-			const bool is左 = (posX + pushX >= 10);
-			const bool is右 = (posX + pushX <= 5);
+			const bool is左 = (posX + pushX <= 5);
+			const bool is右 = (posX + pushX >= 10);
 
-			//吹き飛び方向は8種で
-			if (is上 )
+			bool hitU = is上 && SStage->land.Check移動不可(GetX(), GetY() - 16, 移動種);
+			bool hitD = is下 && SStage->land.Check移動不可(GetX(), GetY() + 16, 移動種);
+			bool hitL = is左 && SStage->land.Check移動不可(GetX() - 16, GetY(), 移動種);
+			bool hitR = is右 && SStage->land.Check移動不可(GetX() + 16, GetY(), 移動種);
+
+			if ( hitU )
 			{
-				if (is左)
-				{
-
-				}
-				else if (is右)
-				{
-
-				}
-				else
-				{
-					//真上
-				}
+				pushY = 5 - posY;
 			}
-			else if (is下)
+			else if (hitD)
 			{
-				if (is左)
-				{
-
-				}
-				else if (is右)
-				{
-
-				}
-				else
-				{
-					//真下
-				}
-			}
-			else if (is左)
-			{
-				//真左
-
-			}
-			else if (is右)
-			{
-				//真右
-
+				pushY = 10 - posY;
 			}
 
+			if (hitL)
+			{
+				pushX = 5 - posX;
+			}
+			else if (hitR)
+			{
+				pushX = 10 - posX;
+			}
+
+			Move(pushX, pushY);
 		}
 
 		/**@todo 乱数使用がリプレイ機能に影響.*/
@@ -317,7 +307,7 @@ namespace SDX_TD
 			{
 				Dead();
 			}
-			else if (SStage->land.地形[x][y] == ChipType::畑)
+			else if (x < 0 || x >= MAP_SIZE || y < 0 || y >= MAP_SIZE || SStage->land.地形[x][y] == ChipType::畑)
 			{
 				//ゴール判定
 				if (isBoss)

@@ -66,9 +66,9 @@ namespace SDX_TD
 		/**.*/
 		void ExeRemove()
 		{
-			for (auto && it : objectS)
+			for (int a = 0; a < objectS.size(); ++a)
 			{
-				it->RemoveCheck();
+				objectS[a]->RemoveCheck();
 			}
 
 			auto  it = objectS.begin();
