@@ -138,11 +138,11 @@ namespace SDX_TD
 				//斜め方向は距離7、上下左右は5で近似
 				const int distance[2] = { 距離[X座標][Y座標] + 7, 距離[X座標][Y座標] + 5 };
 
-				for (int a = 0; a < 9; ++a)
+				//斜め
+				for (int a = 0; a < 9;  a+= 2)
 				{
 					//現在のマスは無視
 					if (a == 4) continue;
-
 					const int X = X座標 - 1 + a % 3;
 					const int Y = Y座標 - 1 + a / 3;
 					//移動不可能なマスは無視
@@ -155,12 +155,25 @@ namespace SDX_TD
 					if (a == 6 && (!is通行[X座標 - 1][Y座標] || !is通行[X座標][Y座標 + 1])) continue;
 					if (a == 8 && (!is通行[X座標 + 1][Y座標] || !is通行[X座標][Y座標 + 1])) continue;
 
-					//斜め移動優先
-					if (a % 2 == 0 && 距離[X][Y] == distance[0] && 経路[X][Y] % 2 == 0)
+					//最短経路更新
+					if (距離[X][Y] > distance[a % 2])
 					{
+						距離[X][Y] = distance[a % 2];
 						経路[X][Y] = 8 - a;
+						計算リスト.push_back(X + Y * MAP_SIZE);
 					}
+				}
 
+				//上下左右
+				for (int a = 1; a < 9;  a+= 2)
+				{
+					const int X = X座標 - 1 + a % 3;
+					const int Y = Y座標 - 1 + a / 3;
+					//移動不可能なマスは無視
+					if (!is通行[X][Y]) continue;
+					//画面外になる場合は無視
+					if (X < 0 || X >= MAP_SIZE || Y < 0 || Y >= MAP_SIZE) continue;
+					
 					//最短経路更新
 					if (距離[X][Y] > distance[a % 2])
 					{
@@ -231,9 +244,9 @@ namespace SDX_TD
 			if (移動種 == MoveType::水)
 			{
 				if (ChipDataS[地形[xa][ya]].is水移動) is水敵[xa][ya] = true;
-				if (ChipDataS[地形[xa][yb]].is水移動) is陸敵[xa][yb] = true;
-				if (ChipDataS[地形[xb][ya]].is水移動) is陸敵[xb][ya] = true;
-				if (ChipDataS[地形[xb][yb]].is水移動) is陸敵[xb][yb] = true;
+				if (ChipDataS[地形[xa][yb]].is水移動) is水敵[xa][yb] = true;
+				if (ChipDataS[地形[xb][ya]].is水移動) is水敵[xb][ya] = true;
+				if (ChipDataS[地形[xb][yb]].is水移動) is水敵[xb][yb] = true;
 			}
 		}
 
@@ -398,7 +411,7 @@ namespace SDX_TD
 
 			if (x < 0 || x >= MAP_SIZE || y < 0 || y >= MAP_SIZE) return false;
 
-			//falseなら通行不可
+			//trueなら通行不可
 			switch (移動種)
 			{
 			case SDX_TD::MoveType::空:

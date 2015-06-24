@@ -140,6 +140,11 @@ namespace SDX_TD
 			bool hitL = is左 && SStage->land.Check移動不可(GetX() - 16, GetY(), 移動種);
 			bool hitR = is右 && SStage->land.Check移動不可(GetX() + 16, GetY(), 移動種);
 
+			if (is上 && is左 && SStage->land.Check移動不可(GetX() - 16, GetY() - 16, 移動種)){ hitU = true; hitL = true; }
+			if (is上 && is右 && SStage->land.Check移動不可(GetX() + 16, GetY() - 16, 移動種)){ hitU = true; hitR = true; }
+			if (is下 && is左 && SStage->land.Check移動不可(GetX() - 16, GetY() + 16, 移動種)){ hitD = true; hitL = true; }
+			if (is下 && is右 && SStage->land.Check移動不可(GetX() + 16, GetY() + 16, 移動種)){ hitD = true; hitR = true; }
+
 			if ( hitU )
 			{
 				pushY = 5 - posY;

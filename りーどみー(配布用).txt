@@ -86,6 +86,10 @@ http://www.libsdl.org/index.php
 SDXFramework
 http://sourceforge.jp/projects/dxframework/
 
+libjpeg copyright (C) 1991-2012, Thomas G. Lane, Guido Vollbeding.All rights reserved.\n
+libmikmod Copyright (c) Mikmod.All rights reserved.\n
+smpeg Copyright (c)Loki Software.All rights reserved.\n
+
 Github(ソースコード公開中)
 https://github.com/mrdagon/SDXTowerDefence
 

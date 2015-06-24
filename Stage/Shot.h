@@ -93,7 +93,7 @@ namespace SDX_TD
         Beam(const Line &範囲, const UnitData* st, int Lv, double 支援補正 , int ヒット数) :
             IShot( 0, st, Lv, 支援補正),
             line(範囲),
-            ヒット数(ヒット数 - 1)
+            ヒット数(ヒット数)
         {
             isArea = true;
             is貫通 = true;
@@ -110,7 +110,7 @@ namespace SDX_TD
         {
             //発生フレームのみ判定がある
             //1秒に6回判定がある
-            if (timer % 10 == 0 && ヒット数 > 0)
+            if (timer % 10 == 3 && ヒット数 > 0)
             {
                 --ヒット数;
                 isHitCheck = true;
@@ -142,16 +142,18 @@ namespace SDX_TD
         TShape shape;
         TSprite sprite;
         TMotion motion;
+		int 反射回数;
 
 		const IShape& GetShape() const { return shape; }
 		const ISprite& GetSprite() const { return sprite; }
 
         /** α版は弾画像一種類.*/
-        Shot(TSprite &&描画方法, TMotion &&移動方法 , TShape &&図形, const UnitData *基礎性能, int Lv, double 角度 , double 支援補正) :
+        Shot(TSprite &&描画方法, TMotion &&移動方法 , TShape &&図形, const UnitData *基礎性能, int Lv, double 角度 , double 支援補正 , int 反射回数 = 0) :
             IShot( 角度, 基礎性能 , Lv , 支援補正),
             shape(図形),
             sprite(描画方法),
-            motion(移動方法)
+            motion(移動方法),
+			反射回数(反射回数)
         {
             SetAngle(角度);
             sprite.SetZoom(10.0 / 32, 10.0 / 32);
@@ -170,9 +172,37 @@ namespace SDX_TD
             const double x = GetX();
             const double y = GetY();
 
-            if (x < -10 || x > MAP_SIZE * CHIP_SIZE + 10 || y < -10 || y > MAP_SIZE * CHIP_SIZE + 10)
+			if (反射回数 > 0)
+			{
+				if (x < 32)
+				{
+					//OK
+					SetPos(32, y);
+					SetAngle(-GetAngle() + PAI);
+					--反射回数;
+				}
+				if (x > MAP_SIZE * CHIP_SIZE -32)
+				{
+					SetPos(MAP_SIZE * CHIP_SIZE -32, y);
+					SetAngle(-GetAngle() + PAI);
+					--反射回数;
+				}
+				if (y < 32)
+				{
+					SetPos(x, 32);
+					SetAngle(-GetAngle() );
+					--反射回数;
+				}
+				if (y > MAP_SIZE * CHIP_SIZE -32)
+				{
+					SetPos(x, MAP_SIZE * CHIP_SIZE -32);
+					SetAngle(-GetAngle() );
+					--反射回数;
+				}
+			}
+            else if (x < -10 || x > MAP_SIZE * CHIP_SIZE + 10 || y < -10 || y > MAP_SIZE * CHIP_SIZE + 10)
             {
-                isRemove = true;
+				isRemove = true;
             }
             return isRemove;
         }
@@ -186,6 +216,7 @@ namespace SDX_TD
                 isRemove = true;
             }
 
+			//炸裂付き攻撃
             if (炸裂半径 > 0 && !isArea)
             {
                 SStage->Add(new Bomm({ GetX(), GetY(), 炸裂半径 }, st, Lv, 支援補正));

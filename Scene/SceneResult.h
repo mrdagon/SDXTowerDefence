@@ -66,7 +66,8 @@ namespace SDX_TD
             isEnd = false;
             isリプレイ保存済み = false;
 
-            diffRate = 1 + DifficultyDataS[TDSystem::難易度].スコア補正;
+			diffRate = 1 + DifficultyDataS[TDSystem::難易度].スコア補正 * (1 + !TDSystem::isカップル*0.5 + !TDSystem::isスキル * 0.5);
+			
             bonusRate = std::ceil(double(Witch::Hp) * 100 / Witch::最大Hp) / 100 + 1.0;
 
 			if (Witch::Hp >= Witch::最大Hp)

@@ -72,6 +72,7 @@ namespace SDX_TD
             if (タッチ操作Chk.isClick()){ TDSystem::isタッチ = !TDSystem::isタッチ; }
             if (初期配置Chk.isClick()){ TDSystem::is配置記録 = !TDSystem::is配置記録; }
             if (画面サイズChk.isClick()){ TDSystem::isフルスクリーン = !TDSystem::isフルスクリーン; Window::SetFullscreen(TDSystem::isフルスクリーン); }
+			if (おまけChk.isClick()){ TDSystem::is高速 = !TDSystem::is高速; }
             //End
 
             TDSystem::効果音の音量 = std::min(std::max(0, TDSystem::効果音の音量), 10);
@@ -134,8 +135,7 @@ namespace SDX_TD
 			DrawCheck(エフェクト表示, エフェクト表示Chk, "エフェクト簡略化", TDSystem::isエフェクト省略);
             DrawCheck(リプレイ保存, リプレイ保存Chk, "更新時リプレイ保存", TDSystem::isリプレイ保存);
             DrawCheck(画面サイズ, 画面サイズChk, "フルスクリーン", TDSystem::isフルスクリーン);
-
-
+			DrawCheck(おまけ, おまけChk, "64倍速有り", TDSystem::is高速);
         }
 
         void LoadGUI() override

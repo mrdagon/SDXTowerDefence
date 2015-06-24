@@ -497,7 +497,7 @@ namespace SDX_TD
 					SStage->Add(new Bomm({ GetX(), GetY(), 射程 }, st, Lv, 支援補正));
 					break;
 				case UnitType::ルコウ://騎士強化
-					SStage->Add(new S加速(&MEffect::弾, { { -速度, 速度 / 30, 9999 } }, DEF), a * 3);
+					SStage->Add(new S加速(&MEffect::弾, { { -速度, 速度 / 30, 9999 } }, DEF , 1 + Lv/2), a * 3);
 					break;
 				case UnitType::ディアネラ://槍兵強化//八方向攻撃
 					if (a == 0)
@@ -560,7 +560,7 @@ namespace SDX_TD
 					SStage->Add(new S直進(&MEffect::弾, { 速度 }, { GetX(),GetY(),st->半径 }, st, Lv, 角度 - (st->Hit数[Lv] * 5 - 5 + a * 10) * DEG, 支援補正));
 					break;
 				case UnitType::騎士://反射B-連射加速直進
-					SStage->Add(new S加速(&MEffect::弾, { { -速度, 速度 / 20, 速度 * 2 } }, DEF), a * 10);
+					SStage->Add(new S加速(&MEffect::弾, { { -速度, 速度 / 20, 速度 * 2 } }, DEF , 1 + Lv /5), a * 10);
 					break;
 				case UnitType::斧士://吹き飛びA-後ろ射出加速
 					SStage->Add(new S加速(&MEffect::弾, { { -速度, 0.1, 速度 * 10 } }, DEF));

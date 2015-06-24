@@ -100,7 +100,7 @@ namespace SDX_TD
                 {
                     弾->Damaged(敵);
                     敵->Damaged(弾);
-                    if ( !弾->is貫通)
+                    if ( !弾->is貫通 )
                     {
                         return true;
                     }
@@ -258,7 +258,7 @@ namespace SDX_TD
             int comNo = 0;
 
             //速度変更
-			if (isReplay)
+			if (TDSystem::is高速 || isReplay)
 			{
 				if (Input::mouse.Whell > 0){ gameSpeed *= 4; }
 				if (Input::mouse.Whell < 0){ gameSpeed /= 4; }
@@ -659,7 +659,7 @@ namespace SDX_TD
                 MFont::fontS[FontType::BMP黒].Draw(UI::Rゲーム速度[a].GetPoint() + UI::P差分[7], Color::White, "x");
                 MFont::fontS[FontType::BMP黒].DrawExtend(UI::Rゲーム速度[a].GetPoint() + UI::P差分[6], 2, 2, Color::White, { std::setw(2), spd });
 
-                spd *= 2 + 2 * isReplay;
+                spd *= 2 + 2 * (isReplay || TDSystem::is高速);
             }
 
             //全体枠
@@ -1135,7 +1135,7 @@ namespace SDX_TD
                         std::abs(unitS[a].GetY() - unitS[b].GetY()) <= CHIP_SIZE * 2
                         )
                     {
-						unitS[b].支援補正 = std::max(支援, unitS[b].支援補正);
+						unitS[b].支援補正 = std::max( 1.0 + 支援, unitS[b].支援補正);
                     }
                 }
             }

@@ -215,7 +215,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneConfig" visible="0">
+ <objectgroup name="SceneConfig">
   <object id="90" name="効果音＋" type="Button" x="555.5" y="25" width="60" height="60">
    <properties>
     <property name="frameNo" value="3"/>
@@ -614,7 +614,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneResult">
+ <objectgroup name="SceneResult" visible="0">
   <object id="83" name="リプレイ保存" type="Button" x="121.5" y="384" width="120" height="60">
    <properties>
     <property name="frameNo" value="3"/>
