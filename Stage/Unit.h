@@ -6,8 +6,8 @@
 #include "IStage.h"
 #include "Enemy.h"
 #include "Wave.h"
-#include "Struct/DataS.h"
-#include "Design.h"
+#include "../Struct/DataS.h"
+#include "../Design.h"
 #include "Shot.h"
 #include "ShotMotion.h"
 

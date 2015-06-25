@@ -99,7 +99,8 @@ namespace SDX_TD
 
             for (int a = 0; a < std::min((int)replayS.size(), 11); ++a)
             {
-                if (buf.Hit( &Input::mouse.GetPoint()))
+				auto pt = Input::mouse.GetPoint();
+                if (buf.Hit( &pt))
                 {
                     replayNo = a + スクロールバー.scrIndex;
                 }

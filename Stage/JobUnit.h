@@ -3,7 +3,7 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include "Unit.h"
-#include "Design.h"
+#include "../Design.h"
 
 namespace SDX_TD
 {

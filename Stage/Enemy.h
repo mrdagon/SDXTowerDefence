@@ -4,8 +4,8 @@
 #pragma once
 #include "Object.h"
 #include "Shot.h"
-#include "Struct/DataS.h"
-#include "Design.h"
+#include "../Struct/DataS.h"
+#include "../Design.h"
 #include "Witch.h"
 
 namespace SDX_TD
