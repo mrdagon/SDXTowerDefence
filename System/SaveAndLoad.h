@@ -2,10 +2,10 @@
 //[License]GNU Affero General Public License, version 3
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
-#include "System/EnumType.h"
-#include "Struct/WitchData.h"//経験値、レベル、スキルポイント
-#include "System/TDSystem.h"//設定等色々
-#include "Struct/StageData.h"//ハイスコア等
+#include "EnumType.h"
+#include "TDSystem.h"//設定等色々
+#include "../Struct/WitchData.h"//経験値、レベル、スキルポイント
+#include "../Struct/StageData.h"//ハイスコア等
 
 namespace SDX_TD
 {
