@@ -15,7 +15,7 @@
 #include "../Scene/SceneResult.h"
 
 #include "JobUnit.h"
-#include "Struct/ReplayData.h"
+#include "../Struct/ReplayData.h"
 
 namespace SDX_TD
 {

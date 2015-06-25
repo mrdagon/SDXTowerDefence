@@ -61,7 +61,8 @@ namespace SDX_TD
 
 		bool isClick()
 		{
-			return Input::mouse.Left.on && rect.Hit(&Input::mouse.GetPoint());
+			auto pt = Input::mouse.GetPoint();
+			return Input::mouse.Left.on && rect.Hit(&pt);
 		}
 	};
 }

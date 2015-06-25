@@ -80,7 +80,8 @@ namespace SDX_TD
 
         void PushSB(UI_Button &ボタン , SkillType スキル種)
         {
-            if (ボタン.rect.Hit(&Input::mouse.GetPoint()) )
+			auto pt = Input::mouse.GetPoint();
+            if (ボタン.rect.Hit(&pt) )
             {
                 double pt = 0;//変化前
                 double pt2 = 0;//変化量

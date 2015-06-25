@@ -70,7 +70,8 @@ namespace SDX_TD
             }
             else if(isClick())
             {
-                if ( !scrBox.Hit( &Input::mouse.GetPoint()))
+				auto pt = Input::mouse.GetPoint();
+                if ( !scrBox.Hit( &pt))
                 {
                     scrBox.y = Input::mouse.y - scrBox.GetH() / 2;
                     if (scrBox.y < rect.y)
