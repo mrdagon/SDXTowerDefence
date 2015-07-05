@@ -246,6 +246,42 @@ namespace SDX_TD
             namespace UI = UI_Stage;
 
             const Point point = { Input::mouse.x , Input::mouse.y };
+			//カットインテスト
+			int anime_sp = 4;
+			static int anime_wait = 60;
+			if (Input::key.F1.on)
+			{
+				大魔法演出(1, anime_sp, anime_wait);
+			}
+			if (Input::key.F2.on)
+			{
+				大魔法演出(2, anime_sp, anime_wait);
+			}
+			if (Input::key.F3.on)
+			{
+				大魔法演出(3, anime_sp, anime_wait);
+			}
+			if (Input::key.F4.on)
+			{
+				大魔法演出(4, anime_sp, anime_wait);
+			}
+			if (Input::key.F5.on)
+			{
+				anime_wait = 30;
+			}
+			if (Input::key.F6.on)
+			{
+				anime_wait = 60;
+			}
+			if (Input::key.F7.on)
+			{
+				anime_wait = 90;
+			}
+			if (Input::key.F8.on)
+			{
+				anime_wait = 120;
+			}
+
             //タブレットでは指を離した時、デスクトップはクリック時に操作
             bool isClick = Input::mouse.Left.on;
 
@@ -1167,20 +1203,7 @@ namespace SDX_TD
             }
             else if ( !TDSystem::isエフェクト省略 )
             {
-                //開始時処理
-                MMusic::大魔法.Play();
-				Director::IsDraw() = true;
-
-                //演出
-                for (int a = 0; a < 250; ++a)
-                {
-                    Screen::SetBright(Color::Gray);
-                    SStage->Draw();
-                    Screen::SetBright(Color::White);
-                    //@todo 演出は仮
-                    MFont::fontS[FontType::ゴシック中].DrawRotate({ 800 - a * 6, 300 }, 5, 0, Color::White, Witch::Main->大魔法名);
-                    System::Update();
-                }
+				大魔法演出();
             }
 
             //全体ダメージ
@@ -1264,5 +1287,69 @@ namespace SDX_TD
                 break;
             }
         }
-    };
+
+		void 大魔法演出(int mode = 3, int speed = 4 , int wait = 60)
+		{
+			//描画スキップを解除
+			Director::IsDraw() = true;
+			//BGMを流す
+			MMusic::大魔法.Play();
+			
+			int x=320,y=240;//初期位置
+			int vx=0,vy=0;//速度
+			int vax=0,vay=0;//加速度
+
+			switch (mode)
+			{
+			case 1://上から下
+				vay = -speed;//最初は減速
+				vy = -vay * 20;
+				break;
+			case 2://下から上
+				vay = speed;//最初は減速
+				vy = -vay * 20;
+				break;
+			case 3://左から右
+				vax = -speed;//最初は減速
+				vx = -vax * 20;
+				break;
+			case 4://右から左
+				vax = speed;//最初は減速
+				vx = -vax * 20;
+				break;
+			}
+			if (vax != 0){ x = vx * (vx / vax - 1) / 2 + 320; }
+			if (vay != 0){ y = vy * (vy / vay - 1) / 2 + 240; }
+
+			//演出
+			int anime_time = wait + 63;
+
+			for (int a = 0; a < anime_time ; ++a)
+			{
+				if (wait <= 0 || vx != 0 || vy != 0)
+				{
+					x += vx;
+					y += vy;
+					vx += vax;
+					vy += vay;
+				}
+				else
+				{
+					wait--;
+					if (wait == 0)
+					{
+						vax /= -2;
+						vay /= -2;
+					}
+				}
+
+				Screen::SetBright(Color::Gray);
+				SStage->Draw();
+				Screen::SetBright(Color::White);
+				//@todo 演出は仮
+				MSystem::カットイン[Witch::Main->種類].DrawRotate({ x, y },1,0);
+				System::Update();
+			}
+		}
+};
 }

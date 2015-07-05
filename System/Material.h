@@ -146,7 +146,8 @@ namespace SDX_TD
         ImagePack 枠画像[14];
         BmpFrame  フレーム[14];
         BmpFrame frameS[14];
-        Image 矢印[4];
+		Image 矢印[4];
+		EnumArray<Image,WitchType> カットイン;
 
         ImagePack マーク;
 
@@ -179,6 +180,19 @@ namespace SDX_TD
 
             チェック.Load("file/system/tick.png");
 
+			カットイン[WitchType::ライナ].Load("file/cut_in/lina.png");
+			カットイン[WitchType::ナツメ].Load("file/cut_in/natsume.png");
+			カットイン[WitchType::ルコウ].Load("file/cut_in/rukou.png");
+			カットイン[WitchType::ディアネラ].Load("file/cut_in/dianella.png");
+			カットイン[WitchType::ミナエ].Load("file/cut_in/minae.png");
+			カットイン[WitchType::トレニア].Load("file/cut_in/torenia.png");
+			カットイン[WitchType::ロチエ].Load("file/cut_in/rochie.png");
+			カットイン[WitchType::バロゥ].Load("file/cut_in/barrow.png");
+			カットイン[WitchType::フィオナ].Load("file/cut_in/fiona.png");
+			カットイン[WitchType::ナズナ].Load("file/cut_in/nazuna.png");
+			カットイン[WitchType::委員長].Load("file/cut_in/chairwoman.png");
+			カットイン[WitchType::ミルラ].Load("file/cut_in/myrra.png");
+
             for (int a = 0; a < 14; ++a)
             {
                 フレーム[a].Make(&枠画像[a]);
@@ -208,11 +222,11 @@ namespace SDX_TD
 			勝利.Load("file/music/syouri.mp3");
 			敗北.Load("file/music/haiboku.mp3");
 
-            通常.SetFadeInTime(1000);
-            通常.SetFadeOutTime(1000);
+            通常.SetFadeInTime(0);
+            通常.SetFadeOutTime(100);
 
-            大魔法.SetFadeInTime(1000);
-            大魔法.SetFadeOutTime(1000);
+            大魔法.SetFadeInTime(0);
+            大魔法.SetFadeOutTime(100);
         }
     }
 
