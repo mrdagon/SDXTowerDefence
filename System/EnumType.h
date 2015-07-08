@@ -11,6 +11,8 @@ namespace SDX_TD
     static const int 到達不可 = 99999999;
     static const int MAX_WAVE = 100;
 
+	static const double EXP_RATE = 0.05;//クリア時のスコアから素材ゲット率
+
     /**敵の移動タイプ.*/
     enum class MoveType
     {
@@ -180,7 +182,7 @@ namespace SDX_TD
     namespace StageType
     {
         static std::vector<std::string> Free;
-        static const std::string Quest[24] =
+        static const std::string Quest[20] =
         {
             "map00.tmx",
             "map01.tmx",
@@ -201,11 +203,7 @@ namespace SDX_TD
             "map16.tmx",
             "map17.tmx",
             "map18.tmx",
-            "map19.tmx",
-            "map20.tmx",
-            "map21.tmx",
-            "map22.tmx",
-            "map23.tmx"
+            "map19.tmx"
         };
     }
 

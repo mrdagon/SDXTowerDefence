@@ -105,7 +105,7 @@ namespace SDX_TD
 
 			//スコアの更新と経験値の獲得
 			//5% + 更新分
-	        getEXP = std::ceil(totalScore / 20);//5%
+	        getEXP = std::ceil(totalScore * EXP_RATE);
 			getEXP += StageDataS[TDSystem::選択ステージ].Update(Witch::Main->種類 , totalScore , 結果);
 			if (TDSystem::isカップル)
 			{

@@ -47,6 +47,25 @@ namespace SDX_TD
             return 成績[TDSystem::isスキル][TDSystem::isカップル];
         }
 
+		double Get最大スコア()
+		{
+			return std::max(
+			{
+				Getスコア().スコア[WitchType::ライナ],
+				Getスコア().スコア[WitchType::ナツメ],
+				Getスコア().スコア[WitchType::ルコウ],
+				Getスコア().スコア[WitchType::ディアネラ],
+				Getスコア().スコア[WitchType::ミナエ],
+				Getスコア().スコア[WitchType::トレニア],
+				Getスコア().スコア[WitchType::ロチエ],
+				Getスコア().スコア[WitchType::バロゥ],
+				Getスコア().スコア[WitchType::フィオナ],
+				Getスコア().スコア[WitchType::ナズナ],
+				Getスコア().スコア[WitchType::委員長],
+				Getスコア().スコア[WitchType::ミルラ],
+			});
+		}
+
         //メインウィッチ種、トライアルorパワー
         std::vector<Place> 初期配置[(int)WitchType::COUNT][2];
 
@@ -77,9 +96,15 @@ namespace SDX_TD
 		{
 			double exp = 0;
 
+			//全体スコアの更新計算
+			if (スコア > Get最大スコア())
+			{
+				exp += (スコア - Get最大スコア()) * 5;
+			}
+			//個別スコアの更新計算
 			if (スコア > Getスコア().スコア[種類])
 			{
-				exp = スコア - Getスコア().スコア[種類];
+				exp += スコア - Getスコア().スコア[種類];
 				Getスコア().スコア[種類] = スコア;
 			}
 
