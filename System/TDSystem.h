@@ -28,9 +28,47 @@ namespace SDX_TD
 		bool isクエスト開放[24] = { true , true , false};
 		double 経験値 = 0;
         //ランダムステージの状況
+		Difficulty 限界難易度 = Difficulty::Easy;
 
-        //実績関連
-        Difficulty 限界難易度 = Difficulty::Easy;
+        //実績関連-各ウィッチ毎に保存するのと全体のと
+		EnumArray<bool,ArchiveType> 実績;
+
+		//個別実績は達成度合いに応じてマークを付ける
+		//実績14個
+		//全体紋章 1P
+		//ウィッチ紋章 12P
+		//ユニット紋章 3P
+		//17P
+
+		//1P14個で丁度良さそう？あるいは14x3で7P
+
+		int 魔導具強化回数 = 0;
+		int 合計Wave = 0;
+		double 合計獲得資金 = 0;
+		double 合計消費資金 = 0;
+		int 合計勲章数 = 0;
+
+		int ザコ撃破数 = 0;
+		int ボス撃破数 = 0;
+		int 合計Wave数 = 0;
+		double シングル総スコア = 0;
+		double タッグ総スコア = 0;
+
+		int クエスト白星数 = 0;
+		int クエスト金星数 = 0;
+		int 合計被ダメージ = 0;
+		int プレイ秒数 = 0;
+
+
+		//ウィッチ個別の実績 12,12,78,12
+		EnumArray<int, WitchType> クリア回数;
+		EnumArray<int, WitchType> パーフェクト回数;
+		EnumArray<int, WitchType> 大魔法回数;
+		EnumArray<EnumArray<int,WitchType>, WitchType> タッグ回数;
+
+		//ユニット種別の実績,42
+		EnumArray<int, UnitType> 配置回数;
+		EnumArray<int, UnitType> 強化回数;
 
         //設定関連
         int 効果音の音量 = 3;//0～10
