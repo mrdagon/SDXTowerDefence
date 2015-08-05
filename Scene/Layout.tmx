@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="321">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="331">
  <objectgroup color="#00ffff" name="TEMPLATE">
   <object id="16" name="ScrollBar" type="ScrollBar" x="306.5" y="496" width="57" height="54">
    <properties>
@@ -340,103 +340,93 @@
   </object>
  </objectgroup>
  <objectgroup name="SceneArchive" visible="0">
-  <object id="285" name="Frame" type="Frame" x="64" y="64" width="280" height="409">
+  <object id="285" name="項目枠1" type="Frame" x="64" y="64" width="280" height="409">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="5"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value=""/>
    </properties>
   </object>
-  <object id="291" name="Button" type="Button" x="64" y="3" width="55" height="55">
+  <object id="291" name="タブ1" type="Button" x="64" y="3" width="55" height="55">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="293" name="Frame" type="Frame" x="350" y="64" width="280" height="409">
+  <object id="293" name="項目枠2" type="Frame" x="350" y="64" width="280" height="409">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="5"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value=""/>
    </properties>
   </object>
-  <object id="295" name="Button" type="Button" x="121" y="3" width="55" height="55">
+  <object id="295" name="タブ2" type="Button" x="121" y="3" width="55" height="55">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="296" name="Button" type="Button" x="178" y="3" width="55" height="55">
+  <object id="296" name="タブ3" type="Button" x="178" y="3" width="55" height="55">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="297" name="Button" type="Button" x="235" y="3" width="55" height="55">
+  <object id="297" name="タブ4" type="Button" x="235" y="3" width="55" height="55">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="299" name="Button" type="Button" x="349" y="3" width="55" height="55">
+  <object id="299" name="タブ6" type="Button" x="349" y="3" width="55" height="55">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="300" name="Button" type="Button" x="406" y="3" width="55" height="55">
+  <object id="300" name="タブ7" type="Button" x="406" y="3" width="55" height="55">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="301" name="Button" type="Button" x="292" y="3" width="55" height="55">
+  <object id="301" name="タブ5" type="Button" x="292" y="3" width="55" height="55">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="302" name="Button" type="Button" x="463" y="3" width="55" height="55">
+  <object id="302" name="タブ8" type="Button" x="463" y="3" width="55" height="55">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="305" name="Button" type="Button" x="520" y="3" width="55" height="55">
+  <object id="305" name="タブ9" type="Button" x="520" y="3" width="55" height="55">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="306" name="Button" type="Button" x="577" y="3" width="55" height="55">
+  <object id="306" name="タブ10" type="Button" x="577" y="3" width="55" height="55">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="307" name="Text" type="Text" x="75.5" y="75" width="254.5" height="27">
+  <object id="307" name="項目1" type="Text" x="68.5" y="75" width="266.5" height="23">
    <properties>
-    <property name="fontNo" value="int"/>
-    <property name="text" value="std::string"/>
-    <property name="~Draw" value="MFont::fontS[@fontNo].DrawRotate(@rect.GetCenter(),1,0,Color::White,@text);"/>
-    <property name="~Final" value=""/>
-    <property name="~Init" value=""/>
-    <property name="~Update" value=""/>
-   </properties>
-  </object>
-  <object id="308" name="Text" type="Text" x="361" y="75" width="254.5" height="27">
-   <properties>
-    <property name="fontNo" value="int"/>
+    <property name="fontNo" value="1"/>
     <property name="text" value="std::string"/>
     <property name="~Draw" value="MFont::fontS[@fontNo].DrawRotate(@rect.GetCenter(),1,0,Color::White,@text);"/>
     <property name="~Final" value=""/>
@@ -446,7 +436,7 @@
   </object>
  </objectgroup>
  <objectgroup name="SceneHelp">
-  <object id="125" name="クレジット" type="Button" x="66" y="6" width="280" height="48">
+  <object id="125" name="項目1" type="Button" x="66" y="6" width="280" height="48">
    <properties>
     <property name="frameNo" value="3"/>
    </properties>
@@ -852,30 +842,30 @@
   </object>
  </objectgroup>
  <objectgroup name="SceneShop" visible="0">
-  <object id="264" name="Frame" type="Frame" x="452" y="6" width="180" height="468">
+  <object id="264" name="合計取得数枠" type="Frame" x="452" y="6" width="180" height="380">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="5"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value=""/>
    </properties>
   </object>
   <object id="311" name="Frame" type="Frame" x="66" y="6" width="380" height="380">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="5"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value=""/>
    </properties>
   </object>
-  <object id="312" name="Frame" type="Frame" x="66" y="392" width="380" height="80">
+  <object id="312" name="費用表示枠" type="Frame" x="66" y="392" width="565" height="80">
    <properties>
-    <property name="frameNo" value="int"/>
+    <property name="frameNo" value="5"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value=""/>
    </properties>
   </object>
-  <object id="313" name="Text" type="Text" x="456.5" y="10" width="169.5" height="31">
+  <object id="313" name="取得スキル欄" type="Text" x="456.5" y="10" width="80" height="31">
    <properties>
-    <property name="fontNo" value="int"/>
+    <property name="fontNo" value="1"/>
     <property name="text" value="std::string"/>
     <property name="~Draw" value="MFont::fontS[@fontNo].DrawRotate(@rect.GetCenter(),1,0,Color::White,@text);"/>
     <property name="~Final" value=""/>
@@ -883,9 +873,9 @@
     <property name="~Update" value=""/>
    </properties>
   </object>
-  <object id="317" name="Text" type="Text" x="261.5" y="399" width="24.5" height="24">
+  <object id="317" name="消費魔石" type="Text" x="487.5" y="397" width="24.5" height="24">
    <properties>
-    <property name="fontNo" value="int"/>
+    <property name="fontNo" value="1"/>
     <property name="text" value="std::string"/>
     <property name="~Draw" value="MFont::fontS[@fontNo].DrawRotate(@rect.GetCenter(),1,0,Color::White,@text);"/>
     <property name="~Final" value=""/>
@@ -893,9 +883,9 @@
     <property name="~Update" value=""/>
    </properties>
   </object>
-  <object id="318" name="Text" type="Text" x="72.75" y="399" width="24.5" height="24">
+  <object id="318" name="スキル名" type="Text" x="72.75" y="399" width="24.5" height="24">
    <properties>
-    <property name="fontNo" value="int"/>
+    <property name="fontNo" value="1"/>
     <property name="text" value="std::string"/>
     <property name="~Draw" value="MFont::fontS[@fontNo].DrawRotate(@rect.GetCenter(),1,0,Color::White,@text);"/>
     <property name="~Final" value=""/>
@@ -905,7 +895,17 @@
   </object>
   <object id="319" name="Text" type="Text" x="72.75" y="429" width="24.5" height="24">
    <properties>
-    <property name="fontNo" value="int"/>
+    <property name="fontNo" value="1"/>
+    <property name="text" value="std::string"/>
+    <property name="~Draw" value="MFont::fontS[@fontNo].DrawRotate(@rect.GetCenter(),1,0,Color::White,@text);"/>
+    <property name="~Final" value=""/>
+    <property name="~Init" value=""/>
+    <property name="~Update" value=""/>
+   </properties>
+  </object>
+  <object id="321" name="所持魔石" type="Text" x="356.75" y="399" width="24.5" height="24">
+   <properties>
+    <property name="fontNo" value="1"/>
     <property name="text" value="std::string"/>
     <property name="~Draw" value="MFont::fontS[@fontNo].DrawRotate(@rect.GetCenter(),1,0,Color::White,@text);"/>
     <property name="~Final" value=""/>

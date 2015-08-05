@@ -34,11 +34,11 @@ namespace SDX_TD
 		EnumArray<bool,ArchiveType> 実績;
 
 		//個別実績は達成度合いに応じてマークを付ける
-		//実績14個
+		//実績14個 
 		//全体記録 1P
 		//ウィッチ記録 1×12P
-		//ユニット記録 3P
-		//17P
+		//ユニット記録 6P
+		//20P
 
 		//1P14個で丁度良さそう？あるいは14x3で7P
 		int 魔導具強化回数 = 0;
@@ -64,7 +64,7 @@ namespace SDX_TD
 		EnumArray<int, WitchType> 大魔法回数;
 		EnumArray<EnumArray<int,WitchType>, WitchType> タッグ回数;
 
-		//ユニット種別の実績,42
+		//ユニット種別の実績,42種類 = 14✕3 
 		EnumArray<int, UnitType> 配置回数;
 		EnumArray<int, UnitType> 強化回数;
 

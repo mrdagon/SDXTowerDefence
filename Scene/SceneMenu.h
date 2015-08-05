@@ -13,6 +13,7 @@
 #include "SceneStory.h"
 #include "SceneTitle.h"
 #include "SceneWitch.h"
+#include "SceneShop.h"
 
 namespace SDX_TD
 {
@@ -33,7 +34,7 @@ namespace SDX_TD
         SceneReplay sceneReplay;
 
         //@Define
-		UI_Frame 全体枠 = { 99, {0,0,640,480} , 0.000000,0};
+		UI_Frame 全体枠 = { 99, {1,0,640,480} , 0.000000,0};
 		UI_Button Storyタグ = { 67, {0,0,60,60} , 0.000000,0};
 		UI_Button Questタグ = { 72, {0,60,60,60} , 0.000000,0};
 		UI_Button Freeタグ = { 73, {0,120,60,60} , 0.000000,0};

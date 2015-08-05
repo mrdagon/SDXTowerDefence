@@ -1,4 +1,4 @@
-tmxfile,C:\Users\uemura\Documents\GitHub\SDXTowerDefence\Scene\Layout.tmx
+tmxfile,C:\Users\Uemura\Documents\GitHub\SDXTowerDefence\Scene\Layout.tmx
 class,tiled/ClassTemplate.h
 scene,tiled/SceneTemplate.h
 enum,tiled/EnumTemplate.h
