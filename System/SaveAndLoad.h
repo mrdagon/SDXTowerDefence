@@ -37,7 +37,7 @@ namespace SDX_TD
 		file.ReadWrite(TDSystem::レベル);
         file.ReadWrite(TDSystem::限界難易度);
 
-		for (int a = 0; a < 24; ++a)
+		for (int a = 0; a < StageType::COUNT; ++a)
 		{
 			file.ReadWrite(TDSystem::isクエスト開放[a]);
 		}
@@ -46,6 +46,7 @@ namespace SDX_TD
         file.ReadWrite(TDSystem::残りスキルポイント);
         file.ReadWrite(TDSystem::経験値);
 
+		//設定関連
         file.ReadWrite(TDSystem::効果音の音量);
         file.ReadWrite(TDSystem::BGMの音量);
 
@@ -60,8 +61,42 @@ namespace SDX_TD
 
         file.ReadWrite(TDSystem::isリプレイ保存);
 
+		//記録と実績関連
+		file.ReadWrite(TDSystem::プレイ秒数);
+		file.ReadWrite(TDSystem::合計スキルLv);
+		file.ReadWrite(TDSystem::合計Wave);
+		file.ReadWrite(TDSystem::合計獲得資金);
+		file.ReadWrite(TDSystem::合計消費資金);
+
+		file.ReadWrite(TDSystem::合計回収回数);
+		file.ReadWrite(TDSystem::合計仕事回数);
+		file.ReadWrite(TDSystem::合計獲得EXP);
+		file.ReadWrite(TDSystem::ザコ撃破数);
+		file.ReadWrite(TDSystem::ボス撃破数);
+
+		file.ReadWrite(TDSystem::シングル総スコア);
+		file.ReadWrite(TDSystem::タッグ総スコア);
+		file.ReadWrite(TDSystem::クエスト銀星数);
+		file.ReadWrite(TDSystem::クエスト金星数);
+
+		file.ReadWrite(TDSystem::クリア回数);
+		file.ReadWrite(TDSystem::パーフェクト回数);
+		file.ReadWrite(TDSystem::大魔法回数);
+		file.ReadWrite(TDSystem::タッグ回数);
+
+		file.ReadWrite(TDSystem::配置回数);
+		file.ReadWrite(TDSystem::強化回数);
+
+		file.ReadWrite(TDSystem::種族撃破数);
+		file.ReadWrite(TDSystem::種族ボス撃破数);
+
+
         if (保存or読み込み == FileMode::Write)
         {
+			TDSystem::プレイ秒数.現在値 += Time::GetNowCount() / 1000;
+			Time::ResetCount();
+			file.ReadWrite( TDSystem::プレイ秒数.現在値);
+
             int num = StageDataS.size();
             file.Write( num );
 
@@ -84,7 +119,9 @@ namespace SDX_TD
         }
         else
         {
-            int num = 4;
+			file.ReadWrite(TDSystem::プレイ秒数.現在値);
+
+            int num = 0;
             file.Read( num );
 
             for (int a = 0; a < num;++a)
@@ -103,7 +140,6 @@ namespace SDX_TD
                 }
             }
         }
-
 
         return true;
     }

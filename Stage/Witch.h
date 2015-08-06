@@ -418,6 +418,7 @@ namespace SDX_TD
                 return;
             }
 
+			TDSystem::大魔法回数[st->種類].現在値++;
             大魔法残り時間 = 大魔法時間;
 			最大Sp *= 2;
             SStage->大魔法効果(true);

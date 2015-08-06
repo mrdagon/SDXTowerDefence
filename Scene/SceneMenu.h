@@ -72,7 +72,7 @@ namespace SDX_TD
             if (Questタグ.isClick()){ activeScene = &sceneQuest; }
             if (Freeタグ.isClick()){ activeScene = &sceneFree; }
             if (Replayタグ.isClick())
-            { 
+            {
                 sceneReplay.LoadReplay();
                 activeScene = &sceneReplay;
             }

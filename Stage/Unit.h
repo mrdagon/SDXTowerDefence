@@ -55,6 +55,9 @@ namespace SDX_TD
 
 			--Witch::配置回数[職種];
 			Witch::強化回数[職種] -= Lv;
+			TDSystem::配置回数[職種].現在値++;
+			TDSystem::強化回数[職種].現在値 += Lv;
+			TDSystem::合計消費資金.現在値 += st->コスト[Lv];
 
 			待機時間 = WAIT_TIME;
 
@@ -315,6 +318,7 @@ namespace SDX_TD
             --Witch::強化回数[st->職種];
 
             Witch::Main->Mp -= 必要MP;
+			TDSystem::合計消費資金.現在値 += 必要MP;
 
             残り強化時間 = int((Lv + 1) * (Lv + 1) * 60 * Witch::Main->強化速度);
             強化or売却長さ = 残り強化時間;
@@ -351,6 +355,7 @@ namespace SDX_TD
                     //使い捨て
                     Shoot(nullptr);
                     isRemove = true;
+					TDSystem::合計仕事回数.現在値++;
                 }
                 else
                 {
@@ -375,6 +380,11 @@ namespace SDX_TD
                 MSound::強化.Play();
                 Lv++;
                 待機時間 = WAIT_TIME;
+				TDSystem::強化回数[st->職種].現在値++;
+				if (Lv == 5)
+				{
+					TDSystem::実績[ArchiveType::ユニットを最大LVに強化] = true;
+				}
                 return;
             }
 
@@ -384,6 +394,7 @@ namespace SDX_TD
                 Witch::Main->Mp += int(st->コスト[Lv] * Witch::Main->回収率);
                 isRemove = true;
 
+				TDSystem::合計回収回数.現在値++;
                 //ウィッチは配置数が回復する
                 if ((int)st->職種 < (int)WitchType::COUNT)
                 {

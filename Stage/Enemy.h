@@ -513,12 +513,25 @@ namespace SDX_TD
 			//MP&SP&スコア増
 			Witch::Mp += int(スコア *0.1 * Witch::Main->MP獲得);
 			Witch::Main->AddSp(st->スコア);
+			TDSystem::合計獲得資金.現在値 += int(スコア *0.1 * Witch::Main->MP獲得);
 
 			SStage->score += int(スコア * Witch::Main->スコア補正);
 
 			MSound::撃破.Play();
 
 			isRemove = true;
+
+			if (isBoss)
+			{
+				TDSystem::ザコ撃破数.現在値++;
+				TDSystem::種族撃破数[st->種族]++;
+			}
+			else
+			{
+				TDSystem::ボス撃破数.現在値++;
+				TDSystem::種族ボス撃破数[st->種族]++;
+			}
+
 		}
 	};
 }

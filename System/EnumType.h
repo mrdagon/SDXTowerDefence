@@ -13,6 +13,15 @@ namespace SDX_TD
 
 	static const double EXP_RATE = 0.05;//クリア時のスコアから素材ゲット率
 
+	enum class GameType
+	{
+		チュートリアル,
+		クエスト,
+		フリー,
+		リプレイ,
+		COUNT
+	};
+
     /**敵の移動タイプ.*/
     enum class MoveType
     {
@@ -182,8 +191,8 @@ namespace SDX_TD
 	enum class ArchiveType
 	{
 		チュートリアルクリア,
-		全てのウィッチ使用,
-		全てのユニット使用,
+		全てのウィッチでクリア,
+		全てのユニットを使う,
 		全てのクエストクリア,
 		フリーステージクリア,
 		ユニットを最大LVに強化,
@@ -198,37 +207,13 @@ namespace SDX_TD
 		COUNT
 	};
 
-	/**総合記録の種類.*/
-	enum class RecordType
-	{
-		魔導具強化回数,
-		合計Wave,
-		合計獲得資金,
-		合計消費資金,
-		合計勲章数,
-		ザコ撃破数,
-		ボス撃破数,
-		合計Wave数,
-		シングル総スコア,
-		タッグ総スコア,
-		クエスト白星数,
-		クエスト金星数,
-		合計被ダメージ,
-		プレイ秒数,
-		クリア回数,
-		パーフェクト回数,
-		大魔法回数,
-		タッグ回数,
-		配置回数,
-		強化回数,
-		COUNT
-	};
-
     /**ステージの種類.*/
     namespace StageType
     {
+		const int COUNT = 20;
+
         static std::vector<std::string> Free;
-        static const std::string Quest[20] =
+        static const std::string Quest[StageType::COUNT] =
         {
             "map00.tmx",
             "map01.tmx",

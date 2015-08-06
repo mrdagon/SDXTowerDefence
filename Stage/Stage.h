@@ -233,11 +233,17 @@ namespace SDX_TD
                 const int no = Rand::Get((int)SStage->land.穴の位置.size() - 1);
                 const int x = int((SStage->land.穴の位置[no] % MAP_SIZE + 0.5 ) * CHIP_SIZE);
 				const int y = int((SStage->land.穴の位置[no] / MAP_SIZE + 0.5) * CHIP_SIZE);
-                //発生感覚 旧作だと40～80
+                //発生間隔 旧作だと40～80
                 Add(new Enemy(x, y, wave.敵種類[waveNo], lv, wave.isBoss[waveNo]), a * 60);
             }
 
             ++wave.現在Wave;
+			TDSystem::合計Wave.現在値++;
+
+			if (wave.現在Wave == 100)
+			{
+				TDSystem::実績[ArchiveType::Wave100に到達] = true;
+			}
         }
 
         /**各種操作、クリックの選択処理.*/

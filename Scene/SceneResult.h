@@ -7,6 +7,7 @@
 #include "GUI_Factory.h"
 #include "../Stage/IStage.h"
 #include "../Struct/ReplayData.h"
+#include "../Struct/RecordData.h"
 
 namespace SDX_TD
 {
@@ -76,12 +77,24 @@ namespace SDX_TD
 				MMusic::勝利.Play(false);
 				is勝利 = true;
 				bonusRate = 3.0;
+
+				TDSystem::パーフェクト回数[Witch::Main->種類].現在値++;
+				if (TDSystem::isカップル)
+				{
+					TDSystem::パーフェクト回数[Witch::Sub->種類].現在値++;
+				}
 			}
 			else if (Witch::Hp > 0)
 			{
 				結果 = ResultType::Win;
 				MMusic::勝利.Play(false);
 				is勝利 = true;
+
+				TDSystem::クリア回数[Witch::Main->種類].現在値++;
+				if (TDSystem::isカップル)
+				{
+					TDSystem::クリア回数[Witch::Sub->種類].現在値++;
+				}
 			}
 			else
 			{
@@ -89,6 +102,12 @@ namespace SDX_TD
 				MMusic::敗北.Play(false);
 				is勝利 = false;
 				bonusRate = 0.5;
+			}
+
+			if (TDSystem::isカップル)
+			{
+				TDSystem::タッグ回数[Witch::Main->種類][Witch::Sub->種類].現在値++;
+				TDSystem::タッグ回数[Witch::Sub->種類][Witch::Main->種類].現在値++;
 			}
 
             baseScore = SStage->score;
@@ -112,6 +131,7 @@ namespace SDX_TD
 				getEXP += StageDataS[TDSystem::選択ステージ].Update(Witch::Sub->種類, totalScore, 結果);
 			}
 			TDSystem::経験値 += getEXP;
+			TDSystem::合計獲得EXP.現在値 += getEXP;
 			Lv上昇量 = TDSystem::CheckLVUp();
 
 			//クリア時にリプレイAutoSave
@@ -120,14 +140,36 @@ namespace SDX_TD
 				SStage->SaveReplay(結果, totalScore);
 				isリプレイ保存済み = true;
 			}
+
 			//最高難易度更新
 			if ( 結果 != ResultType::Lose &&TDSystem::限界難易度 == TDSystem::難易度 && TDSystem::限界難易度 != Difficulty::DeathMarch )
 			{
 				TDSystem::限界難易度 = Difficulty(int(TDSystem::限界難易度) + 1);
 			}
+
+			if (結果 != ResultType::Lose && TDSystem::難易度 == Difficulty::DeathMarch)
+			{
+				if (TDSystem::isスキル)
+				{
+					TDSystem::実績[ArchiveType::強化有りで最高難易度をクリア] = true;
+				}
+				else
+				{
+					TDSystem::実績[ArchiveType::強化無しで最高難易度をクリア] = true;
+				}
+			}
+
+			if (結果 != ResultType::Lose && TDSystem::ゲームモード == GameType::フリー)
+			{
+				TDSystem::実績[ArchiveType::フリーステージクリア] = true;
+			}
+
+			CheckScore();
+			CheckArchiveS();
 			//データ保存
-			
-			SDX_TD::SaveAndLoad(FileMode::Write);
+			SaveAndLoad(FileMode::Write);
+
+		
         }
 
         //終了時

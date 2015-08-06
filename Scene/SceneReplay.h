@@ -72,11 +72,12 @@ namespace SDX_TD
             //Update
 			if ( replayNo < replayS.size() && 開始.isClick() && StageDataS.count(replayS[replayNo].ステージ名) && replayS[replayNo].バージョン == TDSystem::バージョン )
             {
-                auto buf = Witch::スキルLv;
+				SaveAndLoad(FileMode::Write);
 				if (replayS[replayNo].SaveOrLoad(replayS[replayNo].ファイル名.c_str(), false, FileMode::Read))
 				{
+					TDSystem::ゲームモード = GameType::リプレイ;
 					Stage::Call(true, &replayS[replayNo]);
-					Witch::スキルLv = buf;
+					SaveAndLoad(FileMode::Read);
 				}
             }
             if (replayS.size() )

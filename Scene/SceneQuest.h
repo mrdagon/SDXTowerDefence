@@ -60,6 +60,14 @@ namespace SDX_TD
             {
                 if (SceneWitch::SelectWitch().isOK )
                 {
+					if (isQuest)
+					{
+						TDSystem::ゲームモード = GameType::クエスト;
+					}else {
+						TDSystem::ゲームモード = GameType::フリー;
+					}
+
+					
                     Stage::Call(false);
                 }
                 return;
