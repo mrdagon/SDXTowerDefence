@@ -42,16 +42,16 @@ namespace SDX_TD
 		}
 
 		TDSystem::プレイ秒数.Set(strR[0]);
-		TDSystem::合計強化Lv.Set(strR[1]);
+		TDSystem::合計スキルLv.Set(strR[1]);
 		TDSystem::合計Wave.Set(strR[2]);
 		TDSystem::合計獲得資金.Set(strR[3]);
 		TDSystem::合計消費資金.Set(strR[4]);
 		
 		TDSystem::合計回収回数.Set(strR[5]);
 		TDSystem::合計仕事回数.Set(strR[6]);
-		TDSystem::ザコ撃破数.Set(strR[7]);
-		TDSystem::ボス撃破数.Set(strR[8]);
-		TDSystem::合計Wave数.Set(strR[9]);
+		TDSystem::合計獲得EXP.Set(strR[7]);
+		TDSystem::ザコ撃破数.Set(strR[8]);
+		TDSystem::ボス撃破数.Set(strR[9]);
 
 		TDSystem::シングル総スコア.Set(strR[10]);
 		TDSystem::タッグ総スコア.Set(strR[11]);

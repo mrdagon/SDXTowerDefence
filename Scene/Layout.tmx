@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="331">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="352">
  <objectgroup color="#00ffff" name="TEMPLATE">
   <object id="16" name="ScrollBar" type="ScrollBar" x="306.5" y="496" width="57" height="54">
    <properties>
@@ -347,7 +347,7 @@
     <property name="~Update" value=""/>
    </properties>
   </object>
-  <object id="291" name="タブ1" type="Button" x="64" y="3" width="55" height="55">
+  <object id="291" name="タブ0" type="Button" x="64" y="3" width="55" height="55">
    <properties>
     <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
@@ -361,70 +361,90 @@
     <property name="~Update" value=""/>
    </properties>
   </object>
-  <object id="295" name="タブ2" type="Button" x="121" y="3" width="55" height="55">
+  <object id="295" name="タブ1" type="Button" x="121" y="3" width="55" height="55">
    <properties>
     <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="296" name="タブ3" type="Button" x="178" y="3" width="55" height="55">
+  <object id="296" name="タブ2" type="Button" x="178" y="3" width="55" height="55">
    <properties>
     <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="297" name="タブ4" type="Button" x="235" y="3" width="55" height="55">
+  <object id="297" name="タブ3" type="Button" x="235" y="3" width="55" height="55">
    <properties>
     <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="299" name="タブ6" type="Button" x="349" y="3" width="55" height="55">
+  <object id="299" name="タブ5" type="Button" x="349" y="3" width="55" height="55">
    <properties>
     <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="300" name="タブ7" type="Button" x="406" y="3" width="55" height="55">
+  <object id="300" name="タブ6" type="Button" x="406" y="3" width="55" height="55">
    <properties>
     <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="301" name="タブ5" type="Button" x="292" y="3" width="55" height="55">
+  <object id="301" name="タブ4" type="Button" x="292" y="3" width="55" height="55">
    <properties>
     <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="302" name="タブ8" type="Button" x="463" y="3" width="55" height="55">
+  <object id="302" name="タブ7" type="Button" x="463" y="3" width="55" height="55">
    <properties>
     <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="305" name="タブ9" type="Button" x="520" y="3" width="55" height="55">
+  <object id="305" name="タブ8" type="Button" x="520" y="3" width="55" height="55">
    <properties>
     <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="306" name="タブ10" type="Button" x="577" y="3" width="55" height="55">
+  <object id="306" name="タブ9" type="Button" x="577" y="3" width="55" height="55">
    <properties>
     <property name="frameNo" value="3"/>
     <property name="~Draw" value="MSystem::frameS[@frameNo].Draw(@rect);"/>
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="307" name="項目1" type="Text" x="68.5" y="75" width="266.5" height="23">
+  <object id="307" name="ランクアイコン" type="Text" x="68.5" y="75" width="31.5" height="23">
+   <properties>
+    <property name="fontNo" value="1"/>
+    <property name="text" value="std::string"/>
+    <property name="~Draw" value="MFont::fontS[@fontNo].DrawRotate(@rect.GetCenter(),1,0,Color::White,@text);"/>
+    <property name="~Final" value=""/>
+    <property name="~Init" value=""/>
+    <property name="~Update" value=""/>
+   </properties>
+  </object>
+  <object id="332" name="項目名" type="Text" x="109" y="75" width="114" height="23">
+   <properties>
+    <property name="fontNo" value="1"/>
+    <property name="text" value="std::string"/>
+    <property name="~Draw" value="MFont::fontS[@fontNo].DrawRotate(@rect.GetCenter(),1,0,Color::White,@text);"/>
+    <property name="~Final" value=""/>
+    <property name="~Init" value=""/>
+    <property name="~Update" value=""/>
+   </properties>
+  </object>
+  <object id="333" name="記録" type="Text" x="234" y="75" width="100" height="23">
    <properties>
     <property name="fontNo" value="1"/>
     <property name="text" value="std::string"/>
@@ -436,12 +456,102 @@
   </object>
  </objectgroup>
  <objectgroup name="SceneHelp">
-  <object id="125" name="項目1" type="Button" x="66" y="6" width="280" height="48">
+  <object id="125" name="項目1" type="Button" x="66" y="8" width="280" height="40">
    <properties>
     <property name="frameNo" value="3"/>
    </properties>
   </object>
-  <object id="320" name="クレジット" type="Button" x="356" y="6" width="280" height="48">
+  <object id="320" name="項目11" type="Button" x="356" y="8" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="334" name="項目2" type="Button" x="66" y="55" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="335" name="項目3" type="Button" x="66" y="102" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="336" name="項目4" type="Button" x="66" y="149" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="337" name="項目5" type="Button" x="66.5" y="196" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="338" name="項目6" type="Button" x="66.5" y="243" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="339" name="項目8" type="Button" x="66.5" y="338" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="340" name="項目7" type="Button" x="66.5" y="290" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="341" name="項目9" type="Button" x="66" y="385" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="342" name="項目10" type="Button" x="66" y="431" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="343" name="項目12" type="Button" x="356.75" y="55" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="344" name="項目20" type="Button" x="356.75" y="431" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="345" name="項目19" type="Button" x="356.75" y="385" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="346" name="項目15" type="Button" x="357.25" y="196" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="347" name="項目14" type="Button" x="356.75" y="149" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="348" name="項目17" type="Button" x="357.25" y="290" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="349" name="項目18" type="Button" x="357.25" y="338" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="350" name="項目13" type="Button" x="356.75" y="102" width="280" height="40">
+   <properties>
+    <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="351" name="項目16" type="Button" x="357.25" y="243" width="280" height="40">
    <properties>
     <property name="frameNo" value="3"/>
    </properties>

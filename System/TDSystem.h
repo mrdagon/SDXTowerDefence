@@ -3,7 +3,7 @@
 //[Contact]http://tacoika.blog87.fc2.com/
 #pragma once
 #include "../Struct/DataS.h"
-#include "../System/EnumType.h"
+#include "EnumType.h"
 
 namespace SDX_TD
 {
@@ -46,14 +46,12 @@ namespace SDX_TD
 		struct RecordData
 		{
 			std::string 名前;
-			std::string 説明;
 			double 現在値 = 0;
 			double 目標値[3];
 
-			void Set(const char* 名前, const char* 説明, std::array<double, 3> 目標値)
+			void Set(const char* 名前, std::array<double, 3> 目標値)
 			{
 				this->名前 = 名前;
-				this->説明 = 説明;
 				this->目標値[0] = 目標値[0];
 				this->目標値[1] = 目標値[1];
 				this->目標値[2] = 目標値[2];
@@ -62,10 +60,9 @@ namespace SDX_TD
 			void Set(std::vector<std::string>& csvデータ)
 			{
 				this->名前 = csvデータ[0];
-				this->説明 = csvデータ[1];
-				this->目標値[0] = std::stod(csvデータ[2]);
-				this->目標値[1] = std::stod(csvデータ[3]);
-				this->目標値[2] = std::stod(csvデータ[4]);
+				this->目標値[0] = std::stod(csvデータ[1]);
+				this->目標値[1] = std::stod(csvデータ[2]);
+				this->目標値[2] = std::stod(csvデータ[3]);
 			}
 
 			//目標を達成しているか判定
@@ -79,7 +76,6 @@ namespace SDX_TD
 		};
 
 		//1P14個で丁度良さそう？あるいは14x3で7P
-
 		RecordData プレイ秒数;//Save時に処理
 		RecordData 合計スキルLv;//仕様変更も検討
 		RecordData 合計Wave;//Stageで処理
