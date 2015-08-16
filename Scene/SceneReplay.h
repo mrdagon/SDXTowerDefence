@@ -134,12 +134,12 @@ namespace SDX_TD
 
                 if (buf.isカップル)
                 {                    
-                    MUnit::魔女[(UnitType)buf.メイン][1]->DrawRotate(ウィッチ.rect.GetCenter() - Point(10,0), 1, 0);
-                    MUnit::魔女[(UnitType)buf.サブ][1]->DrawRotate(ウィッチ.rect.GetCenter() + Point(10, 0), 1, 0);
+                    MUnit::味方[(UnitType)buf.メイン][1]->DrawRotate(ウィッチ.rect.GetCenter() - Point(10,0), 1, 0);
+                    MUnit::味方[(UnitType)buf.サブ][1]->DrawRotate(ウィッチ.rect.GetCenter() + Point(10, 0), 1, 0);
                 }
                 else
                 {
-                    MUnit::魔女[(UnitType)buf.メイン][1]->DrawRotate(ウィッチ.rect.GetCenter(), 1, 0);
+                    MUnit::味方[(UnitType)buf.メイン][1]->DrawRotate(ウィッチ.rect.GetCenter(), 1, 0);
                 }
 
                 MFont::fontS[2].DrawRotate(難易度.rect.GetCenter(), 1, 0, Color::White, DifficultyDataS[buf.難易度].名前);

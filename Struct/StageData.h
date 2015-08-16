@@ -237,23 +237,16 @@ namespace SDX_TD
 				TDSystem::タッグ総スコア.現在値 += StageDataS[StageType::Quest[a]].成績[true][true].スコア[WitchType(b)];
 				TDSystem::タッグ総スコア.現在値 += StageDataS[StageType::Quest[a]].成績[false][true].スコア[WitchType(b)];
 
-				TDSystem::クエスト銀星数.現在値 += StageDataS[StageType::Quest[a]].成績[false][true].勝利[WitchType(b)];
-				TDSystem::クエスト銀星数.現在値 += StageDataS[StageType::Quest[a]].成績[true][true].勝利[WitchType(b)];
-				TDSystem::クエスト銀星数.現在値 += StageDataS[StageType::Quest[a]].成績[true][false].勝利[WitchType(b)];
-				TDSystem::クエスト銀星数.現在値 += StageDataS[StageType::Quest[a]].成績[false][false].勝利[WitchType(b)];
+				TDSystem::クエスト銀星数.現在値 += StageDataS[StageType::Quest[a]].成績[false][true].勝利[WitchType(b)] + 1;
+				TDSystem::クエスト銀星数.現在値 += StageDataS[StageType::Quest[a]].成績[true][true].勝利[WitchType(b)] + 1;
+				TDSystem::クエスト銀星数.現在値 += StageDataS[StageType::Quest[a]].成績[true][false].勝利[WitchType(b)] + 1;
+				TDSystem::クエスト銀星数.現在値 += StageDataS[StageType::Quest[a]].成績[false][false].勝利[WitchType(b)] + 1;
 
-				TDSystem::クエスト金星数.現在値 += StageDataS[StageType::Quest[a]].成績[false][true].完勝[WitchType(b)];
-				TDSystem::クエスト金星数.現在値 += StageDataS[StageType::Quest[a]].成績[true][false].完勝[WitchType(b)];
-				TDSystem::クエスト金星数.現在値 += StageDataS[StageType::Quest[a]].成績[false][false].完勝[WitchType(b)];
-				TDSystem::クエスト金星数.現在値 += StageDataS[StageType::Quest[a]].成績[true][true].完勝[WitchType(b)];
+				TDSystem::クエスト金星数.現在値 += StageDataS[StageType::Quest[a]].成績[false][true].完勝[WitchType(b)] + 1;
+				TDSystem::クエスト金星数.現在値 += StageDataS[StageType::Quest[a]].成績[true][false].完勝[WitchType(b)] + 1;
+				TDSystem::クエスト金星数.現在値 += StageDataS[StageType::Quest[a]].成績[false][false].完勝[WitchType(b)] + 1;
+				TDSystem::クエスト金星数.現在値 += StageDataS[StageType::Quest[a]].成績[true][true].完勝[WitchType(b)] + 1;
 			}
-
 		}
-
-
-		
-
-
-
 	}
 }

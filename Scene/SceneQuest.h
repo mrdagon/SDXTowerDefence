@@ -87,7 +87,7 @@ namespace SDX_TD
             if (面数Plus.isClick()){ ページ数++; }
             if (面数Minus.isClick()){ ページ数--; }
 
-            int maxPage = (isQuest) ? 5 : (StageType::Free.size() - 1) / 4;
+            int maxPage = (isQuest) ? 4 : (StageType::Free.size() - 1) / 4;
 
             if (ページ数 < 0){ ページ数 = maxPage; }
             if (ページ数 > maxPage){ ページ数 = 0; }
@@ -131,7 +131,7 @@ namespace SDX_TD
             WitchType 種類 = (WitchType)no;
             Point buf = { 0, no * 18 };
 
-            MUnit::魔女[(UnitType)no][1]->DrawRotate(ウィッチアイコン.rect.GetCenter() + buf, 1, 0);
+            MUnit::味方[(UnitType)no][1]->DrawRotate(ウィッチアイコン.rect.GetCenter() + buf, 1, 0);
             MFont::fontS[ウィッチ名.fontNo].DrawRotate(ウィッチ名.rect.GetCenter() + buf, 1, 0, Color::White, WitchDataS[種類].名前);
             for (int a = 0; a < (int)TDSystem::限界難易度+1; ++a)
             {

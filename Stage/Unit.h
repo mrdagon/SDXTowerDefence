@@ -51,13 +51,15 @@ namespace SDX_TD
             isジョブリスト(isリスト),
             Lv(Lv)
         {
+			if (isリスト) { return; }
+
 			Witch::Main->Mp -= st->コスト[Lv];
+			TDSystem::合計消費資金.現在値 += st->コスト[Lv];
 
 			--Witch::配置回数[職種];
 			Witch::強化回数[職種] -= Lv;
 			TDSystem::配置回数[職種].現在値++;
 			TDSystem::強化回数[職種].現在値 += Lv;
-			TDSystem::合計消費資金.現在値 += st->コスト[Lv];
 
 			待機時間 = WAIT_TIME;
 
@@ -69,15 +71,27 @@ namespace SDX_TD
         /**配置時の描画処理.*/
         void Draw() const override
         {
+			Rect area = { GetX() - CHIP_SIZE, GetY() - CHIP_SIZE, CHIP_SIZE * 2, CHIP_SIZE * 2 };
+
             //選択中
-            if (SStage->selectUnit == this)
-            {
-                MSystem::フレーム[1].Draw({ GetX() - CHIP_SIZE, GetY() - CHIP_SIZE, CHIP_SIZE * 2, CHIP_SIZE * 2 }, {255,128,128});
-            }
-            else
-            {
-                MSystem::フレーム[1].Draw({ GetX() - CHIP_SIZE, GetY() - CHIP_SIZE, CHIP_SIZE * 2, CHIP_SIZE * 2 });
-            }
+            //if (SStage->selectUnit == this)
+            //{
+			//	Drawing::Rect(area, { 255, 0 , 0 ,128 });
+            //}
+            //else
+            //{
+				Drawing::Rect(area, { 255,255,255,128 });
+            //}
+
+			//支援効果の有無
+			if (this->支援補正 > 1.0)
+			{
+				MSystem::フレーム[1].Draw(area, { 255,128,128 });
+			}
+			else
+			{
+				MSystem::フレーム[1].Draw(area);
+			}
 
             //強化中or売却中
             if (残り強化時間 > 0)
@@ -94,7 +108,7 @@ namespace SDX_TD
             }
             else
             {
-                MUnit::魔女[st->職種][1]->DrawRotate({ GetX(), GetY() }, 1, 0);
+                MUnit::味方[st->職種][1]->DrawRotate({ GetX(), GetY() }, 1, 0);
             }
 
             //レベル表示
@@ -115,7 +129,7 @@ namespace SDX_TD
 
             //画像&名前
             MSystem::フレーム[5].Draw(UI::R名前);
-            MUnit::魔女[st->職種][1]->DrawRotate(UI::P画像, 2, 0);
+            MUnit::味方[st->職種][1]->DrawRotate(UI::P画像, 2, 0);
             MFont::fontS[FontType::ゴシック中].DrawShadow(UI::P名前, Color::White, Color::Gray, st->名前);
 
             //レベル
@@ -170,11 +184,11 @@ namespace SDX_TD
 
             IconType アイコン[5] =
             {
-                IconType::レベル,
+                IconType::レベル,//コスト
                 IconType::攻撃,
                 IconType::連射,
                 IconType::支援,
-                IconType::麻痺
+				IconType::強化,//被支援
             };
             int 性能[5] =
             {
@@ -182,8 +196,12 @@ namespace SDX_TD
                 (int)(st->攻撃力[Lv] * 支援補正),
                 st->連射[Lv],
                 (int)(st->支援効果[Lv] * 100),
-                st->デバフ効果[Lv]
+				(int)(支援補正 * 100) - 100,
             };
+			//被支援
+			//DPS/コスト
+			//射程
+			//発射数
 
             const int NextLv = (Lv + 1) % 5;
 
@@ -191,17 +209,23 @@ namespace SDX_TD
             {
                 st->コスト[NextLv],//上3つは確定、最大5つ
                 (int)(st->攻撃力[NextLv] * 支援補正),
-                st->連射[NextLv],
+				st->連射[NextLv] ,
                 (int)(st->支援効果[NextLv] * 100),
-                st->デバフ効果[NextLv]
+				(int)(支援補正 * 100) - 100,
             };
 
+			if (st->デバフ種 != DebuffType::無)
+			{
+				性能[3] = st->デバフ効果[Lv];
+				次性能[3] = st->デバフ効果[NextLv];
+			}
+
             switch (st->デバフ種)
-            {
-            case DebuffType::鈍足:アイコン[4] = IconType::鈍足; break;
-            case DebuffType::麻痺:アイコン[4] = IconType::麻痺; break;
-            case DebuffType::吹飛:アイコン[4] = IconType::吹飛; break;
-            case DebuffType::防壊:アイコン[4] = IconType::防壊; break;
+			{
+				case DebuffType::鈍足:アイコン[3] = IconType::鈍足; break;
+				case DebuffType::麻痺:アイコン[3] = IconType::麻痺; break;
+				case DebuffType::吹飛:アイコン[3] = IconType::吹飛; break;
+				case DebuffType::防壊:アイコン[3] = IconType::防壊; break;
             }
 
             int num = 0;
@@ -218,12 +242,12 @@ namespace SDX_TD
                 int 桁数 = 5;
                 if (!変化量表示) 桁数 = 10;
 
-                MFont::fontS[FontType::BMP白].DrawExtend(UI::P性能[num], 2, 2, Color::White, { std::setw(桁数), 性能[a] });
+                MFont::fontS[FontType::BMP白].DrawExtend(UI::P性能[num], 2, 2, Color::White, { std::setw(桁数) , std::setprecision(2) , 性能[a] });
 
-                if (変化量表示)
+                if (変化量表示 && a != 4)
                 {
                     MFont::fontS[FontType::ゴシック中].Draw({ 565, UI::P性能アイコン[num].y + 8 }, Color::Yellow, "+");
-                    MFont::fontS[FontType::BMP白].DrawExtend(UI::P性能[num], 2, 2, Color::Yellow, { std::setw(10), 次性能[a] - 性能[a] });
+                    MFont::fontS[FontType::BMP白].DrawExtend(UI::P性能[num], 2, 2, Color::Yellow, { std::setw(10) , std::setprecision(2), 次性能[a] - 性能[a] });
                 }
 
                 ++num;
@@ -383,7 +407,7 @@ namespace SDX_TD
 				TDSystem::強化回数[st->職種].現在値++;
 				if (Lv == 5)
 				{
-					TDSystem::実績[ArchiveType::ユニットを最大LVに強化] = true;
+					TDSystem::実績[ArchiveType::ユニットを最大LVに強化].現在値 = true;
 				}
                 return;
             }

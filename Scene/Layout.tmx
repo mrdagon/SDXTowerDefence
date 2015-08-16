@@ -339,7 +339,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneArchive" visible="0">
+ <objectgroup name="SceneArchive">
   <object id="285" name="項目枠1" type="Frame" x="64" y="64" width="280" height="409">
    <properties>
     <property name="frameNo" value="5"/>
@@ -424,7 +424,7 @@
     <property name="~Update" value="if(@isClick()){}"/>
    </properties>
   </object>
-  <object id="307" name="ランクアイコン" type="Text" x="68.5" y="75" width="31.5" height="23">
+  <object id="307" name="ランクアイコン" type="Text" x="305.5" y="75" width="31.5" height="23">
    <properties>
     <property name="fontNo" value="1"/>
     <property name="text" value="std::string"/>
@@ -434,7 +434,7 @@
     <property name="~Update" value=""/>
    </properties>
   </object>
-  <object id="332" name="項目名" type="Text" x="109" y="75" width="114" height="23">
+  <object id="332" name="項目名" type="Text" x="76" y="75" width="103" height="23">
    <properties>
     <property name="fontNo" value="1"/>
     <property name="text" value="std::string"/>
@@ -444,7 +444,7 @@
     <property name="~Update" value=""/>
    </properties>
   </object>
-  <object id="333" name="記録" type="Text" x="234" y="75" width="100" height="23">
+  <object id="333" name="記録" type="Text" x="232" y="75" width="40" height="23">
    <properties>
     <property name="fontNo" value="1"/>
     <property name="text" value="std::string"/>
@@ -455,7 +455,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneHelp">
+ <objectgroup name="SceneHelp" visible="0">
   <object id="125" name="項目1" type="Button" x="66" y="8" width="280" height="40">
    <properties>
     <property name="frameNo" value="3"/>

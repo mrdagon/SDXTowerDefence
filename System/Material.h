@@ -12,54 +12,54 @@ namespace SDX_TD
     /**敵＆ウィッチの画像.*/
     namespace MUnit
     {
-        EnumArray<ImagePack, UnitType> 魔女;
+        EnumArray<ImagePack, UnitType> 味方;
         EnumArray<ImagePack, EnemyType> 敵;
 
         static void Load()
         {
-            魔女[UnitType::ライナ].Load("file/unit/witch/lina.png", 9, 3, 3);
-            魔女[UnitType::ナツメ].Load("file/unit/witch/natsume.png", 9, 3, 3);
-            魔女[UnitType::ルコウ].Load("file/unit/witch/rukou.png", 9, 3, 3);
-            魔女[UnitType::ディアネラ].Load("file/unit/witch/dianella.png", 9, 3, 3);
-            魔女[UnitType::ミナエ].Load("file/unit/witch/minae.png", 9, 3, 3);
-            魔女[UnitType::トレニア].Load("file/unit/witch/torenia.png", 9, 3, 3);
-            魔女[UnitType::ロチエ].Load("file/unit/witch/rochie.png", 9, 3, 3);
-            魔女[UnitType::バロゥ].Load("file/unit/witch/barrow.png", 9, 3, 3);
-            魔女[UnitType::フィオナ].Load("file/unit/witch/fiona.png", 9, 3, 3);
-            魔女[UnitType::ナズナ].Load("file/unit/witch/nazuna.png", 9, 3, 3);
-            魔女[UnitType::委員長].Load("file/unit/witch/chairwoman.png", 9, 3, 3);
-            魔女[UnitType::ミルラ].Load("file/unit/witch/myrra.png", 9, 3, 3);
+            味方[UnitType::ライナ].Load("file/unit/witch/lina.png", 9, 3, 3);
+            味方[UnitType::ナツメ].Load("file/unit/witch/natsume.png", 9, 3, 3);
+            味方[UnitType::ルコウ].Load("file/unit/witch/rukou.png", 9, 3, 3);
+            味方[UnitType::ディアネラ].Load("file/unit/witch/dianella.png", 9, 3, 3);
+            味方[UnitType::ミナエ].Load("file/unit/witch/minae.png", 9, 3, 3);
+            味方[UnitType::トレニア].Load("file/unit/witch/torenia.png", 9, 3, 3);
+            味方[UnitType::ロチエ].Load("file/unit/witch/rochie.png", 9, 3, 3);
+            味方[UnitType::バロゥ].Load("file/unit/witch/barrow.png", 9, 3, 3);
+            味方[UnitType::フィオナ].Load("file/unit/witch/fiona.png", 9, 3, 3);
+            味方[UnitType::ナズナ].Load("file/unit/witch/nazuna.png", 9, 3, 3);
+            味方[UnitType::委員長].Load("file/unit/witch/chairwoman.png", 9, 3, 3);
+            味方[UnitType::ミルラ].Load("file/unit/witch/myrra.png", 9, 3, 3);
 
-            魔女[UnitType::兵士].Load("file/unit/common/000.png", 9, 3, 3);
-            魔女[UnitType::踊り子].Load("file/unit/common/001.png", 9, 3, 3);
-            魔女[UnitType::狩人].Load("file/unit/common/002.png", 9, 3, 3);
-            魔女[UnitType::執事].Load("file/unit/common/003.png", 9, 3, 3);
-            魔女[UnitType::技師].Load("file/unit/common/004.png", 9, 3, 3);
-            魔女[UnitType::くノ一].Load("file/unit/common/005.png", 9, 3, 3);
-            魔女[UnitType::師範].Load("file/unit/common/006.png", 9, 3, 3);
-            魔女[UnitType::術士].Load("file/unit/common/007.png", 9, 3, 3);
-            魔女[UnitType::賢者].Load("file/unit/common/008.png", 9, 3, 3);
-            魔女[UnitType::武闘家].Load("file/unit/common/009.png", 9, 3, 3);
-            魔女[UnitType::忍者].Load("file/unit/common/010.png", 9, 3, 3);
-            魔女[UnitType::剣豪].Load("file/unit/common/011.png", 9, 3, 3);
-            魔女[UnitType::料理人].Load("file/unit/common/012.png", 9, 3, 3);
-            魔女[UnitType::勇者].Load("file/unit/common/013.png", 9, 3, 3);
-            魔女[UnitType::射手].Load("file/unit/common/014.png", 9, 3, 3);
-            魔女[UnitType::盗賊].Load("file/unit/common/015.png", 9, 3, 3);
-            魔女[UnitType::騎士].Load("file/unit/common/016.png", 9, 3, 3);
-            魔女[UnitType::司祭].Load("file/unit/common/017.png", 9, 3, 3);
-            魔女[UnitType::僧侶].Load("file/unit/common/018.png", 9, 3, 3);
-            魔女[UnitType::闘士].Load("file/unit/common/019.png", 9, 3, 3);
-            魔女[UnitType::斧士].Load("file/unit/common/020.png", 9, 3, 3);
-            魔女[UnitType::傭兵].Load("file/unit/common/021.png", 9, 3, 3);
-            魔女[UnitType::プリンス].Load("file/unit/common/022.png", 9, 3, 3);
-            魔女[UnitType::プリンセス].Load("file/unit/common/023.png", 9, 3, 3);
-            魔女[UnitType::剣士].Load("file/unit/common/024.png", 9, 3, 3);
-            魔女[UnitType::槍士].Load("file/unit/common/025.png", 9, 3, 3);
-            魔女[UnitType::給仕].Load("file/unit/common/026.png", 9, 3, 3);
-            魔女[UnitType::足軽].Load("file/unit/common/027.png", 9, 3, 3);
-            魔女[UnitType::将軍].Load("file/unit/common/028.png", 9, 3, 3);
-            魔女[UnitType::軍師].Load("file/unit/common/029.png", 9, 3, 3);
+            味方[UnitType::兵士].Load("file/unit/common/000.png", 9, 3, 3);
+            味方[UnitType::踊り子].Load("file/unit/common/001.png", 9, 3, 3);
+            味方[UnitType::狩人].Load("file/unit/common/002.png", 9, 3, 3);
+            味方[UnitType::執事].Load("file/unit/common/003.png", 9, 3, 3);
+            味方[UnitType::技師].Load("file/unit/common/004.png", 9, 3, 3);
+            味方[UnitType::くノ一].Load("file/unit/common/005.png", 9, 3, 3);
+            味方[UnitType::師範].Load("file/unit/common/006.png", 9, 3, 3);
+            味方[UnitType::術士].Load("file/unit/common/007.png", 9, 3, 3);
+            味方[UnitType::賢者].Load("file/unit/common/008.png", 9, 3, 3);
+            味方[UnitType::武闘家].Load("file/unit/common/009.png", 9, 3, 3);
+            味方[UnitType::忍者].Load("file/unit/common/010.png", 9, 3, 3);
+            味方[UnitType::剣豪].Load("file/unit/common/011.png", 9, 3, 3);
+            味方[UnitType::料理人].Load("file/unit/common/012.png", 9, 3, 3);
+            味方[UnitType::勇者].Load("file/unit/common/013.png", 9, 3, 3);
+            味方[UnitType::射手].Load("file/unit/common/014.png", 9, 3, 3);
+            味方[UnitType::盗賊].Load("file/unit/common/015.png", 9, 3, 3);
+            味方[UnitType::騎士].Load("file/unit/common/016.png", 9, 3, 3);
+            味方[UnitType::司祭].Load("file/unit/common/017.png", 9, 3, 3);
+            味方[UnitType::僧侶].Load("file/unit/common/018.png", 9, 3, 3);
+            味方[UnitType::闘士].Load("file/unit/common/019.png", 9, 3, 3);
+            味方[UnitType::斧士].Load("file/unit/common/020.png", 9, 3, 3);
+            味方[UnitType::傭兵].Load("file/unit/common/021.png", 9, 3, 3);
+            味方[UnitType::プリンス].Load("file/unit/common/022.png", 9, 3, 3);
+            味方[UnitType::プリンセス].Load("file/unit/common/023.png", 9, 3, 3);
+            味方[UnitType::剣士].Load("file/unit/common/024.png", 9, 3, 3);
+            味方[UnitType::槍士].Load("file/unit/common/025.png", 9, 3, 3);
+            味方[UnitType::給仕].Load("file/unit/common/026.png", 9, 3, 3);
+            味方[UnitType::足軽].Load("file/unit/common/027.png", 9, 3, 3);
+            味方[UnitType::将軍].Load("file/unit/common/028.png", 9, 3, 3);
+            味方[UnitType::軍師].Load("file/unit/common/029.png", 9, 3, 3);
 
             敵[EnemyType::ゼリー].Load("file/enemy/000.png", 9, 3, 3);
             敵[EnemyType::ゴブリン].Load("file/enemy/001.png", 9, 3, 3);
@@ -267,6 +267,8 @@ namespace SDX_TD
         ImagePack 白数字;
         Image ゴシック12;
         Image ゴシック16;
+		Image 黒ドット;
+		Image 白ドット;
 
         static void Load()
         {
@@ -278,6 +280,8 @@ namespace SDX_TD
             白数字.Load("file/font/font_num_white.png", 10, 10, 1);
             ゴシック12.Load("file/font/12.png");
             ゴシック16.Load("file/font/16.png");
+			黒ドット.Load("file/font/dot_black.png");
+			白ドット.Load("file/font/dot_white.png");
 
             //フォント幅調整_____a__b__c__d__e__f__g__h__i__j__k__l__m__n__o__p__q__r__s__t__u__v__w__x__y__z
             英語.AdjustWidth({ 1, 3, 2, 2, 3, 3, 1, 2, 4, 2, 3, 2, 0, 1, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 2, 2 });
@@ -306,7 +310,76 @@ namespace SDX_TD
             fontS[FontType::BMP黒影].SetImage("☆", 英影[29]);
 
             fontS[FontType::BMP白].SetImageS("0", &白数字, 10);
+
+			fontS[FontType::BMP白].SetImage(".", &白ドット);
+			fontS[FontType::BMP黒影].SetImage(".", &黒ドット);
         }
+
+		void SetIcon()
+		{
+
+			//アイコンフォント
+			//丸数字は味方
+			fontS[FontType::ゴシック中].SetImage("①", MUnit::味方[UnitType::ライナ][1]);
+			fontS[FontType::ゴシック中].SetImage("②", MUnit::味方[UnitType::ナツメ][1]);
+			fontS[FontType::ゴシック中].SetImage("③", MUnit::味方[UnitType::ルコウ][1]);
+			fontS[FontType::ゴシック中].SetImage("④", MUnit::味方[UnitType::ディアネラ][1]);
+			fontS[FontType::ゴシック中].SetImage("⑤", MUnit::味方[UnitType::ミナエ][1]);
+			fontS[FontType::ゴシック中].SetImage("⑥", MUnit::味方[UnitType::トレニア][1]);
+			fontS[FontType::ゴシック中].SetImage("⑦", MUnit::味方[UnitType::ロチエ][1]);
+			fontS[FontType::ゴシック中].SetImage("⑧", MUnit::味方[UnitType::バロゥ][1]);
+			fontS[FontType::ゴシック中].SetImage("⑨", MUnit::味方[UnitType::フィオナ][1]);
+			fontS[FontType::ゴシック中].SetImage("⑩", MUnit::味方[UnitType::ナズナ][1]);
+			fontS[FontType::ゴシック中].SetImage("⑪", MUnit::味方[UnitType::委員長][1]);
+			fontS[FontType::ゴシック中].SetImage("⑫", MUnit::味方[UnitType::ミルラ][1]);
+			fontS[FontType::ゴシック中].SetImage("⑬", MUnit::味方[UnitType::兵士][1]);
+			fontS[FontType::ゴシック中].SetImage("⑭", MUnit::味方[UnitType::傭兵][1]);
+			fontS[FontType::ゴシック中].SetImage("⑮", MUnit::味方[UnitType::足軽][1]);
+			fontS[FontType::ゴシック中].SetImage("⑯", MUnit::味方[UnitType::技師][1]);
+			fontS[FontType::ゴシック中].SetImage("⑰", MUnit::味方[UnitType::勇者][1]);
+			fontS[FontType::ゴシック中].SetImage("⑱", MUnit::味方[UnitType::剣士][1]);
+			fontS[FontType::ゴシック中].SetImage("⑲", MUnit::味方[UnitType::剣豪][1]);
+			fontS[FontType::ゴシック中].SetImage("⑳", MUnit::味方[UnitType::槍士][1]);
+			fontS[FontType::ゴシック中].SetImage("㉑", MUnit::味方[UnitType::騎士][1]);
+			fontS[FontType::ゴシック中].SetImage("㉒", MUnit::味方[UnitType::斧士][1]);
+			fontS[FontType::ゴシック中].SetImage("㉓", MUnit::味方[UnitType::闘士][1]);
+			fontS[FontType::ゴシック中].SetImage("㉔", MUnit::味方[UnitType::武闘家][1]);
+			fontS[FontType::ゴシック中].SetImage("㉕", MUnit::味方[UnitType::師範][1]);
+			fontS[FontType::ゴシック中].SetImage("㉖", MUnit::味方[UnitType::狩人][1]);
+			fontS[FontType::ゴシック中].SetImage("㉗", MUnit::味方[UnitType::射手][1]);
+			fontS[FontType::ゴシック中].SetImage("㉘", MUnit::味方[UnitType::僧侶][1]);
+			fontS[FontType::ゴシック中].SetImage("㉙", MUnit::味方[UnitType::司祭][1]);
+			fontS[FontType::ゴシック中].SetImage("㉚", MUnit::味方[UnitType::プリンス][1]);
+			fontS[FontType::ゴシック中].SetImage("㉛", MUnit::味方[UnitType::プリンセス][1]);
+			fontS[FontType::ゴシック中].SetImage("㉜", MUnit::味方[UnitType::術士][1]);
+			fontS[FontType::ゴシック中].SetImage("㉝", MUnit::味方[UnitType::賢者][1]);
+			fontS[FontType::ゴシック中].SetImage("㉞", MUnit::味方[UnitType::踊り子][1]);
+			fontS[FontType::ゴシック中].SetImage("㉟", MUnit::味方[UnitType::軍師][1]);
+			fontS[FontType::ゴシック中].SetImage("㊱", MUnit::味方[UnitType::将軍][1]);
+			fontS[FontType::ゴシック中].SetImage("㊲", MUnit::味方[UnitType::執事][1]);
+			fontS[FontType::ゴシック中].SetImage("㊳", MUnit::味方[UnitType::給仕][1]);
+			fontS[FontType::ゴシック中].SetImage("㊴", MUnit::味方[UnitType::料理人][1]);
+			fontS[FontType::ゴシック中].SetImage("㊵", MUnit::味方[UnitType::盗賊][1]);
+			fontS[FontType::ゴシック中].SetImage("㊶", MUnit::味方[UnitType::忍者][1]);
+			fontS[FontType::ゴシック中].SetImage("㊷", MUnit::味方[UnitType::くノ一][1]);
+
+			//ローマ数字は敵
+			fontS[FontType::ゴシック中].SetImage("㊸", MUnit::敵[EnemyType::ゼリー][1]);
+			fontS[FontType::ゴシック中].SetImage("㊹", MUnit::敵[EnemyType::ゴブリン][1]);
+			fontS[FontType::ゴシック中].SetImage("㊺", MUnit::敵[EnemyType::ケットシー][1]);
+			fontS[FontType::ゴシック中].SetImage("㊻", MUnit::敵[EnemyType::オーガ][1]);
+			fontS[FontType::ゴシック中].SetImage("㊼", MUnit::敵[EnemyType::コボルド][1]);
+			fontS[FontType::ゴシック中].SetImage("㊽", MUnit::敵[EnemyType::ゴーレム][1]);
+			fontS[FontType::ゴシック中].SetImage("㊾", MUnit::敵[EnemyType::ケルベロス][1]);
+			fontS[FontType::ゴシック中].SetImage("㊿", MUnit::敵[EnemyType::スケルトン][1]);
+			fontS[FontType::ゴシック中].SetImage("Ⅰ", MUnit::敵[EnemyType::シャーマン][1]);
+			fontS[FontType::ゴシック中].SetImage("Ⅱ", MUnit::敵[EnemyType::ゼリー王][1]);
+			fontS[FontType::ゴシック中].SetImage("Ⅲ", MUnit::敵[EnemyType::マーマン][1]);
+			fontS[FontType::ゴシック中].SetImage("Ⅳ", MUnit::敵[EnemyType::インプ][1]);
+			fontS[FontType::ゴシック中].SetImage("Ⅴ", MUnit::敵[EnemyType::トレント][1]);//青ゴーレム
+			fontS[FontType::ゴシック中].SetImage("Ⅵ", MUnit::敵[EnemyType::グリフィン][1]);
+			fontS[FontType::ゴシック中].SetImage("Ⅷ", MUnit::敵[EnemyType::ドラゴン][1]);
+		}
     }
 
     static void LoadMaterial()

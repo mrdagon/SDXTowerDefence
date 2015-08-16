@@ -242,7 +242,7 @@ namespace SDX_TD
 
 			if (wave.現在Wave == 100)
 			{
-				TDSystem::実績[ArchiveType::Wave100に到達] = true;
+				TDSystem::実績[ArchiveType::Wave100に到達].現在値 = true;
 			}
         }
 
@@ -725,12 +725,12 @@ namespace SDX_TD
             //ウィッチの表示
             if (TDSystem::isカップル)
             {
-                MUnit::魔女[(UnitType)Witch::Main->種類][no]->DrawRotate(UI::Pカップルウィッチ[0], 2, 0);
-                MUnit::魔女[(UnitType)Witch::Sub->種類][1]->DrawRotate(UI::Pカップルウィッチ[1], 2, 0);
+                MUnit::味方[(UnitType)Witch::Main->種類][no]->DrawRotate(UI::Pカップルウィッチ[0], 2, 0);
+                MUnit::味方[(UnitType)Witch::Sub->種類][1]->DrawRotate(UI::Pカップルウィッチ[1], 2, 0);
             }
             else
             {
-                MUnit::魔女[(UnitType)Witch::Main->種類][no]->DrawRotate(UI::Pシングルウィッチ, 2, 0);
+                MUnit::味方[(UnitType)Witch::Main->種類][no]->DrawRotate(UI::Pシングルウィッチ, 2, 0);
             }
 
             //モードと難易度
@@ -1157,6 +1157,7 @@ namespace SDX_TD
                 unitS[a].支援補正 = 1.0;
             }
 
+			//支援ユニット
             for (int a = 0; a < Max ; ++a)
             {
                 const double 支援 = unitS[a].st->支援効果[unitS[a].Lv];
@@ -1181,6 +1182,18 @@ namespace SDX_TD
                     }
                 }
             }
+
+			//地形補正
+			for (int a = 0; a < Max; ++a)
+			{
+				int posX = (int)(unitS[a].GetX()-1) / CHIP_SIZE;
+				int posY = (int)(unitS[a].GetY()-1) / CHIP_SIZE;
+
+				if (land.地形[posX][posY] == ChipType::星) { unitS[a].支援補正 += 0.1; }
+				if (land.地形[posX+1][posY] == ChipType::星) { unitS[a].支援補正 += 0.1; }
+				if (land.地形[posX][posY+1] == ChipType::星) { unitS[a].支援補正 += 0.1; }
+				if (land.地形[posX+1][posY+1] == ChipType::星) { unitS[a].支援補正 += 0.1; }
+			}
         }
 
         /**現在のWave数を取得.*/

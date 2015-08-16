@@ -33,8 +33,6 @@ namespace SDX_TD
         //ランダムステージの状況
 		Difficulty 限界難易度 = Difficulty::Easy;
 
-        //実績関連-各ウィッチ毎に保存するのと全体のと
-		EnumArray<bool,ArchiveType> 実績;
 
 		//個別実績は達成度合いに応じてマークを付ける
 		//実績14個 
@@ -57,9 +55,13 @@ namespace SDX_TD
 				this->目標値[2] = 目標値[2];
 			}
 
-			void Set(std::vector<std::string>& csvデータ)
+			void Set(std::vector<std::string>& csvデータ , const char* 追加文字 = "")
 			{
 				this->名前 = csvデータ[0];
+				if (追加文字 != "")
+				{
+					this->名前.insert(0, 追加文字);
+				}
 				this->目標値[0] = std::stod(csvデータ[1]);
 				this->目標値[1] = std::stod(csvデータ[2]);
 				this->目標値[2] = std::stod(csvデータ[3]);
@@ -75,8 +77,11 @@ namespace SDX_TD
 			}
 		};
 
+		//実績関連-各ウィッチ毎に保存するのと全体のと
+		EnumArray<RecordData, ArchiveType> 実績;
+
 		//1P14個で丁度良さそう？あるいは14x3で7P
-		RecordData プレイ秒数;//Save時に処理
+		RecordData プレイ秒数;//ミリ秒で保存
 		RecordData 合計スキルLv;//仕様変更も検討
 		RecordData 合計Wave;//Stageで処理
 		RecordData 合計獲得資金;//Enemyで処理

@@ -27,6 +27,7 @@ int main(int argc, char* argv[])
 {
     using namespace SDX;
     using namespace SDX_TD;
+	Time::ResetCount();
 
 	UI_Reset();
     LoadUnitS();
@@ -35,6 +36,7 @@ int main(int argc, char* argv[])
     LoadWitchS();
     LoadDifficultyS();
     LoadChipS();
+	LoadRecordS();
     SaveAndLoad(FileMode::Read);
 
     System::Initialise("GTD ver0.04β", 640, 480);//ライブラリの初期化
@@ -49,6 +51,7 @@ int main(int argc, char* argv[])
     {
         if (Loading::GetLoadingCount() == Loading::GetSuccesCount()) break;
     }
+	MFont::SetIcon();
 
     if (TDSystem::isフルスクリーン)
     {

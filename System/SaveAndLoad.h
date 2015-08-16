@@ -62,30 +62,49 @@ namespace SDX_TD
         file.ReadWrite(TDSystem::isリプレイ保存);
 
 		//記録と実績関連
-		file.ReadWrite(TDSystem::プレイ秒数);
-		file.ReadWrite(TDSystem::合計スキルLv);
-		file.ReadWrite(TDSystem::合計Wave);
-		file.ReadWrite(TDSystem::合計獲得資金);
-		file.ReadWrite(TDSystem::合計消費資金);
+		file.ReadWrite(TDSystem::プレイ秒数.現在値);
+		file.ReadWrite(TDSystem::合計スキルLv.現在値);
+		file.ReadWrite(TDSystem::合計Wave.現在値);
+		file.ReadWrite(TDSystem::合計獲得資金.現在値);
+		file.ReadWrite(TDSystem::合計消費資金.現在値);
 
-		file.ReadWrite(TDSystem::合計回収回数);
-		file.ReadWrite(TDSystem::合計仕事回数);
-		file.ReadWrite(TDSystem::合計獲得EXP);
-		file.ReadWrite(TDSystem::ザコ撃破数);
-		file.ReadWrite(TDSystem::ボス撃破数);
+		file.ReadWrite(TDSystem::合計回収回数.現在値);
+		file.ReadWrite(TDSystem::合計仕事回数.現在値);
+		file.ReadWrite(TDSystem::合計獲得EXP.現在値);
+		file.ReadWrite(TDSystem::ザコ撃破数.現在値);
+		file.ReadWrite(TDSystem::ボス撃破数.現在値);
 
-		file.ReadWrite(TDSystem::シングル総スコア);
-		file.ReadWrite(TDSystem::タッグ総スコア);
-		file.ReadWrite(TDSystem::クエスト銀星数);
-		file.ReadWrite(TDSystem::クエスト金星数);
+		file.ReadWrite(TDSystem::シングル総スコア.現在値);
+		file.ReadWrite(TDSystem::タッグ総スコア.現在値);
+		file.ReadWrite(TDSystem::クエスト銀星数.現在値);
+		file.ReadWrite(TDSystem::クエスト金星数.現在値);
 
-		file.ReadWrite(TDSystem::クリア回数);
-		file.ReadWrite(TDSystem::パーフェクト回数);
-		file.ReadWrite(TDSystem::大魔法回数);
-		file.ReadWrite(TDSystem::タッグ回数);
+		/*
+		for (auto it : TDSystem::クリア回数.array) { file.ReadWrite( it.現在値); }
+		for (auto it : TDSystem::パーフェクト回数.array) { file.ReadWrite(it.現在値); }
+		for (auto it : TDSystem::大魔法回数.array) { file.ReadWrite(it.現在値); }
+		for (auto it : TDSystem::タッグ回数.array){ for (auto itt : it){file.ReadWrite(itt.現在値);}}
 
-		file.ReadWrite(TDSystem::配置回数);
-		file.ReadWrite(TDSystem::強化回数);
+		for (auto it : TDSystem::配置回数.array ) { file.ReadWrite(it.現在値); }
+		for (auto it : TDSystem::強化回数.array) { file.ReadWrite(it.現在値); }
+		*/
+
+		for (int a = 0; a < (int)WitchType::COUNT; ++a)
+		{
+			file.ReadWrite(TDSystem::クリア回数[(WitchType)a].現在値);
+			file.ReadWrite(TDSystem::パーフェクト回数[(WitchType)a].現在値);
+			file.ReadWrite(TDSystem::大魔法回数[(WitchType)a].現在値);
+			for (int b = 0; b < (int)WitchType::COUNT; ++b)
+			{
+				file.ReadWrite(TDSystem::タッグ回数[(WitchType)a][(WitchType)b].現在値);
+			}
+		}
+
+		for (int a = 0; a < (int)UnitType::COUNT; ++a)
+		{
+			file.ReadWrite(TDSystem::配置回数[UnitType(a)].現在値);
+			file.ReadWrite(TDSystem::強化回数[UnitType(a)].現在値);
+		}
 
 		file.ReadWrite(TDSystem::種族撃破数);
 		file.ReadWrite(TDSystem::種族ボス撃破数);
@@ -93,7 +112,7 @@ namespace SDX_TD
 
         if (保存or読み込み == FileMode::Write)
         {
-			TDSystem::プレイ秒数.現在値 += Time::GetNowCount() / 1000;
+			TDSystem::プレイ秒数.現在値 += Time::GetNowCount();
 			Time::ResetCount();
 			file.ReadWrite( TDSystem::プレイ秒数.現在値);
 

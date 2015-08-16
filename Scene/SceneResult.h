@@ -78,9 +78,11 @@ namespace SDX_TD
 				is勝利 = true;
 				bonusRate = 3.0;
 
+				TDSystem::クリア回数[Witch::Main->種類].現在値++;
 				TDSystem::パーフェクト回数[Witch::Main->種類].現在値++;
 				if (TDSystem::isカップル)
 				{
+					TDSystem::クリア回数[Witch::Sub->種類].現在値++;
 					TDSystem::パーフェクト回数[Witch::Sub->種類].現在値++;
 				}
 			}
@@ -151,17 +153,17 @@ namespace SDX_TD
 			{
 				if (TDSystem::isスキル)
 				{
-					TDSystem::実績[ArchiveType::強化有りで最高難易度をクリア] = true;
+					TDSystem::実績[ArchiveType::強化有りで最高難易度をクリア].現在値 = true;
 				}
 				else
 				{
-					TDSystem::実績[ArchiveType::強化無しで最高難易度をクリア] = true;
+					TDSystem::実績[ArchiveType::強化無しで最高難易度をクリア].現在値 = true;
 				}
 			}
 
 			if (結果 != ResultType::Lose && TDSystem::ゲームモード == GameType::フリー)
 			{
-				TDSystem::実績[ArchiveType::フリーステージクリア] = true;
+				TDSystem::実績[ArchiveType::フリーステージクリア].現在値 = true;
 			}
 
 			CheckScore();

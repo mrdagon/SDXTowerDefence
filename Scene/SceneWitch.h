@@ -145,7 +145,7 @@ namespace SDX_TD
 			}
 
 			//アイコン
-			MUnit::魔女[(UnitType)種類][2]->DrawRotate( pt - Point(50,0) ,2,0 );
+			MUnit::味方[(UnitType)種類][2]->DrawRotate( pt - Point(50,0) ,2,0 );
 			//名前
 			MFont::fontS[1].DrawRotate( pt + Point(20,0) , 1, 0, Color::White, WitchDataS[種類].名前);
 

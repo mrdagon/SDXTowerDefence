@@ -523,13 +523,13 @@ namespace SDX_TD
 
 			if (isBoss)
 			{
-				TDSystem::ザコ撃破数.現在値++;
-				TDSystem::種族撃破数[st->種族]++;
+				TDSystem::ボス撃破数.現在値++;
+				TDSystem::種族ボス撃破数[st->種族]++;
 			}
 			else
 			{
-				TDSystem::ボス撃破数.現在値++;
-				TDSystem::種族ボス撃破数[st->種族]++;
+				TDSystem::ザコ撃破数.現在値++;
+				TDSystem::種族撃破数[st->種族]++;
 			}
 
 		}
