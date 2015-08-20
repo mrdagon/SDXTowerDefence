@@ -193,7 +193,7 @@ namespace SDX_TD
             int 性能[5] =
             {
                 st->コスト[Lv],//上3つは確定、最大5つ
-                (int)(st->攻撃力[Lv] * 支援補正),
+                (int)(st->攻撃力[Lv] * 支援補正 * st->Hit数[Lv]),
                 st->連射[Lv],
                 (int)(st->支援効果[Lv] * 100),
 				(int)(支援補正 * 100) - 100,
@@ -208,7 +208,7 @@ namespace SDX_TD
             int 次性能[5] =
             {
                 st->コスト[NextLv],//上3つは確定、最大5つ
-                (int)(st->攻撃力[NextLv] * 支援補正),
+                (int)(st->攻撃力[NextLv] * 支援補正 * st->Hit数[NextLv]),
 				st->連射[NextLv] ,
                 (int)(st->支援効果[NextLv] * 100),
 				(int)(支援補正 * 100) - 100,
@@ -550,11 +550,11 @@ namespace SDX_TD
 					SStage->Add(new S加速(&MEffect::弾, { { -速度, 0.1, 9999 } }, DEF));
 					break;
 				case UnitType::ロチエ://周囲鈍足
-					SStage->Add(new Bomm({ GetX(), GetY(), 射程 }, st, Lv, 支援補正));
+					SStage->Add(new Bomm({ GetX(), GetY(), 射程 }, st, Lv, 支援補正) , a*10);
 					break;
-				case UnitType::バロゥ://全方向、防御低下
-					角度 = PAI * 2 * a / st->Hit数[Lv];
-					SStage->Add(new S追尾(&MEffect::弾, { 速度 , DEG * 2 }, DEF), a * 5);
+				case UnitType::バロゥ://全方向一回反射攻撃
+					角度 += PAI * 2 / st->Hit数[Lv];
+					SStage->Add(new S加速(&MEffect::弾, { { 速度 / 10, 速度 / 60, 速度*2 } }, DEF, 1 + Lv / 2), 1);
 					break;
 				case UnitType::フィオナ://司祭強化
 					if (a != 0) break;

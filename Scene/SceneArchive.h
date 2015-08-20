@@ -124,7 +124,7 @@ namespace SDX_TD
 					MUnit::味方[UnitType((a-7) * 14 )][1]->DrawRotate( pt , 1, 0);
 					pt.Move(20, 0);
 					MUnit::味方[UnitType((a-7) * 14 + 4)][1]->DrawRotate( pt , 1, 0);
-					pt.Move(-20, -20);
+					pt.Move(-20, 20);
 					MUnit::味方[UnitType((a - 7) * 14 + 8)][1]->DrawRotate(pt, 1, 0);
 					pt.Move(20, 0);
 					MUnit::味方[UnitType((a - 7) * 14 + 13)][1]->DrawRotate(pt, 1, 0);
