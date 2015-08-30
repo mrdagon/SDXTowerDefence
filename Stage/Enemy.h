@@ -58,6 +58,30 @@ namespace SDX_TD
 				shape.SetZoom(2, 2);
 			}
 
+			if (移動種 == MoveType::空)
+			{
+				if (X座標 <= CHIP_SIZE * 3)
+				{
+					//左から右
+					方向 = 5;
+				}
+				else if (X座標 >= CHIP_SIZE * (MAP_SIZE - 3))
+				{
+					//右から左
+					方向 = 3;
+				}
+				else if (Y座標 <= CHIP_SIZE * 3)
+				{
+					//上から下
+					方向 = 7;
+				}
+				else if (Y座標 >= CHIP_SIZE * (MAP_SIZE - 3))
+				{
+					//下から上
+					方向 = 1;
+				}
+			}
+
 			残りHP = 最大HP;
 		}
 
@@ -70,6 +94,7 @@ namespace SDX_TD
 			switch (移動種)
 			{
 			case MoveType::空:
+				if (SStage->is飛行直進) { return; }
 				方向 = SStage->land.空路.方向計算(方向, (int)GetX(), (int)GetY());
 				break;
 			case MoveType::陸:
@@ -314,7 +339,7 @@ namespace SDX_TD
 			}
 			else if (x < 0 || x >= MAP_SIZE || y < 0 || y >= MAP_SIZE || SStage->land.地形[x][y] == ChipType::畑)
 			{
-				//ゴール判定
+				//画面外 or ゴール判定
 				if (isBoss)
 				{
 					Witch::Main->Damage(ボスダメージ);

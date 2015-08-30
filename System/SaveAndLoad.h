@@ -112,7 +112,7 @@ namespace SDX_TD
 
         if (保存or読み込み == FileMode::Write)
         {
-			TDSystem::プレイ秒数.現在値 += Time::GetNowCount();
+			TDSystem::プレイ秒数.現在値 += long long(Time::GetNowCount());
 			Time::ResetCount();
 			file.ReadWrite( TDSystem::プレイ秒数.現在値);
 

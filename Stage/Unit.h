@@ -222,7 +222,11 @@ namespace SDX_TD
 
             switch (st->デバフ種)
 			{
-				case DebuffType::鈍足:アイコン[3] = IconType::鈍足; break;
+				case DebuffType::鈍足:
+					アイコン[3] = IconType::鈍足;
+					性能[3] = int(100 - 100 / (1.0 + st->デバフ率[Lv]));
+					次性能[3] = int(100 - 100 / (1.0 + st->デバフ率[NextLv]));
+					break;
 				case DebuffType::麻痺:アイコン[3] = IconType::麻痺; break;
 				case DebuffType::吹飛:アイコン[3] = IconType::吹飛; break;
 				case DebuffType::防壊:アイコン[3] = IconType::防壊; break;

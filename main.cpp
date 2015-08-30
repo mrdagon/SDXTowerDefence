@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 	LoadRecordS();
     SaveAndLoad(FileMode::Read);
 
-    System::Initialise("GTD ver0.04β", 640, 480);//ライブラリの初期化
+    System::Initialise("GTD ver0.05β", 640, 480);//ライブラリの初期化
     Window::SetLogicalSize(640, 480);
 
     Music::SetMainVolume( (TDSystem::BGMの音量*TDSystem::BGMの音量 ) / 100.0 + 0.01);

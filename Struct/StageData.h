@@ -29,7 +29,7 @@ namespace SDX_TD
                 for (auto &it : 完勝){ it = -1; }
             }
 
-            EnumArray<double, WitchType> スコア;
+            EnumArray<long long, WitchType> スコア;
             EnumArray<int, WitchType> 勝利;
             EnumArray<int, WitchType> 完勝;
         };
@@ -47,7 +47,7 @@ namespace SDX_TD
             return 成績[TDSystem::isスキル][TDSystem::isカップル];
         }
 
-		double Get最大スコア()
+		long long Get最大スコア()
 		{
 			return std::max(
 			{
@@ -92,9 +92,9 @@ namespace SDX_TD
             }
         }
 
-		double Update(WitchType 種類, double スコア , ResultType 結果)
+		long long Update(WitchType 種類, long long スコア , ResultType 結果)
 		{
-			double exp = 0;
+			long long exp = 0;
 
 			//全体スコアの更新計算
 			if (スコア > Get最大スコア())

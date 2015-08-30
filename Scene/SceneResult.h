@@ -33,13 +33,13 @@ namespace SDX_TD
         //@End
 
         bool isRetry;//どのボタンでResult画面を抜けたか
-		double baseScore;
+		long long baseScore;
         double bonusRate;
         double diffRate;
         double lifeBonus;
-		double totalScore;
-		double getEXP;
-		double Lv上昇量;
+		long long totalScore;
+		long long getEXP;
+		int Lv上昇量;
         ResultType 結果;
 
         static bool Call()
@@ -113,7 +113,7 @@ namespace SDX_TD
 			}
 
             baseScore = SStage->score;
-            totalScore = std::ceil(SStage->score * diffRate * bonusRate);//小数点切り下げ
+            totalScore = long long(SStage->score * diffRate * bonusRate);//小数点切り下げ
 			Lv上昇量 = 0;
 			getEXP = 0;
 
@@ -126,7 +126,7 @@ namespace SDX_TD
 
 			//スコアの更新と経験値の獲得
 			//5% + 更新分
-	        getEXP = std::ceil(totalScore * EXP_RATE);
+	        getEXP = long long(totalScore * EXP_RATE);
 			getEXP += StageDataS[TDSystem::選択ステージ].Update(Witch::Main->種類 , totalScore , 結果);
 			if (TDSystem::isカップル)
 			{
@@ -166,12 +166,16 @@ namespace SDX_TD
 				TDSystem::実績[ArchiveType::フリーステージクリア].現在値 = true;
 			}
 
+			//todo 現在は10面まで
+			if (TDSystem::ゲームモード == GameType::クエスト && TDSystem::ステージNo < 9)
+			{
+				TDSystem::isクエスト開放[TDSystem::ステージNo + 1] = true;
+			}
+
 			CheckScore();
 			CheckArchiveS();
 			//データ保存
 			SaveAndLoad(FileMode::Write);
-
-		
         }
 
         //終了時

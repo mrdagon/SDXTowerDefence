@@ -125,12 +125,12 @@ namespace SDX_TD
                 case SkillType::体力:説明文 = "体力＋\n\n初期体力が増加"; break;
                 case SkillType::魔力:説明文 = "魔力＋\n\n初期魔力が増加"; break;
                 case SkillType::必殺:説明文 = "必殺＋\n\nSP獲得量が上昇"; break;
-				case SkillType::対獣:説明文 = "対獣＋\n\nケットシー、ケルベロス、グリフィンに与えるダメージが上昇"; pt *= 2; pt2 *= 2; break;
-				case SkillType::対人:説明文 = "対人＋\n\nゴブリン、コボルド、オーガに与えるダメージが上昇"; pt *= 2; pt2 *= 2; break;
-				case SkillType::対水:説明文 = "対水＋\n\nゼリー、ゼリー王、マーマンに与えるダメージが上昇"; pt *= 2; pt2 *= 2; break;
-				case SkillType::対樹:説明文 = "対樹＋\n\nゴーレム、トレントに与えるダメージが上昇"; pt *= 2; pt2 *= 2; break;
-				case SkillType::対闇:説明文 = "対闇＋\n\nシャーマン、スケルトン、インプに与えるダメージが上昇"; pt *= 2; pt2 *= 2; break;
-				case SkillType::対竜:説明文 = "対竜＋\n\nドラゴンに与えるダメージが上昇"; pt *= 2; pt2 *= 2; break;
+				case SkillType::対獣:説明文 = "対獣＋\n\n㊺㊾Ⅵに与えるダメージが上昇"; pt *= 2; pt2 *= 2; break;
+				case SkillType::対人:説明文 = "対人＋\n\n㊹㊼㊻に与えるダメージが上昇"; pt *= 2; pt2 *= 2; break;
+				case SkillType::対水:説明文 = "対水＋\n\n㊸ⅡⅢに与えるダメージが上昇"; pt *= 2; pt2 *= 2; break;
+				case SkillType::対樹:説明文 = "対樹＋\n\n㊽Ⅴに与えるダメージが上昇"; pt *= 2; pt2 *= 2; break;
+				case SkillType::対闇:説明文 = "対闇＋\n\nⅠ㊿Ⅳに与えるダメージが上昇"; pt *= 2; pt2 *= 2; break;
+				case SkillType::対竜:説明文 = "対竜＋\n\nⅦに与えるダメージが上昇"; pt *= 2; pt2 *= 2; break;
                 case SkillType::幸運:説明文 = "幸運＋\n\n獲得スコアが増加"; break;
                 case SkillType::試練:説明文 = "試練＋\n\n最大Wave数が増加"; break;
                 default:説明文 = "";break;

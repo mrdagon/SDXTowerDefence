@@ -26,7 +26,8 @@ namespace SDX_TD
 		Unit* selectUnit = nullptr;//選択中の魔法
 		Land land;//
 		bool isReplay;
-		int score;
+		bool is飛行直進 = true;
+		long long score;
 
 		/**敵や魔法が消滅する前に呼び出す.*/
 		void ResetSelect(IObject* 消滅するオブジェクト)
@@ -55,7 +56,7 @@ namespace SDX_TD
 
 		virtual void 大魔法効果(bool is発動) = 0;
 
-		virtual void SaveReplay(ResultType 結果 , double スコア) = 0;
+		virtual void SaveReplay(ResultType 結果 , long long スコア) = 0;
 	};
 
 	/**アクティブなStage.*/

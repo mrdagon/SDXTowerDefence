@@ -255,6 +255,7 @@ namespace SDX_TD
 			//カットインテスト
 			int anime_sp = 4;
 			static int anime_wait = 60;
+			/*
 			if (Input::key.F1.on)
 			{
 				大魔法演出(1, anime_sp, anime_wait);
@@ -287,7 +288,7 @@ namespace SDX_TD
 			{
 				anime_wait = 120;
 			}
-
+			*/
             //タブレットでは指を離した時、デスクトップはクリック時に操作
             bool isClick = Input::mouse.Left.on;
 
@@ -949,7 +950,7 @@ namespace SDX_TD
         }
 
         /**リプレイ保存処理.*/
-        void SaveReplay( ResultType 結果, double スコア )
+        void SaveReplay( ResultType 結果, long long スコア )
         {
             auto time = Time::GetDateString();
             time += ".rep";
@@ -1307,7 +1308,7 @@ namespace SDX_TD
             }
         }
 
-		void 大魔法演出(int mode = 3, int speed = 4 , int wait = 60)
+		void 大魔法演出(int mode = 2, int speed = 4 , int wait = 60)
 		{
 			//描画スキップを解除
 			Director::IsDraw() = true;
@@ -1365,8 +1366,11 @@ namespace SDX_TD
 				Screen::SetBright(Color::Gray);
 				SStage->Draw();
 				Screen::SetBright(Color::White);
-				//@todo 演出は仮
-				MSystem::カットイン[Witch::Main->種類].DrawRotate({ x, y },1,0);
+				//@todo 演出は仮、とりあえずライナのみ
+				if (Witch::Main->種類 == WitchType::ライナ)
+				{
+					MSystem::カットイン[Witch::Main->種類].DrawRotate({ x, y }, 1, 0);
+				}
 				System::Update();
 			}
 		}

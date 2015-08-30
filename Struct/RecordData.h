@@ -83,6 +83,14 @@ namespace SDX_TD
 		TDSystem::実績[ArchiveType::全ての強化LVが100超え].名前 = "全ての強化LVが100超え";
 		TDSystem::実績[ArchiveType::全ての強化LVを限界まで上げた].名前 = "全ての強化LVを限界まで上げた";
 		TDSystem::実績[ArchiveType::全ての金勲章を取得した].名前 = "全ての金勲章を取得した";
+
+		for (auto& it : TDSystem::実績)
+		{
+			it.目標値[0] = 1;
+			it.目標値[1] = 1;
+			it.目標値[2] = 1;
+		}
+
     }
 
     void CheckArchiveS()
