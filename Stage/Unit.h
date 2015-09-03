@@ -198,11 +198,11 @@ namespace SDX_TD
                 (int)(st->支援効果[Lv] * 100),
 				(int)(支援補正 * 100) - 100,
             };
-			//被支援
 			//DPS/コスト
-			//射程
 			//発射数
-
+			//射程
+			//特攻表示
+			
             const int NextLv = (Lv + 1) % 5;
 
             int 次性能[5] =
