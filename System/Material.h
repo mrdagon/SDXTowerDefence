@@ -106,6 +106,9 @@ namespace SDX_TD
             UI[IconType::回避].Load("file/system/icon/012.png");
             UI[IconType::防御].Load("file/system/icon/013.png");
             UI[IconType::回復].Load("file/system/icon/014.png");
+			UI[IconType::銅メダル].Load("file/system/icon/015.png");
+			UI[IconType::銀メダル].Load("file/system/icon/016.png");
+			UI[IconType::金メダル].Load("file/system/icon/017.png");
 
             魔導具[WitchType::ライナ].Load("file/unit/artifact/000.png");
             魔導具[WitchType::ナツメ].Load("file/unit/artifact/001.png");
@@ -181,17 +184,17 @@ namespace SDX_TD
             チェック.Load("file/system/tick.png");
 
 			カットイン[WitchType::ライナ].Load("file/cut_in/lina.png");
-			カットイン[WitchType::ナツメ].Load("file/cut_in/natsume.png");
-			カットイン[WitchType::ルコウ].Load("file/cut_in/rukou.png");
-			カットイン[WitchType::ディアネラ].Load("file/cut_in/dianella.png");
-			カットイン[WitchType::ミナエ].Load("file/cut_in/minae.png");
-			カットイン[WitchType::トレニア].Load("file/cut_in/torenia.png");
-			カットイン[WitchType::ロチエ].Load("file/cut_in/rochie.png");
-			カットイン[WitchType::バロゥ].Load("file/cut_in/barrow.png");
-			カットイン[WitchType::フィオナ].Load("file/cut_in/fiona.png");
-			カットイン[WitchType::ナズナ].Load("file/cut_in/nazuna.png");
-			カットイン[WitchType::委員長].Load("file/cut_in/chairwoman.png");
-			カットイン[WitchType::ミルラ].Load("file/cut_in/myrra.png");
+			//カットイン[WitchType::ナツメ].Load("file/cut_in/natsume.png");
+			//カットイン[WitchType::ルコウ].Load("file/cut_in/rukou.png");
+			//カットイン[WitchType::ディアネラ].Load("file/cut_in/dianella.png");
+			//カットイン[WitchType::ミナエ].Load("file/cut_in/minae.png");
+			//カットイン[WitchType::トレニア].Load("file/cut_in/torenia.png");
+			//カットイン[WitchType::ロチエ].Load("file/cut_in/rochie.png");
+			//カットイン[WitchType::バロゥ].Load("file/cut_in/barrow.png");
+			//カットイン[WitchType::フィオナ].Load("file/cut_in/fiona.png");
+			//カットイン[WitchType::ナズナ].Load("file/cut_in/nazuna.png");
+			//カットイン[WitchType::委員長].Load("file/cut_in/chairwoman.png");
+			//カットイン[WitchType::ミルラ].Load("file/cut_in/myrra.png");
 
             for (int a = 0; a < 14; ++a)
             {
@@ -378,7 +381,7 @@ namespace SDX_TD
 			fontS[FontType::ゴシック中].SetImage("Ⅳ", MUnit::敵[EnemyType::インプ][1]);
 			fontS[FontType::ゴシック中].SetImage("Ⅴ", MUnit::敵[EnemyType::トレント][1]);//青ゴーレム
 			fontS[FontType::ゴシック中].SetImage("Ⅵ", MUnit::敵[EnemyType::グリフィン][1]);
-			fontS[FontType::ゴシック中].SetImage("Ⅷ", MUnit::敵[EnemyType::ドラゴン][1]);
+			fontS[FontType::ゴシック中].SetImage("Ⅶ", MUnit::敵[EnemyType::ドラゴン][1]);
 		}
     }
 

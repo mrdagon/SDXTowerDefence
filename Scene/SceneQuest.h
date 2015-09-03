@@ -42,7 +42,6 @@ namespace SDX_TD
         //@End
         bool isQuest = true;//クエスト用 or フリー用
         int ページ数 = 0;
-        int 現在ステージ = 0;
 
         SceneQuest()
         {
@@ -56,7 +55,7 @@ namespace SDX_TD
             int 難易度 = (int)TDSystem::難易度;
 
             //Update
-			if (開始.isClick() && TDSystem::選択ステージ != "" && (isQuest || 現在ステージ < (int)StageType::Free.size() ))
+			if (開始.isClick() && TDSystem::選択ステージ != "" && (isQuest || TDSystem::ステージNo < (int)StageType::Free.size() ))
             {
                 if (SceneWitch::SelectWitch().isOK )
                 {
@@ -92,20 +91,20 @@ namespace SDX_TD
             if (ページ数 < 0){ ページ数 = maxPage; }
             if (ページ数 > maxPage){ ページ数 = 0; }
 
-			if (ステージA.isClick() && (!isQuest || TDSystem::isクエスト開放[ページ数 * 4])){ 現在ステージ = ページ数 * 4; }
-			if (ステージB.isClick() && (!isQuest || TDSystem::isクエスト開放[ページ数 * 4+1])){ 現在ステージ = ページ数 * 4 + 1; }
-			if (ステージC.isClick() && (!isQuest || TDSystem::isクエスト開放[ページ数 * 4+2])){ 現在ステージ = ページ数 * 4 + 2; }
-			if (ステージD.isClick() && (!isQuest || TDSystem::isクエスト開放[ページ数 * 4+3])){ 現在ステージ = ページ数 * 4 + 3; }
+			if (ステージA.isClick() && (!isQuest || TDSystem::isクエスト開放[ページ数 * 4])){ TDSystem::ステージNo = ページ数 * 4; }
+			if (ステージB.isClick() && (!isQuest || TDSystem::isクエスト開放[ページ数 * 4+1])){ TDSystem::ステージNo = ページ数 * 4 + 1; }
+			if (ステージC.isClick() && (!isQuest || TDSystem::isクエスト開放[ページ数 * 4+2])){ TDSystem::ステージNo = ページ数 * 4 + 2; }
+			if (ステージD.isClick() && (!isQuest || TDSystem::isクエスト開放[ページ数 * 4+3])){ TDSystem::ステージNo = ページ数 * 4 + 3; }
 
             if (isQuest)
             {
-                TDSystem::選択ステージ = StageType::Quest[現在ステージ];
+                TDSystem::選択ステージ = StageType::Quest[TDSystem::ステージNo];
             }
             else
             {
-                if (現在ステージ < (int)StageType::Free.size())
+                if (TDSystem::ステージNo < (int)StageType::Free.size())
                 {
-                    TDSystem::選択ステージ = StageType::Free[現在ステージ];
+                    TDSystem::選択ステージ = StageType::Free[TDSystem::ステージNo];
                 }
                 else
                 {
@@ -227,7 +226,7 @@ namespace SDX_TD
                     case 3: buf = &ステージD; break;
                 }
 
-                if (現在ステージ == ページ数 * 4 + a)
+                if (TDSystem::ステージNo == ページ数 * 4 + a)
                 {
                     Screen::SetBright(Color::Red);
                 }

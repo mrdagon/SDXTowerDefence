@@ -124,7 +124,7 @@ namespace SDX_TD
 					MUnit::味方[UnitType((a-7) * 14 )][1]->DrawRotate( pt , 1, 0);
 					pt.Move(20, 0);
 					MUnit::味方[UnitType((a-7) * 14 + 4)][1]->DrawRotate( pt , 1, 0);
-					pt.Move(-20, -20);
+					pt.Move(-20, 20);
 					MUnit::味方[UnitType((a - 7) * 14 + 8)][1]->DrawRotate(pt, 1, 0);
 					pt.Move(20, 0);
 					MUnit::味方[UnitType((a - 7) * 14 + 13)][1]->DrawRotate(pt, 1, 0);
@@ -177,7 +177,7 @@ namespace SDX_TD
 				posN.Move(60, 0);
 				break;
 			case 1://全体記録
-				TDSystem::プレイ秒数.現在値 += Time::GetNowCount();
+				TDSystem::プレイ秒数.現在値 += long long(Time::GetNowCount());
 				Time::ResetCount();
 
 				dataS[0] = &TDSystem::プレイ秒数;
@@ -242,10 +242,10 @@ namespace SDX_TD
 				//達成度アイコン
 				switch (dataS[a]->CheckRank())
 				{
-				case 0:MIcon::UI[IconType::マナ].DrawRotate( posI , 1 , 0);break;
-				case 1:MIcon::UI[IconType::ライフ].DrawRotate( posI, 1, 0); break;
-				case 2:MIcon::UI[IconType::レベル].DrawRotate( posI, 1, 0); break;
-				case 3:MIcon::UI[IconType::回避].DrawRotate( posI, 1, 0); break;
+				case 1:MIcon::UI[IconType::銅メダル].DrawRotate( posI, 1, 0); break;
+				case 2:MIcon::UI[IconType::銀メダル].DrawRotate( posI, 1, 0); break;
+				case 3:MIcon::UI[IconType::金メダル].DrawRotate( posI, 1, 0); break;
+				default:break;
 				}
 
 				//項目名

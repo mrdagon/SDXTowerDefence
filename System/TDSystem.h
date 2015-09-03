@@ -20,19 +20,19 @@ namespace SDX_TD
         bool isスキル = true;//notならスキル効果無し
         bool isカップル = true;//notならシングル
 		bool isクエスト = true;//クエストモードならture
+		int ステージNo = 0;//面数
 		GameType ゲームモード = GameType::クエスト;
 
-        int バージョン = 104;//
+        int バージョン = 105;//
 
         //アイテム関連
 		int レベル = 1;
         int 最大スキルポイント = 5;
         int 残りスキルポイント = 5;
-		bool isクエスト開放[StageType::COUNT] = { true , true , false};
+		bool isクエスト開放[StageType::COUNT] = { true , false};
 		double 経験値 = 0;
         //ランダムステージの状況
 		Difficulty 限界難易度 = Difficulty::Easy;
-
 
 		//個別実績は達成度合いに応じてマークを付ける
 		//実績14個 
@@ -44,10 +44,10 @@ namespace SDX_TD
 		struct RecordData
 		{
 			std::string 名前;
-			double 現在値 = 0;
-			double 目標値[3];
+			long long 現在値 = 0;
+			long long 目標値[3];
 
-			void Set(const char* 名前, std::array<double, 3> 目標値)
+			void Set(const char* 名前, std::array<long long, 3> 目標値)
 			{
 				this->名前 = 名前;
 				this->目標値[0] = 目標値[0];
@@ -62,9 +62,9 @@ namespace SDX_TD
 				{
 					this->名前.insert(0, 追加文字);
 				}
-				this->目標値[0] = std::stod(csvデータ[1]);
-				this->目標値[1] = std::stod(csvデータ[2]);
-				this->目標値[2] = std::stod(csvデータ[3]);
+				this->目標値[0] = std::stoi(csvデータ[1]);
+				this->目標値[1] = std::stoi(csvデータ[2]);
+				this->目標値[2] = std::stoi(csvデータ[3]);
 			}
 
 			//目標を達成しているか判定
