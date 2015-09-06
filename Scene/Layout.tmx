@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="352">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="356">
  <objectgroup color="#00ffff" name="TEMPLATE">
   <object id="16" name="ScrollBar" type="ScrollBar" x="306.5" y="496" width="57" height="54">
    <properties>
@@ -33,7 +33,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup color="#ffffc8" name="SceneMenu">
+ <objectgroup color="#ffffc8" name="SceneMenu" visible="0">
   <object id="99" name="全体枠" type="Frame" x="1" y="0" width="640" height="480">
    <properties>
     <property name="frameNo" value="0"/>
@@ -339,7 +339,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneArchive">
+ <objectgroup name="SceneArchive" visible="0">
   <object id="285" name="項目枠1" type="Frame" x="64" y="64" width="280" height="409">
    <properties>
     <property name="frameNo" value="5"/>
@@ -874,13 +874,13 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneWitch" visible="0">
+ <objectgroup name="SceneWitch">
   <object id="210" name="全体枠" type="Frame" x="170" y="60" width="360" height="360">
    <properties>
     <property name="frameNo" value="5"/>
    </properties>
   </object>
-  <object id="211" name="ライナ" type="Button" x="195.5" y="83" width="140" height="40">
+  <object id="211" name="ライナ" type="Button" x="195.5" y="82" width="40" height="40">
    <properties>
     <property name="frameNo" value="1"/>
    </properties>
@@ -890,64 +890,79 @@
     <property name="frameNo" value="3"/>
    </properties>
   </object>
-  <object id="213" name="ルコウ" type="Button" x="195" y="127" width="140" height="40">
+  <object id="213" name="ルコウ" type="Button" x="195" y="126" width="40" height="40">
    <properties>
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="216" name="ロチエ" type="Button" x="195" y="215" width="140" height="40">
+  <object id="216" name="ロチエ" type="Button" x="250" y="126" width="40" height="40">
    <properties>
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="217" name="ミナエ" type="Button" x="195" y="171" width="140" height="40">
+  <object id="217" name="ミナエ" type="Button" x="250" y="82" width="40" height="40">
    <properties>
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="218" name="委員長" type="Button" x="195" y="303" width="140" height="40">
+  <object id="218" name="委員長" type="Button" x="305" y="126" width="40" height="40">
    <properties>
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="219" name="フィオナ" type="Button" x="195" y="259" width="140" height="40">
+  <object id="219" name="フィオナ" type="Button" x="305" y="82" width="40" height="40">
    <properties>
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="220" name="ディアネラ" type="Button" x="366.75" y="127" width="140" height="40">
+  <object id="220" name="ディアネラ" type="Button" x="359.75" y="126" width="40" height="40">
    <properties>
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="221" name="トレニア" type="Button" x="366.75" y="171" width="140" height="40">
+  <object id="221" name="トレニア" type="Button" x="415.75" y="82" width="40" height="40">
    <properties>
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="222" name="ミルラ" type="Button" x="366.75" y="303" width="140" height="40">
+  <object id="222" name="ミルラ" type="Button" x="470.75" y="126" width="40" height="40">
    <properties>
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="223" name="バロゥ" type="Button" x="366.75" y="215" width="140" height="40">
+  <object id="223" name="バロゥ" type="Button" x="415.75" y="126" width="40" height="40">
    <properties>
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="224" name="ナズナ" type="Button" x="366.75" y="259" width="140" height="40">
+  <object id="224" name="ナズナ" type="Button" x="470.75" y="82" width="40" height="40">
    <properties>
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="225" name="ナツメ" type="Button" x="367.25" y="83" width="140" height="40">
+  <object id="225" name="ナツメ" type="Button" x="360.25" y="82" width="40" height="40">
    <properties>
     <property name="frameNo" value="1"/>
    </properties>
   </object>
-  <object id="244" name="キャンセル" type="Button" x="356" y="363" width="160" height="40">
+  <object id="244" name="説明枠" type="Button" x="179" y="295" width="342" height="50">
+   <properties>
+    <property name="frameNo" value="1"/>
+   </properties>
+  </object>
+  <object id="352" name="キャンセル" type="Button" x="357" y="363" width="160" height="40">
    <properties>
     <property name="frameNo" value="3"/>
+   </properties>
+  </object>
+  <object id="354" name="大魔法枠" type="Button" x="179" y="235" width="342" height="50">
+   <properties>
+    <property name="frameNo" value="1"/>
+   </properties>
+  </object>
+  <object id="355" name="ユニット枠" type="Button" x="179" y="175" width="342" height="50">
+   <properties>
+    <property name="frameNo" value="1"/>
    </properties>
   </object>
  </objectgroup>

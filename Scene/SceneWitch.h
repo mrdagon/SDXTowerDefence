@@ -16,6 +16,7 @@ namespace SDX_TD
 		WitchType first = WitchType::COUNT;
 		WitchType second = WitchType::COUNT;
 
+		WitchType pointWitch;//マウスが乗ってるウィッチ
 		bool isOK;//
 
 		static SceneWitch& SelectWitch()
@@ -39,20 +40,23 @@ namespace SDX_TD
 	private:
 		//@Define
 		UI_Frame 全体枠 = { 210, {170,60,360,360} , 0.000000,5};
-		UI_Button ライナ = { 211, {195,83,140,40} , 0.000000,1};
+		UI_Button ライナ = { 211, {195,82,40,40} , 0.000000,1};
 		UI_Button 決定 = { 212, {185,363,160,40} , 0.000000,3};
-		UI_Button ルコウ = { 213, {195,127,140,40} , 0.000000,1};
-		UI_Button ロチエ = { 216, {195,215,140,40} , 0.000000,1};
-		UI_Button ミナエ = { 217, {195,171,140,40} , 0.000000,1};
-		UI_Button 委員長 = { 218, {195,303,140,40} , 0.000000,1};
-		UI_Button フィオナ = { 219, {195,259,140,40} , 0.000000,1};
-		UI_Button ディアネラ = { 220, {366,127,140,40} , 0.000000,1};
-		UI_Button トレニア = { 221, {366,171,140,40} , 0.000000,1};
-		UI_Button ミルラ = { 222, {366,303,140,40} , 0.000000,1};
-		UI_Button バロゥ = { 223, {366,215,140,40} , 0.000000,1};
-		UI_Button ナズナ = { 224, {366,259,140,40} , 0.000000,1};
-		UI_Button ナツメ = { 225, {367,83,140,40} , 0.000000,1};
-		UI_Button キャンセル = { 244, {356,363,160,40} , 0.000000,3};
+		UI_Button ルコウ = { 213, {195,126,40,40} , 0.000000,1};
+		UI_Button ロチエ = { 216, {250,126,40,40} , 0.000000,1};
+		UI_Button ミナエ = { 217, {250,82,40,40} , 0.000000,1};
+		UI_Button 委員長 = { 218, {305,126,40,40} , 0.000000,1};
+		UI_Button フィオナ = { 219, {305,82,40,40} , 0.000000,1};
+		UI_Button ディアネラ = { 220, {359,126,40,40} , 0.000000,1};
+		UI_Button トレニア = { 221, {415,82,40,40} , 0.000000,1};
+		UI_Button ミルラ = { 222, {470,126,40,40} , 0.000000,1};
+		UI_Button バロゥ = { 223, {415,126,40,40} , 0.000000,1};
+		UI_Button ナズナ = { 224, {470,82,40,40} , 0.000000,1};
+		UI_Button ナツメ = { 225, {360,82,40,40} , 0.000000,1};
+		UI_Button 説明枠 = { 244, {179,295,342,50} , 0.000000,1};
+		UI_Button キャンセル = { 352, {357,363,160,40} , 0.000000,3};
+		UI_Button 大魔法枠 = { 354, {179,235,342,50} , 0.000000,1};
+		UI_Button ユニット枠 = { 355, {179,175,342,50} , 0.000000,1};
 		//@End
 
 		SceneWitch()
@@ -92,18 +96,24 @@ namespace SDX_TD
 		void Update() override
 		{
 			//Update
-			if (ライナ.isClick()){ ChangeWitch(WitchType::ライナ); }
-			if (ルコウ.isClick()){ ChangeWitch(WitchType::ルコウ); }
-			if (ロチエ.isClick()){ ChangeWitch(WitchType::ロチエ); }
-			if (ミナエ.isClick()){ ChangeWitch(WitchType::ミナエ); }
-			if (委員長.isClick()){ ChangeWitch(WitchType::委員長); }
-			if (フィオナ.isClick()){ ChangeWitch(WitchType::フィオナ); }
-			if (ディアネラ.isClick()){ ChangeWitch(WitchType::ディアネラ); }
-			if (トレニア.isClick()){ ChangeWitch(WitchType::トレニア); }
-			if (ミルラ.isClick()){ ChangeWitch(WitchType::ミルラ); }
-			if (バロゥ.isClick()){ ChangeWitch(WitchType::バロゥ); }
-			if (ナズナ.isClick()){ ChangeWitch(WitchType::ナズナ); }
-			if (ナツメ.isClick()){ ChangeWitch(WitchType::ナツメ); }
+			if (ライナ.rect.Hit( &Input::mouse.GetPoint() )){ pointWitch = WitchType::ライナ; } else 
+			if (ルコウ.rect.Hit( &Input::mouse.GetPoint() )){ pointWitch = WitchType::ルコウ; } else 
+			if (ロチエ.rect.Hit( &Input::mouse.GetPoint() )){ pointWitch = WitchType::ロチエ; } else 
+			if (ミナエ.rect.Hit( &Input::mouse.GetPoint() )){ pointWitch = WitchType::ミナエ; } else 
+			if (委員長.rect.Hit( &Input::mouse.GetPoint() )){ pointWitch = WitchType::委員長; } else 
+			if (フィオナ.rect.Hit( &Input::mouse.GetPoint() )){ pointWitch = WitchType::フィオナ; } else 
+			if (ディアネラ.rect.Hit( &Input::mouse.GetPoint() )){ pointWitch = WitchType::ディアネラ; } else
+			if (トレニア.rect.Hit( &Input::mouse.GetPoint() )){ pointWitch = WitchType::トレニア; } else 
+			if (ミルラ.rect.Hit( &Input::mouse.GetPoint() )){ pointWitch = WitchType::ミルラ; } else 
+			if (バロゥ.rect.Hit( &Input::mouse.GetPoint() )){ pointWitch = WitchType::バロゥ; } else 
+			if (ナズナ.rect.Hit( &Input::mouse.GetPoint() )){ pointWitch = WitchType::ナズナ; } else 
+			if (ナツメ.rect.Hit( &Input::mouse.GetPoint() )){ pointWitch = WitchType::ナツメ; } else 
+			{ pointWitch = WitchType::COUNT; }
+
+			if (pointWitch != WitchType::COUNT && Input::mouse.Left.on )
+			{
+				ChangeWitch(pointWitch);
+			}
 
 			if( 決定.isClick() )
 			{
@@ -145,9 +155,9 @@ namespace SDX_TD
 			}
 
 			//アイコン
-			MUnit::味方[(UnitType)種類][2]->DrawRotate( pt - Point(50,0) ,2,0 );
+			MUnit::味方[(UnitType)種類][2]->DrawRotate( pt ,2,0 );
 			//名前
-			MFont::fontS[1].DrawRotate( pt + Point(20,0) , 1, 0, Color::White, WitchDataS[種類].名前);
+			//MFont::fontS[1].DrawRotate( pt + Point(20,0) , 1, 0, Color::White, WitchDataS[種類].名前);
 
 		}
 
@@ -157,7 +167,7 @@ namespace SDX_TD
 #ifdef _DEBUG			
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
-			Screen::SetBright(Color::Gray);
+			Screen::SetBright({64,64,64});
 			Director::GetScene(0)->Draw();
 			Screen::SetBright(Color::White);
 
@@ -168,6 +178,33 @@ namespace SDX_TD
 			決定.DrawText(MFont::fontS[2], "OK" , 2);
 			Screen::SetBright();
 			//End
+
+			説明枠.Draw();
+			大魔法枠.Draw();
+			ユニット枠.Draw();
+
+			MFont::fontS[FontType::BMP黒].Draw(ユニット枠.rect.GetPoint() + Point(4,4), Color::White, "Unit");
+			MFont::fontS[FontType::BMP黒].Draw(大魔法枠.rect.GetPoint() + Point(4, 4), Color::White, "Ultimate");
+			MFont::fontS[FontType::BMP黒].Draw(説明枠.rect.GetPoint() + Point(4, 4), Color::White, "Passive");
+
+			if (pointWitch != WitchType::COUNT)
+			{
+
+				//使用可能ウィッチ
+				Point pt = ユニット枠.rect.GetPoint();
+				pt.Move(22, 30);
+
+				for (int a = 1; a < 12; ++a)
+				{
+					MUnit::味方[WitchDataS[pointWitch].職種[a]][1]->DrawRotate(pt,2,0);
+					pt.Move(30, 0);
+				}
+
+				//パッシブ効果
+
+				//大魔法説明
+
+			}
 
 			DrawWB(ライナ,WitchType::ライナ);
 			DrawWB(ルコウ,WitchType::ルコウ);
@@ -205,7 +242,10 @@ namespace SDX_TD
 			バロゥ = *dynamic_cast<UI_Button*>(guiData.dataS[11].get());
 			ナズナ = *dynamic_cast<UI_Button*>(guiData.dataS[12].get());
 			ナツメ = *dynamic_cast<UI_Button*>(guiData.dataS[13].get());
-			キャンセル = *dynamic_cast<UI_Button*>(guiData.dataS[14].get());
+			説明枠 = *dynamic_cast<UI_Button*>(guiData.dataS[14].get());
+			キャンセル = *dynamic_cast<UI_Button*>(guiData.dataS[15].get());
+			大魔法枠 = *dynamic_cast<UI_Button*>(guiData.dataS[16].get());
+			ユニット枠 = *dynamic_cast<UI_Button*>(guiData.dataS[17].get());
 			//@End
 		}
 	};
