@@ -216,9 +216,8 @@ namespace SDX_TD
             if (Input::key.Return.on){ LoadGUI(); }
 #endif
             Director::IsDraw() = true;
-            Screen::SetBright(Color::Gray);
             SStage->Draw();
-            Screen::SetBright(Color::White);
+			Drawing::Rect(Window::GetSize(), { 0,0,0,64 });
 
             //Draw
             MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);

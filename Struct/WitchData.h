@@ -18,7 +18,8 @@ namespace SDX_TD
 		std::string 英名;
 		std::string 大魔法名;
 		std::string 魔導具名;
-		std::string 説明文;
+		std::string 大魔法説明;
+		std::string パッシブ説明;
 
 		//外部に保存
 		static EnumArray<int, SkillType> スキルLv;
@@ -79,7 +80,8 @@ namespace SDX_TD
 		WitchDataS[WitchType::ライナ].英名 = "Lina";
 		WitchDataS[WitchType::ライナ].大魔法名 = "フォルドアーカレイト";
 		WitchDataS[WitchType::ライナ].魔導具名 = "トルネルージュ";
-		WitchDataS[WitchType::ライナ].説明文 = "";
+		WitchDataS[WitchType::ライナ].パッシブ説明 = "";
+		WitchDataS[WitchType::ライナ].大魔法説明 = "";
 
 		WitchDataS[WitchType::ライナ].属性 = Element::炎;
 		WitchDataS[WitchType::ライナ].攻撃補正 = 1.05;
@@ -103,7 +105,8 @@ namespace SDX_TD
 		WitchDataS[WitchType::ナツメ].英名 = "Natsume";
 		WitchDataS[WitchType::ナツメ].大魔法名 = "グリンブルスティ";
 		WitchDataS[WitchType::ナツメ].魔導具名 = "ジャガーノート";
-		WitchDataS[WitchType::ナツメ].説明文 = "";
+		WitchDataS[WitchType::ナツメ].パッシブ説明 = "";
+		WitchDataS[WitchType::ナツメ].大魔法説明 = "";
 
 		WitchDataS[WitchType::ナツメ].属性 = Element::炎;
 		WitchDataS[WitchType::ナツメ].攻撃補正 = 1.2;
@@ -129,7 +132,8 @@ namespace SDX_TD
 		WitchDataS[WitchType::ルコウ].英名 = "Rukou";
 		WitchDataS[WitchType::ルコウ].大魔法名 = "御津之比良坂流『氷天攻華』";
 		WitchDataS[WitchType::ルコウ].魔導具名 = "雪風/空魂";
-		WitchDataS[WitchType::ルコウ].説明文 = "";
+		WitchDataS[WitchType::ルコウ].パッシブ説明 = "";
+		WitchDataS[WitchType::ルコウ].大魔法説明 = "";
 
 		WitchDataS[WitchType::ルコウ].属性 = Element::炎;
 		WitchDataS[WitchType::ルコウ].攻撃補正 = 1.50;
@@ -156,7 +160,8 @@ namespace SDX_TD
 		WitchDataS[WitchType::ディアネラ].英名 = "Dianella";
 		WitchDataS[WitchType::ディアネラ].大魔法名 = "レインマニエール";
 		WitchDataS[WitchType::ディアネラ].魔導具名 = "皇剣シルヴァウス";
-		WitchDataS[WitchType::ディアネラ].説明文 = "";
+		WitchDataS[WitchType::ディアネラ].パッシブ説明 = "";
+		WitchDataS[WitchType::ディアネラ].大魔法説明 = "";
 
 		WitchDataS[WitchType::ディアネラ].属性 = Element::炎;
 		WitchDataS[WitchType::ディアネラ].MP消費 = 0.9;
@@ -180,7 +185,8 @@ namespace SDX_TD
 		WitchDataS[WitchType::ミナエ].英名 = "Minae";
 		WitchDataS[WitchType::ミナエ].大魔法名 = "スーパーノヴァ";
 		WitchDataS[WitchType::ミナエ].魔導具名 = "カランコエ";
-		WitchDataS[WitchType::ミナエ].説明文 = "";
+		WitchDataS[WitchType::ミナエ].パッシブ説明 = "";
+		WitchDataS[WitchType::ミナエ].大魔法説明 = "";
 
 		WitchDataS[WitchType::ミナエ].属性 = Element::炎;
 		WitchDataS[WitchType::ミナエ].攻撃補正 = 1.2;
@@ -206,7 +212,8 @@ namespace SDX_TD
 		WitchDataS[WitchType::トレニア].英名 = "Torenia";
 		WitchDataS[WitchType::トレニア].大魔法名 = "超口径激滅レーザー";
 		WitchDataS[WitchType::トレニア].魔導具名 = "フォトンルーメン";
-		WitchDataS[WitchType::トレニア].説明文 = "";
+		WitchDataS[WitchType::トレニア].パッシブ説明 = "";
+		WitchDataS[WitchType::トレニア].大魔法説明 = "";
 
 		WitchDataS[WitchType::トレニア].属性 = Element::炎;
 		WitchDataS[WitchType::トレニア].範囲補正 = 1.2;
@@ -230,7 +237,8 @@ namespace SDX_TD
 		WitchDataS[WitchType::ロチエ].英名 = "Rochie";
 		WitchDataS[WitchType::ロチエ].大魔法名 = "花曇流忍法『大山鳴動』";
 		WitchDataS[WitchType::ロチエ].魔導具名 = "紅蜂";
-		WitchDataS[WitchType::ロチエ].説明文 = "";
+		WitchDataS[WitchType::ロチエ].パッシブ説明 = "";
+		WitchDataS[WitchType::ロチエ].大魔法説明 = "";
 
 		WitchDataS[WitchType::ロチエ].属性 = Element::炎;
 		WitchDataS[WitchType::ロチエ].特殊補正[DebuffType::鈍足] = 1.5;
@@ -254,7 +262,8 @@ namespace SDX_TD
 		WitchDataS[WitchType::バロゥ].英名 = "Barrow";
 		WitchDataS[WitchType::バロゥ].大魔法名 = "バラーダ・イェブ";
 		WitchDataS[WitchType::バロゥ].魔導具名 = "クレメンス";
-		WitchDataS[WitchType::バロゥ].説明文 = "";
+		WitchDataS[WitchType::バロゥ].パッシブ説明 = "";
+		WitchDataS[WitchType::バロゥ].大魔法説明 = "";
 
 		WitchDataS[WitchType::バロゥ].属性 = Element::炎;
 		WitchDataS[WitchType::バロゥ].攻撃補正 = 0.7;
@@ -278,7 +287,8 @@ namespace SDX_TD
 		WitchDataS[WitchType::フィオナ].英名 = "Fiona";
 		WitchDataS[WitchType::フィオナ].大魔法名 = "セイオーヌ・ディエーヴ";
 		WitchDataS[WitchType::フィオナ].魔導具名 = "スヴァーズ";
-		WitchDataS[WitchType::フィオナ].説明文 = "";
+		WitchDataS[WitchType::フィオナ].パッシブ説明 = "";
+		WitchDataS[WitchType::フィオナ].大魔法説明 = "";
 
 		WitchDataS[WitchType::フィオナ].属性 = Element::炎;
 		WitchDataS[WitchType::フィオナ].射程補正 = 1.1;
@@ -304,7 +314,8 @@ namespace SDX_TD
 		WitchDataS[WitchType::ナズナ].英名 = "Nazuna";
 		WitchDataS[WitchType::ナズナ].大魔法名 = "さんくちゅあり";
 		WitchDataS[WitchType::ナズナ].魔導具名 = "プリティワンド";
-		WitchDataS[WitchType::ナズナ].説明文 = "";
+		WitchDataS[WitchType::ナズナ].パッシブ説明 = "";
+		WitchDataS[WitchType::ナズナ].大魔法説明 = "";
 
 		WitchDataS[WitchType::ナズナ].属性 = Element::炎;
 		WitchDataS[WitchType::ナズナ].攻撃補正 = 0.8;
@@ -328,7 +339,8 @@ namespace SDX_TD
 		WitchDataS[WitchType::委員長].英名 = "Chairwoman";
 		WitchDataS[WitchType::委員長].大魔法名 = "ローゼンクランツ";
 		WitchDataS[WitchType::委員長].魔導具名 = "チューベローズ";
-		WitchDataS[WitchType::委員長].説明文 = "";
+		WitchDataS[WitchType::委員長].パッシブ説明 = "";
+		WitchDataS[WitchType::委員長].大魔法説明 = "";
 
 		WitchDataS[WitchType::委員長].属性 = Element::炎;
 		WitchDataS[WitchType::委員長].弱点補正 = 2.0;
@@ -354,7 +366,8 @@ namespace SDX_TD
 		WitchDataS[WitchType::ミルラ].英名 = "Myrra";
 		WitchDataS[WitchType::ミルラ].大魔法名 = "リーダーオンロート";
 		WitchDataS[WitchType::ミルラ].魔導具名 = "フィソステギア";
-		WitchDataS[WitchType::ミルラ].説明文 = "";
+		WitchDataS[WitchType::ミルラ].パッシブ説明 = "";
+		WitchDataS[WitchType::ミルラ].大魔法説明 = "";
 
 		WitchDataS[WitchType::ミルラ].属性 = Element::炎;
 		WitchDataS[WitchType::ミルラ].支援補正 = 1.2;

@@ -68,23 +68,6 @@ namespace SDX_TD
         Point P回収;
     }
 
-    namespace UI_Pause
-    {
-        void Reset();
-
-        Rect R続ける;
-        Rect Rやり直す;
-        Rect Rあきらめる;
-    }
-
-    namespace UI_Result
-    {
-        void Reset();
-
-        Rect R終了;
-        Rect Rリトライ;
-    }
-
 #undef EXT
 
     //void UI_Reset();
@@ -164,25 +147,10 @@ namespace SDX_TD
         R情報 = { 472, 205 + 27, 168, 269 - 27, 0, 0 };
     }
 
-    void UI_Pause::Reset()
-    {
-        Rあきらめる = { 320, 160, 100, 25, 100, 25 };
-        Rやり直す = { 320, 240, 100, 25, 100, 25 };
-        R続ける = { 320, 320, 100, 25, 100, 25 };
-    }
-
-    void UI_Result::Reset()
-    {
-        R終了 = { 320, 260, 100, 25, 100, 25 };
-        Rリトライ = { 320, 380, 100, 25, 100, 25 };
-    }
-
 	/**StageのUI位置を修正.*/
     void UI_Reset()
     {
         UI_Stage::Reset();
         UI_Unit::Reset();
-        UI_Pause::Reset();
-        UI_Result::Reset();
     }
 }

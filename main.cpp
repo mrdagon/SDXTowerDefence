@@ -30,13 +30,7 @@ int main(int argc, char* argv[])
 	Time::ResetCount();
 
 	UI_Reset();
-    LoadUnitS();
-    LoadEnemyS();
-    LoadStageS();
-    LoadWitchS();
-    LoadDifficultyS();
-    LoadChipS();
-	LoadRecordS();
+	LoadDataS();
     SaveAndLoad(FileMode::Read);
 
     System::Initialise("GTD ver0.05β", 640, 480);//ライブラリの初期化

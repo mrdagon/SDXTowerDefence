@@ -40,7 +40,8 @@ namespace SDX_TD
 
         EnemyType 敵種類[MAX_WAVE];
         bool	  isBoss[MAX_WAVE];
-        ChipType  地形[MAP_SIZE][MAP_SIZE];
+        ChipType  地形[MAP_SIZE][MAP_SIZE];//地形種類
+		int       地形画像[MAP_SIZE][MAP_SIZE];//地形画像
 
         Score& Getスコア()
         {

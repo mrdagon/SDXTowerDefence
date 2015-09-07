@@ -176,6 +176,8 @@ namespace SDX_TD
 		SceneWitch_キャンセル = 352,
 		SceneWitch_大魔法枠 = 354,
 		SceneWitch_ユニット枠 = 355,
+		SceneHelpSub_全体枠 = 356,
+		SceneHelpSub_ヘルプ題名 = 374,
 		SceneShop_合計取得数枠 = 264,
 		SceneShop_Frame = 311,
 		SceneShop_費用表示枠 = 312,

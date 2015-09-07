@@ -167,9 +167,10 @@ namespace SDX_TD
 #ifdef _DEBUG			
 			if (Input::key.Return.on){ LoadGUI(); }
 #endif
-			Screen::SetBright({64,64,64});
+			//Screen::SetBright({ 64,64,64 });
 			Director::GetScene(0)->Draw();
-			Screen::SetBright(Color::White);
+			Drawing::Rect(Window::GetSize(), { 0,0,0,64 });
+			//Screen::SetBright(Color::White);
 
 			//Draw
 			MSystem::frameS[全体枠.frameNo].Draw(全体枠.rect);
@@ -182,7 +183,6 @@ namespace SDX_TD
 			説明枠.Draw();
 			大魔法枠.Draw();
 			ユニット枠.Draw();
-
 			MFont::fontS[FontType::BMP黒].Draw(ユニット枠.rect.GetPoint() + Point(4,4), Color::White, "Unit");
 			MFont::fontS[FontType::BMP黒].Draw(大魔法枠.rect.GetPoint() + Point(4, 4), Color::White, "Ultimate");
 			MFont::fontS[FontType::BMP黒].Draw(説明枠.rect.GetPoint() + Point(4, 4), Color::White, "Passive");
@@ -201,8 +201,10 @@ namespace SDX_TD
 				}
 
 				//パッシブ効果
+				MFont::fontS[FontType::ゴシック小].Draw(説明枠.rect.GetPoint(),Color::White,WitchDataS[pointWitch].パッシブ説明);
 
 				//大魔法説明
+				MFont::fontS[FontType::ゴシック小].Draw(大魔法枠.rect.GetPoint(), Color::White, WitchDataS[pointWitch].大魔法説明);
 
 			}
 

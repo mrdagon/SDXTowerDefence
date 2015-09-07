@@ -5,6 +5,8 @@
 #include <SDXFrameWork.h>
 #include "GUI_Factory.h"
 #include "../System/Material.h"
+#include "../Struct/HelpData.h"
+#include "SceneHelpSub.h"
 
 namespace SDX_TD
 {
@@ -35,9 +37,7 @@ namespace SDX_TD
 		UI_Button 項目13 = { 350, {356,102,280,40} , 0.000000,3};
 		UI_Button 項目16 = { 351, {357,243,280,40} , 0.000000,3};
         //@End
-        bool isヘルプ表示;
-        Image* 表示画像;
-        std::string 文章;
+		UI_Button* 項目S[20];
 
         SceneHelp()
         {
@@ -48,6 +48,26 @@ namespace SDX_TD
         //初期化
         void Init() override
         {
+			項目S[0] = &項目1;
+			項目S[1] = &項目2;
+			項目S[2] = &項目3;
+			項目S[3] = &項目4;
+			項目S[4] = &項目5;
+			項目S[5] = &項目6;
+			項目S[6] = &項目7;
+			項目S[7] = &項目8;
+			項目S[8] = &項目9;
+			項目S[9] = &項目10;
+			項目S[10] = &項目11;
+			項目S[11] = &項目12;
+			項目S[12] = &項目13;
+			項目S[13] = &項目14;
+			項目S[14] = &項目15;
+			項目S[15] = &項目16;
+			項目S[16] = &項目17;
+			項目S[17] = &項目18;
+			項目S[18] = &項目19;
+			項目S[19] = &項目20;
         }
 
         //終了時
@@ -58,62 +78,43 @@ namespace SDX_TD
         //更新
         void Update() override
         {
-            if (Input::mouse.Left.on && isヘルプ表示)
-            {
-                isヘルプ表示 = false;
-                return;
-            }
+			for (int a = 0;a < 20;++a)
+			{
+				if (項目S[a]->isClick())
+				{
+					SceneHelpSub::Call(this,a);
+				}
+			}
 
-            if (項目20.isClick())
-            {
-                表示画像 = nullptr;
-                isヘルプ表示 = true;
-                文章 = "[クレジット](敬称略、詳細はreadme.txt)\n"
-                    "[制作･著作･その他色々]\n"
-                    "(`･@･)\n"
+            /*//Update
+			if (項目20.isClick())
+			{
+				表示画像 = nullptr;
+				isヘルプ表示 = true;
+				文章 = "[クレジット](敬称略、詳細はreadme.txt)\n"
+					"[制作･著作･その他色々]\n"
+					"(`･@･)\n"
 					"[イラスト]\n"
 					"カルディア03\n"
-                    "[ライブラリ]\n"
-                    "SDL 2.0\n"
-                    "SDXFramework 0.13\n"
+					"[ライブラリ]\n"
+					"SDL 2.0\n"
+					"SDXFramework 0.13\n"
 					"libjpeg Copyright(c)1991-2012,Thomas G.Lane,Guido Vollbeding.\n"
 					"libmikmod Copyright(c) Mikmod.\n"
 					"smpeg Copyright(c)Loki Software.\n"
 					"[グラフィック素材]\n"
-                    "ドットワールド\n"
-                    "エトリエ\n"
-                    "臼井の会\n"
-                    "white cat\n"
-                    "ぴぽや\n"
-                    "[音声素材]\n"
-                    "FREEDOM HOUSE 2nd\n"
-                    "ザ・マッチメイカァズ 2nd\n"
-                    "[フォント素材]\n"
-                    "IPAフォント\n";
-            }
-
-            //@Update
-			if(項目1.isClick()){}
-			if(項目11.isClick()){}
-			if(項目2.isClick()){}
-			if(項目3.isClick()){}
-			if(項目4.isClick()){}
-			if(項目5.isClick()){}
-			if(項目6.isClick()){}
-			if(項目8.isClick()){}
-			if(項目7.isClick()){}
-			if(項目9.isClick()){}
-			if(項目10.isClick()){}
-			if(項目12.isClick()){}
-			if(項目20.isClick()){}
-			if(項目19.isClick()){}
-			if(項目15.isClick()){}
-			if(項目14.isClick()){}
-			if(項目17.isClick()){}
-			if(項目18.isClick()){}
-			if(項目13.isClick()){}
-			if(項目16.isClick()){}
-            //@End
+					"ドットワールド\n"
+					"エトリエ\n"
+					"臼井の会\n"
+					"white cat\n"
+					"ぴぽや\n"
+					"[音声素材]\n"
+					"FREEDOM HOUSE 2nd\n"
+					"ザ・マッチメイカァズ 2nd\n"
+					"[フォント素材]\n"
+					"IPAフォント\n";
+			}
+            //End*/
         }
 
         //描画
@@ -122,7 +123,7 @@ namespace SDX_TD
 #ifdef _DEBUG			
             if (Input::key.Return.on){ LoadGUI(); }
 #endif
-            //@Draw
+            /*Draw
 			MSystem::frameS[項目1.frameNo].Draw(項目1.rect);
 			MSystem::frameS[項目11.frameNo].Draw(項目11.rect);
 			MSystem::frameS[項目2.frameNo].Draw(項目2.rect);
@@ -141,17 +142,35 @@ namespace SDX_TD
 			MSystem::frameS[項目14.frameNo].Draw(項目14.rect);
 			MSystem::frameS[項目17.frameNo].Draw(項目17.rect);
 			MSystem::frameS[項目18.frameNo].Draw(項目18.rect);
-			MSystem::frameS[項目13.frameNo].Draw(項目13.rect);
-			MSystem::frameS[項目16.frameNo].Draw(項目16.rect);
-            //@End
-            MFont::fontS[1].DrawRotate(項目20.rect.GetCenter(),2,0, Color::Black, "Credit");
+			//MSystem::frameS[項目13.frameNo].Draw(項目13.rect);
+			//MSystem::frameS[項目16.frameNo].Draw(項目16.rect);
+            //End*/
+            //MFont::fontS[1].DrawRotate(項目20.rect.GetCenter(),2,0, Color::Black, "Credit");
 
+			for (int a = 0;a < 20;++a)
+			{
+				項目S[a]->DrawText(MFont::fontS[1], HelpDataS[a].題名.c_str() , 2);
+			}
+
+			/*
             if (isヘルプ表示)
             {
                 //枠
                 MSystem::frameS[5].Draw({ 80, 20, 540, 440 });
-                MFont::fontS[1].Draw({ 100, 40 }, Color::White, 文章);
+				//ヘルプ画像
+				if (表示画像 != nullptr)
+				{
+					//画像有り
+					表示画像->Draw({100,40});
+					MFont::fontS[1].Draw({ 100, 40 + 表示画像->GetHeight() }, Color::White, 文章);
+				}
+				else
+				{
+					//画像無し
+					MFont::fontS[1].Draw({ 100, 40 }, Color::White, 文章);
+				}
             }
+			*/
         }
 
         void LoadGUI() override

@@ -238,6 +238,11 @@ namespace SDX_TD
         };
     }
 
+	enum HelpType
+	{
+		COUNT
+	};
+
     enum class RangeType
     {
         円,

@@ -357,6 +357,8 @@ namespace SDX_TD
 		{
 
 			//地形の表示
+			//まず、
+
 			for (int a = 0; a < MAP_SIZE; ++a){
 				for (int b = 0; b < MAP_SIZE; ++b)
 				{

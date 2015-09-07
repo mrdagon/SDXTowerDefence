@@ -9,3 +9,20 @@
 #include "StageData.h"
 #include "DifficultyData.h"
 #include "ChipData.h"
+#include "RecordData.h"
+#include "HelpData.h"
+namespace SDX_TD
+{
+	using namespace SDX;
+	void LoadDataS()
+	{
+		LoadUnitS();
+		LoadEnemyS();
+		LoadStageS();
+		LoadWitchS();
+		LoadDifficultyS();
+		LoadChipS();
+		LoadRecordS();
+		LoadHelpS();
+	}
+}

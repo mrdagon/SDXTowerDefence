@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="356">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="375">
  <objectgroup color="#00ffff" name="TEMPLATE">
   <object id="16" name="ScrollBar" type="ScrollBar" x="306.5" y="496" width="57" height="54">
    <properties>
@@ -874,7 +874,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="SceneWitch">
+ <objectgroup name="SceneWitch" visible="0">
   <object id="210" name="全体枠" type="Frame" x="170" y="60" width="360" height="360">
    <properties>
     <property name="frameNo" value="5"/>
@@ -963,6 +963,19 @@
   <object id="355" name="ユニット枠" type="Button" x="179" y="175" width="342" height="50">
    <properties>
     <property name="frameNo" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="SceneHelpSub">
+  <object id="356" name="全体枠" type="Frame" x="50" y="20" width="540" height="440">
+   <properties>
+    <property name="frameNo" value="5"/>
+   </properties>
+  </object>
+  <object id="374" name="ヘルプ題名" type="Text" x="55.5" y="25" width="527.5" height="20">
+   <properties>
+    <property name="fontNo" value="1"/>
+    <property name="text" value="std::string"/>
    </properties>
   </object>
  </objectgroup>
