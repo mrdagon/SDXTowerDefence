@@ -6,6 +6,7 @@ namespace SDX_TD
 {
     using namespace SDX;
 
+	static const int GOAL_TYPE_MAX = 2;//入り口出口対応の最大値
     static const int MAP_SIZE = 32;//マップの縦横タイル数
     static const int CHIP_SIZE = 16;//マップチップのドット数
     static const int 到達不可 = 99999999;
@@ -61,14 +62,15 @@ namespace SDX_TD
         森,//配置可能、通行不可
         山,//配置＆通行不可
         砂,//配置不可、通行可
-		穴,//敵が湧く
-        畑,//防衛拠点
-        //以下α版未実装
+		穴,//敵が湧く-AルートBルートの二種
+        畑,//防衛拠点-AルートBルートの二種
         道,//移動速度倍速
         沼,//移動速度半減
         水,//水系のみ通行可
         星,//強化マス
 		高山,//飛行も通行不可
+		穴B,
+		畑B,
         COUNT
     };
 

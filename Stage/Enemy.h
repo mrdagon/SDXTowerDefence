@@ -23,6 +23,7 @@ namespace SDX_TD
 
 		MoveType 移動種;
 		Enemy   *next;//当たり判定チェイン用
+		int		目標ゴールNo = 0;
 		int		レベル = 0;
 		int		方向 = 5;
 		double	最大HP = 0;
@@ -95,13 +96,13 @@ namespace SDX_TD
 			{
 			case MoveType::空:
 				if (SStage->is飛行直進) { return; }
-				方向 = SStage->land.空路.方向計算(方向, (int)GetX(), (int)GetY());
+				方向 = SStage->land.空路.方向計算(方向, (int)GetX(), (int)GetY(), 目標ゴールNo);
 				break;
 			case MoveType::陸:
-				方向 = SStage->land.陸路.方向計算(方向, (int)GetX(), (int)GetY());
+				方向 = SStage->land.陸路.方向計算(方向, (int)GetX(), (int)GetY() , 目標ゴールNo);
 				break;
 			case MoveType::水:
-				方向 = SStage->land.水路.方向計算(方向, (int)GetX(), (int)GetY());
+				方向 = SStage->land.水路.方向計算(方向, (int)GetX(), (int)GetY() , 目標ゴールNo);
 				break;
 			}
 		}

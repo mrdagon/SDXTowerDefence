@@ -18,12 +18,91 @@ namespace SDX_TD
 		/**各移動タイプ毎の最短経路.*/
 		class Route
 		{
+		private:
+			static std::vector<int> 未計算リスト;//全クラス共通で一つで良い
+			/**.*/
+			void 経路再計算(const Land& 土地 , int ゴールNo)
+			{
+				未計算リスト.clear();
+
+				for (int a = 0; a < MAP_SIZE; ++a) {
+					for (int b = 0; b < MAP_SIZE; ++b)
+					{
+						if (土地.地形[a][b] == ChipType::畑)
+						{
+							距離[a][b][ゴールNo] = 0;
+							未計算リスト.push_back(a + b*MAP_SIZE);
+						}
+						else
+						{
+							距離[a][b][ゴールNo] = 到達不可;
+						}
+					}
+				}
+
+				for (unsigned int a = 0; a < 未計算リスト.size(); ++a)
+				{
+					経路探索(未計算リスト[a] % MAP_SIZE, 未計算リスト[a] / MAP_SIZE , ゴールNo);
+				}
+			}
+
+			/**.*/
+			void 経路探索(int X座標, int Y座標, int ゴールNo)
+			{
+				//斜め方向は距離7、上下左右は5で近似
+				const int distance[2] = { 距離[X座標][Y座標][ゴールNo] + 7, 距離[X座標][Y座標][ゴールNo] + 5 };
+
+				//斜め
+				for (int a = 0; a < 9; a += 2)
+				{
+					//現在のマスは無視
+					if (a == 4) continue;
+					const int X = X座標 - 1 + a % 3;
+					const int Y = Y座標 - 1 + a / 3;
+					//移動不可能なマスは無視
+					if (!is通行[X][Y]) continue;
+					//画面外になる場合は無視
+					if (X < 0 || X >= MAP_SIZE || Y < 0 || Y >= MAP_SIZE) continue;
+					//斜め移動が制限される場合は無視
+					if (a == 0 && (!is通行[X座標 - 1][Y座標] || !is通行[X座標][Y座標 - 1])) continue;
+					if (a == 2 && (!is通行[X座標 + 1][Y座標] || !is通行[X座標][Y座標 - 1])) continue;
+					if (a == 6 && (!is通行[X座標 - 1][Y座標] || !is通行[X座標][Y座標 + 1])) continue;
+					if (a == 8 && (!is通行[X座標 + 1][Y座標] || !is通行[X座標][Y座標 + 1])) continue;
+
+					//最短経路更新
+					if (距離[X][Y][ゴールNo] > distance[a % 2])
+					{
+						距離[X][Y][ゴールNo] = distance[a % 2];
+						経路[X][Y][ゴールNo] = 8 - a;
+						未計算リスト.push_back(X + Y * MAP_SIZE);
+					}
+				}
+
+				//上下左右
+				for (int a = 1; a < 9; a += 2)
+				{
+					const int X = X座標 - 1 + a % 3;
+					const int Y = Y座標 - 1 + a / 3;
+					//移動不可能なマスは無視
+					if (!is通行[X][Y]) continue;
+					//画面外になる場合は無視
+					if (X < 0 || X >= MAP_SIZE || Y < 0 || Y >= MAP_SIZE) continue;
+
+					//最短経路更新
+					if (距離[X][Y][ゴールNo] > distance[a % 2])
+					{
+						距離[X][Y][ゴールNo] = distance[a % 2];
+						経路[X][Y][ゴールNo] = 8 - a;
+						未計算リスト.push_back(X + Y * MAP_SIZE);
+					}
+				}
+			}
+
 		public:
-			int  距離[MAP_SIZE][MAP_SIZE];
-			int  経路[MAP_SIZE][MAP_SIZE];
-			bool is通行[MAP_SIZE][MAP_SIZE];
-			MoveType 移動種;
-			std::vector<int> 計算リスト;
+			const MoveType 移動種;
+			int  距離[MAP_SIZE][MAP_SIZE][GOAL_TYPE_MAX];
+			int  経路[MAP_SIZE][MAP_SIZE][GOAL_TYPE_MAX];
+			bool is通行[MAP_SIZE][MAP_SIZE];//地形種毎に一種類で良い
 
 			Route(MoveType 移動種) :
 				移動種(移動種)
@@ -62,17 +141,18 @@ namespace SDX_TD
 						is通行[a][b] = Check通行(土地.地形[a][b]);
 					}
 				}
-				経路再計算(土地);
+				経路再計算(土地 , 0 );
+				経路再計算(土地 , 1 );
 			}
 
 			/**.*/
-			int 方向計算(int 現在の方向, int X座標, int Y座標)
+			int 方向計算(int 現在の方向, int X座標, int Y座標 , int ゴールNo)
 			{
 				//012
 				//345
 				//678
 
-				int direct = 経路[X座標 / CHIP_SIZE][Y座標 / CHIP_SIZE];//現在のマスの向き
+				int direct = 経路[X座標 / CHIP_SIZE][Y座標 / CHIP_SIZE][ゴールNo];//現在のマスの向き
 
 				const int def = 6;
 
@@ -106,83 +186,6 @@ namespace SDX_TD
 				return 現在の方向;
 			}
 
-			/**.*/
-			void 経路再計算(const Land& 土地)
-			{
-				計算リスト.clear();
-
-				for (int a = 0; a < MAP_SIZE; ++a){
-					for (int b = 0; b < MAP_SIZE; ++b)
-					{
-						if (土地.地形[a][b] == ChipType::畑)
-						{
-							距離[a][b] = 0;
-							計算リスト.push_back(a + b*MAP_SIZE);
-						}
-						else
-						{
-							距離[a][b] = 到達不可;
-						}
-					}
-				}
-
-				for (unsigned int a = 0; a < 計算リスト.size(); ++a)
-				{
-					経路探索(計算リスト[a] % MAP_SIZE, 計算リスト[a] / MAP_SIZE);
-				}
-			}
-
-			/**.*/
-			void 経路探索(int X座標, int Y座標)
-			{
-				//斜め方向は距離7、上下左右は5で近似
-				const int distance[2] = { 距離[X座標][Y座標] + 7, 距離[X座標][Y座標] + 5 };
-
-				//斜め
-				for (int a = 0; a < 9;  a+= 2)
-				{
-					//現在のマスは無視
-					if (a == 4) continue;
-					const int X = X座標 - 1 + a % 3;
-					const int Y = Y座標 - 1 + a / 3;
-					//移動不可能なマスは無視
-					if (!is通行[X][Y]) continue;
-					//画面外になる場合は無視
-					if (X < 0 || X >= MAP_SIZE || Y < 0 || Y >= MAP_SIZE) continue;
-					//斜め移動が制限される場合は無視
-					if (a == 0 && (!is通行[X座標 - 1][Y座標] || !is通行[X座標][Y座標 - 1])) continue;
-					if (a == 2 && (!is通行[X座標 + 1][Y座標] || !is通行[X座標][Y座標 - 1])) continue;
-					if (a == 6 && (!is通行[X座標 - 1][Y座標] || !is通行[X座標][Y座標 + 1])) continue;
-					if (a == 8 && (!is通行[X座標 + 1][Y座標] || !is通行[X座標][Y座標 + 1])) continue;
-
-					//最短経路更新
-					if (距離[X][Y] > distance[a % 2])
-					{
-						距離[X][Y] = distance[a % 2];
-						経路[X][Y] = 8 - a;
-						計算リスト.push_back(X + Y * MAP_SIZE);
-					}
-				}
-
-				//上下左右
-				for (int a = 1; a < 9;  a+= 2)
-				{
-					const int X = X座標 - 1 + a % 3;
-					const int Y = Y座標 - 1 + a / 3;
-					//移動不可能なマスは無視
-					if (!is通行[X][Y]) continue;
-					//画面外になる場合は無視
-					if (X < 0 || X >= MAP_SIZE || Y < 0 || Y >= MAP_SIZE) continue;
-					
-					//最短経路更新
-					if (距離[X][Y] > distance[a % 2])
-					{
-						距離[X][Y] = distance[a % 2];
-						経路[X][Y] = 8 - a;
-						計算リスト.push_back(X + Y * MAP_SIZE);
-					}
-				}
-			}
 		};
 
 		ChipType 地形[MAP_SIZE][MAP_SIZE];
@@ -196,14 +199,11 @@ namespace SDX_TD
 
 		std::vector<int> 穴の位置;//発生位置の場所
 
-		Route 陸路;
-		Route 空路;
-		Route 水路;
+		Route 陸路 = { MoveType::陸};
+		Route 空路 = { MoveType::空};
+		Route 水路 = { MoveType::水};
 
-		Land():
-			陸路(MoveType::陸),
-			空路(MoveType::空),
-			水路(MoveType::水)
+		Land()
 		{}
 
 		/**初期化を行う.*/
@@ -225,7 +225,7 @@ namespace SDX_TD
 
 			陸路.Init(*this);
 			空路.Init(*this);
-			水路.Init(*this);
+			水路.Init(*this);			
 		}
 
 		/**is陸の敵を追加更新.*/
@@ -299,15 +299,17 @@ namespace SDX_TD
 			//ルートを塞がないかチェック、空はルート固定なので確認しない
 			陸路.Init(*this);
 
-			//到達不可の位置に囲われた敵がいるかチェック
+			//到達不可の位置に囲われた敵がいるか、ゴールに繋がってない入り口があるかチェック
+			//複数経路のうち一つでもゴールが繋がっていれば他の経路もOKなので、陸路.距離[a][b][1]とかはチェックしない
 			for (int a = 0; a < MAP_SIZE; ++a){
 				for (int b = 0; b < MAP_SIZE; ++b)
 				{
-					if (陸路.距離[a][b] == 到達不可 && (is陸敵[a][b] == true || 地形[a][b] == ChipType::穴))
+					if (陸路.距離[a][b][0] == 到達不可 && (is陸敵[a][b] == true || 地形[a][b] == ChipType::穴))
 					{
 						for (int a = 0; a < 大きさ; ++a){
 							for (int b = 0; b < 大きさ; ++b)
 							{
+								//配置した魔法を戻す
 								is魔法[X座標 + a][Y座標 + b] = false;
 							}
 						}
@@ -321,11 +323,12 @@ namespace SDX_TD
 			for (int a = 0; a < MAP_SIZE; ++a){
 				for (int b = 0; b < MAP_SIZE; ++b)
 				{
-					if (水路.距離[a][b] == 到達不可 && is水敵[a][b] == true)
+					if (水路.距離[a][b][0] == 到達不可 && is水敵[a][b] == true)
 					{
 						for (int a = 0; a < 大きさ; ++a){
 							for (int b = 0; b < 大きさ; ++b)
 							{
+								//配置した魔法を戻す
 								is魔法[X座標 + a][Y座標 + b] = false;
 							}
 						}

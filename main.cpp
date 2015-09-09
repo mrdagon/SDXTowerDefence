@@ -23,6 +23,8 @@ static const char* TMX_FILE_NAME = "Layout.tmx";
 
 #include "System/SaveAndLoad.h"
 
+std::vector<int> SDX_TD::Land::Route::未計算リスト;
+
 int main(int argc, char* argv[])
 {
     using namespace SDX;
